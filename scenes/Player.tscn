@@ -1,0 +1,27 @@
+[gd_scene load_steps=2 format=3 uid="uid://ed1wo7vfltsb"]
+
+[ext_resource type="Script" uid="uid://barrw5aujn17p" path="res://scenes/player.gd" id="1_xhfnw"]
+
+[node name="Player" type="Node3D"]
+script = ExtResource("1_xhfnw")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.8, 0)
+
+[node name="SpotLight3D" type="SpotLight3D" parent="Camera3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.295857)
+light_color = Color(0.000155222, 0.180892, 0.600762, 1)
+light_energy = 4.718
+light_indirect_energy = 1.646
+light_volumetric_fog_energy = 0.0
+light_size = 0.111
+light_bake_mode = 1
+shadow_enabled = true
+spot_range = 3.01361
+spot_attenuation = 2.82
+spot_angle = 39.9114
+spot_angle_attenuation = 0.63728
+
+[node name="CharacterBody3D" type="CharacterBody3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CharacterBody3D"]

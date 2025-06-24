@@ -1,0 +1,70 @@
+[gd_scene load_steps=6 format=3 uid="uid://rdqclwghxpy1"]
+
+[ext_resource type="Texture2D" uid="uid://d1qsvq4f3nta5" path="res://texture-atlas-v0-vvbo027y9z9b1.webp" id="1_dn2c0"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_fgjl5"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ajl86"]
+albedo_texture = ExtResource("1_dn2c0")
+albedo_texture_force_srgb = true
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_l6igm"]
+shading_mode = 0
+
+[sub_resource type="BoxMesh" id="BoxMesh_l6igm"]
+material = SubResource("StandardMaterial3D_l6igm")
+
+[node name="Wall" type="Node3D"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(2, 0, 0, 0, 3, 0, 0, 0, 2, 0, 1.5, 0)
+mesh = SubResource("BoxMesh_fgjl5")
+surface_material_override/0 = SubResource("StandardMaterial3D_ajl86")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.01, 0, 0, 0, 0.01, 0, 0, 0, 2, 1, 3, 0)
+mesh = SubResource("BoxMesh_l6igm")
+
+[node name="MeshInstance3D3" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.01, 0, 0, 0, 0.01, 0, 0, 0, 2, -1, 3, 0)
+mesh = SubResource("BoxMesh_l6igm")
+
+[node name="MeshInstance3D4" type="MeshInstance3D" parent="."]
+transform = Transform3D(-4.37114e-10, 0, 2, 0, 0.01, 0, -0.01, 0, -8.74228e-08, 0, 3, -1)
+mesh = SubResource("BoxMesh_l6igm")
+
+[node name="MeshInstance3D5" type="MeshInstance3D" parent="."]
+transform = Transform3D(-4.37114e-10, 0, 2, 0, 0.01, 0, -0.01, 0, -8.74228e-08, 0, 3, 1)
+mesh = SubResource("BoxMesh_l6igm")
+
+[node name="MeshInstance3D6" type="MeshInstance3D" parent="."]
+transform = Transform3D(-4.37114e-10, 0, 2, 0, 0.01, 0, -0.01, 0, -8.74228e-08, 0, 0.05, 1)
+mesh = SubResource("BoxMesh_l6igm")
+
+[node name="MeshInstance3D9" type="MeshInstance3D" parent="."]
+transform = Transform3D(-4.37114e-10, 0, 2, 0, 0.01, 0, -0.01, 0, -8.74228e-08, 0, 0.05, -1)
+mesh = SubResource("BoxMesh_l6igm")
+
+[node name="MeshInstance3D7" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.01, 0, 0, 0, 0.01, 0, 0, 0, 2, 1, 0.05, 0)
+mesh = SubResource("BoxMesh_l6igm")
+
+[node name="MeshInstance3D8" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.01, 0, 0, 0, 0.01, 0, 0, 0, 2, -1, 0.05, 0)
+mesh = SubResource("BoxMesh_l6igm")
+
+[node name="MeshInstance3D10" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.01, 0, 0, 0, 2.95, 0, 0, 0, 0.01, 1, 1.525, 1)
+mesh = SubResource("BoxMesh_l6igm")
+
+[node name="MeshInstance3D11" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.01, 0, 0, 0, 2.95, 0, 0, 0, 0.01, 1, 1.525, -1)
+mesh = SubResource("BoxMesh_l6igm")
+
+[node name="MeshInstance3D12" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.01, 0, 0, 0, 2.95, 0, 0, 0, 0.01, -1, 1.525, -1)
+mesh = SubResource("BoxMesh_l6igm")
+
+[node name="MeshInstance3D13" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.01, 0, 0, 0, 2.95, 0, 0, 0, 0.01, -1, 1.525, 1)
+mesh = SubResource("BoxMesh_l6igm")
