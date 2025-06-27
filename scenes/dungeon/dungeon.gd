@@ -3,6 +3,7 @@ extends Node3D
 
 @onready var tiles_container = $Tiles  # Add a Node3D named "Tiles" in the scene
 @onready var transition_rect = get_tree().get_root().get_node("Main/TransitionRect")
+@onready var transition_battle = get_tree().get_root().get_node("Main/BattleTransition")
 var map_data = []
 var current_map = ""
 var player: Node3D
@@ -12,6 +13,7 @@ const TILE_SIZE = 2.0
 func _ready():
 	player = get_tree().get_root().get_node("Main/Player")  # Adjust path if necessary
 	transition_rect.modulate.a = 0.0
+	transition_battle.modulate.a = 0.0
 	load_map("default")  # Start with the default map
 
 func load_map(map_name: String):
@@ -47,6 +49,31 @@ func load_map(map_name: String):
 	
 	player.set_grid_pos(start_pos)
 
+func load_arena():
+	map_data = []
+	player.in_battle = true
+	var tween = get_tree().create_tween()
+	tween.tween_property(transition_battle, "modulate:a", 1.0, 0.5)
+	await tween.finished
+	
+	var arena_scene = MapManager.arenas["default"]
+	for child in tiles_container.get_children():
+		child.queue_free()
+		
+	var arena_instance = arena_scene.instantiate()
+	tiles_container.add_child(arena_instance)
+	
+	if arena_instance.has_node("PlayerStart"):
+		var player_start = arena_instance.get_node("PlayerStart")
+		player.global_position = player_start.global_position
+	else:
+		player.global_position = Vector3(0, 1, 0)
+		
+	tween = get_tree().create_tween()
+	tween.tween_property(transition_battle, "modulate:a", 0.0, 0.5)  # Fade back in
+	await tween.finished
+	
+
 func trigger_tile_event(pos: Vector2i):
 	if pos.y >= 0 and pos.y < map_data.size() and pos.x >= 0 and pos.x < map_data[pos.y].size():
 		var tile = map_data[pos.y][pos.x]
@@ -58,8 +85,9 @@ func trigger_tile_event(pos: Vector2i):
 func handle_event(event: String):
 	print(event)
 
-func handle_encounter(encounter: String):
+func handle_encounter(encounter):
 	print(encounter)
+	load_arena()
 
 func transition_to_map(map_name: String):
 	player.can_move = false  # Prevent movement during transition

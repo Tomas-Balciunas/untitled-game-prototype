@@ -1,12 +1,16 @@
-[gd_scene load_steps=2 format=3 uid="uid://ed1wo7vfltsb"]
+[gd_scene load_steps=3 format=3 uid="uid://ed1wo7vfltsb"]
 
 [ext_resource type="Script" uid="uid://barrw5aujn17p" path="res://scenes/player.gd" id="1_xhfnw"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_p0vlq"]
+size = Vector3(0.620972, 1.99615, 0.552612)
 
 [node name="Player" type="Node3D"]
 script = ExtResource("1_xhfnw")
 
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.8, 0)
+fov = 93.0034
 
 [node name="SpotLight3D" type="SpotLight3D" parent="Camera3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.295857)
@@ -25,3 +29,5 @@ spot_angle_attenuation = 0.63728
 [node name="CharacterBody3D" type="CharacterBody3D" parent="."]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="CharacterBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("BoxShape3D_p0vlq")

@@ -13,6 +13,7 @@ var dir_vectors = {
 
 const TILE_SIZE = 2.0
 var can_move = true
+var in_battle = false
 var rotating = false
 
 func _ready():
@@ -46,7 +47,7 @@ func _process(_delta):
 			rotate_player(-90)
 
 func move_player(direction: String):
-	if not can_move or rotating:
+	if not can_move or rotating or in_battle:
 		return
 	can_move = false
 	var facing_deg = get_facing_direction_deg()
@@ -90,11 +91,15 @@ func move_player(direction: String):
 		var target_map = MapManager.maps[dungeon.current_map]["transitions"][grid_pos]
 		dungeon.transition_to_map(target_map)
 	
-	#if "encounter" in target_tile_data:
-		#var encounter = target_tile_data["encounter"]
-		#print(encounter)
+	if "encounter" in target_tile_data:
+		var encounter = target_tile_data["encounter"]
+		spawn_enemy(encounter)
+		dungeon.handle_encounter(encounter)
 
 func rotate_player(degrees: float):
+	if in_battle:
+		return
+	
 	rotating = true
 	can_move = false
 
@@ -111,6 +116,6 @@ func rotate_player(degrees: float):
 	rotating = false
 	can_move = true
 
-func spawn_enemy(enemy_type: String):
+func spawn_enemy(enemy_type):
 	# Logic to spawn an enemy (e.g., instantiate an enemy scene)
 	print("Spawning a %s!" % enemy_type)

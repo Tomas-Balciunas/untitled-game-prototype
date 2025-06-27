@@ -1,0 +1,73 @@
+[gd_scene load_steps=10 format=3 uid="uid://dq6gw6kdq30h2"]
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_50weh"]
+load_path = "res://.godot/imported/floor_stone.jpg-174f83846018e36f29e70ca2946a733a.s3tc.ctex"
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_n2dfx"]
+albedo_color = Color(0, 0, 0, 1)
+metallic_specular = 0.05
+normal_scale = 15.15
+normal_texture = SubResource("CompressedTexture2D_50weh")
+ao_texture_channel = 3
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_50weh"]
+sky_top_color = Color(1, 1, 1, 1)
+sky_horizon_color = Color(0, 0, 0, 1)
+sky_curve = 0.321532
+sky_cover_modulate = Color(0.33, 0.33, 0.33, 1)
+sun_angle_max = 34.44
+
+[sub_resource type="Sky" id="Sky_8n0un"]
+sky_material = SubResource("ProceduralSkyMaterial_50weh")
+
+[sub_resource type="Environment" id="Environment_n2dfx"]
+background_mode = 2
+sky = SubResource("Sky_8n0un")
+ambient_light_color = Color(0.470076, 0.470076, 0.470076, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_8n0un"]
+albedo_color = Color(0, 0, 0, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_f0kb1"]
+albedo_color = Color(0, 0, 0, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7m2sr"]
+albedo_color = Color(0, 0, 0, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_dess1"]
+albedo_color = Color(0, 0, 0, 1)
+
+[node name="ArenaDefault" type="Node3D"]
+
+[node name="CSGBox3D" type="CSGBox3D" parent="."]
+transform = Transform3D(2, 0, 0, 0, 0.1, 0, 0, 0, 2, 0, 0, -5)
+size = Vector3(16, 0.1, 11)
+material = SubResource("StandardMaterial3D_n2dfx")
+
+[node name="CSGBox3D4" type="CSGBox3D" parent="."]
+transform = Transform3D(2, 0, 0, 0, 0.1, 0, 0, 0, 2, 0, 6, -5)
+size = Vector3(16, 0.1, 11)
+material = SubResource("StandardMaterial3D_n2dfx")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_n2dfx")
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="."]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 1.6, 0, 3, 6)
+size = Vector3(16, 3, 0.1)
+material = SubResource("StandardMaterial3D_8n0un")
+
+[node name="CSGBox3D3" type="CSGBox3D" parent="."]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 1.6, 0, 3, -16)
+size = Vector3(16, 3, 0.1)
+material = SubResource("StandardMaterial3D_f0kb1")
+
+[node name="CSGBox3D5" type="CSGBox3D" parent="."]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, -16, 3, -5)
+size = Vector3(0.01, 3, 11)
+material = SubResource("StandardMaterial3D_7m2sr")
+
+[node name="CSGBox3D6" type="CSGBox3D" parent="."]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 16, 3, -5)
+size = Vector3(0.01, 3, 11)
+material = SubResource("StandardMaterial3D_dess1")
