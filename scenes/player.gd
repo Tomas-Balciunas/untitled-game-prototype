@@ -93,7 +93,6 @@ func move_player(direction: String):
 	
 	if "encounter" in target_tile_data:
 		var encounter = target_tile_data["encounter"]
-		spawn_enemy(encounter)
 		dungeon.handle_encounter(encounter)
 
 func rotate_player(degrees: float):
@@ -115,7 +114,3 @@ func rotate_player(degrees: float):
 
 	rotating = false
 	can_move = true
-
-func spawn_enemy(enemy_type):
-	# Logic to spawn an enemy (e.g., instantiate an enemy scene)
-	print("Spawning a %s!" % enemy_type)

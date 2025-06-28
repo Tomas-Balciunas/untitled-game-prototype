@@ -1,7 +1,6 @@
-# Dungeon.gd
 extends Node3D
 
-@onready var tiles_container = $Tiles  # Add a Node3D named "Tiles" in the scene
+@onready var tiles_container = $Tiles
 @onready var transition_rect = get_tree().get_root().get_node("Main/TransitionRect")
 @onready var transition_battle = get_tree().get_root().get_node("Main/BattleTransition")
 var map_data = []
@@ -11,10 +10,10 @@ var player: Node3D
 const TILE_SIZE = 2.0
 
 func _ready():
-	player = get_tree().get_root().get_node("Main/Player")  # Adjust path if necessary
+	player = get_tree().get_root().get_node("Main/Player")
 	transition_rect.modulate.a = 0.0
 	transition_battle.modulate.a = 0.0
-	load_map("default")  # Start with the default map
+	load_map("default")
 
 func load_map(map_name: String):
 	var map_config = MapManager.maps[map_name]
@@ -70,7 +69,7 @@ func load_arena():
 		player.global_position = Vector3(0, 1, 0)
 		
 	tween = get_tree().create_tween()
-	tween.tween_property(transition_battle, "modulate:a", 0.0, 0.5)  # Fade back in
+	tween.tween_property(transition_battle, "modulate:a", 0.0, 0.5)
 	await tween.finished
 	
 
@@ -86,16 +85,17 @@ func handle_event(event: String):
 	print(event)
 
 func handle_encounter(encounter):
-	print(encounter)
-	load_arena()
+	if encounter:
+		print("Encountered a %s!" % encounter)
+		load_arena()
 
 func transition_to_map(map_name: String):
-	player.can_move = false  # Prevent movement during transition
+	player.can_move = false
 	var tween = get_tree().create_tween()
-	tween.tween_property(transition_rect, "modulate:a", 1.0, 0.5)  # Fade to black
+	tween.tween_property(transition_rect, "modulate:a", 1.0, 0.5)
 	await tween.finished
-	load_map(map_name)  # Switch map
+	load_map(map_name)
 	tween = get_tree().create_tween()
-	tween.tween_property(transition_rect, "modulate:a", 0.0, 0.5)  # Fade back in
+	tween.tween_property(transition_rect, "modulate:a", 0.0, 0.5)
 	await tween.finished
 	player.can_move = true

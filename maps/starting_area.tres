@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="MapData" load_steps=2 format=3 uid="uid://blvp3dqpei27q"]
+[gd_resource type="Resource" script_class="MapData" load_steps=2 format=3 uid="uid://blo32w3k7h3dq"]
 
 [ext_resource type="Script" uid="uid://i6llluly1w8" path="res://scripts/MapData.gd" id="1_ih7pl"]
 
@@ -120,7 +120,7 @@ data = [[{
 "style": "default",
 "type": "floor"
 }, {
-"encounter": {},
+"encounter": "skeleton",
 "event": null,
 "style": "default",
 "type": "floor"

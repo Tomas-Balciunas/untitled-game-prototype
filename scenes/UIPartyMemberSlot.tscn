@@ -1,0 +1,99 @@
+[gd_scene load_steps=2 format=3 uid="uid://b6i5a4uv2t1do"]
+
+[ext_resource type="Script" uid="uid://br1f8omrid7gi" path="res://scripts/UIPartyMemberSlot.gd" id="1_c0oo1"]
+
+[node name="PartyMemberSlot" type="HBoxContainer"]
+offset_right = 100.0
+offset_bottom = 100.0
+script = ExtResource("1_c0oo1")
+
+[node name="Portrait" type="TextureRect" parent="."]
+visible = false
+layout_mode = 2
+
+[node name="Control" type="Control" parent="."]
+custom_minimum_size = Vector2(140, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="PanelContainer" type="PanelContainer" parent="Control"]
+layout_mode = 2
+offset_right = 140.0
+offset_bottom = 100.0
+
+[node name="MarginContainer" type="MarginContainer" parent="Control/PanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 5
+
+[node name="GridContainer" type="GridContainer" parent="Control/PanelContainer/MarginContainer"]
+layout_mode = 2
+size_flags_vertical = 4
+
+[node name="NameContainer" type="GridContainer" parent="Control/PanelContainer/MarginContainer/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 6
+
+[node name="Name" type="Label" parent="Control/PanelContainer/MarginContainer/GridContainer/NameContainer"]
+layout_mode = 2
+text = "Unnamed"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="LabelValueContainer" type="GridContainer" parent="Control/PanelContainer/MarginContainer/GridContainer"]
+layout_mode = 2
+columns = 2
+
+[node name="Labels" type="GridContainer" parent="Control/PanelContainer/MarginContainer/GridContainer/LabelValueContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="HP" type="Label" parent="Control/PanelContainer/MarginContainer/GridContainer/LabelValueContainer/Labels"]
+layout_mode = 2
+text = "HP"
+
+[node name="MP" type="Label" parent="Control/PanelContainer/MarginContainer/GridContainer/LabelValueContainer/Labels"]
+layout_mode = 2
+text = "MP"
+
+[node name="Values" type="GridContainer" parent="Control/PanelContainer/MarginContainer/GridContainer/LabelValueContainer"]
+custom_minimum_size = Vector2(90, 0)
+layout_mode = 2
+size_flags_horizontal = 6
+
+[node name="HPContainer" type="GridContainer" parent="Control/PanelContainer/MarginContainer/GridContainer/LabelValueContainer/Values"]
+layout_mode = 2
+size_flags_horizontal = 4
+columns = 4
+
+[node name="CurrentHP" type="Label" parent="Control/PanelContainer/MarginContainer/GridContainer/LabelValueContainer/Values/HPContainer"]
+layout_mode = 2
+text = "9"
+horizontal_alignment = 2
+
+[node name="Slash" type="Label" parent="Control/PanelContainer/MarginContainer/GridContainer/LabelValueContainer/Values/HPContainer"]
+layout_mode = 2
+text = "/"
+
+[node name="MaxHP" type="Label" parent="Control/PanelContainer/MarginContainer/GridContainer/LabelValueContainer/Values/HPContainer"]
+layout_mode = 2
+text = "99"
+
+[node name="MPContainer" type="GridContainer" parent="Control/PanelContainer/MarginContainer/GridContainer/LabelValueContainer/Values"]
+layout_mode = 2
+size_flags_horizontal = 6
+columns = 4
+
+[node name="CurrentMP" type="Label" parent="Control/PanelContainer/MarginContainer/GridContainer/LabelValueContainer/Values/MPContainer"]
+layout_mode = 2
+text = "50"
+
+[node name="Slash" type="Label" parent="Control/PanelContainer/MarginContainer/GridContainer/LabelValueContainer/Values/MPContainer"]
+layout_mode = 2
+text = "/"
+
+[node name="MaxMP" type="Label" parent="Control/PanelContainer/MarginContainer/GridContainer/LabelValueContainer/Values/MPContainer"]
+layout_mode = 2
+text = "80"
