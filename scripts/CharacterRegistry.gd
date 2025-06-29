@@ -8,6 +8,7 @@ func _ready() -> void:
 func _register_all() -> void:
 	var res_paths = [
 		"res://characters/Lili.tres",
+		"res://characters/Skeltal.tres"
 	]
 	for path in res_paths:
 		var res = ResourceLoader.load(path)

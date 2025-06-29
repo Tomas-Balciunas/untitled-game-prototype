@@ -8,5 +8,6 @@ id = 1
 name = "Lili"
 health_points = 20
 mana_points = 10
+speed = 11
 experience = 0
 metadata/_custom_type_script = "uid://bwn4gpkaijqsg"

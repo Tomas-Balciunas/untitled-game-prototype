@@ -1,0 +1,18 @@
+[gd_scene load_steps=3 format=3 uid="uid://b1jxfg32brb8x"]
+
+[ext_resource type="Texture2D" uid="uid://dc2rf27qhxx4g" path="res://ghost.png" id="1_akw8c"]
+[ext_resource type="Script" uid="uid://dymuc6nxf4l2d" path="res://scripts/EnemySlot.gd" id="1_loh0k"]
+
+[node name="EnemySlot" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_loh0k")
+
+[node name="Sprite3D" type="Sprite3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+texture = ExtResource("1_akw8c")
+
+[node name="NameLabel" type="Label" parent="Sprite3D"]
+offset_right = 76.0
+offset_bottom = 23.0
+text = "Unnamed"

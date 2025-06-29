@@ -11,3 +11,6 @@ func bind(character: CharacterInstance) -> void:
 	$Control/PanelContainer/MarginContainer/GridContainer/LabelValueContainer/Values/HPContainer/MaxHP.text = str(character.max_health)
 	$Control/PanelContainer/MarginContainer/GridContainer/LabelValueContainer/Values/MPContainer/CurrentMP.text = str(character.current_mana)
 	$Control/PanelContainer/MarginContainer/GridContainer/LabelValueContainer/Values/MPContainer/MaxMP.text = str(character.max_mana)
+
+func _on_health_changed(new_health: int) -> void:
+	$Control/PanelContainer/MarginContainer/GridContainer/LabelValueContainer/Values/HPContainer/CurrentHP.text = str(new_health)

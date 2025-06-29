@@ -1,4 +1,3 @@
-# MapManager.gd
 extends Node
 
 var maps = {

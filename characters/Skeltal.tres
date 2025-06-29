@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="CharacterResource" load_steps=2 format=3 uid="uid://wuehd43nakji"]
+
+[ext_resource type="Script" uid="uid://bwn4gpkaijqsg" path="res://scripts/CharacterResource.gd" id="1_km1me"]
+
+[resource]
+script = ExtResource("1_km1me")
+id = 101
+name = "Skeleton"
+health_points = 50
+mana_points = 10
+speed = 8
+experience = 0
+metadata/_custom_type_script = "uid://bwn4gpkaijqsg"

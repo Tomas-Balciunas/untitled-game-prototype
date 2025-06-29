@@ -9,8 +9,6 @@ var main_character2: CharacterResource = preload("res://characters/Lili.tres")
 var members: Array[CharacterInstance] = [
 	CharacterInstance.new(main_character),
 	CharacterInstance.new(main_character2),
-	CharacterInstance.new(main_character),
-	CharacterInstance.new(main_character2)
 ]
 
 func add_member(id: int) -> void:

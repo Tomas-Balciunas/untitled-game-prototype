@@ -49,24 +49,17 @@ func load_map(map_name: String):
 	player.set_grid_pos(start_pos)
 
 func load_arena():
-	map_data = []
 	player.in_battle = true
 	var tween = get_tree().create_tween()
 	tween.tween_property(transition_battle, "modulate:a", 1.0, 0.5)
 	await tween.finished
-	
-	var arena_scene = MapManager.arenas["default"]
-	for child in tiles_container.get_children():
-		child.queue_free()
-		
-	var arena_instance = arena_scene.instantiate()
-	tiles_container.add_child(arena_instance)
-	
-	if arena_instance.has_node("PlayerStart"):
-		var player_start = arena_instance.get_node("PlayerStart")
-		player.global_position = player_start.global_position
-	else:
-		player.global_position = Vector3(0, 1, 0)
+
+	var battle_scene = preload("res://maps/arena/default/arena_default.tscn").instantiate()
+	get_tree().get_root().get_node("Main").add_child(battle_scene)
+	player.global_position = Vector3(0, 1, -8)
+	player.rotation_degrees.y = 180
+
+	self.visible = false
 		
 	tween = get_tree().create_tween()
 	tween.tween_property(transition_battle, "modulate:a", 0.0, 0.5)

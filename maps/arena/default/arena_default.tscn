@@ -1,32 +1,34 @@
-[gd_scene load_steps=10 format=3 uid="uid://dq6gw6kdq30h2"]
+[gd_scene load_steps=15 format=3 uid="uid://dq6gw6kdq30h2"]
+
+[ext_resource type="PackedScene" uid="uid://b588rp46wr7n0" path="res://scenes/UIBattle.tscn" id="2_f0kb1"]
+[ext_resource type="Script" uid="uid://djga0vllljxhw" path="res://scripts/BattleManager.gd" id="2_n2dfx"]
+[ext_resource type="Script" uid="uid://w5crfr45qebk" path="res://scripts/EnemyGrid.gd" id="3_f0kb1"]
+[ext_resource type="PackedScene" uid="uid://b1jxfg32brb8x" path="res://scenes/EnemySlot.tscn" id="4_dess1"]
+[ext_resource type="Texture2D" uid="uid://b5y8l3rv3tkok" path="res://floor_stone.jpg" id="5_7m2sr"]
+
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_3o0f0"]
+panorama = ExtResource("5_7m2sr")
+
+[sub_resource type="Sky" id="Sky_mm81c"]
+sky_material = SubResource("PanoramaSkyMaterial_3o0f0")
+
+[sub_resource type="Environment" id="Environment_clnqo"]
+background_mode = 2
+sky = SubResource("Sky_mm81c")
+ambient_light_color = Color(0.753984, 0.753984, 0.753984, 1)
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_50weh"]
 load_path = "res://.godot/imported/floor_stone.jpg-174f83846018e36f29e70ca2946a733a.s3tc.ctex"
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_n2dfx"]
-albedo_color = Color(0, 0, 0, 1)
+albedo_color = Color(0.843184, 0.843184, 0.843184, 1)
 metallic_specular = 0.05
 normal_scale = 15.15
 normal_texture = SubResource("CompressedTexture2D_50weh")
 ao_texture_channel = 3
 
-[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_50weh"]
-sky_top_color = Color(1, 1, 1, 1)
-sky_horizon_color = Color(0, 0, 0, 1)
-sky_curve = 0.321532
-sky_cover_modulate = Color(0.33, 0.33, 0.33, 1)
-sun_angle_max = 34.44
-
-[sub_resource type="Sky" id="Sky_8n0un"]
-sky_material = SubResource("ProceduralSkyMaterial_50weh")
-
-[sub_resource type="Environment" id="Environment_n2dfx"]
-background_mode = 2
-sky = SubResource("Sky_8n0un")
-ambient_light_color = Color(0.470076, 0.470076, 0.470076, 1)
-
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_8n0un"]
-albedo_color = Color(0, 0, 0, 1)
+albedo_color = Color(0.882353, 0, 0, 1)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_f0kb1"]
 albedo_color = Color(0, 0, 0, 1)
@@ -38,6 +40,10 @@ albedo_color = Color(0, 0, 0, 1)
 albedo_color = Color(0, 0, 0, 1)
 
 [node name="ArenaDefault" type="Node3D"]
+script = ExtResource("2_n2dfx")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_clnqo")
 
 [node name="CSGBox3D" type="CSGBox3D" parent="."]
 transform = Transform3D(2, 0, 0, 0, 0.1, 0, 0, 0, 2, 0, 0, -5)
@@ -46,11 +52,9 @@ material = SubResource("StandardMaterial3D_n2dfx")
 
 [node name="CSGBox3D4" type="CSGBox3D" parent="."]
 transform = Transform3D(2, 0, 0, 0, 0.1, 0, 0, 0, 2, 0, 6, -5)
+visible = false
 size = Vector3(16, 0.1, 11)
 material = SubResource("StandardMaterial3D_n2dfx")
-
-[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
-environment = SubResource("Environment_n2dfx")
 
 [node name="CSGBox3D2" type="CSGBox3D" parent="."]
 transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 1.6, 0, 3, 6)
@@ -71,3 +75,34 @@ material = SubResource("StandardMaterial3D_7m2sr")
 transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 16, 3, -5)
 size = Vector3(0.01, 3, 11)
 material = SubResource("StandardMaterial3D_dess1")
+
+[node name="BattleUI" parent="." instance=ExtResource("2_f0kb1")]
+
+[node name="EnemyGrid" type="Control" parent="."]
+layout_mode = 3
+anchor_left = 0.342
+anchor_top = 0.156
+anchor_right = 0.655
+anchor_bottom = 0.34
+offset_left = 58.016
+offset_top = -4.08801
+offset_right = -302.56
+offset_bottom = -123.32
+script = ExtResource("3_f0kb1")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="EnemyGrid"]
+layout_mode = 0
+offset_top = 12.0
+offset_right = 215.0
+offset_bottom = 123.0
+
+[node name="BackRow" type="HBoxContainer" parent="EnemyGrid/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="FrontRow" type="HBoxContainer" parent="EnemyGrid/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="EnemySlot" parent="EnemyGrid/VBoxContainer/FrontRow" instance=ExtResource("4_dess1")]
+layout_mode = 2

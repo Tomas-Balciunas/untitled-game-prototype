@@ -1,8 +1,7 @@
-# Player.gd
 extends Node3D
 
 var grid_pos = Vector2i(0, 0)
-@onready var dungeon = get_tree().get_root().get_node("Main/Dungeon")  # Adjust path if necessary
+@onready var dungeon = get_tree().get_root().get_node("Main/Dungeon")
 
 var dir_vectors = {
 	0: Vector2i(0, -1),
@@ -17,7 +16,7 @@ var in_battle = false
 var rotating = false
 
 func _ready():
-	grid_pos = Vector2i(1, 1)  # Initial position, will be overridden by dungeon
+	grid_pos = Vector2i(1, 1)
 	global_position = Vector3(grid_pos.x * TILE_SIZE, 0, grid_pos.y * TILE_SIZE)
 	rotation_degrees = Vector3(0, 0, 0)
 
@@ -65,9 +64,10 @@ func move_player(direction: String):
 
 	var target_tile = grid_pos + dir
 
-	# Out-of-bounds check
+	# oob check
 	if target_tile.y < 0 or target_tile.y >= dungeon.map_data.size() or target_tile.x < 0 or target_tile.x >= dungeon.map_data[0].size():
 		can_move = true
+		print("oob")
 		return
 
 	# Wall check
@@ -85,7 +85,6 @@ func move_player(direction: String):
 	await tween.finished
 	can_move = true
 
-	# Check for map transition
 	if grid_pos in MapManager.maps[dungeon.current_map]["transitions"]:
 		can_move = false
 		var target_map = MapManager.maps[dungeon.current_map]["transitions"][grid_pos]

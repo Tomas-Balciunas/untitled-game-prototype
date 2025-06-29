@@ -4,9 +4,10 @@
 
 [resource]
 script = ExtResource("1_hjy8x")
-id = 1
+id = 2
 name = "Skelly"
 health_points = 20
 mana_points = 10
+speed = 12
 experience = 0
 metadata/_custom_type_script = "uid://bwn4gpkaijqsg"
