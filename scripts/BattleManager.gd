@@ -3,7 +3,7 @@ extends Node
 const TURN_THRESHOLD = 1000
 
 @onready var dungeon = get_tree().get_root().get_node("Main/Dungeon")
-@onready var player = get_tree().get_root().get_node("Main/Player")
+@onready var player = get_tree().get_root().get_node("Main/Dungeon/Player")
 @onready var battle_ui = $BattleUI
 @onready var enemy_grid = $EnemyGrid
 
@@ -148,14 +148,18 @@ func _check_end_conditions():
 
 func _handle_win():
 	print("Victory! Handle rewards here.")
-	current_state = BattleState.IDLE
-	dungeon.visible = true
-	player.in_battle = false
+	EncounterManager.end_encounter("win")
+	#current_state = BattleState.IDLE
+	#dungeon.visible = true
+	#player.in_battle = false
 	get_tree().get_root().get_node("Main").remove_child(self)
+	queue_free()
 
 func _handle_lose():
 	print("Defeat! Handle game over here.")
-	current_state = BattleState.IDLE
-	dungeon.visible = true
-	player.in_battle = false
+	EncounterManager.end_encounter("lose")
+	#current_state = BattleState.IDLE
+	#dungeon.visible = true
+	#player.in_battle = false
 	get_tree().get_root().get_node("Main").remove_child(self)
+	queue_free()

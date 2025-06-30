@@ -2,25 +2,33 @@ extends Node3D
 
 @onready var tiles_container = $Tiles
 @onready var transition_rect = get_tree().get_root().get_node("Main/TransitionRect")
-@onready var transition_battle = get_tree().get_root().get_node("Main/BattleTransition")
 var map_data = []
-var current_map = ""
 var player: Node3D
 
 const TILE_SIZE = 2.0
 
 func _ready():
-	player = get_tree().get_root().get_node("Main/Player")
+	player = get_tree().get_root().get_node("Main/Dungeon/Player")
+	
+	EncounterManager.connect("encounter_started", Callable(self, "_on_encounter_started"))
+	EncounterManager.connect("encounter_ended", Callable(self, "_on_encounter_ended"))
+	player.connect("player_moved", Callable(self, "_on_player_moved"))
+	player.connect("start_encounter", Callable(EncounterManager, "start_encounter"))
+	
 	transition_rect.modulate.a = 0.0
-	transition_battle.modulate.a = 0.0
-	load_map("default")
+	load_map("start_area_00")
 
-func load_map(map_name: String):
-	var map_config = MapManager.maps[map_name]
-	map_data = map_config.data
-	var theme = map_config.theme
-	var start_pos = map_config.start_pos
-	current_map = map_name
+func load_map(map_id: String):
+	var map_resource = MapManager.get_map(map_id)
+	
+	if MapInstance.map_id != map_id:
+		print("Dungeon: Loading new map")
+		MapInstance.hydrate_from_resource(map_resource)
+	
+	map_data = MapInstance.map_data
+	var theme = MapInstance.theme
+	var player_position = MapInstance.player_position
+	print(player_position)
 	
 	for child in tiles_container.get_children():
 		child.queue_free()
@@ -46,41 +54,16 @@ func load_map(map_name: String):
 				wall.set_meta("event", tile["event"])
 				wall.set_meta("encounter", tile["encounter"])
 	
-	player.set_grid_pos(start_pos)
+	player.set_grid_pos(player_position)
 
-func load_arena():
+func _on_encounter_started(data: Dictionary):
 	player.in_battle = true
-	var tween = get_tree().create_tween()
-	tween.tween_property(transition_battle, "modulate:a", 1.0, 0.5)
-	await tween.finished
-
-	var battle_scene = preload("res://maps/arena/default/arena_default.tscn").instantiate()
-	get_tree().get_root().get_node("Main").add_child(battle_scene)
 	player.global_position = Vector3(0, 1, -8)
 	player.rotation_degrees.y = 180
-
 	self.visible = false
-		
-	tween = get_tree().create_tween()
-	tween.tween_property(transition_battle, "modulate:a", 0.0, 0.5)
-	await tween.finished
-	
-
-func trigger_tile_event(pos: Vector2i):
-	if pos.y >= 0 and pos.y < map_data.size() and pos.x >= 0 and pos.x < map_data[pos.y].size():
-		var tile = map_data[pos.y][pos.x]
-		if tile["event"]:
-			handle_event(tile["event"])
-		if tile["encounter"]:
-			handle_encounter(tile["encounter"])
 
 func handle_event(event: String):
 	print(event)
-
-func handle_encounter(encounter):
-	if encounter:
-		print("Encountered a %s!" % encounter)
-		load_arena()
 
 func transition_to_map(map_name: String):
 	player.can_move = false
@@ -92,3 +75,17 @@ func transition_to_map(map_name: String):
 	tween.tween_property(transition_rect, "modulate:a", 0.0, 0.5)
 	await tween.finished
 	player.can_move = true
+
+func _on_player_moved(data: Dictionary):
+	MapInstance.update_player_position(data["grid_position"])
+
+func _on_encounter_ended(result):
+	print("Back from battle with result:", result)
+	# Restore player state, update map, enable player input etc.
+	self.visible = true
+	
+	#player.global_position = MapInstance.player_position
+	load_map(MapInstance.map_id)
+	player.in_battle = false
+	player.can_move = true
+	# You could also reload the dungeon here if needed or just show it

@@ -1,7 +1,9 @@
 extends Node3D
 
+signal player_moved(data: Dictionary)
+signal start_encounter(data: Dictionary)
+
 var grid_pos = Vector2i(0, 0)
-@onready var dungeon = get_tree().get_root().get_node("Main/Dungeon")
 
 var dir_vectors = {
 	0: Vector2i(0, -1),
@@ -16,6 +18,7 @@ var in_battle = false
 var rotating = false
 
 func _ready():
+	print("Player instance: %s" % self)
 	grid_pos = Vector2i(1, 1)
 	global_position = Vector3(grid_pos.x * TILE_SIZE, 0, grid_pos.y * TILE_SIZE)
 	rotation_degrees = Vector3(0, 0, 0)
@@ -30,20 +33,22 @@ func get_facing_direction_deg() -> int:
 		rot += 360
 	return int(round(rot / 90.0)) * 90 % 360
 
-func _process(_delta):
-	if can_move and not rotating:
-		if Input.is_action_just_pressed("move_forward"):
-			move_player("forward")
-		elif Input.is_action_just_pressed("move_backwards"):
-			move_player("backward")
-		elif Input.is_action_just_pressed("strafe_left"):
-			move_player("left")
-		elif Input.is_action_just_pressed("strafe_right"):
-			move_player("right")
-		elif Input.is_action_just_pressed("turn_left"):
-			rotate_player(90)
-		elif Input.is_action_just_pressed("turn_right"):
-			rotate_player(-90)
+func _unhandled_input(event):
+	if not can_move and rotating:
+		return
+
+	if event.is_action_pressed("move_forward"):
+		move_player("forward")
+	elif event.is_action_pressed("move_backwards"):
+		move_player("backward")
+	elif event.is_action_pressed("strafe_left"):
+		move_player("left")
+	elif event.is_action_pressed("strafe_right"):
+		move_player("right")
+	elif event.is_action_pressed("turn_left"):
+		rotate_player(90)
+	elif event.is_action_pressed("turn_right"):
+		rotate_player(-90)
 
 func move_player(direction: String):
 	if not can_move or rotating or in_battle:
@@ -65,13 +70,13 @@ func move_player(direction: String):
 	var target_tile = grid_pos + dir
 
 	# oob check
-	if target_tile.y < 0 or target_tile.y >= dungeon.map_data.size() or target_tile.x < 0 or target_tile.x >= dungeon.map_data[0].size():
+	if target_tile.y < 0 or target_tile.y >= MapInstance.map_data.size() or target_tile.x < 0 or target_tile.x >= MapInstance.map_data[0].size():
 		can_move = true
 		print("oob")
 		return
 
 	# Wall check
-	var target_tile_data = dungeon.map_data[target_tile.y][target_tile.x]
+	var target_tile_data = MapInstance.map_data[target_tile.y][target_tile.x]
 	if target_tile_data["type"] == "wall":
 		can_move = true
 		return
@@ -83,16 +88,20 @@ func move_player(direction: String):
 	var tween = get_tree().create_tween()
 	tween.tween_property(self, "global_position", target_position, 0.25)
 	await tween.finished
+	print("Emitting player moved signal...")
+	emit_signal("player_moved", {
+		"grid_position": grid_pos
+	})
 	can_move = true
 
-	if grid_pos in MapManager.maps[dungeon.current_map]["transitions"]:
-		can_move = false
-		var target_map = MapManager.maps[dungeon.current_map]["transitions"][grid_pos]
-		dungeon.transition_to_map(target_map)
+	#if grid_pos in MapInstance.transitions:
+		#can_move = false
+		#var target_map = MapManager.maps[MapInstance.current_map]["transitions"][grid_pos]
+		#dungeon.transition_to_map(target_map)
 	
-	if "encounter" in target_tile_data:
+	if EncounterManager.is_encounter(target_tile_data):
 		var encounter = target_tile_data["encounter"]
-		dungeon.handle_encounter(encounter)
+		emit_signal("start_encounter", {"type": encounter})
 
 func rotate_player(degrees: float):
 	if in_battle:

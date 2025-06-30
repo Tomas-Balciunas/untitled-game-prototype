@@ -1,10 +1,12 @@
-[gd_scene load_steps=5 format=3 uid="uid://rdqclwghxpy1"]
+[gd_scene load_steps=6 format=3 uid="uid://rdqclwghxpy1"]
+
+[ext_resource type="Texture2D" uid="uid://c6lrs8nmxuj34" path="res://7fe5e10d720f9206f799410f554c0398fd6a2fd7.png" id="1_dn2c0"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_fgjl5"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ajl86"]
-albedo_color = Color(0, 0, 0, 1)
-albedo_texture_force_srgb = true
+albedo_texture = ExtResource("1_dn2c0")
+uv1_scale = Vector3(1.5, 1.5, 1.5)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_l6igm"]
 shading_mode = 0

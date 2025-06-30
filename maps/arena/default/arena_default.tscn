@@ -1,21 +1,23 @@
 [gd_scene load_steps=15 format=3 uid="uid://dq6gw6kdq30h2"]
 
+[ext_resource type="Texture2D" uid="uid://bxf0rxqbalfqo" path="res://GettyImages-2166462891_WEB.webp" id="2_7m2sr"]
 [ext_resource type="PackedScene" uid="uid://b588rp46wr7n0" path="res://scenes/UIBattle.tscn" id="2_f0kb1"]
 [ext_resource type="Script" uid="uid://djga0vllljxhw" path="res://scripts/BattleManager.gd" id="2_n2dfx"]
 [ext_resource type="Script" uid="uid://w5crfr45qebk" path="res://scripts/EnemyGrid.gd" id="3_f0kb1"]
 [ext_resource type="PackedScene" uid="uid://b1jxfg32brb8x" path="res://scenes/EnemySlot.tscn" id="4_dess1"]
-[ext_resource type="Texture2D" uid="uid://b5y8l3rv3tkok" path="res://floor_stone.jpg" id="5_7m2sr"]
 
-[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_3o0f0"]
-panorama = ExtResource("5_7m2sr")
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_7m2sr"]
+panorama = ExtResource("2_7m2sr")
 
-[sub_resource type="Sky" id="Sky_mm81c"]
-sky_material = SubResource("PanoramaSkyMaterial_3o0f0")
+[sub_resource type="Sky" id="Sky_dess1"]
+sky_material = SubResource("PanoramaSkyMaterial_7m2sr")
 
 [sub_resource type="Environment" id="Environment_clnqo"]
 background_mode = 2
-sky = SubResource("Sky_mm81c")
-ambient_light_color = Color(0.753984, 0.753984, 0.753984, 1)
+sky = SubResource("Sky_dess1")
+ambient_light_source = 3
+ambient_light_color = Color(1, 1, 1, 1)
+ambient_light_sky_contribution = 0.98
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_50weh"]
 load_path = "res://.godot/imported/floor_stone.jpg-174f83846018e36f29e70ca2946a733a.s3tc.ctex"
@@ -77,6 +79,10 @@ size = Vector3(0.01, 3, 11)
 material = SubResource("StandardMaterial3D_dess1")
 
 [node name="BattleUI" parent="." instance=ExtResource("2_f0kb1")]
+offset_left = 56.0
+offset_top = 61.0
+offset_right = 96.0
+offset_bottom = 101.0
 
 [node name="EnemyGrid" type="Control" parent="."]
 layout_mode = 3

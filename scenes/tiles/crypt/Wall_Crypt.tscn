@@ -1,4 +1,9 @@
-[gd_scene load_steps=7 format=3 uid="uid://7jdgvbc31l32"]
+[gd_scene load_steps=9 format=3 uid="uid://7jdgvbc31l32"]
+
+[ext_resource type="Texture2D" uid="uid://c6lrs8nmxuj34" path="res://7fe5e10d720f9206f799410f554c0398fd6a2fd7.png" id="1_w6kmm"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_4oi70"]
+albedo_texture = ExtResource("1_w6kmm")
 
 [sub_resource type="BoxMesh" id="BoxMesh_fgjl5"]
 
@@ -22,6 +27,7 @@ material = SubResource("StandardMaterial3D_lpbdx")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 transform = Transform3D(2, 0, 0, 0, 3, 0, 0, 0, 2, 0, 1.5, 0)
+material_override = SubResource("StandardMaterial3D_4oi70")
 mesh = SubResource("BoxMesh_fgjl5")
 surface_material_override/0 = SubResource("StandardMaterial3D_fgjl5")
 

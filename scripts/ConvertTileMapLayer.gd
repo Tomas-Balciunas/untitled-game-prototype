@@ -4,7 +4,7 @@ extends Node
 @export var event_layer: TileMapLayer
 @export var output_resource_path: String = "res://maps/handcrafted_map.tres"
 @export var map_theme: String = "crypt"
-@export var start_pos: Vector2i = Vector2i(2, 1)
+@export var start_pos: Vector2i = Vector2i(7, 1)
 @export var transitions: Dictionary = {}
 
 func _ready():
@@ -15,7 +15,6 @@ func convert_to_resource():
 		push_error("MapLayer or EventLayer not assigned.")
 		return
 
-	# Get dimensions from MapLayer
 	var used_rect = map_layer.get_used_rect()
 	var map_width = used_rect.size.x
 	var map_height = used_rect.size.y
