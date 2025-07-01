@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=3 uid="uid://cpfoahcwodyf2"]
+
+[sub_resource type="TileSet" id="TileSet_upmfc"]
+tile_size = Vector2i(200, 200)
+custom_data_layer_0/name = "style"
+custom_data_layer_0/type = 4
+custom_data_layer_1/name = "type"
+custom_data_layer_1/type = 4
+
+[node name="MapLayer" type="TileMapLayer"]
+tile_set = SubResource("TileSet_upmfc")

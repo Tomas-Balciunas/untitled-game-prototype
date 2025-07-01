@@ -5,7 +5,7 @@ const TURN_THRESHOLD = 1000
 @onready var dungeon = get_tree().get_root().get_node("Main/Dungeon")
 @onready var player = get_tree().get_root().get_node("Main/Dungeon/Player")
 @onready var battle_ui = $BattleUI
-@onready var enemy_grid = $EnemyGrid
+@onready var enemy_grid = $EnemyFormation
 
 enum BattleState {
 	IDLE,
@@ -27,24 +27,29 @@ var turn_queue: Array[CharacterInstance] = []
 var enemy_slots: Array[Node] = []
 
 func _ready():
-	for i in range(10):
-		var slot = preload("res://scenes/EnemySlot.tscn").instantiate()
-		enemy_grid.add_child(slot)
-		enemy_slots.append(slot)
-
-	for i in enemies.size():
-		var enemy_inst = enemies[i]
-		enemy_slots[i].bind(enemy_inst)
-		
 	battle_ui.action_selected.connect(_on_player_action_selected)
 	battle_ui.hide()
 	party = PartyManager.members
 	var skeleton = CharacterRegistry.get_character(101)
 	var instance = CharacterInstance.new(skeleton)
 	var instance2 = CharacterInstance.new(skeleton)
+	var instance3 = CharacterInstance.new(skeleton)
+	var instance4 = CharacterInstance.new(skeleton)
+	var instance5 = CharacterInstance.new(skeleton)
+	var instance6 = CharacterInstance.new(skeleton)
+	var instance7 = CharacterInstance.new(skeleton)
+	var instance8 = CharacterInstance.new(skeleton)
 
 	enemies.append(instance)
 	enemies.append(instance2)
+	enemies.append(instance3)
+	enemies.append(instance4)
+	enemies.append(instance5)
+	enemies.append(instance6)
+	enemies.append(instance7)
+	enemies.append(instance8)
+	
+	load_enemies()
 
 	battlers = party + enemies
 	for b in battlers:
@@ -52,7 +57,7 @@ func _ready():
 
 	current_state = BattleState.PROCESS_TURNS
 
-func _process(delta):
+func _process(_delta):
 	match current_state:
 		BattleState.PROCESS_TURNS:
 			_process_turn_queue()
@@ -70,9 +75,7 @@ func _process(delta):
 			_handle_lose()
 
 func load_enemies():
-	for enemy_inst in enemies:
-		var row = "front" if enemy_inst.resource.prefers_front_row else "back"
-		enemy_grid.place_enemy(enemy_inst, row)
+	enemy_grid.place_all_enemies(enemies)
 
 func _process_turn_queue():
 	while turn_queue.is_empty():
@@ -149,7 +152,7 @@ func _check_end_conditions():
 func _handle_win():
 	print("Victory! Handle rewards here.")
 	EncounterManager.end_encounter("win")
-	#current_state = BattleState.IDLE
+	current_state = BattleState.IDLE
 	#dungeon.visible = true
 	#player.in_battle = false
 	get_tree().get_root().get_node("Main").remove_child(self)

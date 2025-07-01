@@ -1,12 +1,12 @@
-extends Control
+extends Node3D
 
 var character_instance: CharacterInstance
 
 func bind(character: CharacterInstance):
 	character_instance = character
-	if character.resource.portrait:
-		$Portrait.texture = character.resource.portrait
-	$NameLabel.text = character.resource.character_name
+	#if character.resource.portrait:
+		#$Portrait.texture = character.resource.portrait
+	$NameLabel.text = character.resource.name
 
 func _ready():
 	connect("mouse_entered", Callable(self, "_on_hover"))

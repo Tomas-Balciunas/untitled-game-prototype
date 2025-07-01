@@ -1,14 +1,23 @@
 extends Node
 
 var maps = {
-	"start_area_00": load("res://maps/starting_area.tres")
+	"area_00": load("res://maps/hub/starting_area.tres"),
+	"crypt_00": load("res://maps/crypt/crypt_00.tres")
 }
 
 var arenas = {
-	"default": preload("res://maps/arena/default/arena_default.tscn")
+	"arena_default_00": load("res://maps/_arena/default/arena_default_00.tscn")
 }
 
 func get_map(id: String) -> MapData:
 	if maps.has(id):
 		return maps[id]
 	return null
+
+func get_arena(id: String) -> PackedScene:
+	if arenas.has(id):
+		return arenas[id]
+	return null
+
+func is_transition(tile_data: Dictionary):
+	return "transition" in tile_data and tile_data["transition"] 

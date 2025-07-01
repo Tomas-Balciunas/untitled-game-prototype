@@ -10,16 +10,19 @@ const TILE_SIZE = 2.0
 func _ready():
 	player = get_tree().get_root().get_node("Main/Dungeon/Player")
 	
+	
 	EncounterManager.connect("encounter_started", Callable(self, "_on_encounter_started"))
 	EncounterManager.connect("encounter_ended", Callable(self, "_on_encounter_ended"))
 	player.connect("player_moved", Callable(self, "_on_player_moved"))
 	player.connect("start_encounter", Callable(EncounterManager, "start_encounter"))
+	player.connect("map_transition", Callable(self, "transition_to_map"))
 	
 	transition_rect.modulate.a = 0.0
-	load_map("start_area_00")
+	load_map("area_00")
 
 func load_map(map_id: String):
 	var map_resource = MapManager.get_map(map_id)
+	print(map_resource)
 	
 	if MapInstance.map_id != map_id:
 		print("Dungeon: Loading new map")
@@ -45,6 +48,7 @@ func load_map(map_id: String):
 				floor_tile.global_position = position
 				floor_tile.set_meta("event", tile["event"])
 				floor_tile.set_meta("encounter", tile["encounter"])
+				floor_tile.set_meta("arena", tile["arena"])
 			
 			if tile["type"] == "wall":
 				var wall_scene = TileFactory.get_tile_style(theme, tile["type"], tile["style"])
@@ -53,6 +57,7 @@ func load_map(map_id: String):
 				wall.global_position = position + Vector3(0, 0, 0)
 				wall.set_meta("event", tile["event"])
 				wall.set_meta("encounter", tile["encounter"])
+				wall.set_meta("arena", tile["arena"])
 	
 	player.set_grid_pos(player_position)
 
@@ -65,12 +70,12 @@ func _on_encounter_started(data: Dictionary):
 func handle_event(event: String):
 	print(event)
 
-func transition_to_map(map_name: String):
+func transition_to_map(map_id: String):
 	player.can_move = false
 	var tween = get_tree().create_tween()
 	tween.tween_property(transition_rect, "modulate:a", 1.0, 0.5)
 	await tween.finished
-	load_map(map_name)
+	load_map(map_id)
 	tween = get_tree().create_tween()
 	tween.tween_property(transition_rect, "modulate:a", 0.0, 0.5)
 	await tween.finished
@@ -81,11 +86,9 @@ func _on_player_moved(data: Dictionary):
 
 func _on_encounter_ended(result):
 	print("Back from battle with result:", result)
-	# Restore player state, update map, enable player input etc.
+	# TODO: restore map state
 	self.visible = true
 	
-	#player.global_position = MapInstance.player_position
 	load_map(MapInstance.map_id)
 	player.in_battle = false
 	player.can_move = true
-	# You could also reload the dungeon here if needed or just show it

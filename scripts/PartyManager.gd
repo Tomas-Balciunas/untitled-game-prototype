@@ -1,7 +1,7 @@
 extends Node
 
 signal member_added(character)
-signal member_removed(character)
+#signal member_removed(character)
 
 var main_character: CharacterResource = preload("res://characters/Skelly.tres")
 var main_character2: CharacterResource = preload("res://characters/Lili.tres")

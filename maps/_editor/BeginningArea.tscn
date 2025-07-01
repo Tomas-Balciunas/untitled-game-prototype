@@ -1,8 +1,9 @@
-[gd_scene load_steps=8 format=4 uid="uid://b3nsf243cw4v1"]
+[gd_scene load_steps=10 format=4 uid="uid://b3nsf243cw4v1"]
 
 [ext_resource type="Texture2D" uid="uid://jthnsva7c8xt" path="res://1744622629065540.png" id="1_npm7y"]
 [ext_resource type="Texture2D" uid="uid://dc2rf27qhxx4g" path="res://ghost.png" id="2_5738j"]
 [ext_resource type="Script" uid="uid://c4ahdxkhm0pq5" path="res://scripts/ConvertTileMapLayer.gd" id="2_o4ove"]
+[ext_resource type="Texture2D" uid="uid://da5rfgx1dlrog" path="res://night sky.jpg" id="3_rywq5"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_o4ove"]
 texture = ExtResource("1_npm7y")
@@ -29,6 +30,14 @@ texture = ExtResource("2_5738j")
 0:0/size_in_atlas = Vector2i(5, 5)
 0:0/0 = 0
 0:0/0/custom_data_0 = "skeleton"
+0:0/0/custom_data_1 = "test"
+0:0/0/custom_data_2 = "arena_default_00"
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_rogu2"]
+texture = ExtResource("3_rywq5")
+texture_region_size = Vector2i(200, 200)
+0:0/0 = 0
+0:0/0/custom_data_3 = "crypt_00"
 
 [sub_resource type="TileSet" id="TileSet_cnf7p"]
 tile_size = Vector2i(200, 200)
@@ -36,7 +45,12 @@ custom_data_layer_0/name = "encounter"
 custom_data_layer_0/type = 4
 custom_data_layer_1/name = "event"
 custom_data_layer_1/type = 4
+custom_data_layer_2/name = "arena"
+custom_data_layer_2/type = 4
+custom_data_layer_3/name = "transition"
+custom_data_layer_3/type = 4
 sources/0 = SubResource("TileSetAtlasSource_50jpw")
+sources/1 = SubResource("TileSetAtlasSource_rogu2")
 
 [node name="StartingArea" type="Node2D"]
 
@@ -45,19 +59,15 @@ tile_map_data = PackedByteArray("AAAAAAAAAAAGAAAAAAABAAAAAAAGAAAAAAACAAAAAAAGAAA
 tile_set = SubResource("TileSet_53a4w")
 
 [node name="EventLayer" type="TileMapLayer" parent="."]
-tile_map_data = PackedByteArray("AAACAAEAAAAAAAAAAAA=")
+tile_map_data = PackedByteArray("AAACAAEAAAAAAAAAAAD6/wAAAAAAAAAAAAADAAIAAQAAAAAAAAA=")
 tile_set = SubResource("TileSet_cnf7p")
 
 [node name="Converter" type="Node" parent="." node_paths=PackedStringArray("map_layer", "event_layer")]
 script = ExtResource("2_o4ove")
+map_id = "area_00"
+map_name = "Beginning Area"
 map_layer = NodePath("../MapLayer")
 event_layer = NodePath("../EventLayer")
-output_resource_path = "res://maps/starting_area.tres"
+output_resource_path = "res://maps/hub/starting_area.tres"
 map_theme = "default"
-start_pos = Vector2i(1, 1)
-
-[node name="ConvertButton" type="Button" parent="."]
-offset_right = 108.0
-offset_bottom = 31.0
-action_mode = 0
-text = "Convert Map"
+start_pos = Vector2i(6, 1)

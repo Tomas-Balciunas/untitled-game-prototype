@@ -15,12 +15,14 @@ func is_encounter(tile: Dictionary):
 
 func start_encounter(encounter_data: Dictionary):
 	print("EncounterManager: Starting encounter:", encounter_data)
+	var arena_id = encounter_data["arena"]
+	var arena = MapManager.get_arena(arena_id)
 	
 	var tween = get_tree().create_tween()
 	tween.tween_property(transition_battle, "modulate:a", 1.0, 0.5)
 	await tween.finished
 	
-	current_battle_scene = preload("res://maps/arena/default/arena_default.tscn").instantiate()
+	current_battle_scene = arena.instantiate()
 	get_tree().get_root().get_node("Main").add_child(current_battle_scene)
 	emit_signal("encounter_started", encounter_data)
 	

@@ -2,6 +2,7 @@ extends Node3D
 
 signal player_moved(data: Dictionary)
 signal start_encounter(data: Dictionary)
+signal map_transition(data: Dictionary)
 
 var grid_pos = Vector2i(0, 0)
 
@@ -75,7 +76,7 @@ func move_player(direction: String):
 		print("oob")
 		return
 
-	# Wall check
+	# wall check
 	var target_tile_data = MapInstance.map_data[target_tile.y][target_tile.x]
 	if target_tile_data["type"] == "wall":
 		can_move = true
@@ -92,16 +93,18 @@ func move_player(direction: String):
 	emit_signal("player_moved", {
 		"grid_position": grid_pos
 	})
-	can_move = true
 
-	#if grid_pos in MapInstance.transitions:
-		#can_move = false
-		#var target_map = MapManager.maps[MapInstance.current_map]["transitions"][grid_pos]
-		#dungeon.transition_to_map(target_map)
+	if MapManager.is_transition(target_tile_data):
+		emit_signal("map_transition", target_tile_data["transition"])
+		return
 	
 	if EncounterManager.is_encounter(target_tile_data):
 		var encounter = target_tile_data["encounter"]
-		emit_signal("start_encounter", {"type": encounter})
+		var arena = target_tile_data["arena"]
+		emit_signal("start_encounter", {"arena": arena, "enemy": encounter})
+		return
+	
+	can_move = true
 
 func rotate_player(degrees: float):
 	if in_battle:

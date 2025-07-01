@@ -6,8 +6,10 @@
 script = ExtResource("1_km1me")
 id = 101
 name = "Skeleton"
-health_points = 50
+health_points = 30
 mana_points = 10
 speed = 8
 experience = 0
+slot_width = 1
+prefers_front_row = true
 metadata/_custom_type_script = "uid://bwn4gpkaijqsg"

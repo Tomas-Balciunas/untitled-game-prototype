@@ -1,11 +1,12 @@
 extends Node
 
+@export var map_id: String = ""
+@export var map_name: String = ""
 @export var map_layer: TileMapLayer
 @export var event_layer: TileMapLayer
-@export var output_resource_path: String = "res://maps/handcrafted_map.tres"
-@export var map_theme: String = "crypt"
-@export var start_pos: Vector2i = Vector2i(7, 1)
-@export var transitions: Dictionary = {}
+@export var output_resource_path: String = "res://maps/unnamed_map.tres"
+@export var map_theme: String = ""
+@export var start_pos: Vector2i = Vector2i(1, 1)
 
 func _ready():
 	convert_to_resource()
@@ -23,7 +24,7 @@ func convert_to_resource():
 	for y in range(used_rect.position.y, used_rect.position.y + map_height):
 		var row = []
 		for x in range(used_rect.position.x, used_rect.position.x + map_width):
-			var tile = {"type": "empty", "style": "default", "event": null, "encounter": null}
+			var tile = {"type": "empty", "style": "default", "event": null, "encounter": null, "arena": null, "transition": null}
 
 			# Process MapLayer
 			var map_cell = map_layer.get_cell_source_id(Vector2i(x, y))
@@ -40,18 +41,22 @@ func convert_to_resource():
 				if event_tile_data:
 					var event = event_tile_data.get_custom_data("event")
 					var encounter = event_tile_data.get_custom_data("encounter")
+					var arena = event_tile_data.get_custom_data("arena")
+					var transition = event_tile_data.get_custom_data("transition")
 					tile["event"] = event if event and event != "" else null
 					tile["encounter"] = encounter if encounter and encounter != "" else null
+					tile["arena"] = arena if arena and arena != "" else null
+					tile["transition"] = transition if transition and transition != "" else null
 
 			row.append(tile)
 		data.append(row)
 
-	# Create or update the map resource
 	var map_resource = MapData.new()
+	map_resource.id = map_id
+	map_resource.name = map_name
 	map_resource.data = data
 	map_resource.theme = map_theme
 	map_resource.start_pos = start_pos
-	map_resource.transitions = transitions
 
 	ResourceSaver.save(map_resource, output_resource_path)
 	print("Map resource saved to: %s" % output_resource_path)

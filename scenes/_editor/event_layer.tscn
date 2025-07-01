@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=3 uid="uid://rqgybtm3top4"]
+
+[sub_resource type="TileSet" id="TileSet_fp8u1"]
+tile_size = Vector2i(200, 200)
+custom_data_layer_0/name = "encounter"
+custom_data_layer_0/type = 27
+custom_data_layer_1/name = "event"
+custom_data_layer_1/type = 27
+
+[node name="EventLayer" type="TileMapLayer"]
+tile_set = SubResource("TileSet_fp8u1")
