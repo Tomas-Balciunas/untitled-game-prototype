@@ -22,6 +22,7 @@ TileFactory="*res://scripts/TileFactory.gd"
 CharacterRegistry="*res://scripts/CharacterRegistry.gd"
 PartyManager="*res://scripts/PartyManager.gd"
 EncounterManager="*res://scripts/EncounterManager.gd"
+TargetingManager="*res://scripts/TargetingManager.gd"
 
 [editor]
 

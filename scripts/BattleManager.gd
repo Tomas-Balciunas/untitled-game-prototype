@@ -4,15 +4,9 @@ const TURN_THRESHOLD = 1000
 
 @onready var dungeon = get_tree().get_root().get_node("Main/Dungeon")
 @onready var player = get_tree().get_root().get_node("Main/Dungeon/Player")
+@onready var camera: Camera3D = get_viewport().get_camera_3d()
 @onready var battle_ui = $BattleUI
 @onready var enemy_grid = $EnemyFormation
-@onready var camera: Camera3D = get_viewport().get_camera_3d()
-@onready var space_state = camera.get_world_3d().direct_space_state
-@export var collision_mask_for_enemies: int = 1 << 2
-var targeting_enabled = false
-var current_hovered_enemy_slot: EnemySlot = null
-var ray_query = PhysicsRayQueryParameters3D.new()
-var last_mouse_pos = Vector2(-1, -1)
 
 enum BattleState {
 	IDLE,
@@ -34,7 +28,10 @@ var turn_queue: Array[CharacterInstance] = []
 var enemy_slots: Array[Node] = []
 
 func _ready():
-	set_process_unhandled_input(true)
+	TargetingManager.configure_for_battle(camera)
+	TargetingManager.connect("target_clicked", Callable(self, "_on_enemy_target_selected"))
+	TargetingManager.connect("target_hovered", Callable(self, "_on_enemy_hovered"))
+	TargetingManager.connect("target_unhovered", Callable(self, "_on_enemy_unhovered"))
 	battle_ui.action_selected.connect(_on_player_action_selected)
 	battle_ui.hide()
 	party = PartyManager.members
@@ -96,7 +93,7 @@ func _start_turn(battler: CharacterInstance):
 		return
 	if battler in party:
 		current_state = BattleState.PLAYER_TURN
-		targeting_enabled = true
+		TargetingManager.enable_targeting()
 		print("Player turn for:", battler.resource.name)
 		battle_ui.show()
 	else:
@@ -110,11 +107,11 @@ func _on_player_action_selected(action: String):
 	else:
 		print("No valid enemy target.")
 
-func _on_enemy_target_selected(target: CharacterInstance):
-	print(target)
+func _on_enemy_target_selected(target: EnemySlot):
+	var character_instance = target.character_instance
 	if current_state == BattleState.PLAYER_TURN:
-		targeting_enabled = false
-		player_action_selected("attack", target)
+		TargetingManager.disable_targeting()
+		player_action_selected("attack", character_instance)
 
 func player_action_selected(action: String, target: CharacterInstance):
 	if action == "attack":
@@ -123,9 +120,6 @@ func player_action_selected(action: String, target: CharacterInstance):
 		print("Player attacked ", target.resource.name, " for ", damage)
 
 	current_state = BattleState.CHECK_END
-	if current_hovered_enemy_slot:
-		current_hovered_enemy_slot.unhover()
-		current_hovered_enemy_slot = null
 
 var _current_enemy: CharacterInstance = null
 
@@ -173,33 +167,8 @@ func _handle_lose():
 	get_tree().get_root().get_node("Main").remove_child(self)
 	queue_free()
 
-func _input(event):
-	if event is InputEventMouseMotion and targeting_enabled:
-		if event.position != last_mouse_pos:
-			last_mouse_pos = event.position
-			_update_hovered_enemy(event.position)
-	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
-			if current_hovered_enemy_slot:
-				print("Clicked on: ", current_hovered_enemy_slot.getName())
-
-func _update_hovered_enemy(mouse_pos: Vector2):
-	ray_query.from = camera.project_ray_origin(mouse_pos)
-	ray_query.to = ray_query.from + camera.project_ray_normal(mouse_pos) * 500
-	ray_query.collision_mask = collision_mask_for_enemies
-	ray_query.exclude = []
+func _on_enemy_hovered(target: EnemySlot):
+	target.hover()
 	
-	var result = space_state.intersect_ray(ray_query)
-	if result and result.collider:
-		var node = result.collider
-		while node and not (node is EnemySlot):
-			node = node.get_parent()
-		var enemy_slot = node
-		if enemy_slot != current_hovered_enemy_slot:
-			if current_hovered_enemy_slot:
-				current_hovered_enemy_slot.unhover()
-			current_hovered_enemy_slot = enemy_slot
-			current_hovered_enemy_slot.hover()
-	else:
-		if current_hovered_enemy_slot:
-			current_hovered_enemy_slot.unhover()
-			current_hovered_enemy_slot = null
+func _on_enemy_unhovered(target: EnemySlot):
+	target.unhover()

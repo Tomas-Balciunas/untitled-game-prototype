@@ -1,4 +1,4 @@
-extends Node3D
+extends StaticBody3D
 
 class_name EnemySlot
 
@@ -29,13 +29,10 @@ func getName():
 	return character_instance.resource.name
 
 func hover():
-	if character_instance:
-		$NameLabel.add_theme_color_override("font_color", Color.RED)
-	$Sprite3D.modulate = Color(1,1,1)
+	$Sprite3D.modulate = Color(1.0, 0.6, 0.6)
 
 func unhover():
-	$NameLabel.add_theme_color_override("font_color", Color.WHITE)
-	$Sprite3D.modulate = Color(240, 240, 240)
+	$Sprite3D.modulate = Color(1.0, 1.0, 1.0)
 
 func clear():
 	character_instance = null

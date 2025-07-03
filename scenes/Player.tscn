@@ -9,7 +9,7 @@ size = Vector3(0.620972, 1.99615, 0.552612)
 script = ExtResource("1_xhfnw")
 
 [node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.8, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.8, -0.302716)
 fov = 93.0034
 
 [node name="SpotLight3D" type="SpotLight3D" parent="Camera3D"]
