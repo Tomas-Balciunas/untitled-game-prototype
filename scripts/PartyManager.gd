@@ -9,7 +9,21 @@ var main_character2: CharacterResource = preload("res://characters/Lili.tres")
 var members: Array[CharacterInstance] = [
 	CharacterInstance.new(main_character),
 	CharacterInstance.new(main_character2),
+	CharacterInstance.new(main_character),
+	CharacterInstance.new(main_character2),
 ]
+
+var formation = [
+	[CharacterInstance.new(main_character), null, null],
+	[null, CharacterInstance.new(main_character2), null]
+]
+
+#func _ready() -> void:
+	#for i in members.size():
+		#if i < 3:
+			#formation[0].append(members[i])
+		#else:
+			#formation[1].append(members[i])
 
 func add_member(id: int) -> void:
 	var res := CharacterRegistry.get_character(id)
