@@ -1,25 +1,13 @@
-[gd_scene load_steps=4 format=3 uid="uid://b1jxfg32brb8x"]
+[gd_scene load_steps=3 format=3 uid="uid://b1jxfg32brb8x"]
 
-[ext_resource type="Texture2D" uid="uid://dc2rf27qhxx4g" path="res://ghost.png" id="1_akw8c"]
 [ext_resource type="Script" uid="uid://dymuc6nxf4l2d" path="res://scripts/EnemySlot.gd" id="1_loh0k"]
+[ext_resource type="Resource" uid="uid://btr7k6tmwt3qi" path="res://characters/foes/_fallback/boo.tres" id="2_loh0k"]
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_loh0k"]
-size = Vector3(0, 0, 0)
-
-[node name="EnemySlot" type="StaticBody3D"]
-collision_layer = 4
+[node name="EnemySlot" type="Node3D"]
 script = ExtResource("1_loh0k")
-
-[node name="Sprite3D" type="Sprite3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
-layers = 4
-texture = ExtResource("1_akw8c")
+fallback = ExtResource("2_loh0k")
 
 [node name="NameLabel" type="Label" parent="."]
 offset_right = 76.0
 offset_bottom = 23.0
 text = "Unnamed"
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
-shape = SubResource("BoxShape3D_loh0k")

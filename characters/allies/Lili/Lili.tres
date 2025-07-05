@@ -1,13 +1,16 @@
 [gd_resource type="Resource" script_class="CharacterResource" load_steps=2 format=3 uid="uid://dh8kad7brt53b"]
 
-[ext_resource type="Script" uid="uid://bwn4gpkaijqsg" path="res://scripts/CharacterResource.gd" id="1_1hx5g"]
+[ext_resource type="Script" uid="uid://bwn4gpkaijqsg" path="res://scripts/CharacterResource.gd" id="1_tuon3"]
 
 [resource]
-script = ExtResource("1_1hx5g")
+script = ExtResource("1_tuon3")
 id = 1
 name = "Lili"
+attack_power = 8
 health_points = 20
 mana_points = 10
 speed = 11
 experience = 0
+slot_width = 1
+prefers_front_row = false
 metadata/_custom_type_script = "uid://bwn4gpkaijqsg"

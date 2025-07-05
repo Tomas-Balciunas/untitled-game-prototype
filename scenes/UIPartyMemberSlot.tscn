@@ -11,12 +11,12 @@ border_width_bottom = 1
 border_color = Color(1, 1, 1, 1)
 
 [node name="PartyMemberSlot" type="Panel"]
-custom_minimum_size = Vector2(150, 100)
+custom_minimum_size = Vector2(130, 80)
 anchors_preset = -1
-anchor_right = 0.13
-anchor_bottom = 0.154
-offset_right = 0.23999
-offset_bottom = 0.207993
+anchor_right = 0.114
+anchor_bottom = 0.123
+offset_right = -1.328
+offset_bottom = 0.295998
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_styles/panel = SubResource("StyleBoxFlat_m4dhj")
@@ -27,6 +27,8 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 theme_override_constants/margin_left = 10
 theme_override_constants/margin_top = 5
 theme_override_constants/margin_right = 10
@@ -82,7 +84,7 @@ columns = 4
 [node name="CurrentHP" type="Label" parent="MarginContainer/GridContainer/LabelValueContainer/Values/HPContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 12
-text = "9"
+text = "9999"
 horizontal_alignment = 2
 
 [node name="Slash" type="Label" parent="MarginContainer/GridContainer/LabelValueContainer/Values/HPContainer"]
@@ -93,7 +95,7 @@ text = "/"
 [node name="MaxHP" type="Label" parent="MarginContainer/GridContainer/LabelValueContainer/Values/HPContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 12
-text = "99"
+text = "9999"
 
 [node name="MPContainer" type="GridContainer" parent="MarginContainer/GridContainer/LabelValueContainer/Values"]
 layout_mode = 2

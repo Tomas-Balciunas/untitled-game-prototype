@@ -4,7 +4,10 @@ class_name CharacterResource
 
 @export var id: int = 0
 
+@export var character_body: PackedScene
+@export var portrait: Texture
 @export var name: String = "Unnamed"
+@export var attack_power: int
 @export var health_points: int = 20
 @export var mana_points: int = 10
 @export var speed: int = 10

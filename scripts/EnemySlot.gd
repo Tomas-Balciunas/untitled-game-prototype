@@ -1,38 +1,47 @@
-extends StaticBody3D
+extends Node3D
 
 class_name EnemySlot
 
 var character_instance: CharacterInstance
 var sprite_size
-@export var enemy_name: String = ""
+var sprite_instance: AnimatedSprite3D
+@export var fallback: CharacterResource
+
 
 func bind(character: CharacterInstance):
-	var sprite = $Sprite3D
 	character_instance = character
+	
+	for child in get_children():
+		if child is StaticBody3D:
+			child.queue_free()
+
+	var body_scene = character.resource.character_body
+	
+	if not body_scene:
+		body_scene = fallback.character_body
+		print("Body is missing for character: %s id: %s. Defaulting to fallback enemy", [getName(), character_instance.resource.id])
+
+	var body_instance = body_scene.instantiate()
+	sprite_instance = body_instance.get_node("Sprite")
+	self.add_child(body_instance)
+
+	if sprite_instance:
+		sprite_instance.play("Idle")
+	else:
+		print("Sprite is missing for character: %s id: %s", [getName(), character_instance.resource.id])
+	
 	#if character.resource.portrait:
 		#$Portrait.texture = character.resource.portrait
 	$NameLabel.text = character.resource.name
-	var collision = $CollisionShape3D
-	setup_collision_to_match_sprite(sprite, collision)
-
-func setup_collision_to_match_sprite(sprite: Sprite3D, collider: CollisionShape3D):
-	var texture_size = sprite.texture.get_size() * sprite.pixel_size
-	var scale = sprite.scale
-	var sprite_size = Vector2(texture_size.x * scale.x, texture_size.y * scale.y)
-
-	var box_shape = BoxShape3D.new()
-	box_shape.extents = Vector3(sprite_size.x / 2, sprite_size.y / 2, 0.05)
-
-	collider.shape = box_shape
 
 func getName():
 	return character_instance.resource.name
 
 func hover():
-	$Sprite3D.modulate = Color(1.0, 0.6, 0.6)
+	sprite_instance.modulate = Color(1.0, 0.6, 0.6)
 
 func unhover():
-	$Sprite3D.modulate = Color(1.0, 1.0, 1.0)
+	sprite_instance.modulate = Color(1.0, 1.0, 1.0)
 
 func clear():
 	character_instance = null

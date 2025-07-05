@@ -2,7 +2,7 @@ extends Node3D
 
 const FRONT_ROW_Z = -2
 const BACK_ROW_Z = 0
-const SLOT_SPACING_X = 1.5
+const SLOT_SPACING_X = 2.5
 const MAX_SLOTS = 5
 
 const Enemy3DScene = preload("res://scenes/EnemySlot.tscn")

@@ -1,0 +1,58 @@
+[gd_scene load_steps=8 format=3 uid="uid://ddaoggfmpimc3"]
+
+[ext_resource type="Texture2D" uid="uid://cjh84x068jx5c" path="res://balmer-andromalius-57x88-alpha.png" id="1_h6klw"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_dwbtb"]
+size = Vector3(1.46509, 2.61436, 0.1)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_31n3i"]
+atlas = ExtResource("1_h6klw")
+region = Rect2(228, 176, 57, 88)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rfecp"]
+atlas = ExtResource("1_h6klw")
+region = Rect2(285, 176, 57, 88)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_soaxv"]
+atlas = ExtResource("1_h6klw")
+region = Rect2(342, 176, 57, 88)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hddcw"]
+atlas = ExtResource("1_h6klw")
+region = Rect2(399, 176, 57, 88)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_lwah8"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_31n3i")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rfecp")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_soaxv")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hddcw")
+}],
+"loop": true,
+"name": &"Idle",
+"speed": 6.0
+}]
+
+[node name="StaticBody3D" type="StaticBody3D"]
+collision_layer = 4
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.020874, 1.74889, 0)
+shape = SubResource("BoxShape3D_dwbtb")
+
+[node name="Sprite" type="AnimatedSprite3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.73461, 0)
+pixel_size = 0.03
+texture_filter = 0
+sprite_frames = SubResource("SpriteFrames_lwah8")
+animation = &"Idle"
+frame = 3
+frame_progress = 0.162162

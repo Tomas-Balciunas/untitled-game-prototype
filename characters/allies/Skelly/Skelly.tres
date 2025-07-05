@@ -1,13 +1,16 @@
 [gd_resource type="Resource" script_class="CharacterResource" load_steps=2 format=3 uid="uid://bbddeexd37t5i"]
 
-[ext_resource type="Script" uid="uid://bwn4gpkaijqsg" path="res://scripts/CharacterResource.gd" id="1_hjy8x"]
+[ext_resource type="Script" uid="uid://bwn4gpkaijqsg" path="res://scripts/CharacterResource.gd" id="1_s17id"]
 
 [resource]
-script = ExtResource("1_hjy8x")
+script = ExtResource("1_s17id")
 id = 2
 name = "Skelly"
+attack_power = 10
 health_points = 20
 mana_points = 10
 speed = 12
 experience = 0
+slot_width = 1
+prefers_front_row = true
 metadata/_custom_type_script = "uid://bwn4gpkaijqsg"

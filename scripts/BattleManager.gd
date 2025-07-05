@@ -26,6 +26,9 @@ var enemies: Array[CharacterInstance] = []
 var battlers: Array[CharacterInstance] = []
 var turn_queue: Array[CharacterInstance] = []
 var enemy_slots: Array[Node] = []
+var _pending_action: String = ""
+var _pending_options: Array = []
+var current_battler: CharacterInstance = null
 
 func _ready():
 	TargetingManager.configure_for_battle(camera)
@@ -34,14 +37,13 @@ func _ready():
 	TargetingManager.connect("target_unhovered", Callable(self, "_on_enemy_unhovered"))
 	battle_ui.action_selected.connect(_on_player_action_selected)
 	battle_ui.hide()
+	
 	party = PartyManager.members
-	var skeleton = CharacterRegistry.get_character(101)
-	var instance3 = CharacterInstance.new(skeleton)
-	var instance4 = CharacterInstance.new(skeleton)
-	var instance5 = CharacterInstance.new(skeleton)
-	var instance6 = CharacterInstance.new(skeleton)
-	var instance7 = CharacterInstance.new(skeleton)
-	var instance8 = CharacterInstance.new(skeleton)
+	
+	var balmer = CharacterRegistry.get_character(102)
+	var skeltal = CharacterRegistry.get_character(101)
+	var instance3 = CharacterInstance.new(balmer)
+	var instance4 = CharacterInstance.new(skeltal)
 
 	enemies.append(instance3)
 	enemies.append(instance4)
@@ -91,40 +93,62 @@ func _process_turn_queue():
 func _start_turn(battler: CharacterInstance):
 	if battler.current_health <= 0:
 		return
+	
+	TargetingManager.disable_targeting()
+	current_battler = battler
+		
 	if battler in party:
 		current_state = BattleState.PLAYER_TURN
-		TargetingManager.enable_targeting()
 		print("Player turn for:", battler.resource.name)
 		battle_ui.show()
 	else:
 		current_state = BattleState.ENEMY_TURN
-		_current_enemy = battler
 		
-func _on_player_action_selected(action: String):
-	var target = enemies.pick_random()
-	if target:
-		player_action_selected(action, target)
-	else:
-		print("No valid enemy target.")
+func _on_player_action_selected(action: String, options: Array):
+	_pending_action = action
+	_pending_options = options
+	
+	match action:
+		"defend":
+			_handle_defend()
+			current_state = BattleState.CHECK_END
+			return
+		"flee":
+			_handle_flee()
+			current_state = BattleState.CHECK_END
+			return
+		"attack":
+			TargetingManager.enable_targeting()
+			return
+		"skill":
+			TargetingManager.enable_targeting()
+			return
+		"item":
+			TargetingManager.enable_targeting()
+			return
 
-func _on_enemy_target_selected(target: EnemySlot):
-	var character_instance = target.character_instance
-	if current_state == BattleState.PLAYER_TURN:
-		TargetingManager.disable_targeting()
-		player_action_selected("attack", character_instance)
+func _on_enemy_target_selected(target_slot: EnemySlot):
+	if current_state != BattleState.PLAYER_TURN:
+		return
 
-func player_action_selected(action: String, target: CharacterInstance):
-	if action == "attack":
-		var damage = 10
-		target.current_health = max(0, target.current_health - damage)
-		print("Player attacked ", target.resource.name, " for ", damage)
-
+	TargetingManager.disable_targeting()
+	var target = target_slot.character_instance
+	_perform_player_action(_pending_action, target)
 	current_state = BattleState.CHECK_END
 
-var _current_enemy: CharacterInstance = null
+func _perform_player_action(action: String, target: CharacterInstance):
+	match action:
+		"attack":
+			var damage = current_battler.attack_power
+			target.current_health = max(0, target.current_health - damage)
+			print(current_battler.resource.name, " attacked ", target.resource.name, " for ", damage)
+		"skill":
+			print(current_battler.resource.name, " used skill")
+		"item":
+			print(current_battler.resource.name, " used item")
 
 func _process_enemy_turn():
-	if _current_enemy == null:
+	if current_battler == null:
 		current_state = BattleState.CHECK_END
 		return
 
@@ -135,11 +159,27 @@ func _process_enemy_turn():
 
 	var target = valid_targets.pick_random()
 	var damage = 5
-	print(_current_enemy.resource.name, " attacked ", target.resource.name, " for ", damage)
+	current_state = BattleState.ANIMATING
+	await get_tree().create_timer(0.5).timeout
+	print(current_battler.resource.name, " attacked ", target.resource.name, " for ", damage)
 	target.set_current_health(max(0, target.current_health - damage))
 
-	_current_enemy = null
+	current_battler = null
 	current_state = BattleState.CHECK_END
+
+func _handle_defend():
+	print(current_battler.resource.name, " is defending!")
+
+func _handle_flee():
+	var success = randf() < 0.5
+	if success:
+		print("Party flees successfully!")
+		EncounterManager.end_encounter("flee")
+		current_state = BattleState.IDLE
+		get_tree().get_root().get_node("Main").remove_child(self)
+		queue_free()
+	else:
+		print("Failed to flee!")
 
 func _check_end_conditions():
 	if party.all(func(p): return p.current_health <= 0):
@@ -153,17 +193,13 @@ func _handle_win():
 	print("Victory! Handle rewards here.")
 	EncounterManager.end_encounter("win")
 	current_state = BattleState.IDLE
-	#dungeon.visible = true
-	#player.in_battle = false
 	get_tree().get_root().get_node("Main").remove_child(self)
 	queue_free()
 
 func _handle_lose():
 	print("Defeat! Handle game over here.")
 	EncounterManager.end_encounter("lose")
-	#current_state = BattleState.IDLE
-	#dungeon.visible = true
-	#player.in_battle = false
+	current_state = BattleState.IDLE
 	get_tree().get_root().get_node("Main").remove_child(self)
 	queue_free()
 

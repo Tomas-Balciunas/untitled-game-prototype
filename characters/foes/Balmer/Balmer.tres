@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="CharacterResource" load_steps=3 format=3 uid="uid://dq6o86j5axtjb"]
+
+[ext_resource type="PackedScene" uid="uid://ddaoggfmpimc3" path="res://characters/foes/Balmer/body.tscn" id="1_3afh5"]
+[ext_resource type="Script" uid="uid://bwn4gpkaijqsg" path="res://scripts/CharacterResource.gd" id="1_l56jw"]
+
+[resource]
+script = ExtResource("1_l56jw")
+id = 102
+character_body = ExtResource("1_3afh5")
+name = "Balmer"
+attack_power = 5
+health_points = 22
+mana_points = 11
+speed = 8
+experience = 0
+slot_width = 1
+prefers_front_row = false
+metadata/_custom_type_script = "uid://bwn4gpkaijqsg"

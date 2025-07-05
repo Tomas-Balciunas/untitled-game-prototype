@@ -5,6 +5,7 @@ class_name CharacterInstance
 signal health_changed(new_health)
 
 var resource: CharacterResource
+var attack_power: int
 var current_health: int
 var max_health: int
 var current_mana: int
@@ -17,6 +18,7 @@ var turn_meter: int = 0
 func _init(res: CharacterResource) -> void:
 	resource = res
 
+	attack_power = res.attack_power
 	current_health = res.health_points
 	max_health = res.health_points
 	current_mana = res.mana_points

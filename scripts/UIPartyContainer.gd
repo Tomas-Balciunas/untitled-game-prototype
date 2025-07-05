@@ -1,16 +1,16 @@
-extends PanelContainer
+extends Panel
 
 @onready var party: PartyManager
 @onready var formation = [
 	[
-		$PartyContainer/FrontRow/PartyMemberSlot1/PartyMember,
-		$PartyContainer/FrontRow/PartyMemberSlot2/PartyMember,
-		$PartyContainer/FrontRow/PartyMemberSlot3/PartyMember
+		$PanelContainer/PartyContainer/FrontRow/PartyMemberSlot1/PartyMember,
+		$PanelContainer/PartyContainer/FrontRow/PartyMemberSlot2/PartyMember,
+		$PanelContainer/PartyContainer/FrontRow/PartyMemberSlot3/PartyMember
 	],
  	[
-		$PartyContainer/BackRow/PartyMemberSlot1/PartyMember,
-		$PartyContainer/BackRow/PartyMemberSlot2/PartyMember,
-		$PartyContainer/BackRow/PartyMemberSlot3/PartyMember
+		$PanelContainer/PartyContainer/BackRow/PartyMemberSlot1/PartyMember,
+		$PanelContainer/PartyContainer/BackRow/PartyMemberSlot2/PartyMember,
+		$PanelContainer/PartyContainer/BackRow/PartyMemberSlot3/PartyMember
 	]
 ] 
 
@@ -19,10 +19,10 @@ const UIPartyMemberScene = preload("res://scenes/UIPartyMemberSlot.tscn")
 func _ready():
 	PartyManager.connect("member_added", Callable(self, "_on_member_added"))
 	
-	for row_index in PartyManager.formation.size():
+	for row_index in range(PartyManager.formation.size()):
 		if not PartyManager.formation[row_index]:
 			continue
-		for slot_index in PartyManager.formation[row_index].size():
+		for slot_index in range(PartyManager.formation[row_index].size()):
 			if not PartyManager.formation[row_index][slot_index]:
 				var slot: PartyMemberSlot = formation[row_index][slot_index]
 				slot.hide_info()

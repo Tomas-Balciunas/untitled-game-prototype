@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://djga0vllljxhw" path="res://scripts/BattleManager.gd" id="1_6ixpi"]
 [ext_resource type="Texture2D" uid="uid://bxf0rxqbalfqo" path="res://GettyImages-2166462891_WEB.webp" id="2_gu5d0"]
-[ext_resource type="PackedScene" uid="uid://b588rp46wr7n0" path="res://scenes/UIBattle.tscn" id="3_w35a6"]
+[ext_resource type="PackedScene" uid="uid://calltc1gumdi2" path="res://scenes/UIBattle.tscn" id="3_w35a6"]
 [ext_resource type="Script" uid="uid://w5crfr45qebk" path="res://scripts/EnemyGrid.gd" id="4_wh25n"]
 
 [sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_7m2sr"]
@@ -77,11 +77,9 @@ transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 16, 3, -5)
 size = Vector3(0.01, 3, 11)
 material = SubResource("StandardMaterial3D_dess1")
 
-[node name="BattleUI" parent="." instance=ExtResource("3_w35a6")]
-offset_left = 56.0
-offset_top = 61.0
-offset_right = 96.0
-offset_bottom = 101.0
-
 [node name="EnemyFormation" type="Node3D" parent="."]
 script = ExtResource("4_wh25n")
+
+[node name="BattleUI" parent="." instance=ExtResource("3_w35a6")]
+anchor_top = 0.716
+offset_top = 0.0319824

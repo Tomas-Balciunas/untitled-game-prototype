@@ -1,25 +1,66 @@
-[gd_scene load_steps=2 format=3 uid="uid://b588rp46wr7n0"]
+[gd_scene load_steps=3 format=3 uid="uid://calltc1gumdi2"]
 
 [ext_resource type="Script" uid="uid://b4kodgy0qo0cl" path="res://scripts/UIBattle.gd" id="1_a268n"]
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_a268n"]
+bg_color = Color(0, 0.365644, 0.306951, 1)
+
 [node name="BattleUI" type="Control"]
 layout_mode = 3
-anchor_left = 0.361
-anchor_top = 0.585
-anchor_right = 0.411
-anchor_bottom = 0.633
-offset_left = 0.12796
-offset_top = -0.0800171
-offset_right = 0.527985
-offset_bottom = -1.18402
+anchor_right = 0.319
+anchor_bottom = 1.0
+offset_right = 0.511993
 script = ExtResource("1_a268n")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 layout_mode = 1
 anchors_preset = -1
-anchor_right = 1.0
-anchor_bottom = 1.0
+anchor_left = 0.391
+anchor_top = 0.043
+anchor_right = 0.609
+anchor_bottom = 0.957
+offset_left = 0.111984
+offset_top = 0.0879998
+offset_right = -0.112015
+offset_bottom = -0.0879974
 
 [node name="AttackButton" type="Button" parent="VBoxContainer"]
 layout_mode = 2
+theme_override_styles/focus = SubResource("StyleBoxFlat_a268n")
+action_mode = 0
 text = "Attack"
+
+[node name="DefendButton" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+text = "Defend"
+
+[node name="SkillButton" type="OptionButton" parent="VBoxContainer"]
+layout_mode = 2
+fit_to_longest_item = false
+allow_reselect = true
+item_count = 2
+popup/item_0/text = "skll 1"
+popup/item_0/id = 0
+popup/item_1/text = "skill 2"
+popup/item_1/id = 1
+
+[node name="ItemButton" type="OptionButton" parent="VBoxContainer"]
+layout_mode = 2
+fit_to_longest_item = false
+allow_reselect = true
+item_count = 2
+popup/item_0/text = "item 1"
+popup/item_0/id = 0
+popup/item_1/text = "item 2"
+popup/item_1/id = 1
+
+[node name="FleeButton" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+text = "Flee"
+
+[connection signal="pressed" from="VBoxContainer/AttackButton" to="." method="_on_attack_button_pressed"]
+[connection signal="toggled" from="VBoxContainer/AttackButton" to="." method="_on_attack_button_toggled"]
+[connection signal="pressed" from="VBoxContainer/DefendButton" to="." method="_on_defend_button_pressed"]
+[connection signal="item_selected" from="VBoxContainer/SkillButton" to="." method="_on_skill_button_item_selected"]
+[connection signal="item_selected" from="VBoxContainer/ItemButton" to="." method="_on_item_button_item_selected"]
+[connection signal="pressed" from="VBoxContainer/FleeButton" to="." method="_on_flee_button_pressed"]
