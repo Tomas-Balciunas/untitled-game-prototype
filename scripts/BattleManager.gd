@@ -1,11 +1,14 @@
 extends Node
 
+class_name BattleManager
+
 const TURN_THRESHOLD = 1000
 
 @onready var dungeon = get_tree().get_root().get_node("Main/Dungeon")
 @onready var player = get_tree().get_root().get_node("Main/Dungeon/Player")
 @onready var camera: Camera3D = get_viewport().get_camera_3d()
 @onready var battle_ui = $BattleUI
+@onready var party_panel = get_tree().get_root().get_node("Main/PartyPanel")
 @onready var enemy_grid = $EnemyFormation
 
 enum BattleState {
@@ -32,7 +35,7 @@ var current_battler: CharacterInstance = null
 
 func _ready():
 	TargetingManager.configure_for_battle(camera)
-	TargetingManager.connect("target_clicked", Callable(self, "_on_enemy_target_selected"))
+	TargetingManager.connect("target_clicked", Callable(self, "_on_target_selected"))
 	TargetingManager.connect("target_hovered", Callable(self, "_on_enemy_hovered"))
 	TargetingManager.connect("target_unhovered", Callable(self, "_on_enemy_unhovered"))
 	battle_ui.action_selected.connect(_on_player_action_selected)
@@ -91,22 +94,26 @@ func _process_turn_queue():
 		_start_turn(next_battler)
 
 func _start_turn(battler: CharacterInstance):
+	battle_ui._reset_all_button_highlights()
 	if battler.current_health <= 0:
 		return
 	
-	TargetingManager.disable_targeting()
+	disable_all_targeting()
 	current_battler = battler
 		
 	if battler in party:
 		current_state = BattleState.PLAYER_TURN
 		print("Player turn for:", battler.resource.name)
 		battle_ui.show()
+		_on_player_action_selected("attack", [])
 	else:
+		battle_ui.hide()
 		current_state = BattleState.ENEMY_TURN
 		
 func _on_player_action_selected(action: String, options: Array):
 	_pending_action = action
 	_pending_options = options
+	battle_ui.highlight_action(action)
 	
 	match action:
 		"defend":
@@ -118,20 +125,17 @@ func _on_player_action_selected(action: String, options: Array):
 			current_state = BattleState.CHECK_END
 			return
 		"attack":
-			TargetingManager.enable_targeting()
+			enable_all_targeting()
 			return
 		"skill":
-			TargetingManager.enable_targeting()
+			enable_all_targeting()
 			return
 		"item":
-			TargetingManager.enable_targeting()
+			enable_all_targeting()
 			return
 
-func _on_enemy_target_selected(target_slot: EnemySlot):
-	if current_state != BattleState.PLAYER_TURN:
-		return
-
-	TargetingManager.disable_targeting()
+func _on_target_selected(target_slot):
+	disable_all_targeting()
 	var target = target_slot.character_instance
 	_perform_player_action(_pending_action, target)
 	current_state = BattleState.CHECK_END
@@ -140,10 +144,10 @@ func _perform_player_action(action: String, target: CharacterInstance):
 	match action:
 		"attack":
 			var damage = current_battler.attack_power
-			target.current_health = max(0, target.current_health - damage)
+			target.set_current_health(max(0, target.current_health - damage))
 			print(current_battler.resource.name, " attacked ", target.resource.name, " for ", damage)
 		"skill":
-			print(current_battler.resource.name, " used skill")
+			print(current_battler.resource.name, " used ", _pending_options[0]["name"])
 		"item":
 			print(current_battler.resource.name, " used item")
 
@@ -208,3 +212,23 @@ func _on_enemy_hovered(target: EnemySlot):
 	
 func _on_enemy_unhovered(target: EnemySlot):
 	target.unhover()
+
+func disable_all_targeting():
+	TargetingManager.disable_targeting()
+	party_panel.disable_targeting()
+
+func enable_all_targeting():
+	TargetingManager.enable_targeting()
+	party_panel.enable_targeting()
+
+func enable_enemy_targeting():
+	TargetingManager.enable_targeting()
+
+func disable_enemy_targeting():
+	TargetingManager.disable_targeting()
+
+func enable_ally_targeting():
+	party_panel.enable_targeting()
+	
+func disable_ally_targeting():
+	party_panel.disable_targeting()

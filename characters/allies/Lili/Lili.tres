@@ -4,6 +4,7 @@
 
 [resource]
 script = ExtResource("1_tuon3")
+gender = 1
 id = 1
 name = "Lili"
 attack_power = 8

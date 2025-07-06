@@ -117,3 +117,5 @@ text = "/"
 layout_mode = 2
 theme_override_font_sizes/font_size = 12
 text = "80"
+
+[connection signal="gui_input" from="." to="." method="_on_gui_input"]

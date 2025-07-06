@@ -42,3 +42,13 @@ func _on_member_added(character: CharacterInstance, row_index: int, slot_index: 
 			#remove_child(child)
 			#child.queue_free()
 			#break
+
+func disable_targeting():
+	for row in formation:
+		for slot in row:
+			slot.disable_slot_targeting()
+
+func enable_targeting():
+	for row in formation:
+		for slot in row:
+			slot.enable_slot_targeting()

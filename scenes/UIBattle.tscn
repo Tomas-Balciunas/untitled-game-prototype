@@ -1,9 +1,15 @@
-[gd_scene load_steps=3 format=3 uid="uid://calltc1gumdi2"]
+[gd_scene load_steps=5 format=3 uid="uid://calltc1gumdi2"]
 
 [ext_resource type="Script" uid="uid://b4kodgy0qo0cl" path="res://scripts/UIBattle.gd" id="1_a268n"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_a268n"]
 bg_color = Color(0, 0.365644, 0.306951, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jaicp"]
+bg_color = Color(0, 0.559558, 0.459418, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3bujy"]
+bg_color = Color(0, 0.508119, 0.47713, 1)
 
 [node name="BattleUI" type="Control"]
 layout_mode = 3
@@ -32,35 +38,41 @@ text = "Attack"
 
 [node name="DefendButton" type="Button" parent="VBoxContainer"]
 layout_mode = 2
+theme_override_styles/hover = SubResource("StyleBoxFlat_jaicp")
 text = "Defend"
 
-[node name="SkillButton" type="OptionButton" parent="VBoxContainer"]
+[node name="SkillButton" type="Button" parent="VBoxContainer"]
 layout_mode = 2
-fit_to_longest_item = false
-allow_reselect = true
-item_count = 2
-popup/item_0/text = "skll 1"
-popup/item_0/id = 0
-popup/item_1/text = "skill 2"
-popup/item_1/id = 1
+text = "Skill"
 
-[node name="ItemButton" type="OptionButton" parent="VBoxContainer"]
+[node name="ItemButton" type="Button" parent="VBoxContainer"]
 layout_mode = 2
-fit_to_longest_item = false
-allow_reselect = true
-item_count = 2
-popup/item_0/text = "item 1"
-popup/item_0/id = 0
-popup/item_1/text = "item 2"
-popup/item_1/id = 1
+theme_override_styles/hover = SubResource("StyleBoxFlat_3bujy")
+text = "Item"
 
 [node name="FleeButton" type="Button" parent="VBoxContainer"]
 layout_mode = 2
 text = "Flee"
 
+[node name="SkillPopup" type="PopupPanel" parent="."]
+visible = true
+
+[node name="ScrollContainer" type="ScrollContainer" parent="SkillPopup"]
+anchors_preset = -1
+anchor_left = 0.04
+anchor_top = 1.0
+anchor_right = 1.04
+anchor_bottom = 1.99
+offset_top = -96.0
+offset_right = -8.00001
+offset_bottom = -103.0
+
+[node name="SkillListContainer" type="VBoxContainer" parent="SkillPopup/ScrollContainer"]
+layout_mode = 2
+
 [connection signal="pressed" from="VBoxContainer/AttackButton" to="." method="_on_attack_button_pressed"]
 [connection signal="toggled" from="VBoxContainer/AttackButton" to="." method="_on_attack_button_toggled"]
 [connection signal="pressed" from="VBoxContainer/DefendButton" to="." method="_on_defend_button_pressed"]
-[connection signal="item_selected" from="VBoxContainer/SkillButton" to="." method="_on_skill_button_item_selected"]
-[connection signal="item_selected" from="VBoxContainer/ItemButton" to="." method="_on_item_button_item_selected"]
+[connection signal="pressed" from="VBoxContainer/SkillButton" to="." method="_on_skill_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/ItemButton" to="." method="_on_item_button_pressed"]
 [connection signal="pressed" from="VBoxContainer/FleeButton" to="." method="_on_flee_button_pressed"]
