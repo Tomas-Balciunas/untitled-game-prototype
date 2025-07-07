@@ -17,3 +17,4 @@ enum Gender {MALE, FEMALE}
 @export var experience: int = 0
 @export var slot_width: int = 1
 @export var prefers_front_row: bool = true
+@export var default_skills: Array[Skill] = []

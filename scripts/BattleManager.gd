@@ -14,9 +14,11 @@ const TURN_THRESHOLD = 1000
 enum BattleState {
 	IDLE,
 	PROCESS_TURNS,
+	TURN_START,
 	PLAYER_TURN,
 	ENEMY_TURN,
 	ANIMATING,
+	TURN_END,
 	CHECK_END,
 	WIN,
 	LOSE
@@ -31,6 +33,7 @@ var turn_queue: Array[CharacterInstance] = []
 var enemy_slots: Array[Node] = []
 var _pending_action: String = ""
 var _pending_options: Array = []
+var _pending_target: CharacterInstance = null
 var current_battler: CharacterInstance = null
 
 func _ready():
@@ -63,12 +66,16 @@ func _process(_delta):
 	match current_state:
 		BattleState.PROCESS_TURNS:
 			_process_turn_queue()
+		BattleState.TURN_START:
+			_on_turn_start()
 		BattleState.PLAYER_TURN:
 			pass
 		BattleState.ENEMY_TURN:
 			_process_enemy_turn()
 		BattleState.ANIMATING:
 			pass
+		BattleState.TURN_END:
+			_on_turn_end()
 		BattleState.CHECK_END:
 			_check_end_conditions()
 		BattleState.WIN:
@@ -89,26 +96,31 @@ func _process_turn_queue():
 				turn_queue.append(b)
 
 	if not turn_queue.is_empty():
-		var next_battler = turn_queue.pop_front()
-		next_battler.turn_meter -= TURN_THRESHOLD
-		_start_turn(next_battler)
+		current_battler = turn_queue.pop_front()
+		current_battler.turn_meter -= TURN_THRESHOLD
+		current_state = BattleState.TURN_START
 
-func _start_turn(battler: CharacterInstance):
+func _on_turn_start():
 	battle_ui._reset_all_button_highlights()
-	if battler.current_health <= 0:
+	if current_battler.current_health <= 0:
 		return
-	
+
+	current_battler.process_effects("on_turn_start")
 	disable_all_targeting()
-	current_battler = battler
 		
-	if battler in party:
+	if current_battler in party:
 		current_state = BattleState.PLAYER_TURN
-		print("Player turn for:", battler.resource.name)
+		print("Player turn for:", current_battler.resource.name)
 		battle_ui.show()
 		_on_player_action_selected("attack", [])
 	else:
 		battle_ui.hide()
 		current_state = BattleState.ENEMY_TURN
+
+func _on_turn_end():
+	current_battler.process_effects("on_turn_end")
+	current_battler = null
+	current_state = BattleState.CHECK_END
 		
 func _on_player_action_selected(action: String, options: Array):
 	_pending_action = action
@@ -136,9 +148,16 @@ func _on_player_action_selected(action: String, options: Array):
 
 func _on_target_selected(target_slot):
 	disable_all_targeting()
-	var target = target_slot.character_instance
-	_perform_player_action(_pending_action, target)
-	current_state = BattleState.CHECK_END
+	_pending_target = target_slot.character_instance
+	_resolve_player_action()
+
+func _resolve_player_action():
+	current_battler.process_effects("on_action", {
+		"action":_pending_action,
+		"target":_pending_target
+	})
+	_perform_player_action(_pending_action, _pending_target)
+	current_state = BattleState.TURN_END
 
 func _perform_player_action(action: String, target: CharacterInstance):
 	match action:
@@ -168,8 +187,7 @@ func _process_enemy_turn():
 	print(current_battler.resource.name, " attacked ", target.resource.name, " for ", damage)
 	target.set_current_health(max(0, target.current_health - damage))
 
-	current_battler = null
-	current_state = BattleState.CHECK_END
+	current_state = BattleState.TURN_END
 
 func _handle_defend():
 	print(current_battler.resource.name, " is defending!")

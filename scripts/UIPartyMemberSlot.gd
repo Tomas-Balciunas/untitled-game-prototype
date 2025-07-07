@@ -21,7 +21,7 @@ func hide_info():
 	var cont = $MarginContainer
 	cont.visible = false
 
-func _on_health_changed(new_health: int) -> void:
+func _on_health_changed(old_health: int, new_health: int) -> void:
 	$MarginContainer/GridContainer/LabelValueContainer/Values/HPContainer/CurrentHP.text = str(new_health)
 
 

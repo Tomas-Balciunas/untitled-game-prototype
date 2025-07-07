@@ -1,9 +1,12 @@
-[gd_resource type="Resource" script_class="CharacterResource" load_steps=2 format=3 uid="uid://bbddeexd37t5i"]
+[gd_resource type="Resource" script_class="CharacterResource" load_steps=4 format=3 uid="uid://bbddeexd37t5i"]
 
 [ext_resource type="Script" uid="uid://bwn4gpkaijqsg" path="res://scripts/CharacterResource.gd" id="1_s17id"]
+[ext_resource type="Script" uid="uid://dq4acpkde276p" path="res://skills/Skill.gd" id="1_yod8j"]
+[ext_resource type="Resource" uid="uid://cfunb7l71n1np" path="res://skills/precision_strike.tres" id="2_7so24"]
 
 [resource]
 script = ExtResource("1_s17id")
+gender = 0
 id = 2
 name = "Skelly"
 attack_power = 10
@@ -13,4 +16,5 @@ speed = 12
 experience = 0
 slot_width = 1
 prefers_front_row = true
+default_skills = Array[ExtResource("1_yod8j")]([ExtResource("2_7so24")])
 metadata/_custom_type_script = "uid://bwn4gpkaijqsg"
