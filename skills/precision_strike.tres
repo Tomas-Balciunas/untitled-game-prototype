@@ -1,5 +1,6 @@
-[gd_resource type="Resource" script_class="Skill" load_steps=2 format=3 uid="uid://cfunb7l71n1np"]
+[gd_resource type="Resource" script_class="Skill" load_steps=3 format=3 uid="uid://cfunb7l71n1np"]
 
+[ext_resource type="Script" uid="uid://bp0biy0knxw2o" path="res://effect/Effect.gd" id="1_kolkh"]
 [ext_resource type="Script" uid="uid://dq4acpkde276p" path="res://skills/Skill.gd" id="1_sdnn6"]
 
 [resource]
@@ -9,4 +10,6 @@ description = "Ignore defense and deal 15 damage"
 mp_cost = 0
 sp_cost = 5
 damage = 15
+effects = Array[ExtResource("1_kolkh")]([null])
+damage_type = 2
 metadata/_custom_type_script = "uid://dq4acpkde276p"

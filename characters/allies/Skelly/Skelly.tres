@@ -17,4 +17,5 @@ experience = 0
 slot_width = 1
 prefers_front_row = true
 default_skills = Array[ExtResource("1_yod8j")]([ExtResource("2_7so24")])
+default_damage_type = 1
 metadata/_custom_type_script = "uid://bwn4gpkaijqsg"

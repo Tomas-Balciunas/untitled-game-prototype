@@ -2,6 +2,8 @@ extends Node
 
 class_name BattleManager
 
+signal current_battler_change(battler: CharacterInstance)
+
 const TURN_THRESHOLD = 1000
 
 @onready var dungeon = get_tree().get_root().get_node("Main/Dungeon")
@@ -37,6 +39,7 @@ var _pending_target: CharacterInstance = null
 var current_battler: CharacterInstance = null
 
 func _ready():
+	$BattleUI.setup(self)
 	TargetingManager.configure_for_battle(camera)
 	TargetingManager.connect("target_clicked", Callable(self, "_on_target_selected"))
 	TargetingManager.connect("target_hovered", Callable(self, "_on_enemy_hovered"))
@@ -110,6 +113,7 @@ func _on_turn_start():
 		
 	if current_battler in party:
 		current_state = BattleState.PLAYER_TURN
+		emit_signal("current_battler_change", current_battler)
 		print("Player turn for:", current_battler.resource.name)
 		battle_ui.show()
 		_on_player_action_selected("attack", [])
@@ -152,21 +156,39 @@ func _on_target_selected(target_slot):
 	_resolve_player_action()
 
 func _resolve_player_action():
-	current_battler.process_effects("on_action", {
-		"action":_pending_action,
-		"target":_pending_target
-	})
 	_perform_player_action(_pending_action, _pending_target)
 	current_state = BattleState.TURN_END
 
 func _perform_player_action(action: String, target: CharacterInstance):
 	match action:
 		"attack":
-			var damage = current_battler.attack_power
-			target.set_current_health(max(0, target.current_health - damage))
-			print(current_battler.resource.name, " attacked ", target.resource.name, " for ", damage)
+			var atk = AttackAction.new()
+			atk.attacker = current_battler
+			atk.target   = target
+			var result    = DamageResolver.apply_attack(atk)
+			print("%s hits %s for %d %s" % [
+				result.attacker.resource.name,
+				result.defender.resource.name,
+				result.final_value,
+				DamageTypes.to_str(result.type)
+			])
 		"skill":
-			print(current_battler.resource.name, " used ", _pending_options[0]["name"])
+			var skill = SkillAction.new()
+			skill.attacker   = current_battler
+			skill.target     = target
+			skill.skill = _pending_options[0]
+			var result = DamageResolver.apply_skill(skill)
+
+			print("%s → %s : %d %s" % [
+				result.attacker.resource.name,
+				result.defender.resource.name,
+				result.final_value,
+				result.type
+			])
+			print(
+		"%s hits %s for %d %s damage"
+		% [current_battler.resource.name, target.resource.name, result.final_value, result.type]
+	)
 		"item":
 			print(current_battler.resource.name, " used item")
 

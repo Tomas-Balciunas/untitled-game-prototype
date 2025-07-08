@@ -19,6 +19,7 @@ var status_effects: Array = []
 var turn_meter: int = 0
 var learnt_skills: Array[Skill] = []
 var effects: Array[Effect] = []
+var damage_type: DamageTypes.Type
 
 func _init(res: CharacterResource) -> void:
 	resource = res
@@ -30,6 +31,7 @@ func _init(res: CharacterResource) -> void:
 	max_mana = res.mana_points
 	speed = res.speed
 	current_experience = res.experience
+	damage_type = res.default_damage_type
 	
 	for skill in resource.default_skills:
 		learnt_skills.append(skill)
@@ -47,18 +49,15 @@ func set_current_health(new_health: int) -> void:
 
 func apply_effect(effect: Effect) -> void:
 	effects.append(effect)
-	effect.on_apply()
-
-func process_effects(trigger: String, event_data: Dictionary = {}) -> void:
-	if effects.size() < 1:
-		return
+	if effect.has_method("on_apply"):
+		effect.on_apply(self)
+		
+func remove_effect(effect: Resource) -> void:
+	effects.erase(effect)
+	if effects.size() > 0 and effect.has_method("on_expire"):
+		effect.on_expire(self)
+		
+func process_effects(trigger: String, data = null) -> void:
 	for e in effects.duplicate():
-		match trigger:
-			"on_turn_start":
-				e.on_turn_start()
-			"on_action":
-				e.on_action(event_data)
-			"on_damage_received":
-				e.on_damage_received(event_data)
-			"on_turn_end":
-				e.on_turn_end()
+		if e.has_method("on_trigger"):
+			e.on_trigger(trigger, data)

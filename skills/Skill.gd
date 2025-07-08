@@ -7,7 +7,8 @@ class_name Skill
 @export var mp_cost: int = 0
 @export var sp_cost: int = 0
 @export var damage: int = 0
-
+@export var effects: Array[Effect]
+@export var damage_type: DamageTypes.Type
 
 #func execute(user: CharacterInstance, targets: Array):
 	#var runner = effect_scene.instantiate()
