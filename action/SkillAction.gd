@@ -2,7 +2,7 @@ extends Resource
 class_name SkillAction
 
 var attacker: CharacterInstance
-var target: CharacterInstance
+var defender: CharacterInstance
 var skill: Skill
 var type: DamageTypes.Type
 var base_value: int = 0

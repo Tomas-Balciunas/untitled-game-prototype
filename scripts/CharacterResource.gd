@@ -18,4 +18,5 @@ enum Gender {MALE, FEMALE}
 @export var slot_width: int = 1
 @export var prefers_front_row: bool = true
 @export var default_skills: Array[Skill] = []
+@export var default_effects: Array[Effect] = []
 @export var default_damage_type: DamageTypes.Type

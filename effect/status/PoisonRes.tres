@@ -1,0 +1,8 @@
+[gd_resource type="Resource" script_class="PoisonRes" load_steps=2 format=3 uid="uid://badgfln40mudj"]
+
+[ext_resource type="Script" uid="uid://e6kqxurcakcn" path="res://effect/status/PoisonRes.gd" id="1_wunrv"]
+
+[resource]
+script = ExtResource("1_wunrv")
+resistance = 0.2
+metadata/_custom_type_script = "uid://e6kqxurcakcn"

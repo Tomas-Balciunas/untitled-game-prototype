@@ -1,5 +1,6 @@
-[gd_resource type="Resource" script_class="CharacterResource" load_steps=2 format=3 uid="uid://dh8kad7brt53b"]
+[gd_resource type="Resource" script_class="CharacterResource" load_steps=3 format=3 uid="uid://dh8kad7brt53b"]
 
+[ext_resource type="Script" uid="uid://dq4acpkde276p" path="res://skills/Skill.gd" id="1_5gn58"]
 [ext_resource type="Script" uid="uid://bwn4gpkaijqsg" path="res://scripts/CharacterResource.gd" id="1_tuon3"]
 
 [resource]
@@ -8,10 +9,12 @@ gender = 1
 id = 1
 name = "Lili"
 attack_power = 8
-health_points = 20
+health_points = 200
 mana_points = 10
 speed = 11
 experience = 0
 slot_width = 1
 prefers_front_row = false
+default_skills = Array[ExtResource("1_5gn58")]([])
+default_damage_type = 0
 metadata/_custom_type_script = "uid://bwn4gpkaijqsg"

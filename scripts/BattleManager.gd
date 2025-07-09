@@ -122,6 +122,7 @@ func _on_turn_start():
 		current_state = BattleState.ENEMY_TURN
 
 func _on_turn_end():
+	#print("%s effects: %s" % [current_battler.resource.name, current_battler.effects])
 	current_battler.process_effects("on_turn_end")
 	current_battler = null
 	current_state = BattleState.CHECK_END
@@ -164,26 +165,28 @@ func _perform_player_action(action: String, target: CharacterInstance):
 		"attack":
 			var atk = AttackAction.new()
 			atk.attacker = current_battler
-			atk.target   = target
+			atk.defender   = target
 			var result    = DamageResolver.apply_attack(atk)
-			print("%s hits %s for %d %s" % [
-				result.attacker.resource.name,
-				result.defender.resource.name,
-				result.final_value,
-				DamageTypes.to_str(result.type)
-			])
+			#print("%s hits %s for %d %s" % [
+				#result.attacker.resource.name,
+				#result.defender.resource.name,
+				#result.final_value,
+				#DamageTypes.to_str(result.type)
+			#])
 		"skill":
 			var skill = SkillAction.new()
 			skill.attacker   = current_battler
-			skill.target     = target
+			skill.defender     = target
 			skill.skill = _pending_options[0]
+			skill.effects = _pending_options[0].effects
+			skill.base_value = _pending_options[0].damage
 			var result = DamageResolver.apply_skill(skill)
 
 			print("%s → %s : %d %s" % [
 				result.attacker.resource.name,
 				result.defender.resource.name,
 				result.final_value,
-				result.type
+				DamageTypes.to_str(result.type)
 			])
 			print(
 		"%s hits %s for %d %s damage"
@@ -203,12 +206,15 @@ func _process_enemy_turn():
 		return
 
 	var target = valid_targets.pick_random()
-	var damage = 5
 	current_state = BattleState.ANIMATING
 	await get_tree().create_timer(0.5).timeout
-	print(current_battler.resource.name, " attacked ", target.resource.name, " for ", damage)
-	target.set_current_health(max(0, target.current_health - damage))
 
+	var atk = AttackAction.new()
+	atk.attacker = current_battler
+	atk.defender   = target
+	var result    = DamageResolver.apply_attack(atk)
+	print(current_battler.resource.name, " attacked ", target.resource.name, " for ", result.final_value)
+	
 	current_state = BattleState.TURN_END
 
 func _handle_defend():

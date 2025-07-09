@@ -35,6 +35,9 @@ func _init(res: CharacterResource) -> void:
 	
 	for skill in resource.default_skills:
 		learnt_skills.append(skill)
+	
+	for effect in resource.default_effects:
+		effects.append(effect)
 
 func set_current_health(new_health: int) -> void:
 	var old = current_health
@@ -48,16 +51,16 @@ func set_current_health(new_health: int) -> void:
 		emit_signal("died")
 
 func apply_effect(effect: Effect) -> void:
+	effect.on_apply(self)
 	effects.append(effect)
-	if effect.has_method("on_apply"):
-		effect.on_apply(self)
 		
 func remove_effect(effect: Resource) -> void:
 	effects.erase(effect)
 	if effects.size() > 0 and effect.has_method("on_expire"):
 		effect.on_expire(self)
 		
-func process_effects(trigger: String, data = null) -> void:
-	for e in effects.duplicate():
-		if e.has_method("on_trigger"):
-			e.on_trigger(trigger, data)
+func process_effects(trigger: String, data: DamageContext = null) -> void:
+	for effect in effects.duplicate():
+		print("[Effect] Triggering '%s' on %s with %s" %
+			[trigger, resource.name, effect])
+		effect.on_trigger(trigger, data)
