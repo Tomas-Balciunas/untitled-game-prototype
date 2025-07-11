@@ -166,13 +166,8 @@ func _perform_player_action(action: String, target: CharacterInstance):
 			var atk = AttackAction.new()
 			atk.attacker = current_battler
 			atk.defender   = target
+			atk.base_value = current_battler.attack_power
 			var result    = DamageResolver.apply_attack(atk)
-			#print("%s hits %s for %d %s" % [
-				#result.attacker.resource.name,
-				#result.defender.resource.name,
-				#result.final_value,
-				#DamageTypes.to_str(result.type)
-			#])
 		"skill":
 			var skill = SkillAction.new()
 			skill.attacker   = current_battler
@@ -181,17 +176,6 @@ func _perform_player_action(action: String, target: CharacterInstance):
 			skill.effects = _pending_options[0].effects
 			skill.base_value = _pending_options[0].damage
 			var result = DamageResolver.apply_skill(skill)
-
-			print("%s → %s : %d %s" % [
-				result.attacker.resource.name,
-				result.defender.resource.name,
-				result.final_value,
-				DamageTypes.to_str(result.type)
-			])
-			print(
-		"%s hits %s for %d %s damage"
-		% [current_battler.resource.name, target.resource.name, result.final_value, result.type]
-	)
 		"item":
 			print(current_battler.resource.name, " used item")
 
@@ -212,8 +196,8 @@ func _process_enemy_turn():
 	var atk = AttackAction.new()
 	atk.attacker = current_battler
 	atk.defender   = target
+	atk.base_value = current_battler.attack_power
 	var result    = DamageResolver.apply_attack(atk)
-	print(current_battler.resource.name, " attacked ", target.resource.name, " for ", result.final_value)
 	
 	current_state = BattleState.TURN_END
 

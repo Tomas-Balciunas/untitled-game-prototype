@@ -51,6 +51,9 @@ func set_current_health(new_health: int) -> void:
 		emit_signal("died")
 
 func apply_effect(effect: Effect) -> void:
+	for passive in effects:
+		passive.on_trigger("on_apply_effect", effect)
+			
 	effect.on_apply(self)
 	effects.append(effect)
 		

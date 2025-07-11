@@ -32,16 +32,15 @@ func _apply_core(attacker: CharacterInstance, defender: CharacterInstance, damag
 	ctx.tags        = extra_effects
 
 	var damage_type_str = DamageTypes.to_str(ctx.type)
-	print("Initial %s damage: %d" % [DamageTypes.to_str(ctx.type), ctx.final_value])
 	
 	# 1) Attacker’s passives & buffs
-	attacker.process_effects("on_calculate_" + damage_type_str, ctx)
+	attacker.process_effects("on_pre_hit", ctx)
 	#print("After attacker effects: %d" % ctx.final_value)
 	
 	# 2) Skill‑specific effects (e.g. defense ignore)
 	for e in extra_effects:
 		if e.has_method("on_trigger"):
-			e.on_trigger("on_calculate_" + damage_type_str, ctx)
+			e.on_trigger("on_skill_pre_hit", ctx)
 	#print("After attacker skill: %d" % ctx.final_value)
 	
 	# 3) Defender’s passives & defenses

@@ -1,7 +1,18 @@
 extends Resource
 class_name Effect
-@export_category("Effect")
 
+enum EffectCategory {
+	PASSIVE,
+	BUFF,
+	DEBUFF,
+	SKILL,
+	STATUS,
+	OTHER
+}
+
+@export var name: String = "Unnamed Effect"
+@export var category: EffectCategory = EffectCategory.OTHER
+@export var duration_turns: int = -1
 var owner: CharacterInstance = null
 
 func on_apply(owner: CharacterInstance) -> void:

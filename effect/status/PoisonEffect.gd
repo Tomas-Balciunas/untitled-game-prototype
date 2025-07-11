@@ -2,7 +2,6 @@ extends Effect
 class_name PoisonEffect
 
 @export var damage_per_turn: int = 5
-@export var duration_turns: int = 3
 
 var _remaining := 0
 var _source: CharacterInstance
