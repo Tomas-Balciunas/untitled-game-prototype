@@ -25,6 +25,14 @@ PartyManager="*res://scripts/PartyManager.gd"
 EncounterManager="*res://scripts/EncounterManager.gd"
 TargetingManager="*res://scripts/TargetingManager.gd"
 DamageResolver="*res://scripts/DamageResolver.gd"
+EventManager="*res://events/EventManager.gd"
+EventRegistry="*res://events/EventRegistry.gd"
+EventFlags="*res://events/EventFlags.gd"
+
+[display]
+
+window/size/viewport_width=1600
+window/size/viewport_height=900
 
 [editor]
 

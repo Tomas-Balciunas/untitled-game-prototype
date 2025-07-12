@@ -184,6 +184,7 @@ func _process_enemy_turn():
 	if current_battler == null:
 		current_state = BattleState.CHECK_END
 		return
+	print("%s HP %s/%s" % [current_battler.resource.name, current_battler.current_health, current_battler.resource.health_points])
 
 	var valid_targets = party.filter(func(p): return p.current_health > 0)
 	if valid_targets.is_empty():

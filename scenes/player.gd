@@ -93,6 +93,9 @@ func move_player(direction: String):
 	emit_signal("player_moved", {
 		"grid_position": grid_pos
 	})
+	
+	if EventManager.is_event(target_tile_data):
+		EventManager.process_event(target_tile_data["event"])
 
 	if MapManager.is_transition(target_tile_data):
 		emit_signal("map_transition", target_tile_data["transition"])

@@ -1,6 +1,6 @@
-[gd_resource type="Resource" script_class="MapData" load_steps=2 format=3 uid="uid://dlkg8rpi2v570"]
+[gd_resource type="Resource" script_class="MapData" load_steps=2 format=3]
 
-[ext_resource type="Script" uid="uid://i6llluly1w8" path="res://scripts/MapData.gd" id="1_c5v37"]
+[ext_resource type="Script" path="res://scripts/MapData.gd" id="1_c5v37"]
 
 [resource]
 script = ExtResource("1_c5v37")
@@ -254,7 +254,7 @@ data = [[{
 }, {
 "arena": null,
 "encounter": null,
-"event": null,
+"event": "test_event_000",
 "style": "default",
 "transition": null,
 "type": "floor"

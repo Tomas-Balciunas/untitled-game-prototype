@@ -4,40 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="bf5b9448-0040-49cd-b5e8-60429c893263" name="Changes" comment="huh">
-      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_11_07_2025,_22_47_[Changes]/1744622629065540.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_11_07_2025,_22_47_[Changes]/7fe5e10d720f9206f799410f554c0398fd6a2fd7.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_11_07_2025,_22_47_[Changes]/DQG5i7nW0AAVxxU.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_11_07_2025,_22_47_[Changes]/GettyImages-2166462891_WEB.webp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_11_07_2025,_22_47_[Changes]/balmer-andromalius-57x88-alpha.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_11_07_2025,_22_47_[Changes]/floor_stone.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_11_07_2025,_22_47_[Changes]/ghost.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_11_07_2025,_22_47_[Changes]/night sky.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_11_07_2025,_22_47_[Changes]/shelved.patch" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_11_07_2025__22_47__Changes_.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_rebase_[Changes]/shelved.patch" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_rebase__Changes_.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/wizardry-prototype-master.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/action/AttackAction.gd" beforeDir="false" afterPath="$PROJECT_DIR$/action/AttackAction.gd" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/action/SkillAction.gd" beforeDir="false" afterPath="$PROJECT_DIR$/action/SkillAction.gd" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/characters/allies/Skelly/Skelly.tres" beforeDir="false" afterPath="$PROJECT_DIR$/characters/allies/Skelly/Skelly.tres" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/characters/foes/Skeltal/Skeltal.tres" beforeDir="false" afterPath="$PROJECT_DIR$/characters/foes/Skeltal/Skeltal.tres" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/effect/status/PoisonEffect.gd" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/effect/status/PoisonEffect.gd.uid" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/effect/status/PoisonEffectRes.tres" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/effect/status/PoisonRes.gd" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/effect/status/PoisonRes.gd.uid" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/effect/status/PoisonRes.tres" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project.godot" beforeDir="false" afterPath="$PROJECT_DIR$/project.godot" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/BattleManager.gd" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/BattleManager.gd" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/CharacterInstance.gd" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/CharacterInstance.gd" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/DamageResolver.gd" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/DamageResolver.gd" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/EffectTriggers.gd" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/EffectTriggers.gd" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/skills/Skill.gd" beforeDir="false" afterPath="$PROJECT_DIR$/skills/Skill.gd" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/skills/precision_strike.tres" beforeDir="false" />
-    </list>
+    <list default="true" id="bf5b9448-0040-49cd-b5e8-60429c893263" name="Changes" comment="some cleanup" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -108,7 +75,7 @@
       <workItem from="1752263161564" duration="198000" />
       <workItem from="1752263684965" duration="410000" />
       <workItem from="1752264158101" duration="6000" />
-      <workItem from="1752314523561" duration="322000" />
+      <workItem from="1752314523561" duration="486000" />
     </task>
     <task id="LOCAL-00001" summary="as">
       <option name="closed" value="true" />
@@ -126,7 +93,15 @@
       <option name="project" value="LOCAL" />
       <updated>1752264090070</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="some cleanup">
+      <option name="closed" value="true" />
+      <created>1752314996220</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1752314996220</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -158,6 +133,7 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="as" />
     <MESSAGE value="huh" />
-    <option name="LAST_COMMIT_MESSAGE" value="huh" />
+    <MESSAGE value="some cleanup" />
+    <option name="LAST_COMMIT_MESSAGE" value="some cleanup" />
   </component>
 </project>

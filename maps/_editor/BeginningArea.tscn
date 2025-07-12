@@ -38,6 +38,8 @@ texture = ExtResource("3_rywq5")
 texture_region_size = Vector2i(200, 200)
 0:0/0 = 0
 0:0/0/custom_data_3 = "crypt_00"
+1:1/0 = 0
+1:1/0/custom_data_1 = "test_event_000"
 
 [sub_resource type="TileSet" id="TileSet_cnf7p"]
 tile_size = Vector2i(200, 200)
@@ -59,7 +61,7 @@ tile_map_data = PackedByteArray("AAAAAAAAAAAGAAAAAAABAAAAAAAGAAAAAAACAAAAAAAGAAA
 tile_set = SubResource("TileSet_53a4w")
 
 [node name="EventLayer" type="TileMapLayer" parent="."]
-tile_map_data = PackedByteArray("AAACAAEAAAAAAAAAAAD6/wAAAAAAAAAAAAADAAIAAQAAAAAAAAA=")
+tile_map_data = PackedByteArray("AAACAAEAAAAAAAAAAAD6/wAAAAAAAAAAAAADAAIAAQAAAAAAAAD//wIAAQABAAEAAAA=")
 tile_set = SubResource("TileSet_cnf7p")
 
 [node name="Converter" type="Node" parent="." node_paths=PackedStringArray("map_layer", "event_layer")]

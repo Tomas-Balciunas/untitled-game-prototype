@@ -10,11 +10,9 @@ const TILE_SIZE = 2.0
 func _ready():
 	player = get_tree().get_root().get_node("Main/Dungeon/Player")
 	
-	
 	EncounterManager.connect("encounter_started", Callable(self, "_on_encounter_started"))
 	EncounterManager.connect("encounter_ended", Callable(self, "_on_encounter_ended"))
 	player.connect("player_moved", Callable(self, "_on_player_moved"))
-	player.connect("start_encounter", Callable(EncounterManager, "start_encounter"))
 	player.connect("map_transition", Callable(self, "transition_to_map"))
 	
 	transition_rect.modulate.a = 0.0
