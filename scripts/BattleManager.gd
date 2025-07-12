@@ -167,6 +167,7 @@ func _perform_player_action(action: String, target: CharacterInstance):
 			atk.attacker = current_battler
 			atk.defender   = target
 			atk.base_value = current_battler.attack_power
+			atk.type = current_battler.damage_type
 			var result    = DamageResolver.apply_attack(atk)
 		"skill":
 			var skill = SkillAction.new()
@@ -174,7 +175,7 @@ func _perform_player_action(action: String, target: CharacterInstance):
 			skill.defender     = target
 			skill.skill = _pending_options[0]
 			skill.effects = _pending_options[0].effects
-			skill.base_value = _pending_options[0].damage
+			skill.modifier = _pending_options[0].modifier
 			var result = DamageResolver.apply_skill(skill)
 		"item":
 			print(current_battler.resource.name, " used item")

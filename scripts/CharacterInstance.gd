@@ -8,7 +8,7 @@ signal healed(amount: int)
 signal died()
 
 var resource: CharacterResource
-var attack_power: int
+var attack_power: float
 var current_health: int
 var max_health: int
 var current_mana: int
@@ -50,20 +50,18 @@ func set_current_health(new_health: int) -> void:
 	if current_health == 0 and old > 0:
 		emit_signal("died")
 
-func apply_effect(effect: Effect) -> void:
-	for passive in effects:
-		passive.on_trigger("on_apply_effect", effect)
+func apply_effect(effect: Effect, ctx: DamageContext) -> void:
+	for passive in effects.duplicate():
+		passive.on_trigger(EffectTriggers.ON_APPLY_EFFECT, ctx)
 			
 	effect.on_apply(self)
 	effects.append(effect)
 		
 func remove_effect(effect: Resource) -> void:
 	effects.erase(effect)
-	if effects.size() > 0 and effect.has_method("on_expire"):
+	if effects.size() > 0 and effect.has_method(EffectTriggers.ON_EXPIRE):
 		effect.on_expire(self)
 		
-func process_effects(trigger: String, data: DamageContext = null) -> void:
+func process_effects(trigger: String, ctx: DamageContext = null) -> void:
 	for effect in effects.duplicate():
-		print("[Effect] Triggering '%s' on %s with %s" %
-			[trigger, resource.name, effect])
-		effect.on_trigger(trigger, data)
+		effect.on_trigger(trigger, ctx)

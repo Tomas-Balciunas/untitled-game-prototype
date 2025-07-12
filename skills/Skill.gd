@@ -6,7 +6,7 @@ class_name Skill
 #@export var icon: Texture2D
 @export var mp_cost: int = 0
 @export var sp_cost: int = 0
-@export var damage: int = 0
+@export var modifier: float = 0
 @export var effects: Array[Effect] = []
 @export var damage_type: DamageTypes.Type
 

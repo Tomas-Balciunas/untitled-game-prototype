@@ -1,0 +1,24 @@
+Index: scripts/EffectTriggers.gd.uid
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/scripts/EffectTriggers.gd.uid b/scripts/EffectTriggers.gd.uid
+new file mode 100644
+--- /dev/null	(date 1752263284598)
++++ b/scripts/EffectTriggers.gd.uid	(date 1752263284598)
+@@ -0,0 +1,1 @@
++uid://cho5kk41antlc
+Index: scripts/EffectTriggers.gd
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/scripts/EffectTriggers.gd b/scripts/EffectTriggers.gd
+new file mode 100644
+--- /dev/null	(date 1752263284596)
++++ b/scripts/EffectTriggers.gd	(date 1752263284596)
+@@ -0,0 +1,3 @@
++extends Node
++
++const ON_TURN_END := "on_turn_end"

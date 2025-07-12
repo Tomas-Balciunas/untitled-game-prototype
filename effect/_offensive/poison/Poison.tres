@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="PoisonEffect" load_steps=2 format=3 uid="uid://xanqgonu2nje"]
 
-[ext_resource type="Script" uid="uid://cuf03a6q4u1c6" path="res://effect/status/PoisonEffect.gd" id="1_icfxe"]
+[ext_resource type="Script" uid="uid://cuf03a6q4u1c6" path="res://effect/_offensive/poison/Poison.gd" id="1_icfxe"]
 
 [resource]
 script = ExtResource("1_icfxe")

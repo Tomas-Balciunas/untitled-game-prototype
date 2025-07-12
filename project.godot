@@ -16,6 +16,7 @@ config/features=PackedStringArray("4.4", "Forward Plus")
 
 [autoload]
 
+EffectTriggers="*res://scripts/EffectTriggers.gd"
 MapInstance="*res://scripts/MapInstance.gd"
 MapManager="*res://scripts/MapManager.gd"
 TileFactory="*res://scripts/TileFactory.gd"

@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://bwn4gpkaijqsg" path="res://scripts/CharacterResource.gd" id="1_s17id"]
 [ext_resource type="Script" uid="uid://dq4acpkde276p" path="res://skills/Skill.gd" id="1_yod8j"]
-[ext_resource type="Resource" uid="uid://cfunb7l71n1np" path="res://skills/precision_strike.tres" id="2_7so24"]
+[ext_resource type="Resource" uid="uid://cfunb7l71n1np" path="res://skills/_offensive/poison_strike.tres" id="2_7so24"]
 
 [resource]
 script = ExtResource("1_s17id")

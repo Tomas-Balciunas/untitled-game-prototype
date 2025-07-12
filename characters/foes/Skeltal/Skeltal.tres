@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://bp0biy0knxw2o" path="res://effect/Effect.gd" id="1_73qgh"]
 [ext_resource type="Script" uid="uid://dq4acpkde276p" path="res://skills/Skill.gd" id="1_cc3t0"]
 [ext_resource type="Script" uid="uid://bwn4gpkaijqsg" path="res://scripts/CharacterResource.gd" id="1_km1me"]
-[ext_resource type="Resource" uid="uid://badgfln40mudj" path="res://effect/status/PoisonRes.tres" id="2_d15h4"]
+[ext_resource type="Resource" uid="uid://badgfln40mudj" path="res://effect/_passive/resistance poison/PoisonRes.tres" id="2_d15h4"]
 
 [resource]
 script = ExtResource("1_km1me")
