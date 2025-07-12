@@ -1,5 +1,7 @@
 extends Node
 
+signal map_transition_finish()
+
 var map_id: String = ""
 var current_map_name: String = ""
 var theme: String = ""
@@ -15,9 +17,6 @@ func hydrate_from_resource(map_resource):
 	theme = map_resource.theme
 	map_data = map_resource.data
 	player_position = map_resource.start_pos
-	#triggered_events.clear()
-	#cleared_encounters.clear()
-	# Initialize any other persistent data needed
 
 func update_player_position(pos: Vector2i):
 	print(player_position)

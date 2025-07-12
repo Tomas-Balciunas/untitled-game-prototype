@@ -58,9 +58,9 @@ func load_map(map_id: String):
 				wall.set_meta("arena", tile["arena"])
 	
 	player.set_grid_pos(player_position)
+	MapInstance.emit_signal("map_transition_finish")
 
 func _on_encounter_started(data: Dictionary):
-	player.disable_all_movement()
 	player.global_position = Vector3(0, 1, -8)
 	player.rotation_degrees.y = 180
 	self.visible = false
@@ -69,7 +69,6 @@ func handle_event(event: String):
 	print(event)
 
 func transition_to_map(map_id: String):
-	player.disable_all_movement()
 	var tween = get_tree().create_tween()
 	tween.tween_property(transition_rect, "modulate:a", 1.0, 0.5)
 	await tween.finished
@@ -77,7 +76,6 @@ func transition_to_map(map_id: String):
 	tween = get_tree().create_tween()
 	tween.tween_property(transition_rect, "modulate:a", 0.0, 0.5)
 	await tween.finished
-	player.enable_all_movement()
 
 func _on_player_moved(data: Dictionary):
 	MapInstance.update_player_position(data["grid_position"])
@@ -88,4 +86,3 @@ func _on_encounter_ended(result):
 	self.visible = true
 	
 	load_map(MapInstance.map_id)
-	player.enable_all_movement()

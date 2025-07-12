@@ -95,17 +95,17 @@ func move_player(direction: String):
 	})
 	
 	if EventManager.is_event(target_tile_data):
-		EventManager.process_event(target_tile_data["event"])
+		await EventManager.process_event(target_tile_data["event"])
 
 	if MapManager.is_transition(target_tile_data):
 		emit_signal("map_transition", target_tile_data["transition"])
-		return
+		await MapInstance.map_transition_finish
 	
 	if EncounterManager.is_encounter(target_tile_data):
 		var encounter = target_tile_data["encounter"]
 		var arena = target_tile_data["arena"]
 		emit_signal("start_encounter", {"arena": arena, "enemy": encounter})
-		return
+		await EncounterManager.encounter_ended
 	
 	enable_all_movement()
 

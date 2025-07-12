@@ -28,6 +28,7 @@ func show_text(speaker: String, text: String) -> void:
 	panel.visible = true
 	show()
 	typing_timer.start()
+	await text_advance
 
 func _on_typing_tick():
 	if char_index < full_text.length():

@@ -52,3 +52,9 @@ func enable_targeting():
 	for row in formation:
 		for slot in row:
 			slot.enable_slot_targeting()
+
+func disable_party_ui():
+	self.visible = false
+	
+func enable_party_ui():
+	self.visible = true
