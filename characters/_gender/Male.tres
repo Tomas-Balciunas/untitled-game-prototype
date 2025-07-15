@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="Gender" load_steps=4 format=3 uid="uid://b40pmjuvgrvn4"]
+
+[ext_resource type="Script" uid="uid://blqk30gl013xc" path="res://characters/_attribute/Attributes.gd" id="1_5dh1a"]
+[ext_resource type="Script" uid="uid://c548a16bd0808" path="res://characters/_gender/Gender.gd" id="1_tr3xe"]
+
+[sub_resource type="Resource" id="Resource_r56lc"]
+script = ExtResource("1_5dh1a")
+str = 1
+iq = 0
+pie = 1
+vit = 1
+dex = 0
+spd = 0
+luk = -1
+metadata/_custom_type_script = "uid://blqk30gl013xc"
+
+[resource]
+script = ExtResource("1_tr3xe")
+name = 0
+attributes = SubResource("Resource_r56lc")
+metadata/_custom_type_script = "uid://c548a16bd0808"

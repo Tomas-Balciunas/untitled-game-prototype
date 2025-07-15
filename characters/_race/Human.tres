@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="Race" load_steps=4 format=3 uid="uid://eiwm6khdbjki"]
+
+[ext_resource type="Script" uid="uid://blqk30gl013xc" path="res://characters/_attribute/Attributes.gd" id="1_xr53s"]
+[ext_resource type="Script" uid="uid://cc4tchcma6k2f" path="res://characters/_race/Race.gd" id="2_tv64d"]
+
+[sub_resource type="Resource" id="Resource_ri50y"]
+script = ExtResource("1_xr53s")
+str = 1
+iq = 0
+pie = 2
+vit = 1
+dex = 1
+spd = 0
+luk = 0
+metadata/_custom_type_script = "uid://blqk30gl013xc"
+
+[resource]
+script = ExtResource("2_tv64d")
+name = 0
+attributes = SubResource("Resource_ri50y")
+metadata/_custom_type_script = "uid://cc4tchcma6k2f"
