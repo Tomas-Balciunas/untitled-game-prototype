@@ -33,6 +33,7 @@ var enemies: Array[CharacterInstance] = []
 var battlers: Array[CharacterInstance] = []
 var turn_queue: Array[CharacterInstance] = []
 var enemy_slots: Array[Node] = []
+var _to_cleanup: Array[CharacterInstance] = []
 var _pending_action: String = ""
 var _pending_options: Array = []
 var _pending_target: CharacterInstance = null
@@ -47,25 +48,34 @@ func _ready():
 	battle_ui.action_selected.connect(_on_player_action_selected)
 	battle_ui.hide()
 	
-	party = PartyManager.members
-	
 	var balmer = CharacterRegistry.get_character(102)
 	var skeltal = CharacterRegistry.get_character(101)
 	var instance3 = CharacterInstance.new(balmer)
 	var instance4 = CharacterInstance.new(skeltal)
-
-	enemies.append(instance3)
-	enemies.append(instance4)
+	var instance5 = CharacterInstance.new(balmer)
+	var instance6 = CharacterInstance.new(skeltal)
+	var instance7 = CharacterInstance.new(skeltal)
+	var instance8 = CharacterInstance.new(skeltal)
+	var instance9 = CharacterInstance.new(skeltal)
+	var instance10 = CharacterInstance.new(skeltal)
+	var instance11 = CharacterInstance.new(skeltal)
+	var instance12 = CharacterInstance.new(balmer)
 	
-	load_enemies()
-
-	battlers = party + enemies
-	for b in battlers:
+	var party_members = PartyManager.members
+	
+	for b in party_members + [instance12, instance11]: # [instance3, instance4, instance5, instance6, instance7, instance8, instance9, instance10, instance11, instance12]:
 		b.turn_meter = 0
-
+		_register_battler(b)
+		
+	load_enemies()
 	current_state = BattleState.PROCESS_TURNS
 
 func _process(_delta):
+	if _to_cleanup.size() > 0:
+		_corpse_janny()
+		current_state = BattleState.CHECK_END
+		return
+	
 	match current_state:
 		BattleState.PROCESS_TURNS:
 			_process_turn_queue()
@@ -92,8 +102,6 @@ func load_enemies():
 func _process_turn_queue():
 	while turn_queue.is_empty():
 		for b in battlers:
-			if b.current_health <= 0:
-				continue
 			b.turn_meter += b.speed
 			if b.turn_meter >= TURN_THRESHOLD and not turn_queue.has(b):
 				turn_queue.append(b)
@@ -105,8 +113,6 @@ func _process_turn_queue():
 
 func _on_turn_start():
 	battle_ui._reset_all_button_highlights()
-	if current_battler.current_health <= 0:
-		return
 
 	current_battler.process_effects("on_turn_start")
 	disable_all_targeting()
@@ -128,6 +134,9 @@ func _on_turn_end():
 	current_state = BattleState.CHECK_END
 		
 func _on_player_action_selected(action: String, options: Array):
+	if current_state != BattleState.PLAYER_TURN:
+		return
+		
 	_pending_action = action
 	_pending_options = options
 	battle_ui.highlight_action(action)
@@ -151,9 +160,10 @@ func _on_player_action_selected(action: String, options: Array):
 			enable_all_targeting()
 			return
 
-func _on_target_selected(target_slot):
+func _on_target_selected(target_slot: EnemySlot):
 	disable_all_targeting()
 	_pending_target = target_slot.character_instance
+	target_slot.unhover()
 	_resolve_player_action()
 
 func _resolve_player_action():
@@ -184,9 +194,8 @@ func _process_enemy_turn():
 	if current_battler == null:
 		current_state = BattleState.CHECK_END
 		return
-	print("%s HP %s/%s" % [current_battler.resource.name, current_battler.current_health, current_battler.resource.health_points])
 
-	var valid_targets = party.filter(func(p): return p.current_health > 0)
+	var valid_targets = party.filter(func(p: CharacterInstance): return p.is_dead == false)
 	if valid_targets.is_empty():
 		current_state = BattleState.CHECK_END
 		return
@@ -218,9 +227,9 @@ func _handle_flee():
 		print("Failed to flee!")
 
 func _check_end_conditions():
-	if party.all(func(p): return p.current_health <= 0):
+	if party.all(func(p: CharacterInstance): return p.is_dead):
 		current_state = BattleState.LOSE
-	elif enemies.all(func(e): return e.current_health <= 0):
+	elif enemies.is_empty():
 		current_state = BattleState.WIN
 	else:
 		current_state = BattleState.PROCESS_TURNS
@@ -238,6 +247,31 @@ func _handle_lose():
 	current_state = BattleState.IDLE
 	get_tree().get_root().get_node("Main").remove_child(self)
 	queue_free()
+	
+func _register_battler(battler: CharacterInstance):
+	battlers.append(battler)
+	
+	if battler in PartyManager.members:
+		party.append(battler)
+	else:
+		enemies.append(battler)
+		
+	battler.died.connect(Callable(self, "_on_battler_died"))
+	
+func _on_battler_died(rip: CharacterInstance) -> void:
+	_to_cleanup.append(rip)
+	
+func _corpse_janny():
+	for dead in _to_cleanup:
+		battlers.erase(dead)
+		#party.erase(dead)
+		enemies.erase(dead)
+		turn_queue.erase(dead)
+		#battle_ui.remove_character(dead)
+		enemy_grid.remove_slot_for(dead)
+		#_play_death_animation(dead)
+		#PartyManager.gain_experience(dead.resource.xp_value)
+	_to_cleanup.clear()
 
 func _on_enemy_hovered(target: EnemySlot):
 	target.hover()

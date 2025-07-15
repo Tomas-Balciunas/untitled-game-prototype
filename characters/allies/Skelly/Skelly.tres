@@ -1,12 +1,17 @@
-[gd_resource type="Resource" script_class="CharacterResource" load_steps=4 format=3 uid="uid://bbddeexd37t5i"]
+[gd_resource type="Resource" script_class="CharacterResource" load_steps=7 format=3 uid="uid://bbddeexd37t5i"]
 
+[ext_resource type="Script" uid="uid://bp0biy0knxw2o" path="res://effect/Effect.gd" id="1_l3iqv"]
 [ext_resource type="Script" uid="uid://bwn4gpkaijqsg" path="res://scripts/CharacterResource.gd" id="1_s17id"]
 [ext_resource type="Script" uid="uid://dq4acpkde276p" path="res://skills/Skill.gd" id="1_yod8j"]
-[ext_resource type="Resource" uid="uid://cfunb7l71n1np" path="res://skills/_offensive/poison_strike.tres" id="2_7so24"]
+[ext_resource type="Resource" uid="uid://eiwm6khdbjki" path="res://characters/_race/Human.tres" id="4_l3iqv"]
+[ext_resource type="Resource" uid="uid://b40pmjuvgrvn4" path="res://characters/_gender/Male.tres" id="4_p4kuy"]
+[ext_resource type="Resource" uid="uid://crai3lto44aqg" path="res://characters/_class/Thief.tres" id="4_uhviy"]
 
 [resource]
 script = ExtResource("1_s17id")
-gender = 0
+gender = ExtResource("4_p4kuy")
+race = ExtResource("4_l3iqv")
+job = ExtResource("4_uhviy")
 id = 2
 name = "Skelly"
 attack_power = 10
@@ -16,6 +21,7 @@ speed = 12
 experience = 0
 slot_width = 1
 prefers_front_row = true
-default_skills = Array[ExtResource("1_yod8j")]([ExtResource("2_7so24")])
+default_skills = Array[ExtResource("1_yod8j")]([])
+default_effects = Array[ExtResource("1_l3iqv")]([])
 default_damage_type = 1
 metadata/_custom_type_script = "uid://bwn4gpkaijqsg"

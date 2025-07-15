@@ -2,7 +2,12 @@
 
 [ext_resource type="Script" uid="uid://x2dulqp2hx2s" path="res://scenes/dungeon/dungeon.gd" id="1_6elmv"]
 
-[node name="Dungeon" type="Node3D"]
+[node name="Dungeon" type="GridMap"]
+cell_size = Vector3(1, 1, 1)
+cell_center_y = false
+data = {
+"cells": PackedInt32Array(5, 1, 1441794)
+}
 script = ExtResource("1_6elmv")
 
 [node name="Tiles" type="Node3D" parent="."]

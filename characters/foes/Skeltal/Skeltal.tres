@@ -7,11 +7,10 @@
 
 [resource]
 script = ExtResource("1_km1me")
-gender = 0
 id = 101
 name = "Skeleton"
 attack_power = 4
-health_points = 30
+health_points = 50
 mana_points = 10
 speed = 8
 experience = 0

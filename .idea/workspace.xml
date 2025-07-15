@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="bf5b9448-0040-49cd-b5e8-60429c893263" name="Changes" comment="base event" />
+    <list default="true" id="bf5b9448-0040-49cd-b5e8-60429c893263" name="Changes" comment="working event handling: text and encounter support. cleaned up player movement toggling" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -77,6 +77,7 @@
       <workItem from="1752264158101" duration="6000" />
       <workItem from="1752314523561" duration="486000" />
       <workItem from="1752327244264" duration="141000" />
+      <workItem from="1752343896426" duration="534000" />
     </task>
     <task id="LOCAL-00001" summary="as">
       <option name="closed" value="true" />
@@ -110,7 +111,15 @@
       <option name="project" value="LOCAL" />
       <updated>1752327378730</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="working event handling: text and encounter support. cleaned up player movement toggling">
+      <option name="closed" value="true" />
+      <created>1752344412602</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1752344412602</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -144,6 +153,7 @@
     <MESSAGE value="huh" />
     <MESSAGE value="some cleanup" />
     <MESSAGE value="base event" />
-    <option name="LAST_COMMIT_MESSAGE" value="base event" />
+    <MESSAGE value="working event handling: text and encounter support. cleaned up player movement toggling" />
+    <option name="LAST_COMMIT_MESSAGE" value="working event handling: text and encounter support. cleaned up player movement toggling" />
   </component>
 </project>

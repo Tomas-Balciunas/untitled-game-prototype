@@ -2,9 +2,9 @@ extends Resource
 
 class_name CharacterResource
 
-enum Gender {MALE, FEMALE}
-
 @export var gender: Gender
+@export var race: Race
+@export var job: Job
 @export var id: int = 0
 
 @export var character_body: PackedScene

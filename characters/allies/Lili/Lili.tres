@@ -1,11 +1,17 @@
-[gd_resource type="Resource" script_class="CharacterResource" load_steps=3 format=3 uid="uid://dh8kad7brt53b"]
+[gd_resource type="Resource" script_class="CharacterResource" load_steps=7 format=3 uid="uid://dh8kad7brt53b"]
 
 [ext_resource type="Script" uid="uid://dq4acpkde276p" path="res://skills/Skill.gd" id="1_5gn58"]
+[ext_resource type="Script" uid="uid://bp0biy0knxw2o" path="res://effect/Effect.gd" id="1_7ajkr"]
 [ext_resource type="Script" uid="uid://bwn4gpkaijqsg" path="res://scripts/CharacterResource.gd" id="1_tuon3"]
+[ext_resource type="Resource" uid="uid://eiwm6khdbjki" path="res://characters/_race/Human.tres" id="2_gmj68"]
+[ext_resource type="Resource" uid="uid://pchf07nevgay" path="res://characters/_gender/Female.tres" id="3_abpod"]
+[ext_resource type="Resource" uid="uid://crai3lto44aqg" path="res://characters/_class/Thief.tres" id="4_6i1ki"]
 
 [resource]
 script = ExtResource("1_tuon3")
-gender = 1
+gender = ExtResource("3_abpod")
+race = ExtResource("2_gmj68")
+job = ExtResource("4_6i1ki")
 id = 1
 name = "Lili"
 attack_power = 8
@@ -16,5 +22,6 @@ experience = 0
 slot_width = 1
 prefers_front_row = false
 default_skills = Array[ExtResource("1_5gn58")]([])
+default_effects = Array[ExtResource("1_7ajkr")]([])
 default_damage_type = 0
 metadata/_custom_type_script = "uid://bwn4gpkaijqsg"
