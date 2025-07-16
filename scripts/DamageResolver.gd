@@ -13,7 +13,7 @@ func apply_attack(action: AttackAction) -> DamageContext:
 	)
 
 func apply_skill(skill: SkillAction) -> DamageContext:
-	var calculated_damage = skill.attacker.attack_power
+	var calculated_damage = skill.attacker.stats.attack
 	# apply skill modifier to attacker's att power
 	if skill.modifier != 0.0:
 		calculated_damage += calculated_damage * skill.modifier
@@ -53,7 +53,7 @@ func _apply_core(attacker: CharacterInstance, defender: CharacterInstance, damag
 	ctx.final_value = max(ctx.final_value, 0)
 
 	print("%s received %f %s damage from %s" % [ctx.defender.resource.name, ctx.final_value, DamageTypes.to_str(ctx.type), ctx.attacker.resource.name])
-	defender.set_current_health(defender.current_health - ctx.final_value)
+	defender.set_current_health(defender.stats.current_health - ctx.final_value)
 
 	emit_signal("damage_resolved", ctx)
 

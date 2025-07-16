@@ -102,7 +102,7 @@ func load_enemies():
 func _process_turn_queue():
 	while turn_queue.is_empty():
 		for b in battlers:
-			b.turn_meter += b.speed
+			b.turn_meter += b.stats.speed
 			if b.turn_meter >= TURN_THRESHOLD and not turn_queue.has(b):
 				turn_queue.append(b)
 
@@ -176,7 +176,7 @@ func _perform_player_action(action: String, target: CharacterInstance):
 			var atk = AttackAction.new()
 			atk.attacker = current_battler
 			atk.defender   = target
-			atk.base_value = current_battler.attack_power
+			atk.base_value = current_battler.stats.attack
 			atk.type = current_battler.damage_type
 			var result    = DamageResolver.apply_attack(atk)
 		"skill":
@@ -207,7 +207,7 @@ func _process_enemy_turn():
 	var atk = AttackAction.new()
 	atk.attacker = current_battler
 	atk.defender   = target
-	atk.base_value = current_battler.attack_power
+	atk.base_value = current_battler.stats.attack
 	var result    = DamageResolver.apply_attack(atk)
 	
 	current_state = BattleState.TURN_END

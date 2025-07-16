@@ -12,10 +12,10 @@ func bind(character: CharacterInstance) -> void:
 
 	#$Portrait.texture = character.resource.portrait
 	$MarginContainer/GridContainer/NameContainer/Name.text = character.resource.name
-	$MarginContainer/GridContainer/LabelValueContainer/Values/HPContainer/CurrentHP.text = str(character.current_health)
-	$MarginContainer/GridContainer/LabelValueContainer/Values/HPContainer/MaxHP.text = str(character.max_health)
-	$MarginContainer/GridContainer/LabelValueContainer/Values/MPContainer/CurrentMP.text = str(character.current_mana)
-	$MarginContainer/GridContainer/LabelValueContainer/Values/MPContainer/MaxMP.text = str(character.max_mana)
+	$MarginContainer/GridContainer/LabelValueContainer/Values/HPContainer/CurrentHP.text = str(character.stats.current_health)
+	$MarginContainer/GridContainer/LabelValueContainer/Values/HPContainer/MaxHP.text = str(character.stats.max_health)
+	$MarginContainer/GridContainer/LabelValueContainer/Values/MPContainer/CurrentMP.text = str(character.stats.current_mana)
+	$MarginContainer/GridContainer/LabelValueContainer/Values/MPContainer/MaxMP.text = str(character.stats.max_mana)
 
 func hide_info():
 	var cont = $MarginContainer
