@@ -35,11 +35,6 @@ func _init(res: CharacterResource) -> void:
 	gender = res.gender
 	race = res.race
 	
-	# TODO: better system
-	#attributes = Attributes.new()
-	#attributes.str += res.job.attributes.str + res.gender.attributes.str + res.race.attributes.str
-	#print(attributes.str)
-	
 	for skill in res.default_skills:
 		if learnt_skills.has(skill):
 			continue
@@ -63,7 +58,7 @@ func _init(res: CharacterResource) -> void:
 				continue
 			effects.append(effect)
 	
-	stats.recalculate_stats(self)
+	stats.recalculate_stats(self, true)
 
 func set_current_health(new_health: int) -> void:
 	var old = stats.current_health

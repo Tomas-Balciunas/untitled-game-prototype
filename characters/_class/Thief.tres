@@ -24,4 +24,13 @@ name = 4
 attributes = SubResource("Resource_lkthw")
 skills = Array[ExtResource("3_cp6bd")]([ExtResource("6_cmmen")])
 effects = Array[ExtResource("1_k06mv")]([ExtResource("3_qdn74")])
+attribute_modifiers = {
+"DEX": 2,
+"IQ": 1,
+"LUK": 2,
+"PIE": 1,
+"SPD": 2,
+"STR": 1,
+"VIT": 1
+}
 metadata/_custom_type_script = "uid://xepac0r71qt2"
