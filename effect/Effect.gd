@@ -13,6 +13,7 @@ enum EffectCategory {
 @export var name: String = "Unnamed Effect"
 @export var category: EffectCategory = EffectCategory.OTHER
 @export var duration_turns: int = -1
+
 var owner: CharacterInstance = null
 
 func on_apply(owner: CharacterInstance) -> void:

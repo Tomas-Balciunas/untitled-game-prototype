@@ -36,20 +36,19 @@ func _apply_core(attacker: CharacterInstance, defender: CharacterInstance, damag
 	ctx.final_value = base
 	ctx.tags        = extra_effects
 	
-	# 1) Attacker’s passives & buffs
+	# attacker’s effects
 	attacker.process_effects(EffectTriggers.ON_HIT, ctx)
 	#print("After attacker effects: %d" % ctx.final_value)
 	
-	# 2) Skill‑specific effects (e.g. defense ignore)
+	# skill effects
 	for e in extra_effects:
 		if e.has_method("on_trigger"):
 			e.on_trigger(EffectTriggers.ON_HIT, ctx)
 	#print("After attacker skill: %d" % ctx.final_value)
 	
-	# 3) Defender’s passives & defenses
+	# defender’s effects
 	defender.process_effects(EffectTriggers.ON_RECEIVE_DAMAGE, ctx)
 
-	# 4) Clamp & apply
 	ctx.final_value = max(ctx.final_value, 0)
 
 	print("%s received %f %s damage from %s" % [ctx.defender.resource.name, ctx.final_value, DamageTypes.to_str(ctx.type), ctx.attacker.resource.name])
@@ -57,7 +56,7 @@ func _apply_core(attacker: CharacterInstance, defender: CharacterInstance, damag
 
 	emit_signal("damage_resolved", ctx)
 
-	# 5) Post‑hit skill effects (e.g. poison)
+	# post‑hit skill effects
 	for e in extra_effects:
 		if e.has_method("on_trigger"):
 			e.on_trigger(EffectTriggers.ON_POST_HIT, ctx)

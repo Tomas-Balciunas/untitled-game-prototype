@@ -21,6 +21,7 @@ var attributes: Attributes
 var job: Job
 var gender: Gender
 var race: Race
+var weapon: Weapon
 
 func _init(res: CharacterResource) -> void:
 	stats = Stats.new()
@@ -58,6 +59,8 @@ func _init(res: CharacterResource) -> void:
 				continue
 			effects.append(effect)
 	
+	weapon = res.default_weapon
+	if weapon: weapon.equip(self)
 	stats.recalculate_stats(self, true)
 
 func set_current_health(new_health: int) -> void:
@@ -105,13 +108,14 @@ func fill_stats(res: CharacterResource):
 
 func fill_attributes(res: CharacterResource):
 	attributes = Attributes.new()
-
+	attributes.add(res.attributes)
 	if res.race:
 		attributes.add(res.race.attributes)
 	if res.gender:
 		attributes.add(res.gender.attributes)
 	if res.job:
 		attributes.add(res.job.attributes)
+	print(res.name, attributes.str)
 
 func get_attack_power():
 	pass

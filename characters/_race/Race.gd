@@ -6,8 +6,9 @@ enum Name {
 	HUMAN,
 	ELF,
 	DWARF,
-	BEAST
+	BEAST,
+	UNKNOWN
 }
 
-@export var name: Name
+@export var name: Name = Name.UNKNOWN
 @export var attributes: Attributes

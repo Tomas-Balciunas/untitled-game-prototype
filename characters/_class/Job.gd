@@ -7,10 +7,11 @@ enum Name {
 	KNIGHT,
 	MAGE,
 	PRIEST,
-	THIEF
+	THIEF,
+	UNKNOWN
 }
 
-@export var name: Name
+@export var name: Name = Name.UNKNOWN
 @export var attributes: Attributes
 @export var skills: Array[Skill]
 @export var effects: Array[Effect]

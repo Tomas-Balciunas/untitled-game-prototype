@@ -28,7 +28,7 @@ attribute_modifiers = {
 "LUK": 1,
 "PIE": 1,
 "SPD": 1,
-"STR": 3,
+"STR": 2,
 "VIT": 2
 }
 metadata/_custom_type_script = "uid://xepac0r71qt2"
