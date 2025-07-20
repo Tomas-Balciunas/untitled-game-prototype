@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="ArmorPierce" load_steps=2 format=3 uid="uid://d2eise5i0c0ht"]
+
+[ext_resource type="Script" uid="uid://bicyeejokvbgs" path="res://effect/_offensive/armor_pierce/ArmorPierce.gd" id="1_3e320"]
+
+[resource]
+script = ExtResource("1_3e320")
+ignore_percent = 0.2
+name = "Unnamed Effect"
+category = 6
+duration_turns = -1
+metadata/_custom_type_script = "uid://bicyeejokvbgs"

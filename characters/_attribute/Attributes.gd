@@ -20,13 +20,13 @@ const DEX = "DEX"
 const SPD = "SPD"
 const LUK = "LUK"
 
-@export var str: int = 0
-@export var iq: int = 0
-@export var pie: int = 0
-@export var vit: int = 0
-@export var dex: int = 0
-@export var spd: int = 0
-@export var luk: int = 0
+@export var str: int = 1
+@export var iq: int = 1
+@export var pie: int = 1
+@export var vit: int = 1
+@export var dex: int = 1
+@export var spd: int = 1
+@export var luk: int = 1
 
 func add(other: Attributes) -> void:
 	str += other.str

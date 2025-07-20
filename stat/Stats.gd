@@ -6,16 +6,19 @@ var base_attack: int = 0
 var base_health: int = 0
 var base_speed: int = 0
 var base_mana: int = 0
+var base_defense: int = 0
 
 var derived_attack: int = 0
 var derived_health: int = 0
 var derived_speed: int = 0
 var derived_mana: int = 0
+var derived_defense: int = 0
 
 var attack: int = 0
 var max_health: int = 0
 var max_mana: int = 0
 var speed: int = 0
+var defense: int = 0
 
 var current_health: int = 0
 var current_mana: int = 0
@@ -31,22 +34,25 @@ func remove_modifier(m: StatModifier) -> void:
 func recalculate_stats(character: CharacterInstance, fill_hp: bool = false):
 	var attr_mods = character.job.attribute_modifiers
 
-	derived_attack = base_attack + character.attributes.str * attr_mods.get(Attributes.STR, 0)
-	derived_health = base_health + character.attributes.vit * attr_mods.get(Attributes.VIT, 0)
-	derived_mana   = base_mana   + character.attributes.iq  * attr_mods.get(Attributes.IQ, 0)
-	derived_speed  = base_speed  + character.attributes.spd * attr_mods.get(Attributes.SPD, 0)
+	derived_attack = base_attack + character.attributes.str * attr_mods.get(Attributes.STR, 1)
+	derived_health = base_health + character.attributes.vit * attr_mods.get(Attributes.VIT, 1)
+	derived_mana   = base_mana   + character.attributes.iq  * attr_mods.get(Attributes.IQ, 1)
+	derived_speed  = base_speed  + character.attributes.spd * attr_mods.get(Attributes.SPD, 1)
+	derived_defense = base_defense + character.attributes.vit * attr_mods.get(Attributes.VIT, 1)
 
 	var flat_bonus = {
 		"attack": 0.0,
 		"health": 0.0,
 		"mana": 0.0,
-		"speed": 0.0
+		"speed": 0.0,
+		"defense": 0.0
 	}
 	var pct_bonus = {
 		"attack": 0.0,
 		"health": 0.0,
 		"mana": 0.0,
-		"speed": 0.0
+		"speed": 0.0,
+		"defense": 0.0
 	}
 	
 	for gear in [character.weapon]:
@@ -66,6 +72,7 @@ func recalculate_stats(character: CharacterInstance, fill_hp: bool = false):
 	max_health = derived_health + flat_bonus["health"] + derived_health * pct_bonus["health"]
 	max_mana   = derived_mana   + flat_bonus["mana"]   + derived_mana   * pct_bonus["mana"]
 	speed      = derived_speed  + flat_bonus["speed"]  + derived_speed  * pct_bonus["speed"]
+	defense      = derived_defense  + flat_bonus["defense"]  + derived_defense  * pct_bonus["defense"]
 	
 	if fill_hp:
 		fill_hp()

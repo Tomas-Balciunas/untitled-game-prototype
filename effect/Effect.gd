@@ -7,7 +7,8 @@ enum EffectCategory {
 	DEBUFF,
 	SKILL,
 	STATUS,
-	OTHER
+	OTHER,
+	TRAIT
 }
 
 @export var name: String = "Unnamed Effect"
@@ -22,5 +23,5 @@ func on_apply(owner: CharacterInstance) -> void:
 func on_expire(owner: CharacterInstance) -> void:
 	pass
 
-func on_trigger(trigger: String, data) -> void:
+func on_trigger(trigger: String, data: ActionContext) -> void:
 	pass

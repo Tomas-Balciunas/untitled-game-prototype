@@ -10,8 +10,7 @@ enum Type {
 @export var attribute: String # "attack", "health", "mana", "speed"
 @export var type: Type = Type.ADDITIVE
 @export var value: float = 0.0
-@export var priority: int = 0 # reserved for future sorting if needed
+@export var priority: int = 0
 
 func compute_value(character: CharacterInstance) -> float:
-	# Default: return the static value
 	return value

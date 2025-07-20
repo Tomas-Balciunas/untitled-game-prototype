@@ -82,7 +82,7 @@ func set_current_health(new_health: int) -> void:
 		emit_signal("died", self)
 	print("%s HP %s/%s" % [resource.name, stats.current_health, stats.max_health])
 
-func apply_effect(effect: Effect, ctx: DamageContext) -> void:
+func apply_effect(effect: Effect, ctx: ActionContext) -> void:
 	for passive in effects.duplicate():
 		passive.on_trigger(EffectTriggers.ON_APPLY_EFFECT, ctx)
 			
@@ -94,7 +94,7 @@ func remove_effect(effect: Resource) -> void:
 	if effects.size() > 0 and effect.has_method(EffectTriggers.ON_EXPIRE):
 		effect.on_expire(self)
 		
-func process_effects(trigger: String, ctx: DamageContext = null) -> void:
+func process_effects(trigger: String, ctx: ActionContext = null) -> void:
 	for effect in effects.duplicate():
 		effect.on_trigger(trigger, ctx)
 		
@@ -104,6 +104,7 @@ func fill_stats(res: CharacterResource):
 	stats.base_health = res.health_points
 	stats.current_mana = res.mana_points
 	stats.base_mana = res.mana_points
+	stats.base_defense = res.defense
 	stats.base_speed = res.speed
 
 func fill_attributes(res: CharacterResource):

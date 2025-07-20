@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="HealBoost" load_steps=2 format=3 uid="uid://c4v8018wjpyyf"]
+
+[ext_resource type="Script" uid="uid://ox6r65cjqnmt" path="res://effect/_passive/healing/heal_boost.gd" id="1_32umi"]
+
+[resource]
+script = ExtResource("1_32umi")
+modifier = 0.2
+name = "Heal Boost"
+category = 0
+duration_turns = -1
+metadata/_custom_type_script = "uid://ox6r65cjqnmt"

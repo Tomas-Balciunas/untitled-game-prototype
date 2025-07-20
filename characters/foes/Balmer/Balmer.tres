@@ -1,18 +1,32 @@
-[gd_resource type="Resource" script_class="CharacterResource" load_steps=3 format=3 uid="uid://dq6o86j5axtjb"]
+[gd_resource type="Resource" script_class="CharacterResource" load_steps=9 format=3 uid="uid://dq6o86j5axtjb"]
 
 [ext_resource type="PackedScene" uid="uid://ddaoggfmpimc3" path="res://characters/foes/Balmer/body.tscn" id="1_3afh5"]
 [ext_resource type="Script" uid="uid://bwn4gpkaijqsg" path="res://scripts/CharacterResource.gd" id="1_l56jw"]
+[ext_resource type="Resource" uid="uid://bm8voqn41431y" path="res://characters/_attribute/_Unknown.tres" id="1_uy2ep"]
+[ext_resource type="Script" uid="uid://bp0biy0knxw2o" path="res://effect/Effect.gd" id="3_qj1j7"]
+[ext_resource type="Script" uid="uid://dq4acpkde276p" path="res://skills/Skill.gd" id="4_ta3bf"]
+[ext_resource type="Resource" uid="uid://ccd45ithmlluj" path="res://characters/_gender/_Unknown.tres" id="5_2p1x5"]
+[ext_resource type="Resource" uid="uid://cs2tci0dc3vvo" path="res://characters/_class/_Unknown.tres" id="6_0q48i"]
+[ext_resource type="Resource" uid="uid://lcgngc3c13fc" path="res://characters/_race/_Unknown.tres" id="7_mwqcq"]
 
 [resource]
 script = ExtResource("1_l56jw")
+race = ExtResource("7_mwqcq")
+job = ExtResource("6_0q48i")
+gender = ExtResource("5_2p1x5")
+attributes = ExtResource("1_uy2ep")
 id = 102
 character_body = ExtResource("1_3afh5")
 name = "Balmer"
-attack_power = 5
+attack_power = 23
 health_points = 22
 mana_points = 11
-speed = 8
+defense = 10
+speed = 10
 experience = 0
 slot_width = 1
 prefers_front_row = false
+default_skills = Array[ExtResource("4_ta3bf")]([])
+default_effects = Array[ExtResource("3_qj1j7")]([])
+default_damage_type = 0
 metadata/_custom_type_script = "uid://bwn4gpkaijqsg"

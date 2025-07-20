@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="Counterattack" load_steps=2 format=3 uid="uid://cm3vin4wtxpjv"]
+
+[ext_resource type="Script" uid="uid://dlkpx1bpl0wdy" path="res://effect/_passive/counterattack/counterattack.gd" id="1_h5gnt"]
+
+[resource]
+script = ExtResource("1_h5gnt")
+name = "Unnamed Effect"
+category = 0
+duration_turns = -1
+metadata/_custom_type_script = "uid://dlkpx1bpl0wdy"

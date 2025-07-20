@@ -68,6 +68,7 @@ func _ready():
 		_register_battler(b)
 		
 	load_enemies()
+	
 	current_state = BattleState.PROCESS_TURNS
 
 func _process(_delta):
@@ -180,13 +181,24 @@ func _perform_player_action(action: String, target: CharacterInstance):
 			atk.type = current_battler.damage_type
 			var result    = DamageResolver.apply_attack(atk)
 		"skill":
-			var skill = SkillAction.new()
-			skill.attacker   = current_battler
-			skill.defender     = target
-			skill.skill = _pending_options[0]
-			skill.effects = _pending_options[0].effects
-			skill.modifier = _pending_options[0].modifier
-			var result = DamageResolver.apply_skill(skill)
+			if _pending_options[0] is HealingSkill:
+				var skill = HealingAction.new()
+				skill.provider = current_battler
+				skill.receiver = target
+				skill.base_value = _pending_options[0].healing_amount
+				skill.effects = _pending_options[0].effects
+				var result = HealingResolver.apply_heal(skill)
+			elif _pending_options[0] is Skill:
+				var skill = SkillAction.new()
+				skill.attacker   = current_battler
+				skill.defender     = target
+				skill.skill = _pending_options[0]
+				skill.effects = _pending_options[0].effects
+				skill.modifier = _pending_options[0].modifier
+				var result = DamageResolver.apply_skill(skill)
+			else:
+				print("Unknown skill!")
+			
 		"item":
 			print(current_battler.resource.name, " used item")
 

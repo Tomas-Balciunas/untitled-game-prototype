@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="HealingSkill" load_steps=3 format=3 uid="uid://bk1ekpvjscjmg"]
+
+[ext_resource type="Script" uid="uid://bp0biy0knxw2o" path="res://effect/Effect.gd" id="1_h5k8u"]
+[ext_resource type="Script" uid="uid://c8rbj8kuxcoqs" path="res://skills/HealingSkill.gd" id="2_bx8e3"]
+
+[resource]
+script = ExtResource("2_bx8e3")
+name = "Dios"
+description = ""
+mp_cost = 4
+sp_cost = 0
+healing_amount = 10
+effects = Array[ExtResource("1_h5k8u")]([])
+metadata/_custom_type_script = "uid://c8rbj8kuxcoqs"

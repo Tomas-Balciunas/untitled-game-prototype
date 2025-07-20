@@ -1,22 +1,32 @@
-[gd_resource type="Resource" script_class="CharacterResource" load_steps=5 format=3 uid="uid://wuehd43nakji"]
+[gd_resource type="Resource" script_class="CharacterResource" load_steps=10 format=3 uid="uid://wuehd43nakji"]
 
 [ext_resource type="Script" uid="uid://bp0biy0knxw2o" path="res://effect/Effect.gd" id="1_73qgh"]
 [ext_resource type="Script" uid="uid://dq4acpkde276p" path="res://skills/Skill.gd" id="1_cc3t0"]
+[ext_resource type="Resource" uid="uid://bm8voqn41431y" path="res://characters/_attribute/_Unknown.tres" id="1_goqyc"]
 [ext_resource type="Script" uid="uid://bwn4gpkaijqsg" path="res://scripts/CharacterResource.gd" id="1_km1me"]
 [ext_resource type="Resource" uid="uid://badgfln40mudj" path="res://effect/_passive/resistance poison/PoisonRes.tres" id="2_d15h4"]
+[ext_resource type="Resource" uid="uid://cm3vin4wtxpjv" path="res://effect/_passive/counterattack/Counterattack.tres" id="4_e8tyq"]
+[ext_resource type="Resource" uid="uid://ccd45ithmlluj" path="res://characters/_gender/_Unknown.tres" id="5_e8tyq"]
+[ext_resource type="Resource" uid="uid://cs2tci0dc3vvo" path="res://characters/_class/_Unknown.tres" id="6_mpmjy"]
+[ext_resource type="Resource" uid="uid://lcgngc3c13fc" path="res://characters/_race/_Unknown.tres" id="7_gcpvx"]
 
 [resource]
 script = ExtResource("1_km1me")
+race = ExtResource("7_gcpvx")
+job = ExtResource("6_mpmjy")
+gender = ExtResource("5_e8tyq")
+attributes = ExtResource("1_goqyc")
 id = 101
 name = "Skeleton"
-attack_power = 4
+attack_power = 20
 health_points = 50
 mana_points = 10
-speed = 8
+defense = 10
+speed = 11
 experience = 0
 slot_width = 1
 prefers_front_row = true
 default_skills = Array[ExtResource("1_cc3t0")]([null])
-default_effects = Array[ExtResource("1_73qgh")]([ExtResource("2_d15h4")])
+default_effects = Array[ExtResource("1_73qgh")]([ExtResource("2_d15h4"), ExtResource("4_e8tyq")])
 default_damage_type = 0
 metadata/_custom_type_script = "uid://bwn4gpkaijqsg"

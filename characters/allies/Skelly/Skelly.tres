@@ -11,13 +11,13 @@
 
 [sub_resource type="Resource" id="Resource_rhf32"]
 script = ExtResource("1_ohgca")
-str = 5
-iq = 4
-pie = 5
-vit = 7
-dex = 5
-spd = 5
-luk = 5
+str = 3
+iq = 1
+pie = 1
+vit = 2
+dex = 2
+spd = 1
+luk = 1
 metadata/_custom_type_script = "uid://blqk30gl013xc"
 
 [resource]
@@ -31,6 +31,7 @@ name = "Skelly"
 attack_power = 10
 health_points = 200
 mana_points = 10
+defense = 10
 speed = 12
 experience = 0
 slot_width = 1

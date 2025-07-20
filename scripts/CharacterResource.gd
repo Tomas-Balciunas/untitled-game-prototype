@@ -21,6 +21,7 @@ const DEFAULT_ATTRIBUTES = preload("res://characters/_attribute/_Unknown.tres")
 @export var attack_power: int
 @export var health_points: int = 20
 @export var mana_points: int = 10
+@export var defense: int = 10
 @export var speed: int = 10
 @export var experience: int = 0
 @export var slot_width: int = 1
