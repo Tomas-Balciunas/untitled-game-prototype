@@ -25,3 +25,6 @@ func on_expire(owner: CharacterInstance) -> void:
 
 func on_trigger(trigger: String, data: ActionContext) -> void:
 	pass
+
+func modify_mp_cost(mp_cost: int) -> int:
+	return mp_cost

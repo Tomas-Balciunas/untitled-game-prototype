@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="MpCostReduction" load_steps=2 format=3 uid="uid://dt2wtnoyod5yd"]
+
+[ext_resource type="Script" uid="uid://vr4jp1fvv8yu" path="res://effect/_passive/mp_cost/MpCostReduction.gd" id="1_xmbe4"]
+
+[resource]
+script = ExtResource("1_xmbe4")
+modifier = 0.2
+name = "MP Cost Reduction"
+category = 0
+duration_turns = -1
+metadata/_custom_type_script = "uid://vr4jp1fvv8yu"

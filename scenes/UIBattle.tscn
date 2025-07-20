@@ -60,8 +60,8 @@ visible = true
 [node name="ScrollContainer" type="ScrollContainer" parent="SkillPopup"]
 anchors_preset = -1
 anchor_left = 0.04
-anchor_top = 1.0
-anchor_right = 1.04
+anchor_top = 0.04
+anchor_right = 1.999
 anchor_bottom = 1.99
 offset_left = 4.0
 offset_top = 4.0

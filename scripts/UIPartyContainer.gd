@@ -35,6 +35,7 @@ func _on_member_added(character: CharacterInstance, row_index: int, slot_index: 
 	character_ui.show()
 	
 	character.connect("health_changed", Callable(character_ui, "_on_health_changed"))
+	character.connect("mana_changed", Callable(character_ui, "_on_mana_changed"))
 
 #func _on_member_removed(character: CharacterInstance):
 	#for child in get_children():
@@ -58,3 +59,16 @@ func disable_party_ui():
 	
 func enable_party_ui():
 	self.visible = true
+
+func highlight_member(character: CharacterInstance):
+	for row in formation:
+		for slot in row:
+			if slot.character_instance == character:
+				slot.highlight()
+			else:
+				slot.unhighlight()
+
+func clear_highlights():
+	for row in formation:
+		for slot in row:
+			slot.unhighlight()

@@ -48,6 +48,7 @@ func _apply_core(source: CharacterInstance, target: CharacterInstance, damage_ty
 	# defender’s effects
 	target.process_effects(EffectTriggers.ON_RECEIVE_DAMAGE, ctx)
 	
+	#TODO: fix calcs to accommodate small hits
 	var defense_ignore = 0
 	if ctx.has_meta("ignore_defense_percent"):
 		defense_ignore = ctx.get_meta("ignore_defense_percent")

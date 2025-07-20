@@ -5,10 +5,12 @@
 
 [resource]
 script = ExtResource("2_bx8e3")
-name = "Dios"
-description = ""
-mp_cost = 4
-sp_cost = 0
 healing_amount = 10
+name = "DIOS"
+description = "Minor healing"
+mp_cost = 5
+sp_cost = 0
+modifier = 0.0
 effects = Array[ExtResource("1_h5k8u")]([])
+damage_type = 0
 metadata/_custom_type_script = "uid://c8rbj8kuxcoqs"

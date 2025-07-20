@@ -24,6 +24,8 @@ func hide_info():
 func _on_health_changed(old_health: int, new_health: int) -> void:
 	$MarginContainer/GridContainer/LabelValueContainer/Values/HPContainer/CurrentHP.text = str(new_health)
 
+func _on_mana_changed(old_mana: int, new_mana: int) -> void:
+	$MarginContainer/GridContainer/LabelValueContainer/Values/MPContainer/CurrentMP.text = str(new_mana)
 
 func _on_gui_input(event: InputEvent) -> void:
 	if not targeting_enabled:
@@ -42,3 +44,19 @@ func disable_slot_targeting():
 
 func enable_slot_targeting():
 	targeting_enabled = true
+
+func _on_mouse_entered() -> void:
+	if not targeting_enabled:
+		return
+	$HoverOverlay.visible = true
+
+func _on_mouse_exited() -> void:
+	$HoverOverlay.visible = false
+
+func highlight():
+	var tween = create_tween()
+	tween.tween_property(self, "modulate", Color(0.8, 0.8, 0.4), 0.1).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+
+func unhighlight():
+	var tween = create_tween()
+	tween.tween_property(self, "modulate", Color(1.0, 1.0, 1.0), 0.1).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)

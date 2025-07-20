@@ -121,6 +121,7 @@ func _on_turn_start():
 	if current_battler in party:
 		current_state = BattleState.PLAYER_TURN
 		emit_signal("current_battler_change", current_battler)
+		party_panel.highlight_member(current_battler)
 		print("Player turn for:", current_battler.resource.name)
 		battle_ui.show()
 		_on_player_action_selected("attack", [])
@@ -132,6 +133,7 @@ func _on_turn_end():
 	#print("%s effects: %s" % [current_battler.resource.name, current_battler.effects])
 	current_battler.process_effects("on_turn_end")
 	current_battler = null
+	party_panel.clear_highlights()
 	current_state = BattleState.CHECK_END
 		
 func _on_player_action_selected(action: String, options: Array):
@@ -145,11 +147,11 @@ func _on_player_action_selected(action: String, options: Array):
 	match action:
 		"defend":
 			_handle_defend()
-			current_state = BattleState.CHECK_END
+			current_state = BattleState.TURN_END
 			return
 		"flee":
 			_handle_flee()
-			current_state = BattleState.CHECK_END
+			current_state = BattleState.TURN_END
 			return
 		"attack":
 			enable_all_targeting()
@@ -161,10 +163,11 @@ func _on_player_action_selected(action: String, options: Array):
 			enable_all_targeting()
 			return
 
-func _on_target_selected(target_slot: EnemySlot):
+func _on_target_selected(target_slot):
 	disable_all_targeting()
 	_pending_target = target_slot.character_instance
-	target_slot.unhover()
+	if target_slot is EnemySlot:
+		target_slot.unhover()
 	_resolve_player_action()
 
 func _resolve_player_action():
@@ -181,12 +184,21 @@ func _perform_player_action(action: String, target: CharacterInstance):
 			atk.type = current_battler.damage_type
 			var result    = DamageResolver.apply_attack(atk)
 		"skill":
+			var mp_cost = _pending_options[0].mp_cost
+			for e in current_battler.effects:
+				if e.has_method("modify_mp_cost"):
+					mp_cost = e.modify_mp_cost(mp_cost)
+					
+			if current_battler.stats.current_mana < mp_cost:
+				return
+				
 			if _pending_options[0] is HealingSkill:
 				var skill = HealingAction.new()
 				skill.provider = current_battler
 				skill.receiver = target
 				skill.base_value = _pending_options[0].healing_amount
 				skill.effects = _pending_options[0].effects
+				current_battler.set_current_mana(current_battler.stats.current_mana - mp_cost)
 				var result = HealingResolver.apply_heal(skill)
 			elif _pending_options[0] is Skill:
 				var skill = SkillAction.new()
@@ -195,6 +207,7 @@ func _perform_player_action(action: String, target: CharacterInstance):
 				skill.skill = _pending_options[0]
 				skill.effects = _pending_options[0].effects
 				skill.modifier = _pending_options[0].modifier
+				current_battler.set_current_mana(current_battler.stats.current_mana - mp_cost)
 				var result = DamageResolver.apply_skill(skill)
 			else:
 				print("Unknown skill!")

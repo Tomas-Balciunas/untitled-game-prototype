@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="CharacterResource" load_steps=11 format=3 uid="uid://dh8kad7brt53b"]
+[gd_resource type="Resource" script_class="CharacterResource" load_steps=12 format=3 uid="uid://dh8kad7brt53b"]
 
 [ext_resource type="Script" uid="uid://dq4acpkde276p" path="res://skills/Skill.gd" id="1_5gn58"]
 [ext_resource type="Script" uid="uid://bp0biy0knxw2o" path="res://effect/Effect.gd" id="1_7ajkr"]
@@ -8,6 +8,7 @@
 [ext_resource type="Resource" uid="uid://c4v8018wjpyyf" path="res://effect/_passive/healing/HealBoost.tres" id="3_1ui0v"]
 [ext_resource type="Resource" uid="uid://pchf07nevgay" path="res://characters/_gender/Female.tres" id="3_abpod"]
 [ext_resource type="Resource" uid="uid://crai3lto44aqg" path="res://characters/_class/Thief.tres" id="4_6i1ki"]
+[ext_resource type="Resource" uid="uid://dt2wtnoyod5yd" path="res://effect/_passive/mp_cost/MpCostReduction.tres" id="4_23xqr"]
 [ext_resource type="Resource" uid="uid://bk1ekpvjscjmg" path="res://skills/_defensive/_heal/Dios.tres" id="4_n7wih"]
 
 [sub_resource type="Resource" id="Resource_n7wih"]
@@ -38,6 +39,6 @@ experience = 0
 slot_width = 1
 prefers_front_row = false
 default_skills = Array[ExtResource("1_5gn58")]([ExtResource("4_n7wih")])
-default_effects = Array[ExtResource("1_7ajkr")]([ExtResource("3_1ui0v")])
+default_effects = Array[ExtResource("1_7ajkr")]([ExtResource("3_1ui0v"), ExtResource("4_23xqr")])
 default_damage_type = 0
 metadata/_custom_type_script = "uid://bwn4gpkaijqsg"

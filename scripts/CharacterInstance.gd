@@ -3,8 +3,11 @@ extends RefCounted
 class_name CharacterInstance
 
 signal health_changed(old_health, new_health)
+signal mana_changed(old_mana, new_mana)
 signal damaged(amount: int, source: CharacterInstance)
 signal healed(amount: int)
+signal mana_consumed(amount: int, source: CharacterInstance)
+signal mana_restored(amount: int, source: CharacterInstance)
 signal died(ded: CharacterInstance)
 
 var is_dead: bool = false
@@ -81,6 +84,19 @@ func set_current_health(new_health: int) -> void:
 		print("%s is dead" % resource.name)
 		emit_signal("died", self)
 	print("%s HP %s/%s" % [resource.name, stats.current_health, stats.max_health])
+	
+func set_current_mana(new_mana: int) -> void:
+	var old = stats.current_mana
+	var new = clamp(new_mana, 0, stats.max_mana)
+	
+	if new < old:
+		stats.current_mana = new
+		emit_signal("mana_consumed", old - stats.current_mana, self)
+	elif new > old:
+		stats.current_mana = new
+		emit_signal("mana_restored", stats.current_mana - old, self)
+	emit_signal("mana_changed", old, stats.current_mana)
+	print("%s MP %s/%s" % [resource.name, stats.current_mana, stats.max_mana])
 
 func apply_effect(effect: Effect, ctx: ActionContext) -> void:
 	for passive in effects.duplicate():

@@ -82,8 +82,18 @@ func _populate_skill_list():
 		skills.append(s)
 	
 	for skill in skills:
+		var mp_cost = skill.mp_cost
+		
+		for e in current_battler.effects:
+			if e.has_method("modify_mp_cost"):
+				mp_cost = e.modify_mp_cost(mp_cost)
+				
 		var btn = Button.new()
-		btn.text = "%s (%d MP)" % [skill["name"], skill["mp_cost"]]
+		btn.text = "%s (%d MP)" % [skill["name"], mp_cost]
 		btn.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		btn.pressed.connect(_on_skill_selected.bind(skill))
+		
+		if current_battler.stats.current_mana < mp_cost:
+			btn.disabled = true
+		
 		skill_list_container.add_child(btn)
