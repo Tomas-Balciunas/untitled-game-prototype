@@ -48,12 +48,12 @@ func _apply_core(source: CharacterInstance, target: CharacterInstance, damage_ty
 	# defender’s effects
 	target.process_effects(EffectTriggers.ON_RECEIVE_DAMAGE, ctx)
 	
-	#TODO: fix calcs to accommodate small hits
 	var defense_ignore = 0
 	if ctx.has_meta("ignore_defense_percent"):
 		defense_ignore = ctx.get_meta("ignore_defense_percent")
 
-	ctx.final_value = max(ctx.final_value - (target.stats.defense - target.stats.defense * defense_ignore), 0)
+	var calculator = DamageCalculator.new(ctx, defense_ignore)
+	ctx.final_value = max(calculator.get_final_damage(), 0)
 
 	print("%s received %f %s damage from %s" % [ctx.target.resource.name, ctx.final_value, DamageTypes.to_str(ctx.type), ctx.source.resource.name])
 	target.set_current_health(target.stats.current_health - ctx.final_value)

@@ -4,6 +4,15 @@ signal target_hovered(target)
 signal target_unhovered(previous)
 signal target_clicked(target)
 
+enum TargetType {
+	SINGLE,
+	BLAST,
+	ADJACENT,
+	ROW,
+	COLUMN,
+	MASS
+}
+
 @export var collision_mask: int
 @export var target_class: String = ""
 

@@ -8,3 +8,5 @@ class_name Weapon
 	"mana": 0,
 	"speed": 0
 }
+
+@export var targeting: TargetingManager.TargetType = TargetingManager.TargetType.SINGLE

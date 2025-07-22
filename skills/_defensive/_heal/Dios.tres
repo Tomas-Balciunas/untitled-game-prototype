@@ -13,4 +13,5 @@ sp_cost = 0
 modifier = 0.0
 effects = Array[ExtResource("1_h5k8u")]([])
 damage_type = 0
+targeting_type = 3
 metadata/_custom_type_script = "uid://c8rbj8kuxcoqs"

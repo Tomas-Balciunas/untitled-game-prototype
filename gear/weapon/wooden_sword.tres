@@ -13,6 +13,7 @@ base_stat_bonuses = {
 "mana": 1,
 "speed": -4
 }
+targeting = 0
 name = "Wooden Sword"
 type = 0
 modifiers = Array[ExtResource("2_s2e5p")]([ExtResource("3_s2e5p")])

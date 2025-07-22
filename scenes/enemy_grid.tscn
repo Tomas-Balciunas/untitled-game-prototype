@@ -32,3 +32,5 @@ offset_bottom = 214.0
 size_flags_vertical = 3
 theme_override_constants/separation = 8
 alignment = 1
+
+[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]

@@ -10,6 +10,7 @@ class_name Skill
 @export var modifier: float = 0
 @export var effects: Array[Effect] = []
 @export var damage_type: DamageTypes.Type
+@export var targeting_type: TargetingManager.TargetType = TargetingManager.TargetType.SINGLE
 
 #func execute(user: CharacterInstance, targets: Array):
 	#var runner = effect_scene.instantiate()

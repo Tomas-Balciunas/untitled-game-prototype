@@ -90,3 +90,14 @@ func get_centered_positions(count: int, z: float) -> Array:
 		var x = -total_width * 0.5 + i * SLOT_SPACING_X
 		positions.append(Vector3(x, 0, z))
 	return positions
+
+
+func _on_mouse_entered() -> void:
+	print(self.get_children())
+
+func get_row_enemies(target: CharacterInstance):
+	for i in range(MAX_SLOTS):
+		var slot = front_slots[i]
+		if slot and slot.character_instance == target:
+			return front_slots
+	return back_slots

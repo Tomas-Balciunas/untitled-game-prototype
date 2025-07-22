@@ -40,6 +40,18 @@ func add_member_to_formation(character: CharacterInstance) -> Array:
 				return [row_i, slot_i]
 	return []
 
+func get_row_allies(current: CharacterInstance):
+	# should always return a row unless something goes horribly wrong
+	for row_i in range(formation.size()):
+		for slot_i in range(formation[row_i].size()):
+			if not formation[row_i][slot_i]:
+				continue
+			if formation[row_i][slot_i] == current:
+				return formation[row_i].filter(func(slot): return slot != null)
+	push_error("get_row_allies: current not found in formation")
+	return []
+	
+	
 #func remove_member(character: CharacterInstance):
 	#members.erase(character)
 	#emit_signal("member_removed", character)

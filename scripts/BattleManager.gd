@@ -63,7 +63,7 @@ func _ready():
 	
 	var party_members = PartyManager.members
 	
-	for b in party_members + [instance12, instance11]: # [instance3, instance4, instance5, instance6, instance7, instance8, instance9, instance10, instance11, instance12]:
+	for b in party_members + [instance3, instance4, instance5, instance6, instance7, instance8, instance9, instance10, instance11, instance12]:
 		b.turn_meter = 0
 		_register_battler(b)
 		
@@ -177,40 +177,54 @@ func _resolve_player_action():
 func _perform_player_action(action: String, target: CharacterInstance):
 	match action:
 		"attack":
-			var atk = AttackAction.new()
-			atk.attacker = current_battler
-			atk.defender   = target
-			atk.base_value = current_battler.stats.attack
-			atk.type = current_battler.damage_type
-			var result    = DamageResolver.apply_attack(atk)
+			var targeting = current_battler.weapon.targeting if current_battler.weapon else TargetingManager.TargetType.SINGLE
+			var _targets = get_applicable_targets(target, targeting)
+			for t in _targets:
+				if not t:
+					continue
+				if t is EnemySlot:
+					t = t.character_instance
+				var atk = AttackAction.new()
+				atk.attacker = current_battler
+				atk.defender   = t
+				atk.base_value = current_battler.stats.attack
+				atk.type = current_battler.damage_type
+				var result    = DamageResolver.apply_attack(atk)
 		"skill":
+			var targeting = _pending_options[0].targeting_type
+			var _targets = get_applicable_targets(target, targeting)
 			var mp_cost = _pending_options[0].mp_cost
 			for e in current_battler.effects:
 				if e.has_method("modify_mp_cost"):
 					mp_cost = e.modify_mp_cost(mp_cost)
-					
 			if current_battler.stats.current_mana < mp_cost:
 				return
 				
-			if _pending_options[0] is HealingSkill:
-				var skill = HealingAction.new()
-				skill.provider = current_battler
-				skill.receiver = target
-				skill.base_value = _pending_options[0].healing_amount
-				skill.effects = _pending_options[0].effects
-				current_battler.set_current_mana(current_battler.stats.current_mana - mp_cost)
-				var result = HealingResolver.apply_heal(skill)
-			elif _pending_options[0] is Skill:
-				var skill = SkillAction.new()
-				skill.attacker   = current_battler
-				skill.defender     = target
-				skill.skill = _pending_options[0]
-				skill.effects = _pending_options[0].effects
-				skill.modifier = _pending_options[0].modifier
-				current_battler.set_current_mana(current_battler.stats.current_mana - mp_cost)
-				var result = DamageResolver.apply_skill(skill)
-			else:
-				print("Unknown skill!")
+			for t in _targets:
+				if not t:
+					continue
+				if t is EnemySlot:
+					t = t.character_instance
+					
+				if _pending_options[0] is HealingSkill:
+					var skill = HealingAction.new()
+					skill.provider = current_battler
+					skill.receiver = t
+					skill.base_value = _pending_options[0].healing_amount
+					skill.effects = _pending_options[0].effects
+					current_battler.set_current_mana(current_battler.stats.current_mana - mp_cost)
+					var result = HealingResolver.apply_heal(skill)
+				elif _pending_options[0] is Skill:
+					var skill = SkillAction.new()
+					skill.attacker   = current_battler
+					skill.defender     = t
+					skill.skill = _pending_options[0]
+					skill.effects = _pending_options[0].effects
+					skill.modifier = _pending_options[0].modifier
+					current_battler.set_current_mana(current_battler.stats.current_mana - mp_cost)
+					var result = DamageResolver.apply_skill(skill)
+				else:
+					print("Unknown skill!")
 			
 		"item":
 			print(current_battler.resource.name, " used item")
@@ -323,3 +337,30 @@ func enable_ally_targeting():
 	
 func disable_ally_targeting():
 	party_panel.disable_targeting()
+
+func get_applicable_targets(current: CharacterInstance, type: TargetingManager.TargetType):
+
+	match type:
+		TargetingManager.TargetType.SINGLE:
+			return [current]
+		TargetingManager.TargetType.ROW:
+			if party.has(current):
+				return PartyManager.get_row_allies(current)
+			return enemy_grid.get_row_enemies(current)
+		TargetingManager.TargetType.BLAST:
+			return [current]
+		TargetingManager.TargetType.ADJACENT:
+			return [current]
+		TargetingManager.TargetType.MASS:
+			return [current]
+		TargetingManager.TargetType.COLUMN:
+			return [current]
+		
+	return [current]
+		
+		
+		
+		
+		
+		
+		
