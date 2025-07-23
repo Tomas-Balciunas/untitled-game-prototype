@@ -200,6 +200,8 @@ func _perform_player_action(action: String, target: CharacterInstance):
 			if current_battler.stats.current_mana < mp_cost:
 				return
 				
+			current_battler.set_current_mana(current_battler.stats.current_mana - mp_cost)
+			
 			for t in _targets:
 				if not t:
 					continue
@@ -212,7 +214,6 @@ func _perform_player_action(action: String, target: CharacterInstance):
 					skill.receiver = t
 					skill.base_value = _pending_options[0].healing_amount
 					skill.effects = _pending_options[0].effects
-					current_battler.set_current_mana(current_battler.stats.current_mana - mp_cost)
 					var result = HealingResolver.apply_heal(skill)
 				elif _pending_options[0] is Skill:
 					var skill = SkillAction.new()
@@ -221,7 +222,6 @@ func _perform_player_action(action: String, target: CharacterInstance):
 					skill.skill = _pending_options[0]
 					skill.effects = _pending_options[0].effects
 					skill.modifier = _pending_options[0].modifier
-					current_battler.set_current_mana(current_battler.stats.current_mana - mp_cost)
 					var result = DamageResolver.apply_skill(skill)
 				else:
 					print("Unknown skill!")
@@ -343,24 +343,27 @@ func get_applicable_targets(current: CharacterInstance, type: TargetingManager.T
 	match type:
 		TargetingManager.TargetType.SINGLE:
 			return [current]
+		TargetingManager.TargetType.COLUMN:
+			if party.has(current):
+				return PartyManager.get_column_allies(current)
+			return enemy_grid.get_column_enemies(current)
 		TargetingManager.TargetType.ROW:
 			if party.has(current):
 				return PartyManager.get_row_allies(current)
 			return enemy_grid.get_row_enemies(current)
 		TargetingManager.TargetType.BLAST:
-			return [current]
+			if party.has(current):
+				return PartyManager.get_blast_allies(current)
+			return enemy_grid.get_blast_enemies(current)
 		TargetingManager.TargetType.ADJACENT:
-			return [current]
+			if party.has(current):
+				return PartyManager.get_adjacent_allies(current)
+			return enemy_grid.get_adjacent_enemies(current)
 		TargetingManager.TargetType.MASS:
-			return [current]
-		TargetingManager.TargetType.COLUMN:
-			return [current]
+			if party.has(current):
+				return PartyManager.get_mass_allies()
+			return enemy_grid.get_mass_enemies()
 		
 	return [current]
-		
-		
-		
-		
-		
 		
 		

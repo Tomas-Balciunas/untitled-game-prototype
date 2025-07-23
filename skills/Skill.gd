@@ -11,6 +11,9 @@ class_name Skill
 @export var effects: Array[Effect] = []
 @export var damage_type: DamageTypes.Type
 @export var targeting_type: TargetingManager.TargetType = TargetingManager.TargetType.SINGLE
+## only matters when bounce targeting is selected
+@export var bounce_instances: int = 0
+
 
 #func execute(user: CharacterInstance, targets: Array):
 	#var runner = effect_scene.instantiate()

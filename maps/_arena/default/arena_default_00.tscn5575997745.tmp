@@ -1,0 +1,85 @@
+[gd_scene load_steps=14 format=3 uid="uid://dq6gw6kdq30h2"]
+
+[ext_resource type="Script" uid="uid://djga0vllljxhw" path="res://scripts/BattleManager.gd" id="1_6ixpi"]
+[ext_resource type="Texture2D" uid="uid://bxf0rxqbalfqo" path="res://GettyImages-2166462891_WEB.webp" id="2_gu5d0"]
+[ext_resource type="PackedScene" uid="uid://calltc1gumdi2" path="res://scenes/UIBattle.tscn" id="3_w35a6"]
+[ext_resource type="Script" uid="uid://w5crfr45qebk" path="res://scripts/EnemyGrid.gd" id="4_wh25n"]
+
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_7m2sr"]
+panorama = ExtResource("2_gu5d0")
+
+[sub_resource type="Sky" id="Sky_dess1"]
+sky_material = SubResource("PanoramaSkyMaterial_7m2sr")
+
+[sub_resource type="Environment" id="Environment_clnqo"]
+background_mode = 2
+sky = SubResource("Sky_dess1")
+ambient_light_source = 3
+ambient_light_color = Color(1, 1, 1, 1)
+ambient_light_sky_contribution = 0.98
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_50weh"]
+load_path = "res://.godot/imported/floor_stone.jpg-174f83846018e36f29e70ca2946a733a.s3tc.ctex"
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_n2dfx"]
+albedo_color = Color(0.843184, 0.843184, 0.843184, 1)
+metallic_specular = 0.05
+normal_scale = 15.15
+normal_texture = SubResource("CompressedTexture2D_50weh")
+ao_texture_channel = 3
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_8n0un"]
+albedo_color = Color(0.882353, 0, 0, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_f0kb1"]
+albedo_color = Color(0, 0, 0, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7m2sr"]
+albedo_color = Color(0, 0, 0, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_dess1"]
+albedo_color = Color(0, 0, 0, 1)
+
+[node name="ArenaDefault" type="Node3D"]
+script = ExtResource("1_6ixpi")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_clnqo")
+
+[node name="CSGBox3D" type="CSGBox3D" parent="."]
+transform = Transform3D(2, 0, 0, 0, 0.1, 0, 0, 0, 2, 0, 0, -5)
+size = Vector3(16, 0.1, 11)
+material = SubResource("StandardMaterial3D_n2dfx")
+
+[node name="CSGBox3D4" type="CSGBox3D" parent="."]
+transform = Transform3D(2, 0, 0, 0, 0.1, 0, 0, 0, 2, 0, 6, -5)
+visible = false
+size = Vector3(16, 0.1, 11)
+material = SubResource("StandardMaterial3D_n2dfx")
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="."]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 1.6, 0, 3, 6)
+size = Vector3(16, 3, 0.1)
+material = SubResource("StandardMaterial3D_8n0un")
+
+[node name="CSGBox3D3" type="CSGBox3D" parent="."]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 1.6, 0, 3, -16)
+size = Vector3(16, 3, 0.1)
+material = SubResource("StandardMaterial3D_f0kb1")
+
+[node name="CSGBox3D5" type="CSGBox3D" parent="."]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, -16, 3, -5)
+size = Vector3(0.01, 3, 11)
+material = SubResource("StandardMaterial3D_7m2sr")
+
+[node name="CSGBox3D6" type="CSGBox3D" parent="."]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 16, 3, -5)
+size = Vector3(0.01, 3, 11)
+material = SubResource("StandardMaterial3D_dess1")
+
+[node name="EnemyFormation" type="Node3D" parent="."]
+script = ExtResource("4_wh25n")
+
+[node name="BattleUI" parent="." instance=ExtResource("3_w35a6")]
+anchor_top = 0.716
+offset_top = 0.0319824

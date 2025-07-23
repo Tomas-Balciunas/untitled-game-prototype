@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="CharacterResource" load_steps=12 format=3 uid="uid://dh8kad7brt53b"]
+[gd_resource type="Resource" script_class="CharacterResource" load_steps=13 format=3 uid="uid://dh8kad7brt53b"]
 
 [ext_resource type="Script" uid="uid://dq4acpkde276p" path="res://skills/Skill.gd" id="1_5gn58"]
 [ext_resource type="Script" uid="uid://bp0biy0knxw2o" path="res://effect/Effect.gd" id="1_7ajkr"]
@@ -10,6 +10,7 @@
 [ext_resource type="Resource" uid="uid://crai3lto44aqg" path="res://characters/_class/Thief.tres" id="4_6i1ki"]
 [ext_resource type="Resource" uid="uid://dt2wtnoyod5yd" path="res://effect/_passive/mp_cost/MpCostReduction.tres" id="4_23xqr"]
 [ext_resource type="Resource" uid="uid://bk1ekpvjscjmg" path="res://skills/_defensive/_heal/Dios.tres" id="4_n7wih"]
+[ext_resource type="Resource" uid="uid://j0lr1j1qp7cc" path="res://gear/weapon/wooden_sword.tres" id="7_7lkq3"]
 
 [sub_resource type="Resource" id="Resource_n7wih"]
 script = ExtResource("1_lgdsj")
@@ -30,7 +31,7 @@ gender = ExtResource("3_abpod")
 attributes = SubResource("Resource_n7wih")
 id = 1
 name = "Lili"
-attack_power = 15
+attack_power = 18
 health_points = 200
 mana_points = 10
 defense = 10
@@ -41,4 +42,5 @@ prefers_front_row = false
 default_skills = Array[ExtResource("1_5gn58")]([ExtResource("4_n7wih")])
 default_effects = Array[ExtResource("1_7ajkr")]([ExtResource("3_1ui0v"), ExtResource("4_23xqr")])
 default_damage_type = 0
+default_weapon = ExtResource("7_7lkq3")
 metadata/_custom_type_script = "uid://bwn4gpkaijqsg"

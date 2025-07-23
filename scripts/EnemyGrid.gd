@@ -8,8 +8,8 @@ const MAX_SLOTS      := 5
 
 const Enemy3DScene = preload("res://scenes/EnemySlot.tscn")
 
-var front_slots := []
-var back_slots  := []
+var front_slots: Array[EnemySlot] = []
+var back_slots: Array[EnemySlot] = []
 
 var front_positions := []
 var back_positions  := []
@@ -89,11 +89,31 @@ func get_centered_positions(count: int, z: float) -> Array:
 	for i in range(count):
 		var x = -total_width * 0.5 + i * SLOT_SPACING_X
 		positions.append(Vector3(x, 0, z))
+		
 	return positions
-
 
 func _on_mouse_entered() -> void:
 	print(self.get_children())
+	
+func get_column_enemies(target: CharacterInstance) -> Array[CharacterInstance]:
+	for i in range(MAX_SLOTS):
+		if front_slots[i] and front_slots[i].character_instance == target:
+			return get_adjacent_in_column(back_slots, i, front_slots[i])
+		if back_slots[i] and back_slots[i].character_instance == target:
+			return get_adjacent_in_column(front_slots, i, back_slots[i])
+	
+	push_error("Column Targeting: Target not found!")
+	return [target]
+	
+func get_blast_enemies(target: CharacterInstance) -> Array[CharacterInstance]:
+	for i in range(MAX_SLOTS):
+		if front_slots[i] and front_slots[i].character_instance == target:
+			return get_adjacent_in_row(front_slots, i)
+		if back_slots[i] and back_slots[i].character_instance == target:
+			return get_adjacent_in_row(back_slots, i)
+	
+	push_error("Blast Targeting: Target not found!")
+	return [target]
 
 func get_row_enemies(target: CharacterInstance):
 	for i in range(MAX_SLOTS):
@@ -101,3 +121,61 @@ func get_row_enemies(target: CharacterInstance):
 		if slot and slot.character_instance == target:
 			return front_slots
 	return back_slots
+	
+func get_adjacent_enemies(target: CharacterInstance) -> Array[CharacterInstance]:
+	for i in range(MAX_SLOTS):
+		if front_slots[i] and front_slots[i].character_instance == target:
+			var row =  get_adjacent_in_row(front_slots, i)
+			var column = get_adjacent_in_column(back_slots, i, front_slots[i])
+			return array_unique(row, column)
+			
+		if back_slots[i] and back_slots[i].character_instance == target:
+			var row =  get_adjacent_in_row(back_slots, i)
+			var column = get_adjacent_in_column(front_slots, i, back_slots[i])
+			return array_unique(row, column)
+			
+	push_error("Adjacent Targeting: Target not found!")
+	return [target]
+	
+func get_mass_enemies() -> Array[CharacterInstance]:
+	var mass: Array[EnemySlot] = (front_slots + back_slots).filter(func(slot): return slot != null)
+		
+	return slots_to_character_instances(mass)
+	
+func get_adjacent_in_row(row: Array[EnemySlot], index: int) -> Array[CharacterInstance]:
+	var adjacent: Array[EnemySlot] = []
+	adjacent.append(row[index])
+	
+	if index > 0 and row[index - 1] != null:
+		adjacent.append(row[index - 1])
+		
+	if index < MAX_SLOTS - 1 and row[index + 1] != null:
+		adjacent.append(row[index + 1])
+
+	return slots_to_character_instances(adjacent)
+
+func get_adjacent_in_column(row: Array[EnemySlot], index: int, target: EnemySlot) -> Array[CharacterInstance]:
+	var adjacent: Array[EnemySlot] = []
+	adjacent.append(target)
+	
+	if row[index] != null:
+		adjacent.append(row[index])
+
+	return slots_to_character_instances(adjacent)
+	
+func array_unique(arr1: Array[CharacterInstance], arr2: Array[CharacterInstance]) -> Array[CharacterInstance]:
+	var unique = arr1
+	
+	for item in arr2:
+		if arr1.has(item):
+			continue
+		arr1.append(item)
+	
+	return unique
+
+func slots_to_character_instances(slots: Array[EnemySlot]) -> Array[CharacterInstance]:
+	var result: Array[CharacterInstance] = []
+	for slot in slots:
+		result.append(slot.character_instance)
+
+	return result
