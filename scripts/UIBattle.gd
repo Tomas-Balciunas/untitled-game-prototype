@@ -9,8 +9,8 @@ var current_battler: CharacterInstance = null
 @onready var skill_button = $VBoxContainer/SkillButton
 @onready var item_button = $VBoxContainer/ItemButton
 @onready var flee_button = $VBoxContainer/FleeButton
-@onready var skill_popup = $SkillPopup
-@onready var skill_list_container = $SkillPopup/ScrollContainer/SkillListContainer
+@onready var skill_popup = $Skill/SkillPopup
+@onready var skill_list_container = $Skill/SkillPopup/ScrollContainer/SkillListContainer
 
 var battle_manager: BattleManager
 

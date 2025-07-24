@@ -9,8 +9,8 @@ var _source: CharacterInstance
 func on_apply(new_owner: CharacterInstance) -> void:
 	_remaining = duration_turns
 	self.owner = new_owner
-	print("[PoisonEffect] Applied to %s for %d turns, %d damage per turn." %
-		[owner.resource.name, duration_turns, damage_per_turn])
+	BattleTextLines.print_line("Poison applied to %s for %d turns" %
+		[owner.resource.name, duration_turns])
 
 func on_trigger(trigger: String, ctx: ActionContext) -> void:
 	if trigger == EffectTriggers.ON_POST_HIT:

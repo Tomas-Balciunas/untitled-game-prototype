@@ -63,7 +63,7 @@ func _ready():
 	
 	var party_members = PartyManager.members
 	
-	for b in party_members + [instance3, instance4, instance5, instance6, instance7, instance8, instance9, instance10, instance11, instance12]:
+	for b in party_members + [instance3, instance4, instance5]: #[instance3, instance4, instance5, instance6, instance7, instance8, instance9, instance10, instance11, instance12]:
 		b.turn_meter = 0
 		_register_battler(b)
 		
@@ -363,7 +363,7 @@ func get_applicable_targets(current: CharacterInstance, type: TargetingManager.T
 			if party.has(current):
 				return PartyManager.get_mass_allies()
 			return enemy_grid.get_mass_enemies()
-		
+		#TODO: bounce targeting
 	return [current]
 		
 		

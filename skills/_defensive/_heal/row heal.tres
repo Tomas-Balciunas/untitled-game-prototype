@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="HealingSkill" load_steps=3 format=3 uid="uid://c5xohmycfkr5c"]
+
+[ext_resource type="Script" uid="uid://bp0biy0knxw2o" path="res://effect/Effect.gd" id="1_b30u2"]
+[ext_resource type="Script" uid="uid://c8rbj8kuxcoqs" path="res://skills/HealingSkill.gd" id="2_c4285"]
+
+[resource]
+script = ExtResource("2_c4285")
+healing_amount = 10
+name = "row heal"
+description = ""
+mp_cost = 10
+sp_cost = 0
+modifier = 0.0
+effects = Array[ExtResource("1_b30u2")]([])
+damage_type = 0
+targeting_type = 3
+bounce_instances = 0
+metadata/_custom_type_script = "uid://c8rbj8kuxcoqs"

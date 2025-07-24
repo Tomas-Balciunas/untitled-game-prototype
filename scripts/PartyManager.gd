@@ -65,7 +65,12 @@ func get_row_allies(current: CharacterInstance) -> Array[CharacterInstance]:
 			if not formation[row_i][slot_i]:
 				continue
 			if formation[row_i][slot_i] == current:
-				return formation[row_i].filter(func(slot): return slot != null)
+				var row: Array[CharacterInstance] = []
+				for slot in formation[row_i]:
+					if slot != null:
+						row.append(slot)
+						
+				return row
 				
 	push_error("get_row_allies: current not found in formation")
 	return [current]

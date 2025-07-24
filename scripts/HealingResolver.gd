@@ -23,6 +23,7 @@ func _apply_core(source: CharacterInstance, target: CharacterInstance, base: flo
 
 	target.set_current_health(target.stats.current_health + ctx.final_value)
 
+	BattleTextLines.print_line("%s healed %s for %d" % [ctx.source.resource.name, ctx.target.resource.name, ctx.final_value])
 	emit_signal("healing_resolved", ctx)
 
 	return ctx

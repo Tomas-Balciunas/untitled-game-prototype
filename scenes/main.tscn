@@ -61,6 +61,7 @@ offset_right = 0.335938
 theme_override_styles/panel = SubResource("StyleBoxFlat_tbgi4")
 
 [node name="PartyContainer" type="VBoxContainer" parent="PartyPanel/PanelContainer"]
+z_index = 100
 material = SubResource("CanvasItemMaterial_sugp2")
 custom_minimum_size = Vector2(100, 50)
 layout_mode = 2

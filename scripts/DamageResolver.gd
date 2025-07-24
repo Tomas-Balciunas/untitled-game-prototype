@@ -55,7 +55,7 @@ func _apply_core(source: CharacterInstance, target: CharacterInstance, damage_ty
 	var calculator = DamageCalculator.new(ctx, defense_ignore)
 	ctx.final_value = max(calculator.get_final_damage(), 0)
 
-	print("%s received %f %s damage from %s" % [ctx.target.resource.name, ctx.final_value, DamageTypes.to_str(ctx.type), ctx.source.resource.name])
+	BattleTextLines.print_line("%s dealt %f %s damage to %s" % [ctx.source.resource.name, ctx.final_value, DamageTypes.to_str(ctx.type), ctx.target.resource.name])
 	target.set_current_health(target.stats.current_health - ctx.final_value)
 
 	emit_signal("damage_resolved", ctx)
@@ -72,7 +72,7 @@ func _apply_core(source: CharacterInstance, target: CharacterInstance, damage_ty
 		revenge.defender = counter_target
 		revenge.type = ctx.target.damage_type
 		revenge.base_value = ctx.target.stats.attack
-		print("%s counterattacks!" % ctx.target.resource.name)
+		BattleTextLines.print_line("%s counterattacks!" % ctx.target.resource.name)
 		self.apply_attack(revenge)
 
 	return ctx

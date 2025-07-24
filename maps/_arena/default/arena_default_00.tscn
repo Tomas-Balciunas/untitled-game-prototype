@@ -1,44 +1,69 @@
-[gd_scene load_steps=14 format=3 uid="uid://dq6gw6kdq30h2"]
+[gd_scene load_steps=17 format=3 uid="uid://dq6gw6kdq30h2"]
 
 [ext_resource type="Script" uid="uid://djga0vllljxhw" path="res://scripts/BattleManager.gd" id="1_6ixpi"]
+[ext_resource type="Texture2D" uid="uid://c6lrs8nmxuj34" path="res://7fe5e10d720f9206f799410f554c0398fd6a2fd7.png" id="2_6ixpi"]
 [ext_resource type="Texture2D" uid="uid://bxf0rxqbalfqo" path="res://GettyImages-2166462891_WEB.webp" id="2_gu5d0"]
 [ext_resource type="PackedScene" uid="uid://calltc1gumdi2" path="res://scenes/UIBattle.tscn" id="3_w35a6"]
 [ext_resource type="Script" uid="uid://w5crfr45qebk" path="res://scripts/EnemyGrid.gd" id="4_wh25n"]
+[ext_resource type="Script" uid="uid://d2ih4xdo2me13" path="res://scenes/battle_text_lines.gd" id="5_6ixpi"]
 
-[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_7m2sr"]
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_gu5d0"]
 panorama = ExtResource("2_gu5d0")
+filter = false
+energy_multiplier = 0.2
 
-[sub_resource type="Sky" id="Sky_dess1"]
-sky_material = SubResource("PanoramaSkyMaterial_7m2sr")
+[sub_resource type="Sky" id="Sky_w35a6"]
+sky_material = SubResource("PanoramaSkyMaterial_gu5d0")
 
 [sub_resource type="Environment" id="Environment_clnqo"]
 background_mode = 2
-sky = SubResource("Sky_dess1")
-ambient_light_source = 3
+background_color = Color(0.446777, 0.446777, 0.446777, 1)
+background_energy_multiplier = 3.86
+sky = SubResource("Sky_w35a6")
+ambient_light_source = 2
 ambient_light_color = Color(1, 1, 1, 1)
 ambient_light_sky_contribution = 0.98
+ambient_light_energy = 2.52
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_50weh"]
 load_path = "res://.godot/imported/floor_stone.jpg-174f83846018e36f29e70ca2946a733a.s3tc.ctex"
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_n2dfx"]
-albedo_color = Color(0.843184, 0.843184, 0.843184, 1)
+albedo_color = Color(0.215822, 0.209978, 0.21866, 1)
+albedo_texture = ExtResource("2_gu5d0")
 metallic_specular = 0.05
 normal_scale = 15.15
 normal_texture = SubResource("CompressedTexture2D_50weh")
 ao_texture_channel = 3
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_8n0un"]
-albedo_color = Color(0.882353, 0, 0, 1)
+albedo_color = Color(0.783523, 0.783523, 0.783523, 1)
+albedo_texture = ExtResource("2_6ixpi")
+uv1_scale = Vector3(3, 1, 1)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_f0kb1"]
-albedo_color = Color(0, 0, 0, 1)
+albedo_color = Color(0.766065, 0.765644, 0.774866, 1)
+albedo_texture = ExtResource("2_6ixpi")
+uv1_scale = Vector3(2.3, 1, 1)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7m2sr"]
-albedo_color = Color(0, 0, 0, 1)
+albedo_color = Color(0.741385, 0.741385, 0.741385, 1)
+albedo_texture = ExtResource("2_6ixpi")
+uv1_scale = Vector3(0.5, 3, 1)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_dess1"]
-albedo_color = Color(0, 0, 0, 1)
+albedo_color = Color(0.625597, 0.625597, 0.625597, 1)
+albedo_texture = ExtResource("2_6ixpi")
+uv1_scale = Vector3(0.5, 3, 2)
+uv1_offset = Vector3(1, 1, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6ixpi"]
+bg_color = Color(0, 0, 0, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.986752, 0.986752, 0.986752, 1)
 
 [node name="ArenaDefault" type="Node3D"]
 script = ExtResource("1_6ixpi")
@@ -81,5 +106,41 @@ material = SubResource("StandardMaterial3D_dess1")
 script = ExtResource("4_wh25n")
 
 [node name="BattleUI" parent="." instance=ExtResource("3_w35a6")]
+anchors_preset = -1
 anchor_top = 0.716
 offset_top = 0.0319824
+
+[node name="BattleTextLines" type="Panel" parent="."]
+anchors_preset = -1
+anchor_left = 0.681
+anchor_top = 0.719
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 0.319946
+offset_top = -2.19202
+theme_override_styles/panel = SubResource("StyleBoxFlat_6ixpi")
+script = ExtResource("5_6ixpi")
+
+[node name="MarginContainer" type="MarginContainer" parent="BattleTextLines"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 14
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 14
+
+[node name="TextContainer" type="RichTextLabel" parent="BattleTextLines/MarginContainer"]
+clip_contents = false
+layout_mode = 2
+theme_override_font_sizes/bold_italics_font_size = 11
+theme_override_font_sizes/italics_font_size = 11
+theme_override_font_sizes/mono_font_size = 11
+theme_override_font_sizes/normal_font_size = 11
+theme_override_font_sizes/bold_font_size = 11
+text = "
+"
+scroll_following = true

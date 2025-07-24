@@ -29,6 +29,7 @@ HealingResolver="*res://scripts/HealingResolver.gd"
 EventManager="*res://events/EventManager.gd"
 EventRegistry="*res://events/EventRegistry.gd"
 EventFlags="*res://events/EventFlags.gd"
+BattleTextLines="*res://scripts/BattleText.gd"
 
 [display]
 

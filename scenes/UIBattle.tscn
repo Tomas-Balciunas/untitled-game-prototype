@@ -13,22 +13,20 @@ bg_color = Color(0, 0.508119, 0.47713, 1)
 
 [node name="BattleUI" type="Control"]
 layout_mode = 3
-anchor_right = 0.319
+anchors_preset = 15
+anchor_right = 1.0
 anchor_bottom = 1.0
-offset_right = 0.511993
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
 script = ExtResource("1_a268n")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.391
-anchor_top = 0.043
-anchor_right = 0.609
-anchor_bottom = 0.957
-offset_left = 0.111984
-offset_top = 0.0879998
-offset_right = -0.112015
-offset_bottom = -0.0879974
+layout_mode = 0
+offset_left = 128.0
+offset_top = 24.0
+offset_right = 193.0
+offset_bottom = 195.0
 
 [node name="AttackButton" type="Button" parent="VBoxContainer"]
 layout_mode = 2
@@ -54,21 +52,31 @@ text = "Item"
 layout_mode = 2
 text = "Flee"
 
-[node name="SkillPopup" type="PopupPanel" parent="."]
-visible = true
+[node name="Skill" type="Control" parent="."]
+layout_mode = 1
+anchor_left = 0.15
+anchor_top = 0.579
+anchor_right = 0.244
+anchor_bottom = 0.802
+offset_top = 0.327942
+offset_right = -0.320007
+offset_bottom = 0.0639648
 
-[node name="ScrollContainer" type="ScrollContainer" parent="SkillPopup"]
+[node name="SkillPopup" type="PopupPanel" parent="Skill"]
+
+[node name="ScrollContainer" type="ScrollContainer" parent="Skill/SkillPopup"]
 anchors_preset = -1
 anchor_left = 0.04
 anchor_top = 0.04
-anchor_right = 1.999
-anchor_bottom = 1.99
+anchor_right = 0.96
+anchor_bottom = 0.96
 offset_left = 4.0
 offset_top = 4.0
 offset_right = 96.0
 offset_bottom = 96.0
+horizontal_scroll_mode = 0
 
-[node name="SkillListContainer" type="VBoxContainer" parent="SkillPopup/ScrollContainer"]
+[node name="SkillListContainer" type="VBoxContainer" parent="Skill/SkillPopup/ScrollContainer"]
 layout_mode = 2
 
 [connection signal="pressed" from="VBoxContainer/AttackButton" to="." method="_on_attack_button_pressed"]
