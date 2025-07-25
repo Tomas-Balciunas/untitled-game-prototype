@@ -1,0 +1,5 @@
+[gd_scene load_steps=2 format=3 uid="uid://dx4jf36my6b8y"]
+
+[ext_resource type="PackedScene" uid="uid://rvws4b70i1ji" path="res://white tileset.glb" id="1_pwxyh"]
+
+[node name="white tileset" instance=ExtResource("1_pwxyh")]

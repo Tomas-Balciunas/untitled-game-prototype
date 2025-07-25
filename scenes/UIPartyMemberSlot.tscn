@@ -13,10 +13,12 @@ border_color = Color(1, 1, 1, 1)
 [node name="PartyMemberSlot" type="Panel"]
 custom_minimum_size = Vector2(130, 80)
 anchors_preset = -1
-anchor_right = 0.114
-anchor_bottom = 0.123
-offset_right = -1.328
-offset_bottom = 0.295998
+anchor_right = 0.103
+anchor_bottom = 0.104
+offset_right = -1.84001
+offset_bottom = 0.127998
+grow_horizontal = 2
+grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 mouse_default_cursor_shape = 2

@@ -9,7 +9,7 @@ var current_battle_scene: Node = null
 
 func _ready():
 	var player = get_tree().get_root().get_node("Main/Dungeon/Player")
-	player.connect("start_encounter", Callable(EncounterManager, "start_encounter"))
+	#player.connect("start_encounter", Callable(EncounterManager, "start_encounter"))
 	EventManager.connect("start_event_encounter", Callable(self, "start_encounter"))
 	
 	transition_battle.modulate.a = 0.0

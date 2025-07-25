@@ -9,5 +9,3 @@ data = {
 "cells": PackedInt32Array(5, 1, 1441794)
 }
 script = ExtResource("1_6elmv")
-
-[node name="Tiles" type="Node3D" parent="."]

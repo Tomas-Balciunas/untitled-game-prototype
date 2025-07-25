@@ -17,6 +17,7 @@ const TILE_SIZE = 2.0
 var can_move = true
 var in_battle = false
 var can_rotate = true
+var is_moving = false
 
 func _ready():
 	print("Player instance: %s" % self)
@@ -38,22 +39,28 @@ func _unhandled_input(event):
 	if not is_all_movement_enabled():
 		return
 
-	if event.is_action_pressed("move_forward"):
-		move_player("forward")
-	elif event.is_action_pressed("move_backwards"):
-		move_player("backward")
-	elif event.is_action_pressed("strafe_left"):
-		move_player("left")
-	elif event.is_action_pressed("strafe_right"):
-		move_player("right")
-	elif event.is_action_pressed("turn_left"):
+	if event.is_action_pressed("turn_left"):
 		rotate_player(90)
 	elif event.is_action_pressed("turn_right"):
 		rotate_player(-90)
 
-func move_player(direction: String):
-	if not is_all_movement_enabled():
+func _process(delta):
+	if not is_all_movement_enabled() or is_moving:
 		return
+
+	if Input.is_action_pressed("move_forward"):
+		move_player("forward")
+	elif Input.is_action_pressed("move_backwards"):
+		move_player("backward")
+	elif Input.is_action_pressed("strafe_left"):
+		move_player("left")
+	elif Input.is_action_pressed("strafe_right"):
+		move_player("right")
+
+func move_player(direction: String):
+	if not is_all_movement_enabled() or is_moving:
+		return
+	is_moving = true
 	disable_all_movement()
 	var facing_deg = get_facing_direction_deg()
 	var dir = Vector2i(0, 0)
@@ -72,6 +79,7 @@ func move_player(direction: String):
 
 	# oob check
 	if target_tile.y < 0 or target_tile.y >= MapInstance.map_data.size() or target_tile.x < 0 or target_tile.x >= MapInstance.map_data[0].size():
+		is_moving = false
 		enable_all_movement()
 		print("oob")
 		return
@@ -79,6 +87,7 @@ func move_player(direction: String):
 	# wall check
 	var target_tile_data = MapInstance.map_data[target_tile.y][target_tile.x]
 	if target_tile_data["type"] == "wall":
+		is_moving = false 
 		enable_all_movement()
 		return
 
@@ -89,6 +98,7 @@ func move_player(direction: String):
 	var tween = get_tree().create_tween()
 	tween.tween_property(self, "global_position", target_position, 0.25)
 	await tween.finished
+	is_moving = false 
 	print("Emitting player moved signal...")
 	emit_signal("player_moved", {
 		"grid_position": grid_pos
@@ -128,6 +138,7 @@ func rotate_player(degrees: float):
 func disable_all_movement() -> void:
 	can_rotate = false
 	can_move = false
+
 func enable_all_movement() -> void:
 	can_rotate = true
 	can_move = true

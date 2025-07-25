@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=3 uid="uid://b6u6cuttfn0mv"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_tipki"]
+
+[node name="EncounterArea" type="Area3D" groups=["enemies"]]
+collision_layer = 2
+collision_priority = 2.0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1.96399, 0, 0, 0, 3.55468, 0, 0, 0, 0.227463, 0, 1.87228, 0)
+shape = SubResource("BoxShape3D_tipki")

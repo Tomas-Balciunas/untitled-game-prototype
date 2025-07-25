@@ -1,61 +1,10 @@
-[gd_scene load_steps=17 format=3 uid="uid://dq6gw6kdq30h2"]
+[gd_scene load_steps=8 format=3 uid="uid://dq6gw6kdq30h2"]
 
 [ext_resource type="Script" uid="uid://djga0vllljxhw" path="res://scripts/BattleManager.gd" id="1_6ixpi"]
-[ext_resource type="Texture2D" uid="uid://c6lrs8nmxuj34" path="res://7fe5e10d720f9206f799410f554c0398fd6a2fd7.png" id="2_6ixpi"]
-[ext_resource type="Texture2D" uid="uid://bxf0rxqbalfqo" path="res://GettyImages-2166462891_WEB.webp" id="2_gu5d0"]
+[ext_resource type="MeshLibrary" uid="uid://uso6cfmk5r51" path="res://tileset white.tres" id="1_gu5d0"]
 [ext_resource type="PackedScene" uid="uid://calltc1gumdi2" path="res://scenes/UIBattle.tscn" id="3_w35a6"]
 [ext_resource type="Script" uid="uid://w5crfr45qebk" path="res://scripts/EnemyGrid.gd" id="4_wh25n"]
 [ext_resource type="Script" uid="uid://d2ih4xdo2me13" path="res://scenes/battle_text_lines.gd" id="5_6ixpi"]
-
-[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_gu5d0"]
-panorama = ExtResource("2_gu5d0")
-filter = false
-energy_multiplier = 0.2
-
-[sub_resource type="Sky" id="Sky_w35a6"]
-sky_material = SubResource("PanoramaSkyMaterial_gu5d0")
-
-[sub_resource type="Environment" id="Environment_clnqo"]
-background_mode = 2
-background_color = Color(0.446777, 0.446777, 0.446777, 1)
-background_energy_multiplier = 3.86
-sky = SubResource("Sky_w35a6")
-ambient_light_source = 2
-ambient_light_color = Color(1, 1, 1, 1)
-ambient_light_sky_contribution = 0.98
-ambient_light_energy = 2.52
-
-[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_50weh"]
-load_path = "res://.godot/imported/floor_stone.jpg-174f83846018e36f29e70ca2946a733a.s3tc.ctex"
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_n2dfx"]
-albedo_color = Color(0.215822, 0.209978, 0.21866, 1)
-albedo_texture = ExtResource("2_gu5d0")
-metallic_specular = 0.05
-normal_scale = 15.15
-normal_texture = SubResource("CompressedTexture2D_50weh")
-ao_texture_channel = 3
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_8n0un"]
-albedo_color = Color(0.783523, 0.783523, 0.783523, 1)
-albedo_texture = ExtResource("2_6ixpi")
-uv1_scale = Vector3(3, 1, 1)
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_f0kb1"]
-albedo_color = Color(0.766065, 0.765644, 0.774866, 1)
-albedo_texture = ExtResource("2_6ixpi")
-uv1_scale = Vector3(2.3, 1, 1)
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7m2sr"]
-albedo_color = Color(0.741385, 0.741385, 0.741385, 1)
-albedo_texture = ExtResource("2_6ixpi")
-uv1_scale = Vector3(0.5, 3, 1)
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_dess1"]
-albedo_color = Color(0.625597, 0.625597, 0.625597, 1)
-albedo_texture = ExtResource("2_6ixpi")
-uv1_scale = Vector3(0.5, 3, 2)
-uv1_offset = Vector3(1, 1, 0)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6ixpi"]
 bg_color = Color(0, 0, 0, 1)
@@ -65,42 +14,29 @@ border_width_right = 1
 border_width_bottom = 1
 border_color = Color(0.986752, 0.986752, 0.986752, 1)
 
-[node name="ArenaDefault" type="Node3D"]
+[sub_resource type="Environment" id="Environment_gu5d0"]
+background_mode = 2
+background_color = Color(1, 1, 1, 1)
+ambient_light_color = Color(1, 1, 1, 1)
+ambient_light_sky_contribution = 0.0
+ambient_light_energy = 0.01
+ssao_enabled = true
+ssao_radius = 0.49
+ssao_intensity = 1.66
+fog_enabled = true
+fog_light_color = Color(0.772549, 0.85098, 1, 1)
+fog_light_energy = 0.09
+volumetric_fog_density = 0.0
+
+[node name="ArenaDefault" type="GridMap"]
+mesh_library = ExtResource("1_gu5d0")
+cell_center_y = false
+cell_scale = 2.0
+data = {
+"cells": PackedInt32Array(65535, 0, 2, 65534, 0, 2, 0, 0, 2, 1, 0, 2, 4, 0, 2, 3, 0, 2, 2, 65535, 2, 1, 65535, 2, 2, 0, 2, 3, 65535, 2, 4, 65535, 2, 0, 65535, 2, 65535, 65535, 2, 65534, 65535, 2, 4, 65534, 2, 3, 65534, 2, 2, 65534, 2, 1, 65534, 2, 0, 65534, 2, 65535, 65534, 2, 65534, 65534, 2, 65533, 65534, 2, 65533, 65535, 2, 65533, 0, 2, 65532, 0, 2, 65532, 65535, 2, 65532, 65534, 2, 65531, 65533, 2, 65531, 65534, 2, 65531, 65535, 2, 65531, 0, 2, 65532, 65533, 2, 65533, 65533, 2, 65534, 65533, 2, 65535, 65533, 2, 0, 65533, 2, 1, 65533, 2, 2, 65533, 2, 3, 65533, 2, 4, 65533, 2, 4, 65532, 655362, 3, 65532, 655362, 2, 65532, 655362, 1, 65532, 655362, 0, 65532, 655362, 65535, 65532, 655362, 65534, 65532, 655362, 65533, 65532, 655362, 65532, 65532, 655362, 65531, 65532, 655362, 65531, 65531, 655362, 65532, 65531, 655362, 65533, 65531, 655362, 65534, 65531, 655362, 65535, 65531, 655362, 0, 65531, 655362, 1, 65531, 655362, 2, 65531, 655362, 3, 65531, 655362, 4, 65531, 655362, 65531, 65530, 655362, 65532, 65530, 655362, 65533, 65530, 655362, 65534, 65530, 655362, 65535, 65530, 655362, 0, 65530, 655362, 1, 65530, 655362, 2, 65530, 655362, 3, 65530, 655362, 4, 65530, 655362, 4, 65529, 655362, 3, 65529, 655362, 2, 65529, 655362, 1, 65529, 655362, 0, 65529, 655362, 65535, 65529, 655362, 65534, 65529, 655362, 65533, 65529, 655362, 65532, 65529, 655362, 65531, 65529, 655362, 5, 0, 1441792, 5, 65535, 1441792, 5, 65534, 1441792, 5, 65533, 1441792, 5, 65532, 1441792, 5, 65531, 1441792, 5, 65530, 1441792, 5, 65529, 1441792, 65530, 0, 1048576, 65530, 65535, 1048576, 65530, 65534, 1048576, 65530, 65533, 1048576, 65530, 65532, 1048576, 65530, 65531, 1048576, 65530, 65530, 1048576, 65530, 65529, 1048576, 65530, 65528, 1048577, 5, 65528, 1, 4, 65528, 0, 3, 65528, 0, 2, 65528, 0, 1, 65528, 0, 0, 65528, 0, 65535, 65528, 0, 65534, 65528, 0, 65533, 65528, 0, 65532, 65528, 0, 65531, 65528, 0, 5, 1, 1441793, 4, 2, 1441793, 3, 3, 1441793, 65530, 1, 655361, 65531, 2, 655361, 65532, 3, 655361, 4, 1, 1441795, 3, 2, 1441795, 65531, 1, 655363, 65532, 2, 655363, 65533, 3, 655363, 65533, 4, 655361, 2, 4, 1441793, 2, 3, 1441795, 65532, 1, 655362, 65533, 1, 655362, 65534, 1, 655362, 65535, 1, 655362, 0, 1, 655362, 1, 1, 655362, 2, 1, 655362, 3, 1, 655362, 2, 2, 655362, 1, 2, 655362, 0, 2, 655362, 65535, 2, 655362, 65534, 2, 655362, 65533, 2, 655362, 65534, 3, 655362, 65535, 3, 655362, 0, 3, 655362, 1, 3, 655362, 0, 4, 655362, 65534, 4, 655363, 1, 4, 1441795, 65535, 4, 655362, 65534, 5, 1048576, 65534, 6, 1048576, 65534, 7, 1048576, 65534, 8, 1048576, 65534, 9, 1048576, 1, 5, 1441792, 1, 6, 1441792, 1, 7, 1441792, 1, 8, 1441792, 1, 9, 1441792, 0, 5, 1441794, 65535, 5, 1441794, 65535, 6, 1441794, 0, 6, 1441794, 0, 7, 1441794, 65535, 7, 1441794, 65535, 8, 1441794, 0, 8, 1441794, 0, 9, 1441794, 65535, 9, 1441794, 1, 10, 1441792, 1, 11, 1441792, 1, 12, 1441792, 1, 13, 1441792, 1, 14, 1441792, 65534, 10, 1048576, 65534, 11, 1048576, 65534, 12, 1048576, 65534, 13, 1048576, 65534, 14, 1048576, 1, 15, 1441793, 65534, 15, 655361, 0, 15, 655360, 65535, 15, 655360, 65535, 10, 655362, 0, 10, 655362, 0, 11, 655362, 65535, 11, 655362, 65535, 12, 655362, 0, 12, 655362, 0, 13, 655362, 65535, 13, 655362, 65535, 14, 655362, 0, 14, 655362)
+}
 script = ExtResource("1_6ixpi")
-
-[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
-environment = SubResource("Environment_clnqo")
-
-[node name="CSGBox3D" type="CSGBox3D" parent="."]
-transform = Transform3D(2, 0, 0, 0, 0.1, 0, 0, 0, 2, 0, 0, -5)
-size = Vector3(16, 0.1, 11)
-material = SubResource("StandardMaterial3D_n2dfx")
-
-[node name="CSGBox3D4" type="CSGBox3D" parent="."]
-transform = Transform3D(2, 0, 0, 0, 0.1, 0, 0, 0, 2, 0, 6, -5)
-visible = false
-size = Vector3(16, 0.1, 11)
-material = SubResource("StandardMaterial3D_n2dfx")
-
-[node name="CSGBox3D2" type="CSGBox3D" parent="."]
-transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 1.6, 0, 3, 6)
-size = Vector3(16, 3, 0.1)
-material = SubResource("StandardMaterial3D_8n0un")
-
-[node name="CSGBox3D3" type="CSGBox3D" parent="."]
-transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 1.6, 0, 3, -16)
-size = Vector3(16, 3, 0.1)
-material = SubResource("StandardMaterial3D_f0kb1")
-
-[node name="CSGBox3D5" type="CSGBox3D" parent="."]
-transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, -16, 3, -5)
-size = Vector3(0.01, 3, 11)
-material = SubResource("StandardMaterial3D_7m2sr")
-
-[node name="CSGBox3D6" type="CSGBox3D" parent="."]
-transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 16, 3, -5)
-size = Vector3(0.01, 3, 11)
-material = SubResource("StandardMaterial3D_dess1")
+metadata/_editor_floor_ = Vector3(0, 0, 0)
 
 [node name="EnemyFormation" type="Node3D" parent="."]
 script = ExtResource("4_wh25n")
@@ -144,3 +80,15 @@ theme_override_font_sizes/bold_font_size = 11
 text = "
 "
 scroll_following = true
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_gu5d0")
+
+[node name="SpotLight3D" type="SpotLight3D" parent="."]
+transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 0, 3, -9)
+light_energy = 1.162
+light_specular = 0.0
+spot_range = 30.921
+spot_attenuation = 1.19
+spot_angle = 49.32
+spot_angle_attenuation = 1.56917

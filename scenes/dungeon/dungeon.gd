@@ -1,8 +1,8 @@
 extends Node3D
 
-@onready var tiles_container = $Tiles
+#@onready var tiles_container = $Tiles
 @onready var transition_rect = get_tree().get_root().get_node("Main/TransitionRect")
-var map_data = []
+#var map_data = []
 var player: Node3D
 
 const TILE_SIZE = 2.0
@@ -20,44 +20,44 @@ func _ready():
 
 func load_map(map_id: String):
 	var map_resource = MapManager.get_map(map_id)
-	print(map_resource)
 	
 	if MapInstance.map_id != map_id:
 		print("Dungeon: Loading new map")
-		MapInstance.hydrate_from_resource(map_resource)
+		#MapInstance.hydrate_from_resource(map_resource)
+	var e = map_resource.instantiate()
+	self.add_child(e)
+	#map_data = MapInstance.map_dataw
+	#var theme = MapInstance.theme
+	#var player_position = MapInstance.player_position
+	#print(player_position)
+	#
+	#for child in tiles_container.get_children():
+		#child.queue_free()
+	#
+	#for y in range(map_data.size()):
+		#for x in range(map_data[y].size()):
+			#var tile = map_data[y][x]
+			#var position = Vector3(x * TILE_SIZE, 0, y * TILE_SIZE)
+#
+			#if tile["type"] == "floor":
+				#var floor_scene = TileFactory.get_tile_style(theme, tile["type"], tile["style"])
+				#var floor_tile = floor_scene.instantiate()
+				#tiles_container.add_child(floor_tile)
+				#floor_tile.global_position = position
+				#floor_tile.set_meta("event", tile["event"])
+				#floor_tile.set_meta("encounter", tile["encounter"])
+				#floor_tile.set_meta("arena", tile["arena"])
+			#
+			#if tile["type"] == "wall":
+				#var wall_scene = TileFactory.get_tile_style(theme, tile["type"], tile["style"])
+				#var wall = wall_scene.instantiate()
+				#tiles_container.add_child(wall)
+				#wall.global_position = position + Vector3(0, 0, 0)
+				#wall.set_meta("event", tile["event"])
+				#wall.set_meta("encounter", tile["encounter"])
+				#wall.set_meta("arena", tile["arena"])
 	
-	map_data = MapInstance.map_data
-	var theme = MapInstance.theme
-	var player_position = MapInstance.player_position
-	print(player_position)
-	
-	for child in tiles_container.get_children():
-		child.queue_free()
-	
-	for y in range(map_data.size()):
-		for x in range(map_data[y].size()):
-			var tile = map_data[y][x]
-			var position = Vector3(x * TILE_SIZE, 0, y * TILE_SIZE)
-
-			if tile["type"] == "floor":
-				var floor_scene = TileFactory.get_tile_style(theme, tile["type"], tile["style"])
-				var floor_tile = floor_scene.instantiate()
-				tiles_container.add_child(floor_tile)
-				floor_tile.global_position = position
-				floor_tile.set_meta("event", tile["event"])
-				floor_tile.set_meta("encounter", tile["encounter"])
-				floor_tile.set_meta("arena", tile["arena"])
-			
-			if tile["type"] == "wall":
-				var wall_scene = TileFactory.get_tile_style(theme, tile["type"], tile["style"])
-				var wall = wall_scene.instantiate()
-				tiles_container.add_child(wall)
-				wall.global_position = position + Vector3(0, 0, 0)
-				wall.set_meta("event", tile["event"])
-				wall.set_meta("encounter", tile["encounter"])
-				wall.set_meta("arena", tile["arena"])
-	
-	player.set_grid_pos(player_position)
+	#player.set_grid_pos(player_position)
 	MapInstance.emit_signal("map_transition_finish")
 
 func _on_encounter_started(data: Dictionary):

@@ -1,33 +1,36 @@
 [gd_scene load_steps=3 format=3 uid="uid://ed1wo7vfltsb"]
 
-[ext_resource type="Script" uid="uid://barrw5aujn17p" path="res://scenes/player.gd" id="1_xhfnw"]
+[ext_resource type="Script" uid="uid://dhhg4mlmlgs83" path="res://scenes/player_test.gd" id="1_p0vlq"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_p0vlq"]
-size = Vector3(0.620972, 1.99615, 0.552612)
+size = Vector3(0.620972, 1.62979, 0.552612)
 
 [node name="Player" type="Node3D"]
-script = ExtResource("1_xhfnw")
+script = ExtResource("1_p0vlq")
 
 [node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.8, -0.302716)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.34984, -0.302716)
 fov = 93.0034
 
-[node name="SpotLight3D" type="SpotLight3D" parent="Camera3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.295857)
-light_color = Color(0.888866, 0.927963, 1, 1)
-light_energy = 4.718
-light_indirect_energy = 1.646
-light_volumetric_fog_energy = 0.0
-light_size = 0.111
-light_bake_mode = 1
-shadow_enabled = true
-spot_range = 5.22564
-spot_attenuation = 2.82
-spot_angle = 39.9114
-spot_angle_attenuation = 0.63728
+[node name="OmniLight3D" type="OmniLight3D" parent="Camera3D"]
+transform = Transform3D(1, 0, 0, 0, 0.0297301, 0, 0, 0, 1, 0, 0, 0.312911)
+light_color = Color(0.585928, 0.568995, 0.564924, 1)
+omni_range = 6.66321
 
-[node name="CharacterBody3D" type="CharacterBody3D" parent="."]
+[node name="CharacterBody3D" type="CharacterBody3D" parent="." groups=["player"]]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="CharacterBody3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.816819, 0)
 shape = SubResource("BoxShape3D_p0vlq")
+
+[node name="FrontRay" type="RayCast3D" parent="."]
+target_position = Vector3(0, 0, -2)
+
+[node name="BackRay" type="RayCast3D" parent="."]
+target_position = Vector3(0, 0, 2)
+
+[node name="LeftRay" type="RayCast3D" parent="."]
+target_position = Vector3(-2, 0, 0)
+
+[node name="RightRay" type="RayCast3D" parent="."]
+target_position = Vector3(2, 0, 0)

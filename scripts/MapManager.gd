@@ -1,7 +1,7 @@
 extends Node
 
 var maps = {
-	"area_00": load("res://maps/hub/starting_area.tres"),
+	"area_00": load("res://maps/hub/starting_area.tscn"),
 	"crypt_00": load("res://maps/crypt/crypt_00.tres")
 }
 
@@ -9,7 +9,7 @@ var arenas = {
 	"arena_default_00": load("res://maps/_arena/default/arena_default_00.tscn")
 }
 
-func get_map(id: String) -> MapData:
+func get_map(id: String) -> PackedScene:
 	if maps.has(id):
 		return maps[id]
 	return null
