@@ -2,16 +2,17 @@ extends Node
 
 class_name BattleManager
 
-signal current_battler_change(battler: CharacterInstance)
+signal current_battler_change(battler: CharacterInstance, is_party_member: bool)
+signal turn_started(is_party_member: bool)
+signal enemy_died(dead: CharacterInstance)
 
 const TURN_THRESHOLD = 1000
 
 @onready var dungeon = get_tree().get_root().get_node("Main/Dungeon")
 @onready var player = get_tree().get_root().get_node("Main/Dungeon/Player")
 @onready var camera: Camera3D = get_viewport().get_camera_3d()
-@onready var battle_ui = $BattleUI
 @onready var party_panel = get_tree().get_root().get_node("Main/PartyPanel")
-@onready var enemy_grid = $EnemyFormation
+@onready var enemy_grid = null
 
 enum BattleState {
 	IDLE,
@@ -39,35 +40,17 @@ var _pending_options: Array = []
 var _pending_target: CharacterInstance = null
 var current_battler: CharacterInstance = null
 
-func _ready():
-	$BattleUI.setup(self)
+func begin(_enemies: Array[CharacterInstance]):
 	TargetingManager.configure_for_battle(camera)
 	TargetingManager.connect("target_clicked", Callable(self, "_on_target_selected"))
 	TargetingManager.connect("target_hovered", Callable(self, "_on_enemy_hovered"))
 	TargetingManager.connect("target_unhovered", Callable(self, "_on_enemy_unhovered"))
-	battle_ui.action_selected.connect(_on_player_action_selected)
-	battle_ui.hide()
-	
-	var balmer = CharacterRegistry.get_character(102)
-	var skeltal = CharacterRegistry.get_character(101)
-	var instance3 = CharacterInstance.new(balmer)
-	var instance4 = CharacterInstance.new(skeltal)
-	var instance5 = CharacterInstance.new(balmer)
-	var instance6 = CharacterInstance.new(skeltal)
-	var instance7 = CharacterInstance.new(skeltal)
-	var instance8 = CharacterInstance.new(skeltal)
-	var instance9 = CharacterInstance.new(skeltal)
-	var instance10 = CharacterInstance.new(skeltal)
-	var instance11 = CharacterInstance.new(skeltal)
-	var instance12 = CharacterInstance.new(balmer)
 	
 	var party_members = PartyManager.members
 	
-	for b in party_members + [instance3, instance4, instance5]: #[instance3, instance4, instance5, instance6, instance7, instance8, instance9, instance10, instance11, instance12]:
+	for b in party_members + _enemies:
 		b.turn_meter = 0
 		_register_battler(b)
-		
-	load_enemies()
 	
 	current_state = BattleState.PROCESS_TURNS
 
@@ -97,9 +80,6 @@ func _process(_delta):
 		BattleState.LOSE:
 			_handle_lose()
 
-func load_enemies():
-	enemy_grid.place_all_enemies(enemies)
-
 func _process_turn_queue():
 	while turn_queue.is_empty():
 		for b in battlers:
@@ -113,24 +93,21 @@ func _process_turn_queue():
 		current_state = BattleState.TURN_START
 
 func _on_turn_start():
-	battle_ui._reset_all_button_highlights()
+	var is_party_member = current_battler in party
+	emit_signal("turn_started", is_party_member)
+	emit_signal("current_battler_change", current_battler, is_party_member)
 
 	current_battler.process_effects("on_turn_start")
 	disable_all_targeting()
 		
-	if current_battler in party:
+	if is_party_member:
 		current_state = BattleState.PLAYER_TURN
-		emit_signal("current_battler_change", current_battler)
 		party_panel.highlight_member(current_battler)
 		print("Player turn for:", current_battler.resource.name)
-		battle_ui.show()
-		_on_player_action_selected("attack", [])
 	else:
-		battle_ui.hide()
 		current_state = BattleState.ENEMY_TURN
 
 func _on_turn_end():
-	#print("%s effects: %s" % [current_battler.resource.name, current_battler.effects])
 	current_battler.process_effects("on_turn_end")
 	current_battler = null
 	party_panel.clear_highlights()
@@ -142,7 +119,6 @@ func _on_player_action_selected(action: String, options: Array):
 		
 	_pending_action = action
 	_pending_options = options
-	battle_ui.highlight_action(action)
 	
 	match action:
 		"defend":
@@ -260,7 +236,6 @@ func _handle_flee():
 		print("Party flees successfully!")
 		EncounterManager.end_encounter("flee")
 		current_state = BattleState.IDLE
-		get_tree().get_root().get_node("Main").remove_child(self)
 		queue_free()
 	else:
 		print("Failed to flee!")
@@ -277,14 +252,12 @@ func _handle_win():
 	print("Victory! Handle rewards here.")
 	EncounterManager.end_encounter("win")
 	current_state = BattleState.IDLE
-	get_tree().get_root().get_node("Main").remove_child(self)
 	queue_free()
 
 func _handle_lose():
 	print("Defeat! Handle game over here.")
 	EncounterManager.end_encounter("lose")
 	current_state = BattleState.IDLE
-	get_tree().get_root().get_node("Main").remove_child(self)
 	queue_free()
 	
 func _register_battler(battler: CharacterInstance):
@@ -298,7 +271,8 @@ func _register_battler(battler: CharacterInstance):
 	battler.died.connect(Callable(self, "_on_battler_died"))
 	
 func _on_battler_died(rip: CharacterInstance) -> void:
-	_to_cleanup.append(rip)
+	if rip not in party:
+		_to_cleanup.append(rip)
 	
 func _corpse_janny():
 	for dead in _to_cleanup:
@@ -307,9 +281,9 @@ func _corpse_janny():
 		enemies.erase(dead)
 		turn_queue.erase(dead)
 		#battle_ui.remove_character(dead)
-		enemy_grid.remove_slot_for(dead)
+		
+		emit_signal("enemy_died", dead)
 		#_play_death_animation(dead)
-		#PartyManager.gain_experience(dead.resource.xp_value)
 	_to_cleanup.clear()
 
 func _on_enemy_hovered(target: EnemySlot):

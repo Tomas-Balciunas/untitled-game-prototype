@@ -7,15 +7,17 @@ func apply_heal(action: HealingAction) -> HealingContext:
 	return _apply_core(
 		action.provider,
 		action.receiver,
-		action.base_value
+		action.base_value,
+		action.options
 	)
 
-func _apply_core(source: CharacterInstance, target: CharacterInstance, base: float) -> HealingContext:
+func _apply_core(source: CharacterInstance, target: CharacterInstance, base: float, options: Dictionary = {}) -> HealingContext:
 	var ctx = HealingContext.new()
 	ctx.source    = source
 	ctx.target    = target
 	ctx.base_value  = base
 	ctx.final_value = base
+	ctx.options = options
 	
 	source.process_effects(EffectTriggers.ON_HEAL, ctx)
 	

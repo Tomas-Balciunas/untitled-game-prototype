@@ -4,6 +4,7 @@ extends Node3D
 @onready var transition_rect = get_tree().get_root().get_node("Main/TransitionRect")
 #var map_data = []
 var player: Node3D
+var current_map_scene: Node = null
 
 const TILE_SIZE = 2.0
 
@@ -21,16 +22,21 @@ func _ready():
 func load_map(map_id: String):
 	var map_resource = MapManager.get_map(map_id)
 	
+	if current_map_scene:
+		current_map_scene.queue_free()
+		await get_tree().process_frame
+		current_map_scene = null
+	
 	if MapInstance.map_id != map_id:
 		print("Dungeon: Loading new map")
-		#MapInstance.hydrate_from_resource(map_resource)
-	var e = map_resource.instantiate()
-	self.add_child(e)
-	#map_data = MapInstance.map_dataw
+		MapInstance.hydrate_from_resource(map_resource)
+
+	current_map_scene = MapInstance.map_data.instantiate()
+	self.add_child(current_map_scene)
+	#map_data = MapInstance.map_data
 	#var theme = MapInstance.theme
-	#var player_position = MapInstance.player_position
-	#print(player_position)
-	#
+	var player_position = MapInstance.player_position
+	print(player_position)
 	#for child in tiles_container.get_children():
 		#child.queue_free()
 	#
@@ -57,13 +63,16 @@ func load_map(map_id: String):
 				#wall.set_meta("encounter", tile["encounter"])
 				#wall.set_meta("arena", tile["arena"])
 	
-	#player.set_grid_pos(player_position)
+	player.set_grid_pos(player_position, TILE_SIZE)
 	MapInstance.emit_signal("map_transition_finish")
 
 func _on_encounter_started(data: Dictionary):
 	player.global_position = Vector3(0, 1, -8)
 	player.rotation_degrees.y = 180
 	self.visible = false
+	if current_map_scene:
+		current_map_scene.queue_free()
+		current_map_scene = null
 
 func handle_event(event: String):
 	print(event)

@@ -5,7 +5,7 @@ signal map_transition_finish()
 var map_id: String = ""
 var current_map_name: String = ""
 var theme: String = ""
-var map_data = []
+var map_data: PackedScene
 var player_position = Vector2i()
 var triggered_events = {}
 var cleared_encounters = {}
@@ -13,8 +13,8 @@ var transitions = {}
 
 func hydrate_from_resource(map_resource):
 	map_id = map_resource.id
-	current_map_name = map_resource.name
-	theme = map_resource.theme
+	#current_map_name = map_resource.name
+	#theme = map_resource.theme
 	map_data = map_resource.data
 	player_position = map_resource.start_pos
 

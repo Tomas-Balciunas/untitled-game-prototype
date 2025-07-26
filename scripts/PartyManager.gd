@@ -11,10 +11,10 @@ var formation = [
 ]
 
 func _ready() -> void:
-	for id in [1, 2]:
+	for id in [CharacterIDs.SKELLY, CharacterIDs.LILI]:
 		add_member(id)
 
-func add_member(id: int) -> void:
+func add_member(id: String) -> void:
 	var res := CharacterRegistry.get_character(id)
 	if res:
 		var inst := CharacterInstance.new(res)

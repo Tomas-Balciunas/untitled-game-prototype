@@ -1,6 +1,6 @@
 extends Node
 
-var characters: Dictionary[int, CharacterResource] = {}
+var characters: Dictionary[String, CharacterResource] = {}
 
 func _ready() -> void:
 	_register_all()
@@ -12,6 +12,7 @@ func _register_all() -> void:
 		"res://characters/foes/Skeltal/Skeltal.tres",
 		"res://characters/foes/Balmer/Balmer.tres",
 	]
+	
 	for path in res_paths:
 		var res = ResourceLoader.load(path)
 		if res:
@@ -20,5 +21,5 @@ func _register_all() -> void:
 func register_character(res: CharacterResource) -> void:
 	characters[res.id] = res
 
-func get_character(id: int) -> CharacterResource:
+func get_character(id: String) -> CharacterResource:
 	return characters.get(id)

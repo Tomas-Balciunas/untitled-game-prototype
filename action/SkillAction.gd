@@ -8,3 +8,4 @@ var skill: Skill
 var type: DamageTypes.Type
 var modifier: float = 0
 var effects: Array[Effect] = []
+var options: Dictionary = {}

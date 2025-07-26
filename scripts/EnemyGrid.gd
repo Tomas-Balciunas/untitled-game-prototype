@@ -19,6 +19,17 @@ func _ready() -> void:
 	back_slots.resize(MAX_SLOTS)
 	front_positions = get_centered_positions(MAX_SLOTS, FRONT_ROW_Z)
 	back_positions  = get_centered_positions(MAX_SLOTS, BACK_ROW_Z)
+	
+func _on_enemy_died(dead: CharacterInstance):
+	remove_slot_for(dead)
+	
+func get_enemy_instances(resources: Array[CharacterResource]) -> Array[CharacterInstance]:
+	var enemies: Array[CharacterInstance] = []
+	for r in resources:
+		var e = CharacterInstance.new(r)
+		enemies.append(e)
+	
+	return enemies
 
 func place_all_enemies(enemies: Array[CharacterInstance]) -> void:
 	clear_slots()
@@ -30,8 +41,10 @@ func place_all_enemies(enemies: Array[CharacterInstance]) -> void:
 			front_enemies.append(e)
 		elif back_enemies.size() < MAX_SLOTS:
 			back_enemies.append(e)
+		elif front_enemies.size() < MAX_SLOTS:
+			front_enemies.append(e)
 		else:
-			push_warning("Too many enemies!")
+			push_error("Too many enemies!")
 
 	var front_start = int((MAX_SLOTS - front_enemies.size()) * 0.5)
 	for i in range(front_enemies.size()):
@@ -50,6 +63,9 @@ func place_all_enemies(enemies: Array[CharacterInstance]) -> void:
 		slot.position = back_positions[idx]
 		add_child(slot)
 		back_slots[idx] = slot
+		
+	for i in back_enemies.size():
+		_promote_from_back_to_front(i)
 
 func remove_slot_for(enemy: CharacterInstance) -> void:
 	for i in range(MAX_SLOTS):
@@ -69,7 +85,7 @@ func remove_slot_for(enemy: CharacterInstance) -> void:
 
 func _promote_from_back_to_front(index: int) -> void:
 	var back = back_slots[index]
-	if back:
+	if back and front_slots[index] == null:
 		back_slots[index]  = null
 		front_slots[index] = back
 		back.position      = front_positions[index]

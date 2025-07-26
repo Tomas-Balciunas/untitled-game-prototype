@@ -64,7 +64,7 @@ func _init(res: CharacterResource) -> void:
 	
 	weapon = res.default_weapon
 	if weapon: weapon.equip(self)
-	stats.recalculate_stats(self, true)
+	stats.recalculate_stats(self, true, true)
 
 func set_current_health(new_health: int) -> void:
 	var old = stats.current_health

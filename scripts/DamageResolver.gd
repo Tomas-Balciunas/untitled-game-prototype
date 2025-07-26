@@ -9,7 +9,8 @@ func apply_attack(action: AttackAction) -> DamageContext:
 		action.defender,
 		action.type,
 		action.base_value,
-		[]
+		[],
+		action.options
 	)
 
 func apply_skill(skill: SkillAction) -> DamageContext:
@@ -23,10 +24,11 @@ func apply_skill(skill: SkillAction) -> DamageContext:
 		skill.defender, 				# char inst
 		skill.skill.damage_type,		# dmg element, overrides attacker's element
 		calculated_damage,			# attacker's power * skill modifier
-		skill.effects				# additional skill effects
+		skill.effects,				# additional skill effects
+		skill.options
 	)
 
-func _apply_core(source: CharacterInstance, target: CharacterInstance, damage_type: DamageTypes.Type, base: float, extra_effects: Array[Effect]) -> DamageContext:
+func _apply_core(source: CharacterInstance, target: CharacterInstance, damage_type: DamageTypes.Type, base: float, extra_effects: Array[Effect], options: Dictionary = {}) -> DamageContext:
 	var ctx = DamageContext.new()
 	ctx.source    = source
 	ctx.target    = target
@@ -34,6 +36,7 @@ func _apply_core(source: CharacterInstance, target: CharacterInstance, damage_ty
 	ctx.base_value  = base
 	ctx.final_value = base
 	ctx.tags        = extra_effects
+	ctx.options = options
 	
 	# attacker’s effects
 	source.process_effects(EffectTriggers.ON_HIT, ctx)

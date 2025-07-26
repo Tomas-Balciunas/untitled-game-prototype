@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="EncounterData" load_steps=4 format=3 uid="uid://d34tlmbjgrfkv"]
+
+[ext_resource type="Script" uid="uid://bwn4gpkaijqsg" path="res://scripts/CharacterResource.gd" id="1_0cmg2"]
+[ext_resource type="Resource" uid="uid://dq6o86j5axtjb" path="res://characters/foes/Balmer/Balmer.tres" id="2_mecwj"]
+[ext_resource type="Script" uid="uid://bsiblcov0noq8" path="res://maps/_encounter/EncounterData.gd" id="4_dop40"]
+
+[resource]
+script = ExtResource("4_dop40")
+description = "whatever"
+enemies = Array[ExtResource("1_0cmg2")]([ExtResource("2_mecwj"), ExtResource("2_mecwj"), ExtResource("2_mecwj"), ExtResource("2_mecwj"), ExtResource("2_mecwj"), ExtResource("2_mecwj")])
+arena = "arena_default_00"
+metadata/_custom_type_script = "uid://bsiblcov0noq8"

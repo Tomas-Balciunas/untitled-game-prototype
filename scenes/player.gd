@@ -78,11 +78,11 @@ func move_player(direction: String):
 	var target_tile = grid_pos + dir
 
 	# oob check
-	if target_tile.y < 0 or target_tile.y >= MapInstance.map_data.size() or target_tile.x < 0 or target_tile.x >= MapInstance.map_data[0].size():
-		is_moving = false
-		enable_all_movement()
-		print("oob")
-		return
+	#if target_tile.y < 0 or target_tile.y >= MapInstance.map_data.size() or target_tile.x < 0 or target_tile.x >= MapInstance.map_data[0].size():
+		#is_moving = false
+		#enable_all_movement()
+		#print("oob")
+		#return
 
 	# wall check
 	var target_tile_data = MapInstance.map_data[target_tile.y][target_tile.x]

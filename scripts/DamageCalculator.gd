@@ -13,6 +13,7 @@ func get_final_damage() -> int:
 	var final = context.final_value
 	
 	#if context.type == DamageTypes.Type.PHYSICAL:
-	final -= context.target.stats.defense * 1 - defense_ignore
+	#if context.options.has("dot") and not context.options.has("dot"): 
+		#final -= context.target.stats.defense * 1 - defense_ignore
 		
 	return final

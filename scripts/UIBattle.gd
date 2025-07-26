@@ -12,14 +12,16 @@ var current_battler: CharacterInstance = null
 @onready var skill_popup = $Skill/SkillPopup
 @onready var skill_list_container = $Skill/SkillPopup/ScrollContainer/SkillListContainer
 
-var battle_manager: BattleManager
-
-func setup(manager: BattleManager) -> void:
-	battle_manager = manager
-	battle_manager.current_battler_change.connect(_on_battler_change)
+func _on_battler_change(battler, is_party_member: bool):
+	if is_party_member:
+		current_battler = battler
 	
-func _on_battler_change(battler):
-	current_battler = battler
+func _on_turn_started(is_party_member: bool):
+	if is_party_member:
+		show()
+		highlight_action("attack")
+	else:
+		hide()
 
 func _on_defend_button_pressed() -> void:
 	emit_signal("action_selected", "defend", [])
