@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="CharacterResource" load_steps=12 format=3 uid="uid://dh8kad7brt53b"]
+[gd_resource type="Resource" script_class="CharacterResource" load_steps=13 format=3 uid="uid://dh8kad7brt53b"]
 
 [ext_resource type="Script" uid="uid://dq4acpkde276p" path="res://skills/Skill.gd" id="1_5gn58"]
 [ext_resource type="Script" uid="uid://bp0biy0knxw2o" path="res://effect/Effect.gd" id="1_7ajkr"]
@@ -8,6 +8,7 @@
 [ext_resource type="Resource" uid="uid://c4v8018wjpyyf" path="res://effect/_passive/healing/HealBoost.tres" id="3_1ui0v"]
 [ext_resource type="Resource" uid="uid://pchf07nevgay" path="res://characters/_gender/Female.tres" id="3_abpod"]
 [ext_resource type="Resource" uid="uid://dt2wtnoyod5yd" path="res://effect/_passive/mp_cost/MpCostReduction.tres" id="4_23xqr"]
+[ext_resource type="Resource" uid="uid://dgxlt0x8p42nw" path="res://effect/DamageShare.tres" id="5_7lkq3"]
 [ext_resource type="Resource" uid="uid://j0lr1j1qp7cc" path="res://gear/weapon/wooden_sword.tres" id="7_7lkq3"]
 [ext_resource type="Resource" uid="uid://7xtbwq8efwlh" path="res://characters/_class/Priest.tres" id="8_23xqr"]
 
@@ -39,7 +40,7 @@ experience = 0
 slot_width = 1
 prefers_front_row = false
 default_skills = Array[ExtResource("1_5gn58")]([])
-default_effects = Array[ExtResource("1_7ajkr")]([ExtResource("3_1ui0v"), ExtResource("4_23xqr")])
+default_effects = Array[ExtResource("1_7ajkr")]([ExtResource("3_1ui0v"), ExtResource("4_23xqr"), ExtResource("5_7lkq3")])
 default_damage_type = 0
 default_weapon = ExtResource("7_7lkq3")
 metadata/_custom_type_script = "uid://bwn4gpkaijqsg"

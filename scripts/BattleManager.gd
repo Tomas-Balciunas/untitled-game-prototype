@@ -51,6 +51,7 @@ func begin(_enemies: Array[CharacterInstance]):
 	for b in party_members + _enemies:
 		b.turn_meter = 0
 		_register_battler(b)
+		b.prepare_for_battle()
 	
 	current_state = BattleState.PROCESS_TURNS
 
@@ -165,7 +166,7 @@ func _perform_player_action(action: String, target: CharacterInstance):
 				atk.defender   = t
 				atk.base_value = current_battler.stats.attack
 				atk.type = current_battler.damage_type
-				var result    = DamageResolver.apply_attack(atk)
+				var result    = DamageResolver.apply_attack(atk, self)
 		"skill":
 			var targeting = _pending_options[0].targeting_type
 			var _targets = get_applicable_targets(target, targeting)
@@ -190,7 +191,7 @@ func _perform_player_action(action: String, target: CharacterInstance):
 					skill.receiver = t
 					skill.base_value = _pending_options[0].healing_amount
 					skill.effects = _pending_options[0].effects
-					var result = HealingResolver.apply_heal(skill)
+					var result = HealingResolver.apply_heal(skill, self)
 				elif _pending_options[0] is Skill:
 					var skill = SkillAction.new()
 					skill.attacker   = current_battler
@@ -198,7 +199,7 @@ func _perform_player_action(action: String, target: CharacterInstance):
 					skill.skill = _pending_options[0]
 					skill.effects = _pending_options[0].effects
 					skill.modifier = _pending_options[0].modifier
-					var result = DamageResolver.apply_skill(skill)
+					var result = DamageResolver.apply_skill(skill, self)
 				else:
 					print("Unknown skill!")
 			
@@ -223,7 +224,7 @@ func _process_enemy_turn():
 	atk.attacker = current_battler
 	atk.defender   = target
 	atk.base_value = current_battler.stats.attack
-	var result    = DamageResolver.apply_attack(atk)
+	var result    = DamageResolver.apply_attack(atk, self)
 	
 	current_state = BattleState.TURN_END
 
@@ -340,4 +341,5 @@ func get_applicable_targets(current: CharacterInstance, type: TargetingManager.T
 		#TODO: bounce targeting
 	return [current]
 		
-		
+func same_side(a: CharacterInstance, b: CharacterInstance) -> bool:
+	return (a in party) == (b in party)

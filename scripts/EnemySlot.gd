@@ -5,8 +5,7 @@ class_name EnemySlot
 var character_instance: CharacterInstance
 var sprite_size
 var sprite_instance: AnimatedSprite3D
-@export var fallback: CharacterResource
-
+var fallback: CharacterResource = load("res://characters/foes/_fallback/boo.tres")
 
 func bind(character: CharacterInstance):
 	character_instance = character

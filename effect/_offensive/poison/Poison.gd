@@ -32,7 +32,7 @@ func on_trigger(trigger: String, ctx: ActionContext) -> void:
 		tick.type = DamageTypes.Type.POISON
 		tick.base_value = damage_per_turn
 		tick.options["dot"] = true 
-		DamageResolver.apply_attack(tick)
+		DamageResolver.apply_attack(tick, ctx.manager)
 		
 		_remaining -= 1
 		if _remaining <= 0:

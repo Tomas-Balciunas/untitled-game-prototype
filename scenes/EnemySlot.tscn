@@ -1,11 +1,9 @@
-[gd_scene load_steps=3 format=3 uid="uid://b1jxfg32brb8x"]
+[gd_scene load_steps=2 format=3 uid="uid://b1jxfg32brb8x"]
 
 [ext_resource type="Script" uid="uid://dymuc6nxf4l2d" path="res://scripts/EnemySlot.gd" id="1_loh0k"]
-[ext_resource type="Resource" uid="uid://btr7k6tmwt3qi" path="res://characters/foes/_fallback/boo.tres" id="2_loh0k"]
 
 [node name="EnemySlot" type="Node3D"]
 script = ExtResource("1_loh0k")
-fallback = ExtResource("2_loh0k")
 
 [node name="NameLabel" type="Label" parent="."]
 offset_right = 76.0

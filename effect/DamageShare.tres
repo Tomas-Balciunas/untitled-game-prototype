@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="DamageShare" load_steps=2 format=3 uid="uid://dgxlt0x8p42nw"]
+
+[ext_resource type="Script" uid="uid://cvlcynw134skv" path="res://effect/DamageShare.gd" id="1_i2nm0"]
+
+[resource]
+script = ExtResource("1_i2nm0")
+share_percent = 0.1
+name = "Unnamed Effect"
+category = 0
+duration_turns = -1
+metadata/_custom_type_script = "uid://cvlcynw134skv"

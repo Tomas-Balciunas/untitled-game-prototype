@@ -98,13 +98,25 @@ func set_current_mana(new_mana: int) -> void:
 	emit_signal("mana_changed", old, stats.current_mana)
 	print("%s MP %s/%s" % [resource.name, stats.current_mana, stats.max_mana])
 
+func prepare_for_battle() -> void:
+	for e in effects:
+		e.prepare_for_battle(self)
+
+func cleanup_after_battle() -> void:
+	for e in effects:
+		e.cleanup_after_battle()
+
+#func remove_effect(effect: Effect) -> void:
+	#if effects.size() > 0 and effect.has_method(EffectTriggers.ON_EXPIRE):
+		#effect.on_expire(self)
+
 func apply_effect(effect: Effect, ctx: ActionContext) -> void:
 	for passive in effects.duplicate():
 		passive.on_trigger(EffectTriggers.ON_APPLY_EFFECT, ctx)
 			
 	effect.on_apply(self)
 	effects.append(effect)
-		
+		#
 func remove_effect(effect: Resource) -> void:
 	effects.erase(effect)
 	if effects.size() > 0 and effect.has_method(EffectTriggers.ON_EXPIRE):
@@ -112,7 +124,8 @@ func remove_effect(effect: Resource) -> void:
 		
 func process_effects(trigger: String, ctx: ActionContext = null) -> void:
 	for effect in effects.duplicate():
-		effect.on_trigger(trigger, ctx)
+		if effect.has_method("on_trigger"):
+			effect.on_trigger(trigger, ctx)
 		
 func fill_stats(res: CharacterResource):
 	stats.base_attack = res.attack_power
