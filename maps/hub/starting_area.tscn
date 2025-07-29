@@ -1,11 +1,13 @@
-[gd_scene load_steps=18 format=3 uid="uid://c8n1llsvvhonb"]
+[gd_scene load_steps=21 format=3 uid="uid://c8n1llsvvhonb"]
 
 [ext_resource type="MeshLibrary" uid="uid://uso6cfmk5r51" path="res://tileset white.tres" id="1_mdjaj"]
 [ext_resource type="Script" uid="uid://domtntexnhum4" path="res://scenes/DungeonEncounter.gd" id="2_p7vp1"]
 [ext_resource type="Texture2D" uid="uid://cjh84x068jx5c" path="res://balmer-andromalius-57x88-alpha.png" id="3_2g68h"]
 [ext_resource type="Resource" uid="uid://glboqdt0keow" path="res://maps/_encounter/starting area/basic_test.tres" id="3_2pqfk"]
 [ext_resource type="Texture2D" uid="uid://dc2rf27qhxx4g" path="res://ghost.png" id="7_g1pjd"]
+[ext_resource type="Script" uid="uid://cs78wsbme5ww4" path="res://maps/hub/TransitionData.gd" id="7_kjsaj"]
 [ext_resource type="Resource" uid="uid://d34tlmbjgrfkv" path="res://maps/_encounter/starting area/basic_test_2.tres" id="7_w2sle"]
+[ext_resource type="Resource" uid="uid://ca1h8vjjk8vcm" path="res://maps/crypt/crypt_00.tres" id="8_w2sle"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_dwbtb"]
 size = Vector3(1.46509, 2.61436, 0.1)
@@ -70,6 +72,8 @@ animations = [{
 [sub_resource type="BoxShape3D" id="BoxShape3D_2pqfk"]
 size = Vector3(1, 2, 1)
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_g1pjd"]
+
 [node name="StartingArea" type="GridMap"]
 mesh_library = ExtResource("1_mdjaj")
 cell_size = Vector3(1, 1, 1)
@@ -107,7 +111,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 shape = SubResource("BoxShape3D_8knx6")
 
 [node name="Body" type="StaticBody3D" parent="Enemies"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -15)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -20)
 collision_layer = 4
 script = ExtResource("2_p7vp1")
 encounter_data = ExtResource("7_w2sle")
@@ -127,3 +131,13 @@ animation = &"Idle"
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Enemies/Body/EncounterArea"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 shape = SubResource("BoxShape3D_2pqfk")
+
+[node name="Transitions" type="Node" parent="."]
+
+[node name="Area3D" type="Area3D" parent="Transitions"]
+script = ExtResource("7_kjsaj")
+map_data = ExtResource("8_w2sle")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Transitions/Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, -20)
+shape = SubResource("BoxShape3D_g1pjd")

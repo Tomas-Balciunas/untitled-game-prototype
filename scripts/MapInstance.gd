@@ -21,6 +21,8 @@ func hydrate_from_resource(map_resource):
 func update_player_position(pos: Vector2i):
 	print(player_position)
 	player_position = pos
+	for c in PartyManager.members:
+		c.process_effects("on_turn_end")
 
 #func mark_event_triggered(event_id: String):
 	#triggered_events[event_id] = true

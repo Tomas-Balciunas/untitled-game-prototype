@@ -48,19 +48,18 @@ func _init(res: CharacterResource) -> void:
 		for skill in res.job.skills:
 			if learnt_skills.has(skill):
 				continue
-			print(skill.name)
 			learnt_skills.append(skill)
 	
 	for effect in res.default_effects:
-		if effects.has(effect):
-			continue
-		effects.append(effect)
-	
+		var inst = effect.duplicate()
+		inst.on_apply(self)
+		effects.append(inst)
+
 	if res.job:
 		for effect in res.job.effects:
-			if effects.has(effect):
-				continue
-			effects.append(effect)
+			var inst = effect.duplicate()
+			inst.on_apply(self)
+			effects.append(inst)
 	
 	weapon = res.default_weapon
 	if weapon: weapon.equip(self)
@@ -112,7 +111,8 @@ func cleanup_after_battle() -> void:
 
 func apply_effect(effect: Effect, ctx: ActionContext) -> void:
 	for passive in effects.duplicate():
-		passive.on_trigger(EffectTriggers.ON_APPLY_EFFECT, ctx)
+		if passive.has_method("on_trigger"):
+			passive.on_trigger(EffectTriggers.ON_APPLY_EFFECT, ctx)
 			
 	effect.on_apply(self)
 	effects.append(effect)

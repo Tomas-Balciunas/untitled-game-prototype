@@ -21,10 +21,10 @@ func hide_info():
 	var cont = $MarginContainer
 	cont.visible = false
 
-func _on_health_changed(old_health: int, new_health: int) -> void:
+func _on_health_changed(_old_health: int, new_health: int) -> void:
 	$MarginContainer/GridContainer/LabelValueContainer/Values/HPContainer/CurrentHP.text = str(new_health)
 
-func _on_mana_changed(old_mana: int, new_mana: int) -> void:
+func _on_mana_changed(_old_mana: int, new_mana: int) -> void:
 	$MarginContainer/GridContainer/LabelValueContainer/Values/MPContainer/CurrentMP.text = str(new_mana)
 
 func _on_gui_input(event: InputEvent) -> void:

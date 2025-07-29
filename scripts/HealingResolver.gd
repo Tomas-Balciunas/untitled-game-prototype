@@ -3,23 +3,21 @@ class_name HealingManager
 
 signal healing_resolved(ctx: HealingContext)
 
-func apply_heal(action: HealingAction, battle_manager: BattleManager) -> HealingContext:
+func apply_heal(action: HealingAction) -> HealingContext:
 	return _apply_core(
 		action.provider,
 		action.receiver,
 		action.base_value,
-		battle_manager,
 		action.options,
 	)
 
-func _apply_core(source: CharacterInstance, target: CharacterInstance, base: float, battle_manager: BattleManager, options: Dictionary = {}) -> HealingContext:
+func _apply_core(source: CharacterInstance, target: CharacterInstance, base: float, options: Dictionary = {}) -> HealingContext:
 	var ctx = HealingContext.new()
 	ctx.source    = source
 	ctx.target    = target
 	ctx.base_value  = base
 	ctx.final_value = base
 	ctx.options = options
-	ctx.manager = battle_manager
 	
 	source.process_effects(EffectTriggers.ON_HEAL, ctx)
 	

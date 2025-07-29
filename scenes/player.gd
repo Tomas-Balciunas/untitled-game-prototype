@@ -1,147 +1,80 @@
 extends Node3D
 
-signal player_moved(data: Dictionary)
-signal start_encounter(data: Dictionary)
-signal map_transition(data: Dictionary)
+signal player_moved(data)
 
-var grid_pos = Vector2i(0, 0)
+const TRAVEL_TIME := 0.3
 
-var dir_vectors = {
-	0: Vector2i(0, -1),
-	90: Vector2i(-1, 0),
-	180: Vector2i(0, 1),
-	270: Vector2i(1, 0),
-}
+@onready var front_ray := $FrontRay
+@onready var back_ray := $BackRay
+@onready var left_ray := $LeftRay
+@onready var right_ray := $RightRay
 
-const TILE_SIZE = 2.0
 var can_move = true
-var in_battle = false
-var can_rotate = true
-var is_moving = false
+var tween : Tween
 
 func _ready():
-	print("Player instance: %s" % self)
-	grid_pos = Vector2i(1, 1)
-	global_position = Vector3(grid_pos.x * TILE_SIZE, 0, grid_pos.y * TILE_SIZE)
-	rotation_degrees = Vector3(0, 0, 0)
+	EncounterManager.connect("encounter_started", Callable(self, "_on_encounter_started"))
+	EncounterManager.connect("encounter_ended", Callable(self, "_on_encounter_ended"))
+	TransitionManager.connect("map_transition_started", Callable(self, "_on_map_transition_started"))
+	TransitionManager.connect("map_transition_ended", Callable(self, "_on_map_transition_ended"))
 
-func set_grid_pos(pos: Vector2i):
-	grid_pos = pos
-	global_position = Vector3(pos.x * TILE_SIZE, 0, pos.y * TILE_SIZE)
-
-func get_facing_direction_deg() -> int:
-	var rot = fmod(rotation_degrees.y, 360)
-	if rot < 0:
-		rot += 360
-	return int(round(rot / 90.0)) * 90 % 360
-
-func _unhandled_input(event):
-	if not is_all_movement_enabled():
+func _physics_process(_delta):
+	if GameState.is_busy():
 		return
+	if tween is Tween:
+		if tween.is_running():
+			return
+	if Input.is_action_pressed("move_forward") and not front_ray.is_colliding():
+		tween = create_tween().set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+		tween.tween_property(self, "transform", transform.translated_local(Vector3.FORWARD * 2), TRAVEL_TIME)
+		await tween.finished
+		snap_to_grid()
+		var grid_pos = Vector2i(round(global_position.x / 2.0), round(global_position.z / 2.0))
+		emit_signal("player_moved", { "grid_position": grid_pos })
+	if Input.is_action_pressed("move_backwards") and not back_ray.is_colliding():
+		tween = create_tween().set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+		tween.tween_property(self, "transform", transform.translated_local(Vector3.BACK * 2), TRAVEL_TIME)
+		await tween.finished
+		snap_to_grid()
+		var grid_pos = Vector2i(round(global_position.x / 2.0), round(global_position.z / 2.0))
+		emit_signal("player_moved", { "grid_position": grid_pos })
+	if Input.is_action_pressed("strafe_left") and not left_ray.is_colliding():
+		tween = create_tween().set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+		tween.tween_property(self, "transform", transform.translated_local(Vector3.LEFT * 2), TRAVEL_TIME)
+		await tween.finished
+		snap_to_grid()
+		var grid_pos = Vector2i(round(global_position.x / 2.0), round(global_position.z / 2.0))
+		emit_signal("player_moved", { "grid_position": grid_pos })
+	if Input.is_action_pressed("strafe_right") and not right_ray.is_colliding():
+		tween = create_tween().set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+		tween.tween_property(self, "transform", transform.translated_local(Vector3.RIGHT * 2), TRAVEL_TIME)
+		await tween.finished
+		snap_to_grid()
+		var grid_pos = Vector2i(round(global_position.x / 2.0), round(global_position.z / 2.0))
+		emit_signal("player_moved", { "grid_position": grid_pos })
+	if Input.is_action_pressed("turn_left"):
+		tween = create_tween().set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+		tween.tween_property(self, "transform:basis", transform.basis.rotated(Vector3.UP, PI / 2), TRAVEL_TIME)
+	if Input.is_action_pressed("turn_right"):
+		tween = create_tween().set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+		tween.tween_property(self, "transform:basis", transform.basis.rotated(Vector3.UP, -PI / 2), TRAVEL_TIME)
 
-	if event.is_action_pressed("turn_left"):
-		rotate_player(90)
-	elif event.is_action_pressed("turn_right"):
-		rotate_player(-90)
+func snap_to_grid(tile_size: float = 2.0):
+	var x = round(global_position.x / tile_size) * tile_size
+	var z = round(global_position.z / tile_size) * tile_size
+	global_position = Vector3(x, global_position.y, z)
 
-func _process(delta):
-	if not is_all_movement_enabled() or is_moving:
-		return
-
-	if Input.is_action_pressed("move_forward"):
-		move_player("forward")
-	elif Input.is_action_pressed("move_backwards"):
-		move_player("backward")
-	elif Input.is_action_pressed("strafe_left"):
-		move_player("left")
-	elif Input.is_action_pressed("strafe_right"):
-		move_player("right")
-
-func move_player(direction: String):
-	if not is_all_movement_enabled() or is_moving:
-		return
-	is_moving = true
-	disable_all_movement()
-	var facing_deg = get_facing_direction_deg()
-	var dir = Vector2i(0, 0)
-
-	match direction:
-		"forward":
-			dir = dir_vectors.get(facing_deg, Vector2i(0, 0))
-		"backward":
-			dir = dir_vectors.get((facing_deg + 180) % 360, Vector2i(0, 0))
-		"left":
-			dir = dir_vectors.get((facing_deg + 90) % 360, Vector2i(0, 0))
-		"right":
-			dir = dir_vectors.get((facing_deg + 270) % 360, Vector2i(0, 0))
-
-	var target_tile = grid_pos + dir
-
-	# oob check
-	#if target_tile.y < 0 or target_tile.y >= MapInstance.map_data.size() or target_tile.x < 0 or target_tile.x >= MapInstance.map_data[0].size():
-		#is_moving = false
-		#enable_all_movement()
-		#print("oob")
-		#return
-
-	# wall check
-	var target_tile_data = MapInstance.map_data[target_tile.y][target_tile.x]
-	if target_tile_data["type"] == "wall":
-		is_moving = false 
-		enable_all_movement()
-		return
-
-	grid_pos = target_tile
-	var move_offset = Vector3(dir.x * TILE_SIZE, 0, dir.y * TILE_SIZE)
-	var target_position = global_position + move_offset
-
-	var tween = get_tree().create_tween()
-	tween.tween_property(self, "global_position", target_position, 0.25)
-	await tween.finished
-	is_moving = false 
-	print("Emitting player moved signal...")
-	emit_signal("player_moved", {
-		"grid_position": grid_pos
-	})
-	
-	if EventManager.is_event(target_tile_data):
-		await EventManager.process_event(target_tile_data["event"])
-
-	if MapManager.is_transition(target_tile_data):
-		emit_signal("map_transition", target_tile_data["transition"])
-		await MapInstance.map_transition_finish
-	
-	if EncounterManager.is_encounter(target_tile_data):
-		var encounter = target_tile_data["encounter"]
-		var arena = target_tile_data["arena"]
-		emit_signal("start_encounter", {"arena": arena, "enemy": encounter})
-		await EncounterManager.encounter_ended
-	
-	enable_all_movement()
-
-func rotate_player(degrees: float):
-	if not is_all_movement_enabled():
-		return
-
-	var tween = get_tree().create_tween()
-	var target_rotation = rotation_degrees
-	target_rotation.y += degrees
-
-	tween.tween_property(self, "rotation_degrees", target_rotation, 0.15).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
-	await tween.finished
-
-	var snapped_y = int(round(rotation_degrees.y / 90.0)) * 90 % 360
-	rotation_degrees.y = snapped_y if snapped_y >= 0 else snapped_y + 360
-
-	enable_all_movement()
-
-func disable_all_movement() -> void:
-	can_rotate = false
+func _on_encounter_started(_encounter_data):
 	can_move = false
-
-func enable_all_movement() -> void:
-	can_rotate = true
+	
+func _on_encounter_ended(_result):
 	can_move = true
 	
-func is_all_movement_enabled() -> bool:
-	return can_move and can_rotate
+func _on_map_transition_started(_id):
+	can_move = false
+	
+func _on_map_transition_ended():
+	can_move = true
+
+func set_grid_pos(pos: Vector2i, tile_size: float):
+	global_position = Vector3(pos.x * tile_size, 0, pos.y * tile_size)

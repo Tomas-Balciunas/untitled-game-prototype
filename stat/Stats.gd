@@ -31,7 +31,7 @@ func add_modifier(m: StatModifier) -> void:
 func remove_modifier(m: StatModifier) -> void:
 	modifiers.erase(m)
 
-func recalculate_stats(character: CharacterInstance, fill_hp: bool = false, fill_mp: bool = false):
+func recalculate_stats(character: CharacterInstance, should_fill_hp: bool = false, should_fill_mp: bool = false):
 	var attr_mods = character.job.attribute_modifiers
 
 	derived_attack = base_attack + character.attributes.str * attr_mods.get(Attributes.STR, 1)
@@ -74,10 +74,10 @@ func recalculate_stats(character: CharacterInstance, fill_hp: bool = false, fill
 	speed      = derived_speed  + flat_bonus["speed"]  + derived_speed  * pct_bonus["speed"]
 	defense      = derived_defense  + flat_bonus["defense"]  + derived_defense  * pct_bonus["defense"]
 	
-	if fill_hp:
+	if should_fill_hp:
 		fill_hp()
 		
-	if fill_mp:
+	if should_fill_mp:
 		fill_mp()
 
 func fill_hp():

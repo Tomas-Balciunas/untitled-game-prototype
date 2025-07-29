@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://b45pw175gxxwy"]
 
-[ext_resource type="Script" uid="uid://c4ahdxkhm0pq5" path="res://scripts/ConvertTileMapLayer.gd" id="1_xbosk"]
+[ext_resource type="Script" uid="uid://c4ahdxkhm0pq5" path="res://__legacy/ConvertTileMapLayer.gd" id="1_xbosk"]
 
 [node name="Converter" type="Node"]
 script = ExtResource("1_xbosk")

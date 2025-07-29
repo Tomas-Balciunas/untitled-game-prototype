@@ -19,6 +19,7 @@ func _ready() -> void:
 func initiate(arena: PackedScene, enemies: Array[CharacterResource]):
 	load_arena(arena)
 	var enemy_instances = load_enemies(enemies)
+	BattleContext.fill_context(battle_manager, enemy_grid)
 	battle_manager.begin(enemy_instances)
 	
 func load_arena(arena_scene: PackedScene):

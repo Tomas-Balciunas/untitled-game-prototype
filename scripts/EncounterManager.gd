@@ -5,21 +5,18 @@ signal encounter_ended(result)
 
 @onready var transition_battle = get_tree().get_root().get_node("Main/BattleTransition")
 
-var encounter_in_progress: bool = false
 var battle_scene: PackedScene = preload("res://scenes/BattleScene.tscn")
 var current_battle_scene: BattleScene = null
 
 func _ready():
-	#var player = get_tree().get_root().get_node("Main/Dungeon/Player")
-	#player.connect("start_encounter", Callable(EncounterManager, "start_encounter"))
 	EventManager.connect("start_event_encounter", Callable(self, "start_encounter"))
 	transition_battle.modulate.a = 0.0
 
 func start_encounter(encounter_data: Dictionary):
-	if encounter_in_progress:
+	if GameState.current_state not in [GameState.States.IDLE, GameState.States.CUTSCENE]:
 		return
 		
-	encounter_in_progress = true
+	GameState.current_state = GameState.States.IN_BATTLE
 	print("EncounterManager: Starting encounter:", encounter_data)
 	var arena_id = encounter_data["arena"]
 	var enemy_ids = encounter_data["enemies"]
@@ -44,7 +41,8 @@ func start_encounter(encounter_data: Dictionary):
 
 func end_encounter(result):
 	get_tree().get_root().get_node("Main").remove_child(current_battle_scene)
+	BattleContext.clear_context()
 	current_battle_scene = null
 	print("EncounterManager: Ending encounter with result:", result)
 	emit_signal("encounter_ended", result)
-	encounter_in_progress = false
+	GameState.current_state = GameState.States.IDLE

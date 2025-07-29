@@ -23,7 +23,7 @@ func on_trigger(trigger: String, ctx: ActionContext) -> void:
 
 	if trigger == EffectTriggers.ON_TURN_END and _remaining > 0:
 		if owner == null:
-			push_warning("PoisonEffect: Owner is null during on_turn_end tick.")
+			push_error("PoisonEffect: Owner is null during on_turn_end tick.")
 			return
 
 		var tick = AttackAction.new()
@@ -32,7 +32,7 @@ func on_trigger(trigger: String, ctx: ActionContext) -> void:
 		tick.type = DamageTypes.Type.POISON
 		tick.base_value = damage_per_turn
 		tick.options["dot"] = true 
-		DamageResolver.apply_attack(tick, ctx.manager)
+		DamageResolver.apply_attack(tick)
 		
 		_remaining -= 1
 		if _remaining <= 0:

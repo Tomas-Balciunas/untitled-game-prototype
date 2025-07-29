@@ -3,27 +3,20 @@ extends Node
 var tiles := {
 	"default": {
 		"wall": {
-			"default": preload("res://scenes/tiles/default/Wall.tscn")
 		},
 		"floor": {
-			"default": preload("res://scenes/tiles/default/Floor.tscn")
 		}
 	},
 	"crypt": {
 		"wall": {
-			"stone_wall": preload("res://scenes/tiles/crypt/Wall_Crypt.tscn"),
 		},
 		"floor": {
-			"wooden_floor": preload("res://scenes/tiles/crypt/Floor_Crypt.tscn"),
-			"stone_floor": preload("res://scenes/tiles/crypt/Floor_Crypt.tscn")
 		}
 	},
 	"castle": {
 		"wall": {
-			"default": preload("res://scenes/tiles/castle/Wall_Castle.tscn")
 		},
 		"floor": {
-			"default": preload("res://scenes/tiles/castle/Floor_Castle.tscn")
 		}
 	}
 }

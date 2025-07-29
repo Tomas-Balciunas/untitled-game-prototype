@@ -14,7 +14,7 @@ enum EffectCategory {
 @export var name: String = "Unnamed Effect"
 @export var category: EffectCategory = EffectCategory.OTHER
 @export var duration_turns: int = -1
-var _connections := []  # { object, signal, id }
+var _connections := []
 var _is_registered := false
 
 var owner: CharacterInstance = null
@@ -53,5 +53,5 @@ func register_signals() -> void:
 	pass
 
 func _bind(obj: Object, signal_name: String, method_name: String) -> void:
-	var id = obj.connect(signal_name, Callable(self, method_name))
+	var _id = obj.connect(signal_name, Callable(self, method_name))
 	_connections.append({ "object": obj, "signal": signal_name, "method": method_name })

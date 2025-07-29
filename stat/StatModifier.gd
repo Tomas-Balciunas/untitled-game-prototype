@@ -12,5 +12,5 @@ enum Type {
 @export var value: float = 0.0
 @export var priority: int = 0
 
-func compute_value(character: CharacterInstance) -> float:
+func compute_value(_character: CharacterInstance) -> float:
 	return value

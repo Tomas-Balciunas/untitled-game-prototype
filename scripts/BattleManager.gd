@@ -52,6 +52,7 @@ func begin(_enemies: Array[CharacterInstance]):
 		b.turn_meter = 0
 		_register_battler(b)
 		b.prepare_for_battle()
+		b.prepare_for_battle()
 	
 	current_state = BattleState.PROCESS_TURNS
 
@@ -166,7 +167,7 @@ func _perform_player_action(action: String, target: CharacterInstance):
 				atk.defender   = t
 				atk.base_value = current_battler.stats.attack
 				atk.type = current_battler.damage_type
-				var result    = DamageResolver.apply_attack(atk, self)
+				DamageResolver.apply_attack(atk)
 		"skill":
 			var targeting = _pending_options[0].targeting_type
 			var _targets = get_applicable_targets(target, targeting)
@@ -191,7 +192,7 @@ func _perform_player_action(action: String, target: CharacterInstance):
 					skill.receiver = t
 					skill.base_value = _pending_options[0].healing_amount
 					skill.effects = _pending_options[0].effects
-					var result = HealingResolver.apply_heal(skill, self)
+					HealingResolver.apply_heal(skill)
 				elif _pending_options[0] is Skill:
 					var skill = SkillAction.new()
 					skill.attacker   = current_battler
@@ -199,7 +200,7 @@ func _perform_player_action(action: String, target: CharacterInstance):
 					skill.skill = _pending_options[0]
 					skill.effects = _pending_options[0].effects
 					skill.modifier = _pending_options[0].modifier
-					var result = DamageResolver.apply_skill(skill, self)
+					DamageResolver.apply_skill(skill)
 				else:
 					print("Unknown skill!")
 			
@@ -224,7 +225,7 @@ func _process_enemy_turn():
 	atk.attacker = current_battler
 	atk.defender   = target
 	atk.base_value = current_battler.stats.attack
-	var result    = DamageResolver.apply_attack(atk, self)
+	DamageResolver.apply_attack(atk)
 	
 	current_state = BattleState.TURN_END
 

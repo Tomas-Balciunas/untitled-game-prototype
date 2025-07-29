@@ -3,20 +3,17 @@ class_name DamageManager
 
 signal damage_resolved(ctx: DamageContext)
 
-const battle_manager = preload("res://scripts/BattleManager.gd")
-
-func apply_attack(action: AttackAction, battle_manager: BattleManager) -> DamageContext:
+func apply_attack(action: AttackAction) -> DamageContext:
 	return _apply_core(
 		action.attacker,
 		action.defender,
 		action.type,
 		action.base_value,
 		[],
-		battle_manager,
 		action.options
 	)
 
-func apply_skill(skill: SkillAction, battle_manager: BattleManager) -> DamageContext:
+func apply_skill(skill: SkillAction) -> DamageContext:
 	var calculated_damage = skill.attacker.stats.attack
 	# apply skill modifier to attacker's att power
 	if skill.modifier != 0.0:
@@ -28,11 +25,10 @@ func apply_skill(skill: SkillAction, battle_manager: BattleManager) -> DamageCon
 		skill.skill.damage_type,		# dmg element, overrides attacker's element
 		calculated_damage,			# attacker's power * skill modifier
 		skill.effects,				# additional skill effects
-		battle_manager,
 		skill.options
 	)
 
-func _apply_core(source: CharacterInstance, target: CharacterInstance, damage_type: DamageTypes.Type, base: float, extra_effects: Array[Effect], battle_manager: BattleManager, options: Dictionary = {}) -> DamageContext:
+func _apply_core(source: CharacterInstance, target: CharacterInstance, damage_type: DamageTypes.Type, base: float, extra_effects: Array[Effect], options: Dictionary = {}) -> DamageContext:
 	var ctx = DamageContext.new()
 	ctx.source    = source
 	ctx.target    = target
@@ -41,7 +37,6 @@ func _apply_core(source: CharacterInstance, target: CharacterInstance, damage_ty
 	ctx.final_value = base
 	ctx.tags        = extra_effects
 	ctx.options = options
-	ctx.manager = battle_manager
 	
 	# attacker’s effects
 	source.process_effects(EffectTriggers.ON_HIT, ctx)
@@ -59,6 +54,8 @@ func _apply_core(source: CharacterInstance, target: CharacterInstance, damage_ty
 	var defense_ignore = 0
 	if ctx.has_meta("ignore_defense_percent"):
 		defense_ignore = ctx.get_meta("ignore_defense_percent")
+
+	
 
 	
 	var calculator = DamageCalculator.new(ctx, defense_ignore)
@@ -82,6 +79,6 @@ func _apply_core(source: CharacterInstance, target: CharacterInstance, damage_ty
 		revenge.type = ctx.target.damage_type
 		revenge.base_value = ctx.target.stats.attack
 		BattleTextLines.print_line("%s counterattacks!" % ctx.target.resource.name)
-		self.apply_attack(revenge, ctx.manager)
+		self.apply_attack(revenge)
 
 	return ctx
