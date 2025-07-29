@@ -7,7 +7,7 @@ enum Type {
 }
 
 @export var name: String
-@export var attribute: String # "attack", "health", "mana", "speed"
+@export var attribute: String
 @export var type: Type = Type.ADDITIVE
 @export var value: float = 0.0
 @export var priority: int = 0

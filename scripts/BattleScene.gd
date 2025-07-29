@@ -16,10 +16,10 @@ func _ready() -> void:
 	
 	battle_manager.enemy_died.connect(enemy_grid._on_enemy_died)
 
-func initiate(arena: PackedScene, enemies: Array[CharacterResource]):
+func initiate(arena: PackedScene, enemies: Array[CharacterResource], encounter_id: String):
 	load_arena(arena)
 	var enemy_instances = load_enemies(enemies)
-	BattleContext.fill_context(battle_manager, enemy_grid)
+	BattleContext.fill_context(battle_manager, enemy_grid, encounter_id)
 	battle_manager.begin(enemy_instances)
 	
 func load_arena(arena_scene: PackedScene):

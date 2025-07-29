@@ -31,10 +31,10 @@ func load_map(map_id: String):
 
 	current_map_scene = MapInstance.map_data.instantiate()
 	self.add_child(current_map_scene)
-	var player_position = MapInstance.player_position
+	var player_position = MapInstance.player_previous_position
+	var player_facing = MapInstance.player_facing
 	
-	player.set_grid_pos(player_position, TILE_SIZE)
-	MapInstance.emit_signal("map_transition_finish")
+	player.set_grid_pos(player_position, player_facing, TILE_SIZE)
 
 func _on_encounter_started(_data: Dictionary):
 	player.global_position = Vector3(0, 1, -8)
@@ -58,7 +58,7 @@ func transition_to_map(map_id: String):
 	TransitionManager.transit_to_map_end()
 
 func _on_player_moved(data: Dictionary):
-	MapInstance.update_player_position(data["grid_position"])
+	MapInstance.update_player_position(data["grid_position"], data["grid_direction"])
 
 func _on_encounter_ended(result):
 	print("Back from battle with result:", result)

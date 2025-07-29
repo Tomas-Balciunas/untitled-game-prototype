@@ -79,6 +79,9 @@ func recalculate_stats(character: CharacterInstance, should_fill_hp: bool = fals
 		
 	if should_fill_mp:
 		fill_mp()
+		
+	character.emit_signal("health_changed", current_health, current_health)
+	character.emit_signal("mana_changed", current_mana, current_mana)
 
 func fill_hp():
 	current_health = max_health

@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="EncounterData" load_steps=3 format=3 uid="uid://ff62172t6ot"]
+
+[ext_resource type="Script" uid="uid://bwn4gpkaijqsg" path="res://scripts/CharacterResource.gd" id="1_3m7ep"]
+[ext_resource type="Script" uid="uid://bsiblcov0noq8" path="res://maps/_encounter/EncounterData.gd" id="2_pdm8l"]
+
+[resource]
+script = ExtResource("2_pdm8l")
+description = ""
+enemies = Array[ExtResource("1_3m7ep")]([])
+arena = "arena_default_00"
+metadata/_custom_type_script = "uid://bsiblcov0noq8"

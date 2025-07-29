@@ -34,6 +34,7 @@ BattleEventBus="*res://scripts/BattleEventBus.gd"
 BattleContext="*res://scripts/BattleContext.gd"
 TransitionManager="*res://scripts/TransitionManager.gd"
 GameState="*res://scenes/GameState.gd"
+RestManager="*res://scripts/RestManager.gd"
 
 [display]
 

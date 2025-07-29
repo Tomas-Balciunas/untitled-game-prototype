@@ -20,6 +20,7 @@ func start_encounter(encounter_data: Dictionary):
 	print("EncounterManager: Starting encounter:", encounter_data)
 	var arena_id = encounter_data["arena"]
 	var enemy_ids = encounter_data["enemies"]
+	var encounter_id = encounter_data["id"]
 	var enemies: Array[CharacterResource] = []
 	var arena = MapManager.get_arena(arena_id)
 	
@@ -32,7 +33,7 @@ func start_encounter(encounter_data: Dictionary):
 	
 	current_battle_scene = battle_scene.instantiate()
 	get_tree().get_root().get_node("Main").add_child(current_battle_scene)
-	current_battle_scene.initiate(arena, enemies)
+	current_battle_scene.initiate(arena, enemies, encounter_id)
 	emit_signal("encounter_started", encounter_data)
 	
 	tween = get_tree().create_tween()
@@ -40,9 +41,11 @@ func start_encounter(encounter_data: Dictionary):
 	await tween.finished
 
 func end_encounter(result):
+	if result == "win":
+		MapInstance.mark_encounter_cleared(MapInstance.map_id, BattleContext.encounter_id)
 	get_tree().get_root().get_node("Main").remove_child(current_battle_scene)
-	BattleContext.clear_context()
 	current_battle_scene = null
 	print("EncounterManager: Ending encounter with result:", result)
 	emit_signal("encounter_ended", result)
+	BattleContext.clear_context()
 	GameState.current_state = GameState.States.IDLE

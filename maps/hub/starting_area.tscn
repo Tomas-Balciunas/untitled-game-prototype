@@ -1,78 +1,18 @@
-[gd_scene load_steps=21 format=3 uid="uid://c8n1llsvvhonb"]
+[gd_scene load_steps=12 format=3 uid="uid://c8n1llsvvhonb"]
 
 [ext_resource type="MeshLibrary" uid="uid://uso6cfmk5r51" path="res://tileset white.tres" id="1_mdjaj"]
-[ext_resource type="Script" uid="uid://domtntexnhum4" path="res://scenes/DungeonEncounter.gd" id="2_p7vp1"]
-[ext_resource type="Texture2D" uid="uid://cjh84x068jx5c" path="res://balmer-andromalius-57x88-alpha.png" id="3_2g68h"]
+[ext_resource type="PackedScene" uid="uid://c8fyl6fq4crr0" path="res://maps/_encounter/EncounterSpawner.tscn" id="2_w2sle"]
 [ext_resource type="Resource" uid="uid://glboqdt0keow" path="res://maps/_encounter/starting area/basic_test.tres" id="3_2pqfk"]
-[ext_resource type="Texture2D" uid="uid://dc2rf27qhxx4g" path="res://ghost.png" id="7_g1pjd"]
+[ext_resource type="PackedScene" uid="uid://ddaoggfmpimc3" path="res://characters/foes/Balmer/body.tscn" id="4_kjsaj"]
+[ext_resource type="PackedScene" uid="uid://coq12fusghinq" path="res://characters/foes/_fallback/body.tscn" id="6_lk5gk"]
 [ext_resource type="Script" uid="uid://cs78wsbme5ww4" path="res://maps/hub/TransitionData.gd" id="7_kjsaj"]
 [ext_resource type="Resource" uid="uid://d34tlmbjgrfkv" path="res://maps/_encounter/starting area/basic_test_2.tres" id="7_w2sle"]
 [ext_resource type="Resource" uid="uid://ca1h8vjjk8vcm" path="res://maps/crypt/crypt_00.tres" id="8_w2sle"]
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_dwbtb"]
-size = Vector3(1.46509, 2.61436, 0.1)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_31n3i"]
-atlas = ExtResource("3_2g68h")
-region = Rect2(228, 176, 57, 88)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_rfecp"]
-atlas = ExtResource("3_2g68h")
-region = Rect2(285, 176, 57, 88)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_soaxv"]
-atlas = ExtResource("3_2g68h")
-region = Rect2(342, 176, 57, 88)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_hddcw"]
-atlas = ExtResource("3_2g68h")
-region = Rect2(399, 176, 57, 88)
-
-[sub_resource type="SpriteFrames" id="SpriteFrames_lwah8"]
-animations = [{
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_31n3i")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_rfecp")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_soaxv")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_hddcw")
-}],
-"loop": true,
-"name": &"Idle",
-"speed": 6.0
-}]
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_8knx6"]
-size = Vector3(1, 2, 1)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_l2ci1"]
-size = Vector3(1.27087, 1.60907, 0.1)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_rldk6"]
-atlas = ExtResource("7_g1pjd")
-region = Rect2(0, 0, 89, 88)
-
-[sub_resource type="SpriteFrames" id="SpriteFrames_e6t04"]
-animations = [{
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_rldk6")
-}],
-"loop": true,
-"name": &"Idle",
-"speed": 5.0
-}]
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_2pqfk"]
-size = Vector3(1, 2, 1)
+[ext_resource type="Script" uid="uid://8n2g1of6dlbp" path="res://maps/hub/rest_area.gd" id="9_kjsaj"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_g1pjd"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_lk5gk"]
 
 [node name="StartingArea" type="GridMap"]
 mesh_library = ExtResource("1_mdjaj")
@@ -85,52 +25,15 @@ metadata/_editor_floor_ = Vector3(0, 0, 0)
 
 [node name="Enemies" type="Node" parent="."]
 
-[node name="StaticBody3D" type="StaticBody3D" parent="Enemies"]
-transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 2, 0, -15)
-collision_layer = 4
-script = ExtResource("2_p7vp1")
+[node name="EncounterSpawner" parent="Enemies" instance=ExtResource("2_w2sle")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -16)
 encounter_data = ExtResource("3_2pqfk")
+enemy_scene = ExtResource("4_kjsaj")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Enemies/StaticBody3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.020874, 1.74889, 0)
-shape = SubResource("BoxShape3D_dwbtb")
-
-[node name="Sprite" type="AnimatedSprite3D" parent="Enemies/StaticBody3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.73461, 0)
-pixel_size = 0.03
-texture_filter = 0
-sprite_frames = SubResource("SpriteFrames_lwah8")
-animation = &"Idle"
-frame = 3
-frame_progress = 0.162162
-
-[node name="EncounterArea" type="Area3D" parent="Enemies/StaticBody3D"]
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Enemies/StaticBody3D/EncounterArea"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
-shape = SubResource("BoxShape3D_8knx6")
-
-[node name="Body" type="StaticBody3D" parent="Enemies"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -20)
-collision_layer = 4
-script = ExtResource("2_p7vp1")
+[node name="EncounterSpawner2" parent="Enemies" instance=ExtResource("2_w2sle")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, -16)
 encounter_data = ExtResource("7_w2sle")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Enemies/Body"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.123597, 1.23832, 0)
-shape = SubResource("BoxShape3D_l2ci1")
-
-[node name="Sprite" type="AnimatedSprite3D" parent="Enemies/Body"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.1986, 0)
-pixel_size = 0.02
-sprite_frames = SubResource("SpriteFrames_e6t04")
-animation = &"Idle"
-
-[node name="EncounterArea" type="Area3D" parent="Enemies/Body"]
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Enemies/Body/EncounterArea"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
-shape = SubResource("BoxShape3D_2pqfk")
+enemy_scene = ExtResource("6_lk5gk")
 
 [node name="Transitions" type="Node" parent="."]
 
@@ -141,3 +44,12 @@ map_data = ExtResource("8_w2sle")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Transitions/Area3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, -20)
 shape = SubResource("BoxShape3D_g1pjd")
+
+[node name="Rest" type="Node" parent="."]
+
+[node name="Area3D" type="Area3D" parent="Rest"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, -20)
+script = ExtResource("9_kjsaj")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Rest/Area3D"]
+shape = SubResource("BoxShape3D_lk5gk")

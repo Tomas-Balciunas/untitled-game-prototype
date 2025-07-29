@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://cphcmsugjsscn"]
+[gd_scene load_steps=12 format=3 uid="uid://cphcmsugjsscn"]
 
 [ext_resource type="PackedScene" uid="uid://0g8fcobbvi84" path="res://scenes/dungeon/dungeon.tscn" id="1_0wfyh"]
 [ext_resource type="Script" uid="uid://bsq341p3oxk46" path="res://scenes/GameState.gd" id="1_o6xl0"]
@@ -7,6 +7,7 @@
 [ext_resource type="Script" uid="uid://bk075a76c1hkh" path="res://scripts/UIPartyContainer.gd" id="3_sugp2"]
 [ext_resource type="PackedScene" uid="uid://b6i5a4uv2t1do" path="res://scenes/UIPartyMemberSlot.tscn" id="4_jyhfs"]
 [ext_resource type="Script" uid="uid://ckmaadhfher4" path="res://scripts/TextboxUI.gd" id="5_tbgi4"]
+[ext_resource type="Script" uid="uid://co3tp0c7fi70" path="res://scenes/level_up.gd" id="8_tipki"]
 
 [sub_resource type="Environment" id="Environment_o6xl0"]
 background_mode = 2
@@ -220,3 +221,124 @@ anchor_bottom = 1.0
 offset_left = -6.10352e-05
 offset_top = 0.255981
 theme_override_font_sizes/font_size = 20
+
+[node name="LevelUp" type="CanvasLayer" parent="."]
+follow_viewport_scale = 0.001
+script = ExtResource("8_tipki")
+
+[node name="Panel" type="Panel" parent="LevelUp"]
+anchors_preset = -1
+anchor_left = 0.417
+anchor_top = 0.286
+anchor_right = 0.631
+anchor_bottom = 0.622
+offset_left = -76.76
+offset_top = 0.35199
+offset_right = 0.319946
+offset_bottom = 0.303955
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="LevelLabel" type="Label" parent="LevelUp/Panel"]
+layout_mode = 0
+offset_left = 170.0
+offset_top = 4.0
+offset_right = 212.0
+offset_bottom = 27.0
+
+[node name="CharacterName" type="Label" parent="LevelUp/Panel"]
+layout_mode = 0
+offset_left = 172.0
+offset_top = 33.0
+offset_right = 227.0
+offset_bottom = 56.0
+
+[node name="PointsLabel" type="Label" parent="LevelUp/Panel"]
+layout_mode = 0
+offset_left = 171.0
+offset_top = 60.0
+offset_right = 234.0
+offset_bottom = 85.0
+
+[node name="AttributesContainer" type="VBoxContainer" parent="LevelUp/Panel"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="STR_Row" type="HBoxContainer" parent="LevelUp/Panel/AttributesContainer"]
+layout_mode = 2
+
+[node name="STR_Label" type="Label" parent="LevelUp/Panel/AttributesContainer/STR_Row"]
+layout_mode = 2
+
+[node name="STR_Button" type="Button" parent="LevelUp/Panel/AttributesContainer/STR_Row"]
+layout_mode = 2
+text = "+"
+
+[node name="IQ_Row" type="HBoxContainer" parent="LevelUp/Panel/AttributesContainer"]
+layout_mode = 2
+
+[node name="IQ_Label" type="Label" parent="LevelUp/Panel/AttributesContainer/IQ_Row"]
+layout_mode = 2
+
+[node name="IQ_Button" type="Button" parent="LevelUp/Panel/AttributesContainer/IQ_Row"]
+layout_mode = 2
+text = "+"
+
+[node name="PIE_Row" type="HBoxContainer" parent="LevelUp/Panel/AttributesContainer"]
+layout_mode = 2
+
+[node name="PIE_Label" type="Label" parent="LevelUp/Panel/AttributesContainer/PIE_Row"]
+layout_mode = 2
+
+[node name="PIE_Button" type="Button" parent="LevelUp/Panel/AttributesContainer/PIE_Row"]
+layout_mode = 2
+text = "+"
+
+[node name="VIT_Row" type="HBoxContainer" parent="LevelUp/Panel/AttributesContainer"]
+layout_mode = 2
+
+[node name="VIT_Label" type="Label" parent="LevelUp/Panel/AttributesContainer/VIT_Row"]
+layout_mode = 2
+
+[node name="VIT_Button" type="Button" parent="LevelUp/Panel/AttributesContainer/VIT_Row"]
+layout_mode = 2
+text = "+"
+
+[node name="DEX_Row" type="HBoxContainer" parent="LevelUp/Panel/AttributesContainer"]
+layout_mode = 2
+
+[node name="DEX_Label" type="Label" parent="LevelUp/Panel/AttributesContainer/DEX_Row"]
+layout_mode = 2
+
+[node name="DEX_Button" type="Button" parent="LevelUp/Panel/AttributesContainer/DEX_Row"]
+layout_mode = 2
+text = "+"
+
+[node name="SPD_Row" type="HBoxContainer" parent="LevelUp/Panel/AttributesContainer"]
+layout_mode = 2
+
+[node name="SPD_Label" type="Label" parent="LevelUp/Panel/AttributesContainer/SPD_Row"]
+layout_mode = 2
+
+[node name="SPD_Button" type="Button" parent="LevelUp/Panel/AttributesContainer/SPD_Row"]
+layout_mode = 2
+text = "+"
+
+[node name="LUK_Row" type="HBoxContainer" parent="LevelUp/Panel/AttributesContainer"]
+layout_mode = 2
+
+[node name="LUK_Label" type="Label" parent="LevelUp/Panel/AttributesContainer/LUK_Row"]
+layout_mode = 2
+
+[node name="LUK_Button" type="Button" parent="LevelUp/Panel/AttributesContainer/LUK_Row"]
+layout_mode = 2
+text = "+"
+
+[node name="DoneButton" type="Button" parent="LevelUp/Panel"]
+layout_mode = 0
+offset_left = 268.0
+offset_top = 133.0
+offset_right = 316.0
+offset_bottom = 167.0
+text = "done"

@@ -6,6 +6,7 @@
 
 [resource]
 script = ExtResource("4_dop40")
+id = "starting_area_02"
 description = "whatever"
 enemies = Array[ExtResource("1_0cmg2")]([ExtResource("2_mecwj"), ExtResource("2_mecwj"), ExtResource("2_mecwj"), ExtResource("2_mecwj"), ExtResource("2_mecwj"), ExtResource("2_mecwj")])
 arena = "arena_default_00"

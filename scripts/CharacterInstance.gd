@@ -12,9 +12,12 @@ signal died(ded: CharacterInstance)
 
 var is_dead: bool = false
 
+var level: int = 1
+var current_experience: int = 0
+var experience_to_next_level: int = 100
+var unspent_attribute_points: int = 0
 var resource: CharacterResource
 var stats: Stats
-var current_experience: int
 var status_effects: Array = []
 var turn_meter: int = 0
 var learnt_skills: Array[Skill] = []
@@ -27,12 +30,12 @@ var race: Race
 var weapon: Weapon
 
 func _init(res: CharacterResource) -> void:
+	current_experience = 500
 	stats = Stats.new()
 	fill_stats(res)
 	fill_attributes(res)
 	resource = res
 	
-	current_experience = res.experience
 	damage_type = res.default_damage_type
 	
 	job = res.job
@@ -62,7 +65,8 @@ func _init(res: CharacterResource) -> void:
 			effects.append(inst)
 	
 	weapon = res.default_weapon
-	if weapon: weapon.equip(self)
+	if weapon: 
+		weapon.equip(self)
 	stats.recalculate_stats(self, true, true)
 
 func set_current_health(new_health: int) -> void:
@@ -149,3 +153,35 @@ func fill_attributes(res: CharacterResource):
 
 func get_attack_power():
 	pass
+
+func get_experience_to_next_level() -> int:
+	return 100 * level
+
+func gain_experience() -> void:
+	while current_experience >= experience_to_next_level:
+		current_experience -= experience_to_next_level
+		level_up()
+
+func level_up() -> void:
+	level += 1
+	unspent_attribute_points += 1
+	experience_to_next_level = get_experience_to_next_level()
+	print("%s has reached level %d!" % [resource.name, level])
+
+func increase_attribute(attr: String) -> bool:
+	if unspent_attribute_points <= 0:
+		return false
+
+	match attr:
+		"STR": attributes.str += 1
+		"IQ":  attributes.iq += 1
+		"PIE": attributes.pie += 1
+		"VIT": attributes.vit += 1
+		"DEX": attributes.dex += 1
+		"SPD": attributes.spd += 1
+		"LUK": attributes.luk += 1
+		_: return false
+
+	unspent_attribute_points -= 1
+	stats.recalculate_stats(self, true, true)
+	return true

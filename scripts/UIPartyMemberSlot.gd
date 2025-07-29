@@ -22,10 +22,12 @@ func hide_info():
 	cont.visible = false
 
 func _on_health_changed(_old_health: int, new_health: int) -> void:
-	$MarginContainer/GridContainer/LabelValueContainer/Values/HPContainer/CurrentHP.text = str(new_health)
+	$MarginContainer/GridContainer/LabelValueContainer/Values/HPContainer/CurrentHP.text = str(character_instance.stats.current_health)
+	$MarginContainer/GridContainer/LabelValueContainer/Values/HPContainer/MaxHP.text = str(character_instance.stats.max_health)
 
 func _on_mana_changed(_old_mana: int, new_mana: int) -> void:
-	$MarginContainer/GridContainer/LabelValueContainer/Values/MPContainer/CurrentMP.text = str(new_mana)
+	$MarginContainer/GridContainer/LabelValueContainer/Values/MPContainer/CurrentMP.text = str(character_instance.stats.current_mana)
+	$MarginContainer/GridContainer/LabelValueContainer/Values/MPContainer/MaxMP.text = str(character_instance.stats.max_mana)
 
 func _on_gui_input(event: InputEvent) -> void:
 	if not targeting_enabled:

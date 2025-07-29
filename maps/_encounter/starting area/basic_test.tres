@@ -7,6 +7,7 @@
 
 [resource]
 script = ExtResource("1_gpiuf")
+id = "starting_area_01"
 description = "whatever"
 enemies = Array[ExtResource("1_nucur")]([ExtResource("2_pg0v6"), ExtResource("4_qi7v4")])
 arena = "arena_default_00"
