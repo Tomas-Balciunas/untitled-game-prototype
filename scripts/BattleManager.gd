@@ -155,7 +155,7 @@ func _resolve_player_action():
 func _perform_player_action(action: String, target: CharacterInstance):
 	match action:
 		"attack":
-			var targeting = current_battler.weapon.targeting if current_battler.weapon else TargetingManager.TargetType.SINGLE
+			var targeting = current_battler.equipment["weapon"].targeting if current_battler.equipment["weapon"] else TargetingManager.TargetType.SINGLE
 			var _targets = get_applicable_targets(target, targeting)
 			for t in _targets:
 				if not t:
@@ -233,7 +233,7 @@ func _handle_defend():
 	print(current_battler.resource.name, " is defending!")
 
 func _handle_flee():
-	var success = randf() < 0.5
+	var success = randf() < 1
 	if success:
 		print("Party flees successfully!")
 		EncounterManager.end_encounter("flee")

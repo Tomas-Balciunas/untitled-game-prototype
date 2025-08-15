@@ -9,13 +9,14 @@
 script = ExtResource("3_615lu")
 base_stat_bonuses = {
 "attack": 10,
-"health": 4,
+"health": 7,
 "mana": 1,
 "speed": -4
 }
 targeting = 0
-name = "Wooden Sword"
-type = 0
 modifiers = Array[ExtResource("2_s2e5p")]([ExtResource("3_s2e5p")])
 effects = Array[ExtResource("1_5y3ig")]([])
+name = "Wooden Sword"
+type = 0
+description = "bruh"
 metadata/_custom_type_script = "uid://dshxh47nef2ua"

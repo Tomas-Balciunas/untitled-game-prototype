@@ -55,11 +55,11 @@ func recalculate_stats(character: CharacterInstance, should_fill_hp: bool = fals
 		"defense": 0.0
 	}
 	
-	for gear in [character.weapon]:
-		if not gear:
+	for gear in character.equipment:
+		if not character.equipment[gear]:
 			continue
-		for stat in gear.base_stat_bonuses.keys():
-			flat_bonus[stat] += gear.base_stat_bonuses[stat]
+		for stat in character.equipment[gear].base_stat_bonuses.keys():
+			flat_bonus[stat] += character.equipment[gear].base_stat_bonuses[stat]
 
 	for mod in modifiers:
 		var val = mod.compute_value(character)

@@ -7,5 +7,5 @@ script = ExtResource("1_icfxe")
 damage_per_turn = 5
 name = "Poison"
 category = 4
-duration_turns = 3
+duration_turns = 5
 metadata/_custom_type_script = "uid://cuf03a6q4u1c6"

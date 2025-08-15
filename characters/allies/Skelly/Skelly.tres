@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="CharacterResource" load_steps=11 format=3 uid="uid://bbddeexd37t5i"]
+[gd_resource type="Resource" script_class="CharacterResource" load_steps=12 format=3 uid="uid://bbddeexd37t5i"]
 
 [ext_resource type="Script" uid="uid://bp0biy0knxw2o" path="res://effect/Effect.gd" id="1_l3iqv"]
 [ext_resource type="Script" uid="uid://blqk30gl013xc" path="res://characters/_attribute/Attributes.gd" id="1_ohgca"]
@@ -9,6 +9,7 @@
 [ext_resource type="Resource" uid="uid://eiwm6khdbjki" path="res://characters/_race/Human.tres" id="4_l3iqv"]
 [ext_resource type="Resource" uid="uid://b40pmjuvgrvn4" path="res://characters/_gender/Male.tres" id="4_p4kuy"]
 [ext_resource type="Resource" uid="uid://crai3lto44aqg" path="res://characters/_class/Thief.tres" id="4_uhviy"]
+[ext_resource type="Script" uid="uid://b06vmgrh4qa8i" path="res://gear/Item.gd" id="4_yu6ia"]
 
 [sub_resource type="Resource" id="Resource_rhf32"]
 script = ExtResource("1_ohgca")
@@ -40,5 +41,5 @@ prefers_front_row = true
 default_skills = Array[ExtResource("1_yod8j")]([])
 default_effects = Array[ExtResource("1_l3iqv")]([ExtResource("3_rhf32")])
 default_damage_type = 1
-default_weapon = ExtResource("3_ohgca")
+default_items = Array[ExtResource("4_yu6ia")]([ExtResource("3_ohgca")])
 metadata/_custom_type_script = "uid://bwn4gpkaijqsg"

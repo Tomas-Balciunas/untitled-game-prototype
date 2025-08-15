@@ -18,8 +18,10 @@ var _connections := []
 var _is_registered := false
 
 var owner: CharacterInstance = null
+var _is_runtime_instance := false
 
 func on_apply(_owner: CharacterInstance) -> void:
+	_is_runtime_instance = true
 	owner = _owner
 	_register_if_needed()
 

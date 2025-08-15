@@ -15,11 +15,11 @@ func on_apply(new_owner: CharacterInstance) -> void:
 func on_trigger(trigger: String, ctx: ActionContext) -> void:
 	if trigger == EffectTriggers.ON_POST_HIT:
 		_source = ctx.source
-		var duplicate_effect = self.duplicate()
-		duplicate_effect.owner = ctx.target
-		duplicate_effect._source = _source
-		duplicate_effect._remaining = duration_turns
-		ctx.target.apply_effect(duplicate_effect, ctx)
+		ctx.target.apply_effect(self, ctx, func(inst: Effect):
+			inst.owner = ctx.target
+			inst._source = _source
+			inst._remaining = duration_turns
+		)
 
 	if trigger == EffectTriggers.ON_TURN_END and _remaining > 0:
 		if owner == null:
@@ -35,6 +35,7 @@ func on_trigger(trigger: String, ctx: ActionContext) -> void:
 		DamageResolver.apply_attack(tick)
 		
 		_remaining -= 1
+		print("Remaining poison turns for %s applied by %s: %s" % [owner.resource.name, _source.resource.name, _remaining])
 		if _remaining <= 0:
 			print("[PoisonEffect] Poison expired on %s." % owner.resource.name)
 			owner.remove_effect(self)

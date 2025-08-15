@@ -1,0 +1,67 @@
+[gd_scene load_steps=2 format=3 uid="uid://bsba5teil2v2l"]
+
+[ext_resource type="Script" uid="uid://df1gmeiyv6avc" path="res://gear/InventoryUI.gd" id="1_cs4o0"]
+
+[node name="InventoryUI" type="Control"]
+layout_mode = 3
+anchor_right = 0.205
+anchor_bottom = 0.768
+offset_right = -0.400024
+offset_bottom = 0.176025
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_cs4o0")
+
+[node name="InventoryContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="CharacterName" type="Label" parent="InventoryContainer"]
+layout_mode = 2
+
+[node name="Equipped" type="Label" parent="InventoryContainer"]
+layout_mode = 2
+text = "Equipped"
+
+[node name="EquippedList" type="ItemList" parent="InventoryContainer"]
+clip_contents = false
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Inventory" type="Label" parent="InventoryContainer"]
+layout_mode = 2
+text = "Inventory"
+
+[node name="InventoryList" type="ItemList" parent="InventoryContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="ActionButton" type="Button" parent="InventoryContainer"]
+layout_mode = 2
+text = "Equip"
+
+[node name="NextButton" type="Button" parent="InventoryContainer"]
+layout_mode = 2
+text = "Next Character"
+
+[node name="PrevButton" type="Button" parent="InventoryContainer"]
+layout_mode = 2
+text = "Previous Character"
+
+[node name="Inventory" type="Button" parent="."]
+layout_mode = 0
+offset_left = 70.0
+offset_top = 663.0
+offset_right = 153.0
+offset_bottom = 694.0
+text = "Inventory"
+
+[connection signal="pressed" from="InventoryContainer/ActionButton" to="." method="_on_action_button_pressed"]
+[connection signal="pressed" from="InventoryContainer/NextButton" to="." method="_on_next_button_pressed"]
+[connection signal="pressed" from="InventoryContainer/PrevButton" to="." method="_on_prev_button_pressed"]
+[connection signal="pressed" from="Inventory" to="." method="_on_inventory_pressed"]
+[connection signal="toggled" from="Inventory" to="." method="_on_inventory_toggled"]

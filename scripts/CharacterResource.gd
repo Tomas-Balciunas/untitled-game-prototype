@@ -29,4 +29,4 @@ const DEFAULT_ATTRIBUTES = preload("res://characters/_attribute/_Unknown.tres")
 @export var default_skills: Array[Skill] = []
 @export var default_effects: Array[Effect] = []
 @export var default_damage_type: DamageTypes.Type
-@export var default_weapon: Weapon
+@export var default_items: Array[Item] = []

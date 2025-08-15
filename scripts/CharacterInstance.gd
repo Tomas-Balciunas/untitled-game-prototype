@@ -27,7 +27,17 @@ var attributes: Attributes
 var job: Job
 var gender: Gender
 var race: Race
-var weapon: Weapon
+var inventory: Inventory
+
+var equipment := {
+	"weapon": null,
+	"chest": null,
+	"helmet": null,
+	"boots": null,
+	"gloves": null,
+	"ring1": null,
+	"ring2": null
+}
 
 func _init(res: CharacterResource) -> void:
 	current_experience = 500
@@ -35,6 +45,10 @@ func _init(res: CharacterResource) -> void:
 	fill_stats(res)
 	fill_attributes(res)
 	resource = res
+	
+	inventory = Inventory.new()
+	for item in res.default_items:
+		inventory.add_item(item)
 	
 	damage_type = res.default_damage_type
 	
@@ -64,9 +78,6 @@ func _init(res: CharacterResource) -> void:
 			inst.on_apply(self)
 			effects.append(inst)
 	
-	weapon = res.default_weapon
-	if weapon: 
-		weapon.equip(self)
 	stats.recalculate_stats(self, true, true)
 
 func set_current_health(new_health: int) -> void:
@@ -109,18 +120,22 @@ func cleanup_after_battle() -> void:
 	for e in effects:
 		e.cleanup_after_battle()
 
-#func remove_effect(effect: Effect) -> void:
-	#if effects.size() > 0 and effect.has_method(EffectTriggers.ON_EXPIRE):
-		#effect.on_expire(self)
+func apply_effect(effect: Effect, ctx: ActionContext, init = null) -> void:
+	if effect._is_runtime_instance:
+		push_warning("Applying an already-instantiated effect! Did you forget to pass the template?")
 
-func apply_effect(effect: Effect, ctx: ActionContext) -> void:
 	for passive in effects.duplicate():
 		if passive.has_method("on_trigger"):
 			passive.on_trigger(EffectTriggers.ON_APPLY_EFFECT, ctx)
-			
-	effect.on_apply(self)
-	effects.append(effect)
-		#
+
+	var inst: Effect = effect.duplicate(true)
+	
+	if init and typeof(init) == TYPE_CALLABLE:
+		init.call(inst)
+	
+	inst.on_apply(self)
+	effects.append(inst)
+		
 func remove_effect(effect: Resource) -> void:
 	effects.erase(effect)
 	if effects.size() > 0 and effect.has_method(EffectTriggers.ON_EXPIRE):
@@ -185,3 +200,35 @@ func increase_attribute(attr: String) -> bool:
 	unspent_attribute_points -= 1
 	stats.recalculate_stats(self, true, true)
 	return true
+
+func equip_item(item: Gear) -> bool:
+	if not inventory.has_item(item):
+		return false
+	var slot_name = get_slot_name_for_item(item)
+	if not slot_name:
+		return false
+
+	if equipment[slot_name]:
+		unequip_slot(slot_name)
+	equipment[slot_name] = item
+	stats.recalculate_stats(self)
+	return true
+
+func unequip_slot(slot_name: String) -> bool:
+	var item: Gear = equipment[slot_name]
+	if item:
+		equipment[slot_name] = null
+		stats.recalculate_stats(self)
+		return true
+	return false
+
+func get_slot_name_for_item(item: Gear) -> String:
+	match item.type:
+		Item.ItemType.WEAPON: return "weapon"
+		Item.ItemType.CHEST: return "chest"
+		Item.ItemType.HELMET: return "helmet"
+		Item.ItemType.BOOTS: return "boots"
+		Item.ItemType.GLOVES: return "gloves"
+		Item.ItemType.RING:
+			return equipment["ring1"] if null else "ring2"
+		_: return ""
