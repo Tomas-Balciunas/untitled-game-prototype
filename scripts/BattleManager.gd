@@ -99,7 +99,10 @@ func _on_turn_start():
 	emit_signal("turn_started", is_party_member)
 	emit_signal("current_battler_change", current_battler, is_party_member)
 
-	current_battler.process_effects("on_turn_start")
+	var event = TriggerEvent.new()
+	event.trigger = EffectTriggers.ON_TURN_START
+	event.actor = current_battler
+	EffectRunner.process_trigger(event)
 	disable_all_targeting()
 		
 	if is_party_member:
@@ -110,7 +113,10 @@ func _on_turn_start():
 		current_state = BattleState.ENEMY_TURN
 
 func _on_turn_end():
-	current_battler.process_effects("on_turn_end")
+	var event = TriggerEvent.new()
+	event.trigger = EffectTriggers.ON_TURN_END
+	event.actor = current_battler
+	EffectRunner.process_trigger(event)
 	current_battler = null
 	party_panel.clear_highlights()
 	current_state = BattleState.CHECK_END

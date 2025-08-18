@@ -120,31 +120,32 @@ func cleanup_after_battle() -> void:
 	for e in effects:
 		e.cleanup_after_battle()
 
-func apply_effect(effect: Effect, ctx: ActionContext, init = null) -> void:
+func apply_effect(effect: Effect, ctx: ActionContext) -> void:
 	if effect._is_runtime_instance:
 		push_warning("Applying an already-instantiated effect! Did you forget to pass the template?")
 
-	for passive in effects.duplicate():
-		if passive.has_method("on_trigger"):
-			passive.on_trigger(EffectTriggers.ON_APPLY_EFFECT, ctx)
-
 	var inst: Effect = effect.duplicate(true)
 	
-	if init and typeof(init) == TYPE_CALLABLE:
-		init.call(inst)
+	if ctx.callable and typeof(ctx.callable) == TYPE_CALLABLE:
+		ctx.callable.call(inst)
 	
 	inst.on_apply(self)
 	effects.append(inst)
 		
-func remove_effect(effect: Resource) -> void:
-	effects.erase(effect)
-	if effects.size() > 0 and effect.has_method(EffectTriggers.ON_EXPIRE):
-		effect.on_expire(self)
+func remove_effect(effect: Effect) -> void:
+	if effects.has(effect):
+		effects.erase(effect)
+		if effect.has_method("on_expire"):
+			effect.on_expire(self)
 		
 func process_effects(trigger: String, ctx: ActionContext = null) -> void:
 	for effect in effects.duplicate():
 		if effect.has_method("on_trigger"):
-			effect.on_trigger(trigger, ctx)
+			var event = TriggerEvent.new()
+			event.actor = self
+			event.trigger = trigger
+			event.ctx = ctx
+			effect.on_trigger(event)
 		
 func fill_stats(res: CharacterResource):
 	stats.base_attack = res.attack_power
@@ -210,17 +211,20 @@ func equip_item(item: Gear) -> bool:
 
 	if equipment[slot_name]:
 		unequip_slot(slot_name)
+	inventory.remove_item(item)
 	equipment[slot_name] = item
 	stats.recalculate_stats(self)
 	return true
 
 func unequip_slot(slot_name: String) -> bool:
 	var item: Gear = equipment[slot_name]
-	if item:
-		equipment[slot_name] = null
-		stats.recalculate_stats(self)
-		return true
-	return false
+	if not item:
+		return false
+
+	equipment[slot_name] = null
+	inventory.add_item(item)
+	stats.recalculate_stats(self)
+	return true
 
 func get_slot_name_for_item(item: Gear) -> String:
 	match item.type:
@@ -230,5 +234,8 @@ func get_slot_name_for_item(item: Gear) -> String:
 		Item.ItemType.BOOTS: return "boots"
 		Item.ItemType.GLOVES: return "gloves"
 		Item.ItemType.RING:
-			return equipment["ring1"] if null else "ring2"
+			if equipment["ring1"] == null:
+				return "ring1"
+			else:
+				return "ring2"
 		_: return ""

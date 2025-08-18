@@ -1,8 +1,10 @@
 extends Effect
 class_name Counterattack
 
-func on_trigger(trigger: String, data: ActionContext) -> void:
-	if trigger == EffectTriggers.ON_RECEIVE_DAMAGE:
-		var counter = 50 >= randi() % 100
-		if counter:
-			data.set_meta("counterattack", data.source)
+func listened_triggers() -> Array:
+	return [EffectTriggers.ON_BEFORE_RECEIVE_DAMAGE]
+
+func on_trigger(event: TriggerEvent) -> void:
+	var counter = 50 >= randi() % 100
+	if counter:
+		event.ctx.set_meta("counterattack", event.ctx.source)

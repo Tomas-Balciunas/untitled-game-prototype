@@ -5,7 +5,8 @@
 [resource]
 script = ExtResource("1_i2nm0")
 share_percent = 0.1
-name = "Unnamed Effect"
+name = "Damage Share"
 category = 0
+activation_scope = 1
 duration_turns = -1
 metadata/_custom_type_script = "uid://cvlcynw134skv"

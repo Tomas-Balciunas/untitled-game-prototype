@@ -35,6 +35,8 @@ BattleContext="*res://scripts/BattleContext.gd"
 TransitionManager="*res://scripts/TransitionManager.gd"
 GameState="*res://scenes/GameState.gd"
 RestManager="*res://scripts/RestManager.gd"
+EffectRunner="*res://scripts/EffectRunner.gd"
+EffectApplicationResolver="*res://scripts/EffectApplicationResolver.gd"
 
 [display]
 

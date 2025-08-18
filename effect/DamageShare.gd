@@ -3,19 +3,22 @@ class_name DamageShare
 
 @export var share_percent: float = 0.10
 
-func register_signals() -> void:
-	_bind(BattleEventBus, "damage_about_to_be_applied", "_on_ally_damaged")
+func listened_triggers() -> Array:
+	return [EffectTriggers.ON_DAMAGE_ABOUT_TO_BE_APPLIED]
 
-func _on_ally_damaged(ctx: DamageContext) -> void:
-	var damaged = ctx.target
+func on_trigger(event: TriggerEvent) -> void:
+	var damaged = event.ctx.target
 	
-	if damaged != owner and not owner.is_dead:
-		if not BattleContext.in_battle or BattleContext.manager.same_side(damaged, owner):
-			var transfer = ceil(ctx.final_value * share_percent)
-			var final = floor(ctx.final_value - transfer)
-			ctx.final_value = final
-			owner.set_current_health(owner.stats.current_health - transfer)
-			BattleTextLines.print_line(
-				"%s absorbs %d damage for %s!" %
-				[owner.resource.name, transfer, damaged.resource.name]
-			)
+	if damaged == owner:
+		return
+	if owner.is_dead:
+		return
+	
+	var transfer = ceil(event.ctx.final_value * share_percent)
+	var final = floor(event.ctx.final_value - transfer)
+	event.ctx.final_value = final
+	owner.set_current_health(owner.stats.current_health - transfer)
+	BattleTextLines.print_line(
+		"%s absorbs %d damage for %s!" %
+		[owner.resource.name, transfer, damaged.resource.name]
+	)

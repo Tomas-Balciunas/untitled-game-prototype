@@ -44,6 +44,10 @@ size_flags_vertical = 3
 layout_mode = 2
 text = "Equip"
 
+[node name="UnequipButton" type="Button" parent="InventoryContainer"]
+layout_mode = 2
+text = "Unequip"
+
 [node name="NextButton" type="Button" parent="InventoryContainer"]
 layout_mode = 2
 text = "Next Character"
@@ -60,7 +64,9 @@ offset_right = 153.0
 offset_bottom = 694.0
 text = "Inventory"
 
+[connection signal="pressed" from="InventoryContainer/ActionButton" to="." method="_on_equip_button_pressed"]
 [connection signal="pressed" from="InventoryContainer/ActionButton" to="." method="_on_action_button_pressed"]
+[connection signal="pressed" from="InventoryContainer/UnequipButton" to="." method="_on_unequip_button_pressed"]
 [connection signal="pressed" from="InventoryContainer/NextButton" to="." method="_on_next_button_pressed"]
 [connection signal="pressed" from="InventoryContainer/PrevButton" to="." method="_on_prev_button_pressed"]
 [connection signal="pressed" from="Inventory" to="." method="_on_inventory_pressed"]

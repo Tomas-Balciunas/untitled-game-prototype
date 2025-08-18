@@ -3,39 +3,57 @@ class_name PoisonEffect
 
 @export var damage_per_turn: int = 5
 
-var _remaining := 0
-var _source: CharacterInstance
+var _remaining: int = 0
+var _source: CharacterInstance = null
 
 func on_apply(new_owner: CharacterInstance) -> void:
+	_is_runtime_instance = true
+	owner = new_owner
 	_remaining = duration_turns
-	self.owner = new_owner
-	BattleTextLines.print_line("Poison applied to %s for %d turns" %
-		[owner.resource.name, duration_turns])
+	BattleTextLines.print_line("Poison applied to %s for %d turns" % [owner.resource.name, duration_turns])
+	_register_if_needed()
 
-func on_trigger(trigger: String, ctx: ActionContext) -> void:
-	if trigger == EffectTriggers.ON_POST_HIT:
-		_source = ctx.source
-		ctx.target.apply_effect(self, ctx, func(inst: Effect):
-			inst.owner = ctx.target
-			inst._source = _source
-			inst._remaining = duration_turns
-		)
+func on_expire(_owner: CharacterInstance) -> void:
+	_unregister()
+	owner = null
 
-	if trigger == EffectTriggers.ON_TURN_END and _remaining > 0:
+func listened_triggers() -> Array:
+	if _is_runtime_instance:
+		return [EffectTriggers.ON_TURN_END]
+	else:
+		return [EffectTriggers.ON_HIT]
+
+func on_trigger(event: TriggerEvent) -> void:
+
+	if not _is_runtime_instance and event.trigger == EffectTriggers.ON_HIT:
+
+		var application = EffectApplicationAction.new()
+		application.source = event.ctx.source
+		application.target = event.ctx.target
+		application.effect = self
+		application.callable = func (inst):
+			inst._source = application.source
+		EffectApplicationResolver.apply_effect(application)
+		return
+
+	if _is_runtime_instance and event.trigger == EffectTriggers.ON_TURN_END:
+		if _remaining <= 0:
+			return
 		if owner == null:
 			push_error("PoisonEffect: Owner is null during on_turn_end tick.")
 			return
-
 		var tick = AttackAction.new()
-		tick.attacker = _source
+		tick.attacker = _source if _source != null else owner
 		tick.defender = owner
 		tick.type = DamageTypes.Type.POISON
 		tick.base_value = damage_per_turn
-		tick.options["dot"] = true 
+		tick.options = tick.options.duplicate() if tick.options else {}
+		tick.options["dot"] = true
 		DamageResolver.apply_attack(tick)
-		
+
 		_remaining -= 1
-		print("Remaining poison turns for %s applied by %s: %s" % [owner.resource.name, _source.resource.name, _remaining])
+		print("Poison tick: %s takes %d from %s — remaining %d" % [owner.resource.name, damage_per_turn, tick.attacker.resource.name, _remaining])
+
 		if _remaining <= 0:
-			print("[PoisonEffect] Poison expired on %s." % owner.resource.name)
-			owner.remove_effect(self)
+			if owner:
+				owner.remove_effect(self)

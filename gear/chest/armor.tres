@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="Gear" load_steps=4 format=3 uid="uid://cvqxsxqpm34oh"]
+
+[ext_resource type="Script" uid="uid://bp0biy0knxw2o" path="res://effect/Effect.gd" id="1_td2g0"]
+[ext_resource type="Script" uid="uid://cyhrh3l20i5dm" path="res://stat/StatModifier.gd" id="2_ddxgx"]
+[ext_resource type="Script" uid="uid://dnxjp78vsivnq" path="res://gear/gear.gd" id="3_ibg73"]
+
+[resource]
+script = ExtResource("3_ibg73")
+modifiers = Array[ExtResource("2_ddxgx")]([])
+effects = Array[ExtResource("1_td2g0")]([])
+name = "Armor chest"
+type = 1
+description = "test"
+metadata/_custom_type_script = "uid://dnxjp78vsivnq"

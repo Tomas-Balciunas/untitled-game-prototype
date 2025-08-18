@@ -25,7 +25,10 @@ func update_player_position(pos: Vector2i, facing: Vector3):
 	player_facing = facing
 	
 	for c in PartyManager.members:
-		c.process_effects("on_turn_end")
+		var event = TriggerEvent.new()
+		event.trigger = EffectTriggers.ON_TURN_END
+		event.actor = c
+		EffectRunner.process_trigger(event)
 
 func mark_encounter_cleared(id: String, encounter_id: String) -> void:
 	cleared_encounters[id].append(encounter_id)

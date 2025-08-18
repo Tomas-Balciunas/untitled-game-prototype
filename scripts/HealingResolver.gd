@@ -19,9 +19,15 @@ func _apply_core(source: CharacterInstance, target: CharacterInstance, base: flo
 	ctx.final_value = base
 	ctx.options = options
 	
-	source.process_effects(EffectTriggers.ON_HEAL, ctx)
+	var event = TriggerEvent.new()
+	event.actor = ctx.source
+	event.ctx = ctx
+	event.trigger = EffectTriggers.ON_HEAL
 	
-	target.process_effects(EffectTriggers.ON_RECEIVE_HEAL, ctx)
+	EffectRunner.process_trigger(event)
+	
+	event.trigger = EffectTriggers.ON_RECEIVE_HEAL
+	EffectRunner.process_trigger(event)
 
 	target.set_current_health(target.stats.current_health + ctx.final_value)
 

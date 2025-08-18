@@ -38,38 +38,39 @@ func _apply_core(source: CharacterInstance, target: CharacterInstance, damage_ty
 	ctx.tags        = extra_effects
 	ctx.options = options
 	
-	# attacker’s effects
-	source.process_effects(EffectTriggers.ON_HIT, ctx)
-	#print("After attacker effects: %d" % ctx.final_value)
+	var event = TriggerEvent.new()
+	event.actor = ctx.source
+	event.ctx = ctx
+	event.trigger = EffectTriggers.ON_HIT
+	if ctx.tags:
+		event.tags = ctx.tags
 	
-	# skill effects
-	for e in extra_effects:
-		if e.has_method("on_trigger"):
-			e.on_trigger(EffectTriggers.ON_HIT, ctx)
-	#print("After attacker skill: %d" % ctx.final_value)
+	# attacker’s effects
+	EffectRunner.process_trigger(event)
+	
 	
 	# defender’s effects
-	target.process_effects(EffectTriggers.ON_RECEIVE_DAMAGE, ctx)
+	event.trigger = EffectTriggers.ON_BEFORE_RECEIVE_DAMAGE
+	event.actor = ctx.target
+	EffectRunner.process_trigger(event)
 	
 	var defense_ignore = 0
 	if ctx.has_meta("ignore_defense_percent"):
 		defense_ignore = ctx.get_meta("ignore_defense_percent")
-
-	
-
 	
 	var calculator = DamageCalculator.new(ctx, defense_ignore)
 	ctx.final_value = max(calculator.get_final_damage(), 0)
-	BattleEventBus.emit_signal("damage_about_to_be_applied", ctx)
+	
+	event.trigger = EffectTriggers.ON_DAMAGE_ABOUT_TO_BE_APPLIED
+	EffectRunner.process_trigger(event)
+	
 	BattleTextLines.print_line("%s dealt %f %s damage to %s" % [ctx.source.resource.name, ctx.final_value, DamageTypes.to_str(ctx.type), ctx.target.resource.name])
 	target.set_current_health(target.stats.current_health - ctx.final_value)
-	BattleEventBus.emit_signal("damage_applied", ctx)
+	
+	event.trigger = EffectTriggers.ON_DAMAGE_APPLIED
+	EffectRunner.process_trigger(event)
+	
 	emit_signal("damage_resolved", ctx)
-
-	# post‑hit effects
-	for e in extra_effects:
-		if e.has_method("on_trigger"):
-			e.on_trigger(EffectTriggers.ON_POST_HIT, ctx)
 	
 	if ctx.has_meta("counterattack"):
 		var counter_target = ctx.get_meta("counterattack")

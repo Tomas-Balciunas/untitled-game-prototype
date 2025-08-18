@@ -4,7 +4,9 @@
 
 [resource]
 script = ExtResource("1_h5gnt")
-name = "Unnamed Effect"
+name = "counterattack"
 category = 0
+activation_scope = 0
 duration_turns = -1
+trigger = "on_turn_end"
 metadata/_custom_type_script = "uid://dlkpx1bpl0wdy"
