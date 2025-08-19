@@ -11,6 +11,8 @@ var current_battler: CharacterInstance = null
 @onready var flee_button = $VBoxContainer/FleeButton
 @onready var skill_popup = $Skill/SkillPopup
 @onready var skill_list_container = $Skill/SkillPopup/ScrollContainer/SkillListContainer
+@onready var item_popup = $Item/ItemPopup
+@onready var item_list_container = $Item/ItemPopup/ScrollContainer/ItemListContainer
 
 func _on_battler_change(battler, is_party_member: bool):
 	if is_party_member:
@@ -73,7 +75,22 @@ func _on_skill_button_pressed() -> void:
 
 
 func _on_item_button_pressed() -> void:
-	pass # Replace with function body.
+	_populate_item_list()
+	item_popup.popup_centered()
+	
+func _populate_item_list():
+	for child in item_list_container.get_children():
+		child.queue_free()
+
+	var items = current_battler.inventory.get_all_items()
+	for item in items:
+		if not item is ConsumableItem:
+			continue
+		var btn = Button.new()
+		btn.text = item.name
+		btn.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		btn.pressed.connect(_on_item_selected.bind(item))
+		item_list_container.add_child(btn)
 
 func _populate_skill_list():
 	for child in skill_list_container.get_children():

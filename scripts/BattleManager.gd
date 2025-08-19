@@ -211,7 +211,18 @@ func _perform_player_action(action: String, target: CharacterInstance):
 					print("Unknown skill!")
 			
 		"item":
-			print(current_battler.resource.name, " used item")
+			var targeting = _pending_options[0].targeting_type
+			var _targets = get_applicable_targets(target, targeting)
+			for t in _targets:
+				if not t:
+					continue
+				if t is EnemySlot:
+					t = t.character_instance
+				var cons = ConsumableAction.new()
+				cons.consumable = _pending_options[0]
+				cons.source = current_battler
+				cons.target = t
+				ConsumableResolver.apply_consumable(cons)
 
 func _process_enemy_turn():
 	if current_battler == null:

@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="CharacterResource" load_steps=13 format=3 uid="uid://dh8kad7brt53b"]
+[gd_resource type="Resource" script_class="CharacterResource" load_steps=14 format=3 uid="uid://dh8kad7brt53b"]
 
 [ext_resource type="Script" uid="uid://dq4acpkde276p" path="res://skills/Skill.gd" id="1_5gn58"]
 [ext_resource type="Script" uid="uid://bp0biy0knxw2o" path="res://effect/Effect.gd" id="1_7ajkr"]
@@ -10,6 +10,7 @@
 [ext_resource type="Resource" uid="uid://dt2wtnoyod5yd" path="res://effect/_passive/mp_cost/MpCostReduction.tres" id="4_23xqr"]
 [ext_resource type="Resource" uid="uid://dgxlt0x8p42nw" path="res://effect/DamageShare.tres" id="5_7lkq3"]
 [ext_resource type="Script" uid="uid://b06vmgrh4qa8i" path="res://gear/Item.gd" id="6_7lkq3"]
+[ext_resource type="Resource" uid="uid://cyq5e4qjfhb80" path="res://gear/consumable/hp_pot.tres" id="7_n60ku"]
 [ext_resource type="Resource" uid="uid://7xtbwq8efwlh" path="res://characters/_class/Priest.tres" id="8_23xqr"]
 
 [sub_resource type="Resource" id="Resource_n7wih"]
@@ -42,5 +43,5 @@ prefers_front_row = false
 default_skills = Array[ExtResource("1_5gn58")]([])
 default_effects = Array[ExtResource("1_7ajkr")]([ExtResource("3_1ui0v"), ExtResource("4_23xqr"), ExtResource("5_7lkq3")])
 default_damage_type = 0
-default_items = Array[ExtResource("6_7lkq3")]([])
+default_items = Array[ExtResource("6_7lkq3")]([ExtResource("7_n60ku")])
 metadata/_custom_type_script = "uid://bwn4gpkaijqsg"

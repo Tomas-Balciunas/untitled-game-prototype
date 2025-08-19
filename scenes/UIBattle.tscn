@@ -79,6 +79,34 @@ horizontal_scroll_mode = 0
 [node name="SkillListContainer" type="VBoxContainer" parent="Skill/SkillPopup/ScrollContainer"]
 layout_mode = 2
 
+[node name="Item" type="Control" parent="."]
+layout_mode = 1
+anchor_left = 0.15
+anchor_top = 0.579
+anchor_right = 0.244
+anchor_bottom = 0.802
+offset_top = 0.327942
+offset_right = -0.320007
+offset_bottom = 0.0639648
+
+[node name="ItemPopup" type="PopupPanel" parent="Item"]
+auto_translate_mode = 1
+
+[node name="ScrollContainer" type="ScrollContainer" parent="Item/ItemPopup"]
+anchors_preset = -1
+anchor_left = 0.04
+anchor_top = 0.04
+anchor_right = 0.96
+anchor_bottom = 0.96
+offset_left = 4.0
+offset_top = 4.0
+offset_right = 96.0
+offset_bottom = 96.0
+horizontal_scroll_mode = 0
+
+[node name="ItemListContainer" type="VBoxContainer" parent="Item/ItemPopup/ScrollContainer"]
+layout_mode = 2
+
 [connection signal="pressed" from="VBoxContainer/AttackButton" to="." method="_on_attack_button_pressed"]
 [connection signal="toggled" from="VBoxContainer/AttackButton" to="." method="_on_attack_button_toggled"]
 [connection signal="pressed" from="VBoxContainer/DefendButton" to="." method="_on_defend_button_pressed"]

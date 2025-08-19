@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="CharacterResource" load_steps=15 format=3 uid="uid://bbddeexd37t5i"]
+[gd_resource type="Resource" script_class="CharacterResource" load_steps=17 format=3 uid="uid://bbddeexd37t5i"]
 
 [ext_resource type="Script" uid="uid://bp0biy0knxw2o" path="res://effect/Effect.gd" id="1_l3iqv"]
 [ext_resource type="Script" uid="uid://blqk30gl013xc" path="res://characters/_attribute/Attributes.gd" id="1_ohgca"]
@@ -13,6 +13,8 @@
 [ext_resource type="Resource" uid="uid://le73mm4vmyfe" path="res://gear/ring/ring1.tres" id="6_t07cl"]
 [ext_resource type="Resource" uid="uid://bbj7l20sqiitu" path="res://gear/ring/ring2.tres" id="7_jtp86"]
 [ext_resource type="Resource" uid="uid://cvqxsxqpm34oh" path="res://gear/chest/armor.tres" id="8_ympyx"]
+[ext_resource type="Resource" uid="uid://cyq5e4qjfhb80" path="res://gear/consumable/hp_pot.tres" id="9_jtp86"]
+[ext_resource type="Resource" uid="uid://crgcpwx5r3sep" path="res://gear/consumable/poison_flask.tres" id="10_ympyx"]
 
 [sub_resource type="Resource" id="Resource_rhf32"]
 script = ExtResource("1_ohgca")
@@ -44,5 +46,5 @@ prefers_front_row = true
 default_skills = Array[ExtResource("1_yod8j")]([])
 default_effects = Array[ExtResource("1_l3iqv")]([ExtResource("3_rhf32")])
 default_damage_type = 1
-default_items = Array[ExtResource("4_yu6ia")]([ExtResource("3_ohgca"), ExtResource("6_t07cl"), ExtResource("7_jtp86"), ExtResource("8_ympyx")])
+default_items = Array[ExtResource("4_yu6ia")]([ExtResource("3_ohgca"), ExtResource("6_t07cl"), ExtResource("7_jtp86"), ExtResource("8_ympyx"), ExtResource("9_jtp86"), ExtResource("10_ympyx")])
 metadata/_custom_type_script = "uid://bwn4gpkaijqsg"

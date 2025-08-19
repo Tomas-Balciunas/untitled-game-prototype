@@ -21,11 +21,11 @@ func listened_triggers() -> Array:
 	if _is_runtime_instance:
 		return [EffectTriggers.ON_TURN_END]
 	else:
-		return [EffectTriggers.ON_HIT]
+		return [EffectTriggers.ON_HIT, EffectTriggers.ON_USE_CONSUMABLE]
 
 func on_trigger(event: TriggerEvent) -> void:
 
-	if not _is_runtime_instance and event.trigger == EffectTriggers.ON_HIT:
+	if not _is_runtime_instance and event.trigger in listened_triggers():
 
 		var application = EffectApplicationAction.new()
 		application.source = event.ctx.source
@@ -56,4 +56,5 @@ func on_trigger(event: TriggerEvent) -> void:
 
 		if _remaining <= 0:
 			if owner:
+				print("Poison expired on %s" % owner.resource.name)
 				owner.remove_effect(self)

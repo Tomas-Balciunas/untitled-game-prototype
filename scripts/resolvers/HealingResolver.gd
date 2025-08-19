@@ -1,5 +1,4 @@
 extends Node
-class_name HealingManager
 
 signal healing_resolved(ctx: HealingContext)
 

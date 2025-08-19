@@ -1,5 +1,4 @@
 extends Node
-class_name DamageManager
 
 signal damage_resolved(ctx: DamageContext)
 

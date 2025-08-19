@@ -85,9 +85,9 @@ func _on_action_button_pressed():
 
 	if item is Gear:
 		player.equip_item(item)
-	elif item is ConsumableItem:
-		item.use_item(player, player)
-		player.inventory.remove_item(item)
+	#elif item is ConsumableItem:
+		#item.use_item(player, player)
+		#player.inventory.remove_item(item)
 
 	refresh_lists()
 

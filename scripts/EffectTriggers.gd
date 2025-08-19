@@ -19,3 +19,7 @@ const ON_BEFORE_RECEIVE_EFFECT := "on_before_receive_effect"
 const ON_APPLY_EFFECT := "on_apply_effect"
 const ON_POST_APPLY_EFFECT := "on_post_apply_effect"
 const ON_EXPIRE := "on_expire"
+
+const ON_BEFORE_USE_CONSUMABLE = "on_before_use_consumable"
+const ON_USE_CONSUMABLE = "on_use_consumable"
+const ON_POST_USE_CONSUMABLE = "on_post_use_consumable"
