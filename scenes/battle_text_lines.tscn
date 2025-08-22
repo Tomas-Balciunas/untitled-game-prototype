@@ -1,0 +1,46 @@
+[gd_scene load_steps=3 format=3 uid="uid://c1geh2y2biany"]
+
+[ext_resource type="Script" uid="uid://d2ih4xdo2me13" path="res://scenes/battle_text_lines.gd" id="1_nimm7"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6ixpi"]
+bg_color = Color(0, 0, 0, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.986752, 0.986752, 0.986752, 1)
+
+[node name="BattleTextLines" type="Panel"]
+anchors_preset = -1
+anchor_left = 0.681
+anchor_top = 0.719
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 0.319946
+offset_top = -2.19202
+theme_override_styles/panel = SubResource("StyleBoxFlat_6ixpi")
+script = ExtResource("1_nimm7")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 14
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 14
+
+[node name="TextContainer" type="RichTextLabel" parent="MarginContainer"]
+clip_contents = false
+layout_mode = 2
+theme_override_font_sizes/bold_italics_font_size = 11
+theme_override_font_sizes/italics_font_size = 11
+theme_override_font_sizes/mono_font_size = 11
+theme_override_font_sizes/normal_font_size = 11
+theme_override_font_sizes/bold_font_size = 11
+text = "
+"
+scroll_following = true

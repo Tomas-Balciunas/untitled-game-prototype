@@ -14,6 +14,8 @@ func remove_item(item: Item) -> bool:
 	if item in slots:
 		slots.erase(item)
 		return true
+		
+	push_error("Item %s not found" % item.name)
 	return false
 
 func has_item(item: Item) -> bool:

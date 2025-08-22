@@ -1,18 +1,9 @@
-[gd_scene load_steps=7 format=3 uid="uid://kreplysm57gi"]
+[gd_scene load_steps=5 format=3 uid="uid://kreplysm57gi"]
 
 [ext_resource type="Script" uid="uid://c3w3lgndriikd" path="res://scripts/BattleScene.gd" id="1_28s16"]
 [ext_resource type="Script" uid="uid://w5crfr45qebk" path="res://scripts/EnemyGrid.gd" id="2_ftvu5"]
 [ext_resource type="PackedScene" uid="uid://calltc1gumdi2" path="res://scenes/UIBattle.tscn" id="3_0yex5"]
-[ext_resource type="Script" uid="uid://d2ih4xdo2me13" path="res://scenes/battle_text_lines.gd" id="4_bsu3s"]
 [ext_resource type="Script" uid="uid://djga0vllljxhw" path="res://scripts/BattleManager.gd" id="5_ftvu5"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6ixpi"]
-bg_color = Color(0, 0, 0, 1)
-border_width_left = 1
-border_width_top = 1
-border_width_right = 1
-border_width_bottom = 1
-border_color = Color(0.986752, 0.986752, 0.986752, 1)
 
 [node name="BattleScene" type="Node3D"]
 script = ExtResource("1_28s16")
@@ -26,41 +17,6 @@ visible = false
 anchors_preset = -1
 anchor_top = 0.716
 offset_top = 0.0319824
-
-[node name="BattleTextLines" type="Panel" parent="."]
-anchors_preset = -1
-anchor_left = 0.681
-anchor_top = 0.719
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 0.319946
-offset_top = -2.19202
-theme_override_styles/panel = SubResource("StyleBoxFlat_6ixpi")
-script = ExtResource("4_bsu3s")
-
-[node name="MarginContainer" type="MarginContainer" parent="BattleTextLines"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_constants/margin_left = 8
-theme_override_constants/margin_top = 14
-theme_override_constants/margin_right = 8
-theme_override_constants/margin_bottom = 14
-
-[node name="TextContainer" type="RichTextLabel" parent="BattleTextLines/MarginContainer"]
-clip_contents = false
-layout_mode = 2
-theme_override_font_sizes/bold_italics_font_size = 11
-theme_override_font_sizes/italics_font_size = 11
-theme_override_font_sizes/mono_font_size = 11
-theme_override_font_sizes/normal_font_size = 11
-theme_override_font_sizes/bold_font_size = 11
-text = "
-"
-scroll_following = true
 
 [node name="SpotLight3D" type="SpotLight3D" parent="."]
 transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 0, 3, -9)
