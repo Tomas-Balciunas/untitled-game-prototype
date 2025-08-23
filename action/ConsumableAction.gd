@@ -3,4 +3,5 @@ class_name ConsumableAction
 
 var source: CharacterInstance
 var target: CharacterInstance
-var consumable: ConsumableItem = null
+var consumable: ConsumableInstance = null
+var actively_cast: bool = false

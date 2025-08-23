@@ -30,26 +30,31 @@ offset_bottom = 195.0
 
 [node name="AttackButton" type="Button" parent="VBoxContainer"]
 layout_mode = 2
+focus_mode = 0
 theme_override_styles/focus = SubResource("StyleBoxFlat_a268n")
 action_mode = 0
 text = "Attack"
 
 [node name="DefendButton" type="Button" parent="VBoxContainer"]
 layout_mode = 2
+focus_mode = 0
 theme_override_styles/hover = SubResource("StyleBoxFlat_jaicp")
 text = "Defend"
 
 [node name="SkillButton" type="Button" parent="VBoxContainer"]
 layout_mode = 2
+focus_mode = 0
 text = "Skill"
 
 [node name="ItemButton" type="Button" parent="VBoxContainer"]
 layout_mode = 2
+focus_mode = 0
 theme_override_styles/hover = SubResource("StyleBoxFlat_3bujy")
 text = "Item"
 
 [node name="FleeButton" type="Button" parent="VBoxContainer"]
 layout_mode = 2
+focus_mode = 0
 text = "Flee"
 
 [node name="Skill" type="Control" parent="."]

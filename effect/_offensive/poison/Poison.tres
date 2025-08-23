@@ -4,10 +4,10 @@
 
 [resource]
 script = ExtResource("1_icfxe")
-damage_per_turn = 5
+damage_per_turn = 7
 name = "Poison"
+description = "Unnamed Effect"
 category = 4
 activation_scope = 0
 duration_turns = 5
-trigger = "on_turn_end"
 metadata/_custom_type_script = "uid://cuf03a6q4u1c6"

@@ -9,6 +9,7 @@ func apply_attack(action: AttackAction) -> DamageContext:
 		action.type,
 		action.base_value,
 		[],
+		action.actively_cast,
 		action.options
 	)
 
@@ -24,18 +25,20 @@ func apply_skill(skill: SkillAction) -> DamageContext:
 		skill.skill.damage_type,		# dmg element, overrides attacker's element
 		calculated_damage,			# attacker's power * skill modifier
 		skill.effects,				# additional skill effects
+		skill.actively_cast,
 		skill.options
 	)
 
-func _apply_core(source: CharacterInstance, target: CharacterInstance, damage_type: DamageTypes.Type, base: float, extra_effects: Array[Effect], options: Dictionary = {}) -> DamageContext:
+func _apply_core(source: CharacterInstance, target: CharacterInstance, damage_type: DamageTypes.Type, base: float, extra_effects: Array[Effect], actively_cast: bool, options: Dictionary = {}) -> DamageContext:
 	var ctx = DamageContext.new()
-	ctx.source    = source
-	ctx.target    = target
-	ctx.type        = damage_type
-	ctx.base_value  = base
-	ctx.final_value = base
-	ctx.tags        = extra_effects
-	ctx.options = options
+	ctx.source   		= source
+	ctx.target    		= target
+	ctx.type        	= damage_type
+	ctx.base_value  	= base
+	ctx.final_value 	= base
+	ctx.tags        	= extra_effects
+	ctx.options 		= options
+	ctx.actively_cast 	= actively_cast
 	
 	var event = TriggerEvent.new()
 	event.actor = ctx.source
@@ -47,10 +50,8 @@ func _apply_core(source: CharacterInstance, target: CharacterInstance, damage_ty
 	# attacker’s effects
 	EffectRunner.process_trigger(event)
 	
-	
 	# defender’s effects
 	event.trigger = EffectTriggers.ON_BEFORE_RECEIVE_DAMAGE
-	event.actor = ctx.target
 	EffectRunner.process_trigger(event)
 	
 	var defense_ignore = 0

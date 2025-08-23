@@ -13,3 +13,6 @@ func on_trigger(event: TriggerEvent) -> void:
 	action.receiver = event.ctx.target
 	
 	HealingResolver.apply_heal(action)
+
+func get_description() -> String:
+	return "Heals for %s" % amount

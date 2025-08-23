@@ -28,22 +28,19 @@ func _on_turn_started(is_party_member: bool):
 func _on_defend_button_pressed() -> void:
 	emit_signal("action_selected", "defend", [])
 
-
 func _on_attack_button_pressed() -> void:
 	emit_signal("action_selected", "attack", [])
 
-
 func _on_flee_button_pressed() -> void:
 	emit_signal("action_selected", "flee", [])
-
 
 func _on_skill_selected(skill) -> void:
 	emit_signal("action_selected", "skill", [skill])
 	skill_popup.hide()
 
-
 func _on_item_selected(item) -> void:
 	emit_signal("action_selected", "item", [item])
+	skill_popup.hide()
 
 func highlight_action(action: String):
 	_reset_all_button_highlights()
@@ -68,11 +65,9 @@ func _reset_all_button_highlights():
 	for b in buttons:
 		b.add_theme_color_override("font_color", Color.WHITE)
 
-
 func _on_skill_button_pressed() -> void:
 	_populate_skill_list()
 	skill_popup.popup_centered()
-
 
 func _on_item_button_pressed() -> void:
 	_populate_item_list()
@@ -84,10 +79,10 @@ func _populate_item_list():
 
 	var items = current_battler.inventory.get_all_items()
 	for item in items:
-		if not item is ConsumableItem:
+		if not item is ConsumableInstance:
 			continue
 		var btn = Button.new()
-		btn.text = item.name
+		btn.text = item.get_item_name()
 		btn.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		btn.pressed.connect(_on_item_selected.bind(item))
 		item_list_container.add_child(btn)

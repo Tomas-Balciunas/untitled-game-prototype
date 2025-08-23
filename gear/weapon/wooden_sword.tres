@@ -1,21 +1,25 @@
-[gd_resource type="Resource" script_class="Weapon" load_steps=5 format=3 uid="uid://j0lr1j1qp7cc"]
+[gd_resource type="Resource" script_class="Weapon" load_steps=6 format=3 uid="uid://j0lr1j1qp7cc"]
 
 [ext_resource type="Script" uid="uid://bp0biy0knxw2o" path="res://effect/Effect.gd" id="1_5y3ig"]
+[ext_resource type="Resource" uid="uid://dv5v4ee1tl03q" path="res://effect/_offensive/poison/poison on hit.tres" id="2_615lu"]
 [ext_resource type="Script" uid="uid://cyhrh3l20i5dm" path="res://stat/StatModifier.gd" id="2_s2e5p"]
 [ext_resource type="Script" uid="uid://dshxh47nef2ua" path="res://gear/weapon/weapon.gd" id="3_615lu"]
 [ext_resource type="Resource" uid="uid://bdfqmdv5taow2" path="res://stat/_modifier/IQToAttackModifier/IQToAttackModifier.tres" id="3_s2e5p"]
 
 [resource]
 script = ExtResource("3_615lu")
-base_stat_bonuses = {
-"attack": 10,
-"health": 7,
-"mana": 1,
-"speed": -4
-}
 targeting = 0
+base_attack = 5
+base_health = 3
+base_speed = 0
+base_mana = 0
+base_defense = 0
+base_magic_power = 0
+base_divine_power = 0
+base_magic_defense = 0
+base_resistance = 0
 modifiers = Array[ExtResource("2_s2e5p")]([ExtResource("3_s2e5p")])
-effects = Array[ExtResource("1_5y3ig")]([])
+effects = Array[ExtResource("1_5y3ig")]([ExtResource("2_615lu")])
 name = "Wooden Sword"
 type = 0
 description = "bruh"

@@ -6,6 +6,9 @@ class_name PoisonEffect
 var _remaining: int = 0
 var _source: CharacterInstance = null
 
+func set_source(source: CharacterInstance) -> void:
+	_source = source
+
 func on_apply(new_owner: CharacterInstance) -> void:
 	_is_runtime_instance = true
 	owner = new_owner
@@ -21,18 +24,15 @@ func listened_triggers() -> Array:
 	if _is_runtime_instance:
 		return [EffectTriggers.ON_TURN_END]
 	else:
-		return [EffectTriggers.ON_HIT, EffectTriggers.ON_USE_CONSUMABLE]
+		return [EffectTriggers.ON_DAMAGE_APPLIED, EffectTriggers.ON_USE_CONSUMABLE]
 
 func on_trigger(event: TriggerEvent) -> void:
 
 	if not _is_runtime_instance and event.trigger in listened_triggers():
-
 		var application = EffectApplicationAction.new()
 		application.source = event.ctx.source
 		application.target = event.ctx.target
 		application.effect = self
-		application.callable = func (inst):
-			inst._source = application.source
 		EffectApplicationResolver.apply_effect(application)
 		return
 
@@ -58,3 +58,6 @@ func on_trigger(event: TriggerEvent) -> void:
 			if owner:
 				print("Poison expired on %s" % owner.resource.name)
 				owner.remove_effect(self)
+
+func get_description() -> String:
+	return "Applies poison on the target for %s turns dealing %s damage per turn" % [duration_turns, damage_per_turn]

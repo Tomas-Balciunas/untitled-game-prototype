@@ -161,7 +161,7 @@ func _resolve_player_action():
 func _perform_player_action(action: String, target: CharacterInstance):
 	match action:
 		"attack":
-			var targeting = current_battler.equipment["weapon"].targeting if current_battler.equipment["weapon"] else TargetingManager.TargetType.SINGLE
+			var targeting = current_battler.equipment["weapon"].template.targeting if current_battler.equipment["weapon"] else TargetingManager.TargetType.SINGLE
 			var _targets = get_applicable_targets(target, targeting)
 			for t in _targets:
 				if not t:
@@ -173,6 +173,7 @@ func _perform_player_action(action: String, target: CharacterInstance):
 				atk.defender   = t
 				atk.base_value = current_battler.stats.attack
 				atk.type = current_battler.damage_type
+				atk.actively_cast = true
 				DamageResolver.apply_attack(atk)
 		"skill":
 			var targeting = _pending_options[0].targeting_type
@@ -198,6 +199,7 @@ func _perform_player_action(action: String, target: CharacterInstance):
 					skill.receiver = t
 					skill.base_value = _pending_options[0].healing_amount
 					skill.effects = _pending_options[0].effects
+					skill.actively_cast = true
 					HealingResolver.apply_heal(skill)
 				elif _pending_options[0] is Skill:
 					var skill = SkillAction.new()
@@ -206,12 +208,13 @@ func _perform_player_action(action: String, target: CharacterInstance):
 					skill.skill = _pending_options[0]
 					skill.effects = _pending_options[0].effects
 					skill.modifier = _pending_options[0].modifier
+					skill.actively_cast = true
 					DamageResolver.apply_skill(skill)
 				else:
 					print("Unknown skill!")
 			
 		"item":
-			var targeting = _pending_options[0].targeting_type
+			var targeting = _pending_options[0].template.targeting_type
 			var _targets = get_applicable_targets(target, targeting)
 			for t in _targets:
 				if not t:
@@ -222,6 +225,7 @@ func _perform_player_action(action: String, target: CharacterInstance):
 				cons.consumable = _pending_options[0]
 				cons.source = current_battler
 				cons.target = t
+				cons.actively_cast = true
 				ConsumableResolver.apply_consumable(cons)
 
 func _process_enemy_turn():

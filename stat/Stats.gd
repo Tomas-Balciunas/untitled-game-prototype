@@ -71,6 +71,25 @@ func recalculate_stats(character: CharacterInstance, should_fill_hp: bool = fals
 	derived_magic_defense= base_magic_defense+ character.attributes.vit  * attr_mods.get(Attributes.VIT, 1)
 	derived_resistance   = base_resistance   + character.attributes.pie * attr_mods.get(Attributes.PIE, 1)
 
+	for slot in character.equipment.values():
+		if slot == null:
+			continue
+		if slot is GearInstance:
+			var base_stats = slot.get_base_stats()
+			for stat_enum in base_stats.keys():
+				match stat_enum:
+					Stats.Stat.ATTACK:        derived_attack       += base_stats[stat_enum]
+					Stats.Stat.HEALTH:        derived_health       += base_stats[stat_enum]
+					Stats.Stat.MANA:          derived_mana         += base_stats[stat_enum]
+					Stats.Stat.SPEED:         derived_speed        += base_stats[stat_enum]
+					Stats.Stat.DEFENSE:       derived_defense      += base_stats[stat_enum]
+					Stats.Stat.MAGIC_POWER:   derived_magic_power  += base_stats[stat_enum]
+					Stats.Stat.DIVINE_POWER:  derived_divine_power += base_stats[stat_enum]
+					Stats.Stat.MAGIC_DEFENSE: derived_magic_defense+= base_stats[stat_enum]
+					Stats.Stat.RESISTANCE:    derived_resistance   += base_stats[stat_enum]
+		else:
+			push_error("Non gear item is equipped: %s" % slot.get_item_name())
+
 	var flat_bonus = {
 		Stat.ATTACK: 0.0,
 		Stat.HEALTH: 0.0,
@@ -127,3 +146,16 @@ func fill_hp():
 
 func fill_mp():
 	current_mana = max_mana
+
+static func stat_to_string(stat: Stat) -> String:
+	match stat:
+		Stat.ATTACK: return "Attack"
+		Stat.HEALTH: return "Health"
+		Stat.SPEED: return "Speed"
+		Stat.MANA: return "Mana"
+		Stat.DEFENSE: return "Defense"
+		Stat.MAGIC_POWER: return "Magic Power"
+		Stat.DIVINE_POWER: return "Divine Power"
+		Stat.MAGIC_DEFENSE: return "Magic Defense"
+		Stat.RESISTANCE: return "Resistance"
+		_: return "Unknown"

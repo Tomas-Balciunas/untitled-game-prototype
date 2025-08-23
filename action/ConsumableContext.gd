@@ -2,4 +2,4 @@ extends ActionContext
 
 class_name ConsumableContext
 
-var consumable: ConsumableItem = null
+var consumable: ConsumableInstance = null

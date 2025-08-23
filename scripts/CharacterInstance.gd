@@ -22,6 +22,7 @@ var status_effects: Array = []
 var turn_meter: int = 0
 var learnt_skills: Array[Skill] = []
 var effects: Array[Effect] = []
+var gear_effects: Dictionary = {}
 var damage_type: DamageTypes.Type
 var attributes: Attributes
 var job: Job
@@ -47,8 +48,28 @@ func _init(res: CharacterResource) -> void:
 	resource = res
 	
 	inventory = Inventory.new()
+	
 	for item in res.default_items:
-		inventory.add_item(item)
+		if item is Gear:
+			var gear = GearInstance.new()
+			gear.template = item
+			gear.effects = item.effects
+			gear.modifiers = item.modifiers
+			inventory.add_item(gear)
+			
+			continue
+			
+		if item is ConsumableItem:
+			var cons = ConsumableInstance.new()
+			cons.template = item
+			cons.effects = item.effects
+			inventory.add_item(cons)
+			
+			continue
+		
+		var inst = ItemInstance.new()
+		inst.template = item
+		inventory.add_item(inst)
 	
 	damage_type = res.default_damage_type
 	
@@ -120,17 +141,19 @@ func cleanup_after_battle() -> void:
 	for e in effects:
 		e.cleanup_after_battle()
 
-func apply_effect(effect: Effect, ctx: ActionContext) -> void:
+func apply_effect(effect: Effect, source: CharacterInstance = null) -> Effect:
 	if effect._is_runtime_instance:
 		push_warning("Applying an already-instantiated effect! Did you forget to pass the template?")
 
 	var inst: Effect = effect.duplicate(true)
 	
-	if ctx.callable and typeof(ctx.callable) == TYPE_CALLABLE:
-		ctx.callable.call(inst)
+	if source:
+		inst.set_source(source)
 	
 	inst.on_apply(self)
 	effects.append(inst)
+	
+	return inst
 		
 func remove_effect(effect: Effect) -> void:
 	if effects.has(effect):
@@ -202,32 +225,58 @@ func increase_attribute(attr: String) -> bool:
 	stats.recalculate_stats(self, true, true)
 	return true
 
-func equip_item(item: Gear) -> bool:
+func equip_item(item: GearInstance) -> bool:
 	if not inventory.has_item(item):
 		return false
+	
 	var slot_name = get_slot_name_for_item(item)
+
 	if not slot_name:
 		return false
-
+		
+	inventory.remove_item(item)
+	
 	if equipment[slot_name]:
 		unequip_slot(slot_name)
-	inventory.remove_item(item)
+		
 	equipment[slot_name] = item
+	var insts: Array = []
+	
+	for e in item.get_all_effects():
+		var inst = apply_effect(e)
+		insts.append(inst)
+		
+	gear_effects[slot_name] = insts
+	
+	for m in item.get_all_modifiers():
+		stats.add_modifier(m)
+		
 	stats.recalculate_stats(self)
+	
 	return true
 
 func unequip_slot(slot_name: String) -> bool:
-	var item: Gear = equipment[slot_name]
+	var item: GearInstance = equipment[slot_name]
+	
 	if not item:
 		return false
 
+	for inst in gear_effects.get(slot_name, []):
+		remove_effect(inst)
+	
+	gear_effects.erase(slot_name)
+		
+	for m in item.get_all_modifiers():
+		stats.remove_modifier(m)
+	
 	equipment[slot_name] = null
 	inventory.add_item(item)
 	stats.recalculate_stats(self)
+	
 	return true
 
-func get_slot_name_for_item(item: Gear) -> String:
-	match item.type:
+func get_slot_name_for_item(item: GearInstance) -> String:
+	match item.template.type:
 		Item.ItemType.WEAPON: return "weapon"
 		Item.ItemType.CHEST: return "chest"
 		Item.ItemType.HELMET: return "helmet"

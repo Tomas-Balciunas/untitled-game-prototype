@@ -65,11 +65,11 @@ static func _passes_scope(effect: Effect, event: TriggerEvent, is_template = fal
 			EffectTriggers.ActivationScope.OWNER_SIDE:
 				if not BattleContext.in_battle:
 					return true
-				return BattleContext.manager.same_side(effect.owner, event.actor)
+				return BattleContext.manager.same_side(effect.owner, event.ctx.target)
 			EffectTriggers.ActivationScope.OPPOSITE_SIDE:
 				if not BattleContext.in_battle:
 					return false
-				return not BattleContext.manager.same_side(effect.owner, event.actor)
+				return not BattleContext.manager.same_side(effect.owner, event.ctx.target)
 			EffectTriggers.ActivationScope.ALL:
 				return true
 		return false

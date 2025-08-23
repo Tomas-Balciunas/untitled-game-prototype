@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="PoisonOnHit" load_steps=2 format=3 uid="uid://dv5v4ee1tl03q"]
+
+[ext_resource type="Script" uid="uid://b168tcduhh6vl" path="res://effect/_offensive/poison/PoisonOnHit.gd" id="1_in325"]
+
+[resource]
+script = ExtResource("1_in325")
+chance = 1.0
+name = "Poison On Hit"
+description = "Apply poison on hit"
+category = 5
+activation_scope = 0
+duration_turns = -1
+metadata/_custom_type_script = "uid://b168tcduhh6vl"

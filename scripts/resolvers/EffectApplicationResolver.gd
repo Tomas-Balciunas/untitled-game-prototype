@@ -7,10 +7,11 @@ func apply_effect(action: EffectApplicationAction) -> EffectApplicationContext:
 		action.source,
 		action.target,
 		action.effect,
-		action.callable
+		action.callable,
+		action.actively_cast
 	)
 
-func _apply_core(source: CharacterInstance, target: CharacterInstance, effect: Effect, callable) -> EffectApplicationContext:
+func _apply_core(source: CharacterInstance, target: CharacterInstance, effect: Effect, callable, actively_cast: bool) -> EffectApplicationContext:
 	var ctx = EffectApplicationContext.new()
 	ctx.source    = source
 	ctx.target    = target
@@ -24,10 +25,9 @@ func _apply_core(source: CharacterInstance, target: CharacterInstance, effect: E
 	
 	EffectRunner.process_trigger(event)
 	
-	event.actor = ctx.target
 	event.trigger = EffectTriggers.ON_BEFORE_RECEIVE_EFFECT
 	EffectRunner.process_trigger(event)
-	ctx.target.apply_effect(ctx.effect, ctx)
+	ctx.target.apply_effect(ctx.effect, event.actor)
 	event.trigger = EffectTriggers.ON_APPLY_EFFECT
 	EffectRunner.process_trigger(event)
 

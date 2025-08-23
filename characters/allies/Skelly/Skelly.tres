@@ -5,7 +5,7 @@
 [ext_resource type="Script" uid="uid://bwn4gpkaijqsg" path="res://scripts/CharacterResource.gd" id="1_s17id"]
 [ext_resource type="Script" uid="uid://dq4acpkde276p" path="res://skills/Skill.gd" id="1_yod8j"]
 [ext_resource type="Resource" uid="uid://j0lr1j1qp7cc" path="res://gear/weapon/wooden_sword.tres" id="3_ohgca"]
-[ext_resource type="Resource" uid="uid://dgxlt0x8p42nw" path="res://effect/DamageShare.tres" id="3_rhf32"]
+[ext_resource type="Resource" uid="uid://dgxlt0x8p42nw" path="res://effect/_passive/damage share/DamageShare.tres" id="3_rhf32"]
 [ext_resource type="Resource" uid="uid://eiwm6khdbjki" path="res://characters/_race/Human.tres" id="4_l3iqv"]
 [ext_resource type="Resource" uid="uid://b40pmjuvgrvn4" path="res://characters/_gender/Male.tres" id="4_p4kuy"]
 [ext_resource type="Resource" uid="uid://crai3lto44aqg" path="res://characters/_class/Thief.tres" id="4_uhviy"]

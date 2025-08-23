@@ -14,6 +14,7 @@ enum EffectCategory {
 }
 
 @export var name: String = "Unnamed Effect"
+@export var description: String = "Unnamed Effect"
 @export var category: EffectCategory = EffectCategory.OTHER
 @export var activation_scope: ActivationScope = ActivationScope.OWNER_ONLY 
 @export var duration_turns: int = -1
@@ -35,6 +36,12 @@ var _is_registered := false
 
 var owner: CharacterInstance = null
 var _is_runtime_instance := false
+
+func set_source(source: CharacterInstance):
+	pass
+
+func get_description() -> String:
+	return description
 
 func on_apply(_owner: CharacterInstance) -> void:
 	_is_runtime_instance = true

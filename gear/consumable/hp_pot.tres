@@ -2,11 +2,12 @@
 
 [ext_resource type="Script" uid="uid://bp0biy0knxw2o" path="res://effect/Effect.gd" id="1_5q37c"]
 [ext_resource type="Script" uid="uid://q28sbqe2d2mq" path="res://gear/ConsumableItem.gd" id="2_7ifdq"]
-[ext_resource type="Resource" uid="uid://dvjflkpi3yh2i" path="res://effect/heal.tres" id="2_7wlj5"]
+[ext_resource type="Resource" uid="uid://dvjflkpi3yh2i" path="res://effect/_heal/heal.tres" id="2_7wlj5"]
 
 [resource]
 script = ExtResource("2_7ifdq")
 effects = Array[ExtResource("1_5q37c")]([ExtResource("2_7wlj5")])
+targeting_type = 0
 name = "Hp Pot"
 type = 6
 description = "heal"
