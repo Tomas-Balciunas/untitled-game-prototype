@@ -4,10 +4,9 @@
 
 [resource]
 script = ExtResource("1_in325")
-chance = 1.0
+_chance = 1.0
 name = "Poison On Hit"
 description = "Apply poison on hit"
 category = 5
-activation_scope = 0
-duration_turns = -1
+duration_turns = 3
 metadata/_custom_type_script = "uid://b168tcduhh6vl"

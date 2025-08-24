@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="PoisonOnConsume" load_steps=2 format=3 uid="uid://qf1fcqd0yolh"]
+
+[ext_resource type="Script" uid="uid://cmy6tsjtlke3s" path="res://gear/consumable/poison flask minor/PoisonOnConsume.gd" id="1_po8wh"]
+
+[resource]
+script = ExtResource("1_po8wh")
+damage_per_turn = 10
+_chance = 1.0
+name = "Poison On Consume"
+description = "Applies poison on item use"
+category = 5
+duration_turns = 5
+metadata/_custom_type_script = "uid://cmy6tsjtlke3s"

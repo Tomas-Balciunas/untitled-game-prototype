@@ -1,9 +1,9 @@
 [gd_resource type="Resource" script_class="Skill" load_steps=5 format=3 uid="uid://cfunb7l71n1np"]
 
 [ext_resource type="Script" uid="uid://bp0biy0knxw2o" path="res://effect/Effect.gd" id="1_0r7am"]
-[ext_resource type="Resource" uid="uid://xanqgonu2nje" path="res://effect/_offensive/poison/Poison.tres" id="2_r28ft"]
 [ext_resource type="Script" uid="uid://dq4acpkde276p" path="res://skills/Skill.gd" id="3_408bw"]
 [ext_resource type="Resource" uid="uid://d2eise5i0c0ht" path="res://effect/_offensive/armor_pierce/ArmorPierce.tres" id="3_r28ft"]
+[ext_resource type="Resource" uid="uid://dv5v4ee1tl03q" path="res://effect/_offensive/poison/poison on hit.tres" id="3_x1gih"]
 
 [resource]
 script = ExtResource("3_408bw")
@@ -12,7 +12,7 @@ description = "Applies poison to the target"
 mp_cost = 0
 sp_cost = 5
 modifier = 0.2
-effects = Array[ExtResource("1_0r7am")]([ExtResource("2_r28ft"), ExtResource("3_r28ft")])
+effects = Array[ExtResource("1_0r7am")]([ExtResource("3_r28ft"), ExtResource("3_x1gih")])
 damage_type = 0
 targeting_type = 0
 bounce_instances = 0

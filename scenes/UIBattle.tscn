@@ -58,58 +58,105 @@ focus_mode = 0
 text = "Flee"
 
 [node name="Skill" type="Control" parent="."]
+visible = false
 layout_mode = 1
-anchor_left = 0.15
-anchor_top = 0.579
-anchor_right = 0.244
-anchor_bottom = 0.802
-offset_top = 0.327942
-offset_right = -0.320007
-offset_bottom = 0.0639648
+anchor_left = 0.262
+anchor_top = 0.354
+anchor_right = 0.362
+anchor_bottom = 0.577
+offset_left = 8.63995
+offset_top = 0.127991
+offset_right = 0.639984
+offset_bottom = -0.136017
 
-[node name="SkillPopup" type="PopupPanel" parent="Skill"]
-
-[node name="ScrollContainer" type="ScrollContainer" parent="Skill/SkillPopup"]
+[node name="ScrollContainer" type="ScrollContainer" parent="Skill"]
+layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.04
-anchor_top = 0.04
-anchor_right = 0.96
-anchor_bottom = 0.96
-offset_left = 4.0
-offset_top = 4.0
-offset_right = 96.0
-offset_bottom = 96.0
+anchor_left = -1.2
+anchor_top = -0.327
+anchor_bottom = 1.357
+offset_left = -7.0
+offset_top = -36.083
+offset_right = -7.0
+offset_bottom = -36.047
 horizontal_scroll_mode = 0
 
-[node name="SkillListContainer" type="VBoxContainer" parent="Skill/SkillPopup/ScrollContainer"]
+[node name="SkillListContainer" type="VBoxContainer" parent="Skill/ScrollContainer"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="SkillInfoPanel" type="VBoxContainer" parent="Skill"]
+visible = false
+layout_mode = 2
+anchor_left = -1.2
+anchor_top = -2.48
+anchor_right = 1.067
+anchor_bottom = -1.45
+offset_left = -8.0
+offset_top = -135.92
+offset_right = -8.04001
+offset_bottom = -132.05
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="SkillName" type="Label" parent="Skill/SkillInfoPanel"]
+layout_mode = 2
+mouse_filter = 0
+
+[node name="SkillCost" type="Label" parent="Skill/SkillInfoPanel"]
+layout_mode = 2
+
+[node name="SkillDescription" type="Label" parent="Skill/SkillInfoPanel"]
 layout_mode = 2
 
 [node name="Item" type="Control" parent="."]
+visible = false
 layout_mode = 1
-anchor_left = 0.15
-anchor_top = 0.579
-anchor_right = 0.244
-anchor_bottom = 0.802
-offset_top = 0.327942
-offset_right = -0.320007
-offset_bottom = 0.0639648
+anchor_left = 0.231
+anchor_top = 0.406
+anchor_right = 0.325
+anchor_bottom = 0.625
+offset_left = 0.320007
+offset_top = 0.191986
+offset_right = -3.05176e-05
+offset_bottom = 3.0
 
-[node name="ItemPopup" type="PopupPanel" parent="Item"]
-auto_translate_mode = 1
-
-[node name="ScrollContainer" type="ScrollContainer" parent="Item/ItemPopup"]
+[node name="ScrollContainer" type="ScrollContainer" parent="Item"]
+layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.04
-anchor_top = 0.04
-anchor_right = 0.96
-anchor_bottom = 0.96
-offset_left = 4.0
-offset_top = 4.0
-offset_right = 96.0
-offset_bottom = 96.0
+anchor_left = -0.858
+anchor_top = -0.608
+anchor_right = 0.333
+anchor_bottom = 1.17
+offset_left = -0.0399933
+offset_top = -13.032
+offset_right = 1.04
+offset_bottom = -8.07001
 horizontal_scroll_mode = 0
 
-[node name="ItemListContainer" type="VBoxContainer" parent="Item/ItemPopup/ScrollContainer"]
+[node name="ItemListContainer" type="VBoxContainer" parent="Item/ScrollContainer"]
+layout_mode = 2
+
+[node name="ItemInfoPanel" type="VBoxContainer" parent="Item"]
+visible = false
+layout_mode = 1
+anchors_preset = -1
+anchor_left = -1.2
+anchor_top = -2.48
+anchor_right = 1.067
+anchor_bottom = -1.45
+offset_left = 32.0
+offset_top = -143.92
+offset_right = 31.96
+offset_bottom = -140.05
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ItemName" type="Label" parent="Item/ItemInfoPanel"]
+layout_mode = 2
+mouse_filter = 0
+
+[node name="ItemDescription" type="Label" parent="Item/ItemInfoPanel"]
 layout_mode = 2
 
 [connection signal="pressed" from="VBoxContainer/AttackButton" to="." method="_on_attack_button_pressed"]

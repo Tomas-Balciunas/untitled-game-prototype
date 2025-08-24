@@ -72,7 +72,7 @@ func _apply_core(source: CharacterInstance, target: CharacterInstance, damage_ty
 	
 	emit_signal("damage_resolved", ctx)
 	
-	if ctx.has_meta("counterattack"):
+	if event.ctx.has_meta("counterattack"):
 		var counter_target = ctx.get_meta("counterattack")
 		var revenge = AttackAction.new()
 		revenge.attacker = ctx.target

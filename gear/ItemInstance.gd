@@ -5,6 +5,9 @@ class_name ItemInstance
 
 func get_item_name() -> String:
 	return template.name
+	
+func get_item_description() -> String:
+	return template.description
 
 func item_type_to_string(item_type: Item.ItemType) -> String:
 	var names := {

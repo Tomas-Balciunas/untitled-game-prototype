@@ -8,6 +8,7 @@ func use_item(user: CharacterInstance, item: ConsumableInstance):
 	action.source = user
 	action.target = user
 	action.consumable = item
+	action.actively_cast = true
 	ConsumableResolver.apply_consumable(action)
 	user.inventory.remove_item(item)
 

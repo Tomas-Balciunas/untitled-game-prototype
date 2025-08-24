@@ -1,7 +1,5 @@
 extends Node
 
-enum ActivationScope { OWNER_ONLY, OWNER_SIDE, OPPOSITE_SIDE, ALL }
-
 const ON_TURN_END := "on_turn_end"
 const ON_TURN_START := "on_turn_start"
 

@@ -3,6 +3,7 @@ extends Panel
 class_name PartyMemberSlot
 
 signal target_clicked(target)
+signal open_character_menu_requested(character_instance)
 
 var character_instance: CharacterInstance
 var targeting_enabled = false
@@ -30,16 +31,19 @@ func _on_mana_changed(_old_mana: int, new_mana: int) -> void:
 	$MarginContainer/GridContainer/LabelValueContainer/Values/MPContainer/MaxMP.text = str(character_instance.stats.max_mana)
 
 func _on_gui_input(event: InputEvent) -> void:
-	if not targeting_enabled:
-		return
-	
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
-		if not character_instance:
-			print("Invalid party member selected")
-			return
-			
-		print("targeted ", character_instance.resource.name)
-		TargetingManager.emit_signal("target_clicked", self)
+		if targeting_enabled:
+			if not character_instance:
+				print("Invalid party member selected")
+				return
+				
+			print("targeted ", character_instance.resource.name)
+			TargetingManager.emit_signal("target_clicked", self)
+		else:
+			if not character_instance:
+				print("Invalid party member selected")
+				return
+			emit_signal("open_character_menu_requested", character_instance)
 
 func disable_slot_targeting():
 	targeting_enabled = false

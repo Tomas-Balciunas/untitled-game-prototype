@@ -16,7 +16,7 @@ config/features=PackedStringArray("4.4", "Forward Plus")
 
 [autoload]
 
-EffectTriggers="*res://scripts/EffectTriggers.gd"
+EffectTriggers="*res://effect/EffectTriggers.gd"
 MapInstance="*res://scripts/MapInstance.gd"
 MapManager="*res://scripts/MapManager.gd"
 TileFactory="*res://__legacy/TileFactory.gd"
@@ -36,7 +36,7 @@ BattleContext="*res://scripts/BattleContext.gd"
 TransitionManager="*res://scripts/TransitionManager.gd"
 GameState="*res://scenes/GameState.gd"
 RestManager="*res://scripts/RestManager.gd"
-EffectRunner="*res://scripts/EffectRunner.gd"
+EffectRunner="*res://effect/EffectRunner.gd"
 EffectApplicationResolver="*res://scripts/resolvers/EffectApplicationResolver.gd"
 
 [display]

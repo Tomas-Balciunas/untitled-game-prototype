@@ -7,6 +7,7 @@ func process_trigger(event: TriggerEvent) -> void:
 	
 	if event.tags:
 		for e in event.tags:
+			e.owner = event.actor
 			if not _passes_scope(e, event, true):
 				continue
 			effects_to_run.append({ "effect": e, "owner": event.actor })
@@ -58,28 +59,12 @@ static func _passes_scope(effect: Effect, event: TriggerEvent, is_template = fal
 	if event.trigger not in effect.listened_triggers():
 		return false
 
-	if effect.owner != null:
-		match effect.activation_scope:
-			EffectTriggers.ActivationScope.OWNER_ONLY:
-				return event.actor == effect.owner
-			EffectTriggers.ActivationScope.OWNER_SIDE:
-				if not BattleContext.in_battle:
-					return true
-				return BattleContext.manager.same_side(effect.owner, event.ctx.target)
-			EffectTriggers.ActivationScope.OPPOSITE_SIDE:
-				if not BattleContext.in_battle:
-					return false
-				return not BattleContext.manager.same_side(effect.owner, event.ctx.target)
-			EffectTriggers.ActivationScope.ALL:
-				return true
-		return false
+	#if is_template:
+		#if event.ctx != null:
+			#var src = event.ctx.source if "source" in event.ctx else null
+			#var tgt = event.ctx.target if "target" in event.ctx else null
+			#if event.actor == src or event.actor == tgt:
+				#return true
+		#return false
 
-	if is_template:
-		if event.ctx != null:
-			var src = event.ctx.source if "source" in event.ctx else null
-			var tgt = event.ctx.target if "target" in event.ctx else null
-			if event.actor == src or event.actor == tgt:
-				return true
-		return false
-
-	return false
+	return effect.can_process(event)

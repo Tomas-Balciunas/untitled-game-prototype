@@ -246,6 +246,7 @@ func _process_enemy_turn():
 	atk.attacker = current_battler
 	atk.defender   = target
 	atk.base_value = current_battler.stats.attack
+	atk.actively_cast = true
 	DamageResolver.apply_attack(atk)
 	
 	current_state = BattleState.TURN_END

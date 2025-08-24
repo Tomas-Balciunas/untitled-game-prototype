@@ -1,15 +1,15 @@
 extends Effect
-class_name PoisonOnHit
+class_name PoisonOnConsume
 
-var damage_per_turn: int = 5
+@export var damage_per_turn: int = 10
 
 @export var _chance: float = 1.0
 
 func listened_triggers() -> Array:
-	return [EffectTriggers.ON_DAMAGE_APPLIED]
+	return [EffectTriggers.ON_USE_CONSUMABLE]
 	
 func can_process(event: TriggerEvent) -> bool:
-	return event.actor == owner and event.ctx.actively_cast
+	return event.actor == owner
 
 func on_trigger(event: TriggerEvent) -> void:
 	var poison: PoisonEffect = PoisonEffect.new()

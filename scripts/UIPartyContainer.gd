@@ -1,6 +1,7 @@
 extends Panel
 
 @onready var party: PartyManager
+var character_menu: CharacterMenu = null
 @onready var formation = [
 	[
 		$PanelContainer/PartyContainer/FrontRow/PartyMemberSlot1/PartyMember,
@@ -15,9 +16,14 @@ extends Panel
 ] 
 
 const UIPartyMemberScene = preload("res://scenes/UIPartyMemberSlot.tscn")
+const CharacterMenuScene = preload("res://scenes/ui/character/CharacterMenu.tscn")
 
 func _ready():
 	PartyManager.connect("member_added", Callable(self, "_on_member_added"))
+	
+	character_menu = CharacterMenuScene.instantiate()
+	character_menu.hide()
+	get_tree().root.add_child.call_deferred(character_menu)
 	
 	for row_index in range(PartyManager.formation.size()):
 		if not PartyManager.formation[row_index]:
@@ -36,6 +42,7 @@ func _on_member_added(character: CharacterInstance, row_index: int, slot_index: 
 	
 	character.connect("health_changed", Callable(character_ui, "_on_health_changed"))
 	character.connect("mana_changed", Callable(character_ui, "_on_mana_changed"))
+	character_ui.connect("open_character_menu_requested", Callable(self, "_on_open_character_menu_requested"))
 
 #func _on_member_removed(character: CharacterInstance):
 	#for child in get_children():
@@ -72,3 +79,7 @@ func clear_highlights():
 	for row in formation:
 		for slot in row:
 			slot.unhighlight()
+
+func _on_open_character_menu_requested(character_instance: CharacterInstance):
+	character_menu.bind(character_instance)
+	character_menu.show()

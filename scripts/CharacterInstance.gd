@@ -145,7 +145,7 @@ func apply_effect(effect: Effect, source: CharacterInstance = null) -> Effect:
 	if effect._is_runtime_instance:
 		push_warning("Applying an already-instantiated effect! Did you forget to pass the template?")
 
-	var inst: Effect = effect.duplicate(true)
+	var inst: Effect = effect if effect._is_instance else effect.duplicate(true)
 	
 	if source:
 		inst.set_source(source)

@@ -5,15 +5,15 @@ class_name DamageShare
 
 func listened_triggers() -> Array:
 	return [EffectTriggers.ON_DAMAGE_ABOUT_TO_BE_APPLIED]
+	
+func can_process(event: TriggerEvent) -> bool:
+	if BattleContext.in_battle:
+		if not BattleContext.manager.same_side(owner, event.ctx.target):
+			return false
+	return event.ctx.target != owner and not owner.is_dead
 
 func on_trigger(event: TriggerEvent) -> void:
 	var damaged = event.ctx.target
-	
-	if damaged == owner:
-		return
-	if owner.is_dead:
-		return
-	
 	var transfer = ceil(event.ctx.final_value * share_percent)
 	var final = floor(event.ctx.final_value - transfer)
 	event.ctx.final_value = final
