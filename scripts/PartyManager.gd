@@ -10,9 +10,9 @@ var formation = [
 	[null, null, null]
 ]
 
-func _ready() -> void:
-	for id in [CharacterIDs.SKELLY, CharacterIDs.LILI]:
-		add_member(id)
+#func _ready() -> void:
+	#for id in [CharacterIDs.SKELLY, CharacterIDs.LILI]:
+		#add_member(id)
 
 func add_member(id: String) -> void:
 	var res := CharacterRegistry.get_character(id)
@@ -129,3 +129,27 @@ func get_mass_allies() -> Array[CharacterInstance]:
 #func remove_member(character: CharacterInstance):
 	#members.erase(character)
 	#emit_signal("member_removed", character)
+
+func to_dict() -> Dictionary:
+	var members_data = []
+	for member in members:
+		members_data.append(member.to_dict())
+	return {"party": members_data}
+
+func from_dict(data: Dictionary) -> void:
+	members.clear()
+	formation = [[null, null, null], [null, null, null]]
+
+	if not data.has("party"): return
+
+	for char_data in data["party"]:
+		var inst = CharacterInstance.from_dict(char_data)
+		if inst:
+			members.append(inst)
+			var position = add_member_to_formation(inst)
+			if position.size() > 0:
+				var row_i = position[0]
+				var slot_i = position[1]
+				print("Character added to party: %s" % inst.resource.name)
+			else:
+				push_error("Adding character to formation error: no free slots")

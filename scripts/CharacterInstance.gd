@@ -288,3 +288,67 @@ func get_slot_name_for_item(item: GearInstance) -> String:
 			else:
 				return "ring2"
 		_: return ""
+
+func to_dict() -> Dictionary:
+	var equip_dict := {}
+	for slot in equipment.keys():
+		var item: GearInstance = equipment[slot]
+		equip_dict[slot] = item.template.id if item else null
+
+	return {
+		"id": resource.id,
+		"level": level,
+		"xp": current_experience,
+		"hp": stats.current_health,
+		"mp": stats.current_mana,
+		"unspent_points": unspent_attribute_points,
+		"attributes": {
+			"str": attributes.str,
+			"iq": attributes.iq,
+			"pie": attributes.pie,
+			"vit": attributes.vit,
+			"dex": attributes.dex,
+			"spd": attributes.spd,
+			"luk": attributes.luk
+		},
+		"equipment": equip_dict,
+	}
+
+
+static func from_dict(data: Dictionary) -> CharacterInstance:
+	var res: CharacterResource = CharacterRegistry.get_character(data["id"])
+	if res == null:
+		push_error("Character resource not found for id %s" % data["id"])
+		return null
+
+	var inst := CharacterInstance.new(res)
+	inst.level = data.get("level", 1)
+	inst.current_experience = data.get("xp", 0)
+	inst.unspent_attribute_points = data.get("unspent_points", 0)
+
+	if data.has("attributes"):
+		var a = data["attributes"]
+		inst.attributes.str = a.get("str", inst.attributes.str)
+		inst.attributes.iq  = a.get("iq", inst.attributes.iq)
+		inst.attributes.pie = a.get("pie", inst.attributes.pie)
+		inst.attributes.vit = a.get("vit", inst.attributes.vit)
+		inst.attributes.dex = a.get("dex", inst.attributes.dex)
+		inst.attributes.spd = a.get("spd", inst.attributes.spd)
+		inst.attributes.luk = a.get("luk", inst.attributes.luk)
+
+	inst.stats.current_health = data.get("hp", inst.stats.max_health)
+	inst.stats.current_mana = data.get("mp", inst.stats.max_mana)
+
+	if data.has("equipment"):
+		for slot in data["equipment"].keys():
+			var item_id = data["equipment"][slot]
+			if item_id != null:
+				var gear_res = ItemsRegistry.get_item(item_id)
+				if gear_res and gear_res is Gear:
+					var gear = GearInstance.new()
+					gear.template = gear_res
+					gear.effects = gear_res.effects
+					gear.modifiers = gear_res.modifiers
+					inst.equip_item(gear)
+
+	return inst

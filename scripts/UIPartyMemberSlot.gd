@@ -8,6 +8,9 @@ signal open_character_menu_requested(character_instance)
 var character_instance: CharacterInstance
 var targeting_enabled = false
 
+func _ready() -> void:
+	hide_info()
+
 func bind(character: CharacterInstance) -> void:
 	character_instance = character
 
@@ -17,6 +20,11 @@ func bind(character: CharacterInstance) -> void:
 	$MarginContainer/GridContainer/LabelValueContainer/Values/HPContainer/MaxHP.text = str(character.stats.max_health)
 	$MarginContainer/GridContainer/LabelValueContainer/Values/MPContainer/CurrentMP.text = str(character.stats.current_mana)
 	$MarginContainer/GridContainer/LabelValueContainer/Values/MPContainer/MaxMP.text = str(character.stats.max_mana)
+	
+	show_info()
+
+func show_info():
+	$MarginContainer.visible = true
 
 func hide_info():
 	var cont = $MarginContainer
