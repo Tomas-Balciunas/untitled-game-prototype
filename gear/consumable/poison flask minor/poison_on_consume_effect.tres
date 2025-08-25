@@ -6,6 +6,7 @@
 script = ExtResource("1_po8wh")
 damage_per_turn = 10
 _chance = 1.0
+id = "poison_on_consume_00"
 name = "Poison On Consume"
 description = "Applies poison on item use"
 category = 5

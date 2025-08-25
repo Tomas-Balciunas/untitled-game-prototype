@@ -5,9 +5,9 @@
 [resource]
 script = ExtResource("1_3e320")
 ignore_percent = 0.2
+id = "armor_pierce_00"
 name = "armor pierce"
+description = "Unnamed Effect"
 category = 6
-activation_scope = 0
 duration_turns = -1
-trigger = "on_turn_end"
 metadata/_custom_type_script = "uid://bicyeejokvbgs"

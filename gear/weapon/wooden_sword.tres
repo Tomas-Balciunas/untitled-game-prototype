@@ -20,6 +20,7 @@ base_magic_defense = 0
 base_resistance = 0
 modifiers = Array[ExtResource("2_s2e5p")]([ExtResource("3_s2e5p")])
 effects = Array[ExtResource("1_5y3ig")]([ExtResource("2_615lu")])
+id = "sword_01"
 name = "Wooden Sword"
 type = 0
 description = "bruh"

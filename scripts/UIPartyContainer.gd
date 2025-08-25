@@ -19,21 +19,23 @@ const UIPartyMemberScene = preload("res://scenes/UIPartyMemberSlot.tscn")
 const CharacterMenuScene = preload("res://scenes/ui/character/CharacterMenu.tscn")
 
 func _ready():
+	SaveManager.connect("party_reloaded", Callable(self, "_on_party_reloaded"))
 	PartyManager.connect("member_added", Callable(self, "_on_member_added"))
 	
 	character_menu = CharacterMenuScene.instantiate()
 	character_menu.hide()
 	get_tree().root.add_child.call_deferred(character_menu)
-	
+
+func _on_party_reloaded():
+	for row in formation:
+		for slot in row:
+			slot.hide_info()
+
 	for row_index in range(PartyManager.formation.size()):
-		if not PartyManager.formation[row_index]:
-			continue
 		for slot_index in range(PartyManager.formation[row_index].size()):
-			if not PartyManager.formation[row_index][slot_index]:
-				var slot: PartyMemberSlot = formation[row_index][slot_index]
-				slot.hide_info()
-				continue
-			_on_member_added(PartyManager.formation[row_index][slot_index], row_index, slot_index)
+			var member = PartyManager.formation[row_index][slot_index]
+			if member:
+				_on_member_added(member, row_index, slot_index)
 
 func _on_member_added(character: CharacterInstance, row_index: int, slot_index: int):
 	var character_ui = formation[row_index][slot_index]

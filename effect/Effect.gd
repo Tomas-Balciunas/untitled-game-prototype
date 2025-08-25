@@ -11,6 +11,7 @@ enum EffectCategory {
 	TRAIT
 }
 
+@export var id: String
 @export var name: String = "Unnamed Effect"
 @export var description: String = "Unnamed Effect"
 @export var category: EffectCategory = EffectCategory.OTHER

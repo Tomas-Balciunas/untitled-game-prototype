@@ -3,6 +3,9 @@ class_name ItemInstance
 
 @export var template: Item
 
+func get_item_id() -> String:
+	return template.id
+
 func get_item_name() -> String:
 	return template.name
 	

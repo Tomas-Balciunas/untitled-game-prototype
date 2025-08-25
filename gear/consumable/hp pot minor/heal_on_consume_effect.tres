@@ -4,9 +4,10 @@
 
 [resource]
 script = ExtResource("1_vaws4")
-amount = 20
+heal_amount = 20
+id = "heal_on_consume_00"
 name = "Heal"
+description = "Unnamed Effect"
 category = 5
-activation_scope = 0
 duration_turns = -1
 metadata/_custom_type_script = "uid://hoa2yy3t7yl1"

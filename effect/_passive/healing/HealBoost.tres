@@ -5,7 +5,9 @@
 [resource]
 script = ExtResource("1_32umi")
 modifier = 0.2
+id = "heal_boost_00"
 name = "Heal Boost"
+description = "Unnamed Effect"
 category = 0
 duration_turns = -1
 metadata/_custom_type_script = "uid://ox6r65cjqnmt"

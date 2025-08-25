@@ -23,6 +23,7 @@ var selected_index: int = 0
 func _ready():
 	inventory_container.visible = false
 	party_manager.connect("member_added", Callable(self, "_on_member_added"))
+	SaveManager.connect("party_reloaded", Callable(self, "_on_party_reloaded"))
 	inventory_list.item_selected.connect(_on_inventory_item_selected)
 	equipped_list.item_selected.connect(_on_euipped_item_selected)
 	refresh_lists()
@@ -164,3 +165,6 @@ func show_item_info(item: ItemInstance) -> void:
 			effects_label.text = "\n".join(effect_lines)
 		else:
 			effects_label.text = ""
+
+func _on_party_reloaded():
+	refresh_lists()

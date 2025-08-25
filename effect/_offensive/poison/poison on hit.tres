@@ -5,6 +5,7 @@
 [resource]
 script = ExtResource("1_in325")
 _chance = 1.0
+id = "poison_on_hit_00"
 name = "Poison On Hit"
 description = "Apply poison on hit"
 category = 5

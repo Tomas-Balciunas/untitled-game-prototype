@@ -5,7 +5,9 @@
 [resource]
 script = ExtResource("1_xmbe4")
 modifier = 0.2
+id = "mp_cost_reduction_00"
 name = "MP Cost Reduction"
+description = "Unnamed Effect"
 category = 0
 duration_turns = -1
 metadata/_custom_type_script = "uid://vr4jp1fvv8yu"
