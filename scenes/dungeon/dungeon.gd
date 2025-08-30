@@ -17,17 +17,17 @@ func _ready():
 	transition_rect.modulate.a = 0.0
 	load_map("area_00")
 
-func load_map(map_id: String):
+func load_map(map_id: String, load_data = null):
 	var map_resource = MapManager.get_map(map_id)
 	
-	if current_map_scene:
-		current_map_scene.queue_free()
-		await get_tree().process_frame
-		current_map_scene = null
+	_kill_map()
 	
-	if MapInstance.map_id != map_id:
+	if MapInstance.map_id != map_id or not MapInstance.map_id:
 		print("Dungeon: Loading new map")
 		MapInstance.hydrate_from_resource(map_resource)
+		
+	if load_data:
+		MapInstance.hydrate_from_load(load_data)
 
 	current_map_scene = MapInstance.map_data.instantiate()
 	self.add_child(current_map_scene)
@@ -62,7 +62,15 @@ func _on_player_moved(data: Dictionary):
 
 func _on_encounter_ended(result):
 	print("Back from battle with result:", result)
-	# TODO: restore map state
 	self.visible = true
 	
 	load_map(MapInstance.map_id)
+
+func _kill_map():
+	if current_map_scene:
+		current_map_scene.queue_free()
+		current_map_scene = null
+	
+	for child in get_children():
+		if child != player and child != transition_rect:
+			child.queue_free()

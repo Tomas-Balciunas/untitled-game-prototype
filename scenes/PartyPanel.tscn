@@ -1,0 +1,128 @@
+[gd_scene load_steps=5 format=3 uid="uid://b7tdrca1v88rk"]
+
+[ext_resource type="Script" uid="uid://bk075a76c1hkh" path="res://scripts/UIPartyContainer.gd" id="1_oqee1"]
+[ext_resource type="PackedScene" uid="uid://b6i5a4uv2t1do" path="res://scenes/UIPartyMemberSlot.tscn" id="2_gd10f"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tbgi4"]
+bg_color = Color(0, 0, 0, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_sugp2"]
+
+[node name="PartyPanel" type="Panel"]
+anchors_preset = -1
+anchor_top = 0.716
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 0.0319824
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("1_oqee1")
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.312
+anchor_top = 0.01
+anchor_right = 0.687
+anchor_bottom = 1.0
+offset_left = -2.36002
+offset_top = -2.1808
+offset_right = -2.36005
+offset_bottom = -0.0800171
+theme_override_styles/panel = SubResource("StyleBoxFlat_tbgi4")
+
+[node name="PartyContainer" type="VBoxContainer" parent="PanelContainer"]
+z_index = 100
+material = SubResource("CanvasItemMaterial_sugp2")
+custom_minimum_size = Vector2(100, 50)
+layout_mode = 2
+
+[node name="FrontRow" type="GridContainer" parent="PanelContainer/PartyContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 10
+columns = 3
+
+[node name="PartyMemberSlot1" type="MarginContainer" parent="PanelContainer/PartyContainer/FrontRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_left = 3
+theme_override_constants/margin_top = 3
+theme_override_constants/margin_right = 3
+theme_override_constants/margin_bottom = 3
+
+[node name="PartyMember" parent="PanelContainer/PartyContainer/FrontRow/PartyMemberSlot1" instance=ExtResource("2_gd10f")]
+layout_mode = 2
+
+[node name="PartyMemberSlot2" type="MarginContainer" parent="PanelContainer/PartyContainer/FrontRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_left = 3
+theme_override_constants/margin_top = 3
+theme_override_constants/margin_right = 3
+theme_override_constants/margin_bottom = 3
+
+[node name="PartyMember" parent="PanelContainer/PartyContainer/FrontRow/PartyMemberSlot2" instance=ExtResource("2_gd10f")]
+layout_mode = 2
+
+[node name="PartyMemberSlot3" type="MarginContainer" parent="PanelContainer/PartyContainer/FrontRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_left = 3
+theme_override_constants/margin_top = 3
+theme_override_constants/margin_right = 3
+theme_override_constants/margin_bottom = 3
+
+[node name="PartyMember" parent="PanelContainer/PartyContainer/FrontRow/PartyMemberSlot3" instance=ExtResource("2_gd10f")]
+layout_mode = 2
+
+[node name="BackRow" type="GridContainer" parent="PanelContainer/PartyContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 2
+columns = 3
+
+[node name="PartyMemberSlot1" type="MarginContainer" parent="PanelContainer/PartyContainer/BackRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_left = 3
+theme_override_constants/margin_top = 3
+theme_override_constants/margin_right = 3
+theme_override_constants/margin_bottom = 3
+
+[node name="PartyMember" parent="PanelContainer/PartyContainer/BackRow/PartyMemberSlot1" instance=ExtResource("2_gd10f")]
+layout_mode = 2
+
+[node name="PartyMemberSlot2" type="MarginContainer" parent="PanelContainer/PartyContainer/BackRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_left = 3
+theme_override_constants/margin_top = 3
+theme_override_constants/margin_right = 3
+theme_override_constants/margin_bottom = 3
+
+[node name="PartyMember" parent="PanelContainer/PartyContainer/BackRow/PartyMemberSlot2" instance=ExtResource("2_gd10f")]
+layout_mode = 2
+
+[node name="PartyMemberSlot3" type="MarginContainer" parent="PanelContainer/PartyContainer/BackRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_left = 3
+theme_override_constants/margin_top = 3
+theme_override_constants/margin_right = 3
+theme_override_constants/margin_bottom = 3
+
+[node name="PartyMember" parent="PanelContainer/PartyContainer/BackRow/PartyMemberSlot3" instance=ExtResource("2_gd10f")]
+layout_mode = 2

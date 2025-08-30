@@ -188,7 +188,6 @@ func fill_attributes(res: CharacterResource):
 		attributes.add(res.gender.attributes)
 	if res.job:
 		attributes.add(res.job.attributes)
-	print(res.name, attributes.str)
 
 func get_attack_power():
 	pass

@@ -3,16 +3,13 @@ extends Node
 signal member_added(character, row_i, slot_i)
 #signal member_removed(character)
 
+
 var members: Array[CharacterInstance] = []
 
 var formation = [
 	[null, null, null],
 	[null, null, null]
 ]
-
-#func _ready() -> void:
-	#for id in [CharacterIDs.SKELLY, CharacterIDs.LILI]:
-		#add_member(id)
 
 func add_member(id: String) -> void:
 	var res := CharacterRegistry.get_character(id)
@@ -153,3 +150,7 @@ func from_dict(data: Dictionary) -> void:
 				print("Character added to party: %s" % inst.resource.name)
 			else:
 				push_error("Adding character to formation error: no free slots")
+
+func _load_default():
+	for id in [CharacterIDs.SKELLY, CharacterIDs.LILI]:
+		add_member(id)

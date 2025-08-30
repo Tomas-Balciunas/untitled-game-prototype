@@ -31,6 +31,9 @@ func listened_triggers() -> Array:
 func can_process(event: TriggerEvent) -> bool:
 	return false
 
+func _get_name() -> String:
+	return name
+
 func get_description() -> String:
 	return description
 

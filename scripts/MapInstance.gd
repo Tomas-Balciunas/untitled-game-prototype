@@ -1,6 +1,6 @@
 extends Node
 
-var map_id: String = ""
+var map_id: String
 var current_map_name: String = ""
 var theme: String = ""
 var map_data: PackedScene
@@ -18,6 +18,13 @@ func hydrate_from_resource(map_resource):
 	player_position = map_resource.start_pos
 	player_previous_position = player_position
 	cleared_encounters[map_id] = []
+	
+func hydrate_from_load(load_data):
+	if load_data.has("dungeon"):
+		var dungeon = load_data["dungeon"]
+		player_previous_position = dungeon["player_position"]
+		player_facing = dungeon["player_facing"]
+		cleared_encounters = dungeon["cleared_encounters"]
 
 func update_player_position(pos: Vector2i, facing: Vector3):
 	player_previous_position = player_position
@@ -33,5 +40,24 @@ func update_player_position(pos: Vector2i, facing: Vector3):
 func mark_encounter_cleared(id: String, encounter_id: String) -> void:
 	cleared_encounters[id].append(encounter_id)
 
-func is_encounter_cleared(id: String, encounter_id: String) -> bool:
-	return cleared_encounters[id].has(encounter_id)
+func is_encounter_cleared(map_id: String, encounter_id: String) -> bool:
+	if not cleared_encounters.has(map_id):
+		return false
+	return cleared_encounters[map_id].has(encounter_id)
+
+func to_dict() -> Dictionary:
+	var dungeon_data := {
+		"id": map_id,
+		"player_position": player_position,
+		"player_facing": player_facing,
+		"cleared_encounters": cleared_encounters
+	}
+	
+	return { "dungeon": dungeon_data }
+	
+func from_dict(data: Dictionary):
+	if data.has("dungeon"):
+		var dungeon = data["dungeon"].duplicate(true)
+		player_position = dungeon["player_position"]
+		player_facing = dungeon["player_facing"]
+		cleared_encounters = dungeon["cleared_encounters"]

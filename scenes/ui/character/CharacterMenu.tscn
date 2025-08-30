@@ -1,6 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://brybglg3yhb62"]
+[gd_scene load_steps=7 format=3 uid="uid://brybglg3yhb62"]
 
 [ext_resource type="Script" uid="uid://ilm5qu0yhhaa" path="res://scenes/ui/character/CharacterMenu.gd" id="1_gue48"]
+[ext_resource type="Script" uid="uid://df1gmeiyv6avc" path="res://gear/InventoryUI.gd" id="2_ynqil"]
+[ext_resource type="Script" uid="uid://dahxd5g0u3kcy" path="res://scenes/ui/character/CharacterStatsUI.gd" id="3_fpsvm"]
+[ext_resource type="Script" uid="uid://buitthkb5usu" path="res://scenes/ui/character/CharacterEffectsUI.gd" id="4_c7bw8"]
 
 [sub_resource type="Theme" id="Theme_gue48"]
 
@@ -34,3 +37,290 @@ offset_top = 26.0
 offset_right = 640.0
 offset_bottom = 67.0
 size_flags_horizontal = 4
+
+[node name="CharacterMenuButtons" type="PanelContainer" parent="Menu"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.387
+anchor_top = 0.822
+anchor_right = 0.617
+anchor_bottom = 0.879
+offset_left = 0.639954
+offset_top = 56.01
+offset_right = 0.239929
+offset_bottom = 55.945
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Menu/CharacterMenuButtons"]
+layout_mode = 2
+
+[node name="Stats" type="Button" parent="Menu/CharacterMenuButtons/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Stats"
+
+[node name="Inventory" type="Button" parent="Menu/CharacterMenuButtons/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Inventory"
+
+[node name="Skills" type="Button" parent="Menu/CharacterMenuButtons/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Skills"
+
+[node name="Effects" type="Button" parent="Menu/CharacterMenuButtons/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Effects"
+
+[node name="Talk" type="Button" parent="Menu/CharacterMenuButtons/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Talk"
+
+[node name="Close" type="Button" parent="Menu/CharacterMenuButtons/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "X"
+
+[node name="InventoryUI" type="Control" parent="Menu"]
+layout_mode = 1
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_right = 448.0
+grow_vertical = 2
+script = ExtResource("2_ynqil")
+
+[node name="InventoryContainer" type="VBoxContainer" parent="Menu/InventoryUI"]
+layout_mode = 2
+offset_right = 192.0
+offset_bottom = 545.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Equipped" type="Label" parent="Menu/InventoryUI/InventoryContainer"]
+layout_mode = 2
+text = "Equipped"
+
+[node name="EquippedList" type="ItemList" parent="Menu/InventoryUI/InventoryContainer"]
+clip_contents = false
+layout_mode = 2
+size_flags_vertical = 3
+focus_mode = 0
+allow_search = false
+
+[node name="Inventory" type="Label" parent="Menu/InventoryUI/InventoryContainer"]
+layout_mode = 2
+text = "Inventory"
+
+[node name="InventoryList" type="ItemList" parent="Menu/InventoryUI/InventoryContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+focus_mode = 0
+allow_search = false
+same_column_width = true
+
+[node name="ActionButton" type="Button" parent="Menu/InventoryUI/InventoryContainer"]
+layout_mode = 2
+text = "Equip"
+
+[node name="UnequipButton" type="Button" parent="Menu/InventoryUI/InventoryContainer"]
+layout_mode = 2
+text = "Unequip"
+
+[node name="NextButton" type="Button" parent="Menu/InventoryUI/InventoryContainer"]
+visible = false
+layout_mode = 2
+text = "Next Character"
+
+[node name="PrevButton" type="Button" parent="Menu/InventoryUI/InventoryContainer"]
+visible = false
+layout_mode = 2
+text = "Previous Character"
+
+[node name="ItemInfoPanel" type="VBoxContainer" parent="Menu/InventoryUI"]
+layout_mode = 2
+offset_left = 192.0
+offset_top = 64.0
+offset_right = 448.0
+offset_bottom = 320.0
+
+[node name="ItemName" type="Label" parent="Menu/InventoryUI/ItemInfoPanel"]
+layout_mode = 2
+
+[node name="ItemType" type="Label" parent="Menu/InventoryUI/ItemInfoPanel"]
+layout_mode = 2
+
+[node name="StatsLabel" type="Label" parent="Menu/InventoryUI/ItemInfoPanel"]
+layout_mode = 2
+
+[node name="EffectsLabel" type="Label" parent="Menu/InventoryUI/ItemInfoPanel"]
+custom_minimum_size = Vector2(1, 0)
+layout_mode = 2
+autowrap_mode = 2
+
+[node name="ModifiersLabel" type="Label" parent="Menu/InventoryUI/ItemInfoPanel"]
+layout_mode = 2
+
+[node name="StatsUI" type="PanelContainer" parent="Menu"]
+layout_mode = 1
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_right = 320.0
+grow_vertical = 2
+script = ExtResource("3_fpsvm")
+
+[node name="Stats" type="VBoxContainer" parent="Menu/StatsUI"]
+layout_mode = 2
+
+[node name="HP" type="HBoxContainer" parent="Menu/StatsUI/Stats"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="HpKey" type="Label" parent="Menu/StatsUI/Stats/HP"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "HP:"
+
+[node name="HpValue" type="Label" parent="Menu/StatsUI/Stats/HP"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="MP" type="HBoxContainer" parent="Menu/StatsUI/Stats"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="MpKey" type="Label" parent="Menu/StatsUI/Stats/MP"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "MP:"
+
+[node name="MpValue" type="Label" parent="Menu/StatsUI/Stats/MP"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="SP" type="HBoxContainer" parent="Menu/StatsUI/Stats"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="SpKey" type="Label" parent="Menu/StatsUI/Stats/SP"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "SP:"
+
+[node name="SpValue" type="Label" parent="Menu/StatsUI/Stats/SP"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Attack" type="HBoxContainer" parent="Menu/StatsUI/Stats"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="AttackKey" type="Label" parent="Menu/StatsUI/Stats/Attack"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Attack:"
+
+[node name="AttackValue" type="Label" parent="Menu/StatsUI/Stats/Attack"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="MagicPower" type="HBoxContainer" parent="Menu/StatsUI/Stats"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="MagicPowerKey" type="Label" parent="Menu/StatsUI/Stats/MagicPower"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Magic Power:"
+
+[node name="MagicPowerValue" type="Label" parent="Menu/StatsUI/Stats/MagicPower"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="DivinePower" type="HBoxContainer" parent="Menu/StatsUI/Stats"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="DivinePowerKey" type="Label" parent="Menu/StatsUI/Stats/DivinePower"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Divine Power:"
+
+[node name="DivinePowerValue" type="Label" parent="Menu/StatsUI/Stats/DivinePower"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Speed" type="HBoxContainer" parent="Menu/StatsUI/Stats"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="SpeedKey" type="Label" parent="Menu/StatsUI/Stats/Speed"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Speed:"
+
+[node name="SpeedValue" type="Label" parent="Menu/StatsUI/Stats/Speed"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Defense" type="HBoxContainer" parent="Menu/StatsUI/Stats"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="DefenseKey" type="Label" parent="Menu/StatsUI/Stats/Defense"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Defense:"
+
+[node name="DefenseValue" type="Label" parent="Menu/StatsUI/Stats/Defense"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="MagicDefense" type="HBoxContainer" parent="Menu/StatsUI/Stats"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="MagicDefenseKey" type="Label" parent="Menu/StatsUI/Stats/MagicDefense"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Magic Defense:"
+
+[node name="MagicDefenseValue" type="Label" parent="Menu/StatsUI/Stats/MagicDefense"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Resistance" type="HBoxContainer" parent="Menu/StatsUI/Stats"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ResistanceKey" type="Label" parent="Menu/StatsUI/Stats/Resistance"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Resistance:"
+
+[node name="ResistanceValue" type="Label" parent="Menu/StatsUI/Stats/Resistance"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="EffectsUI" type="PanelContainer" parent="Menu"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 0.2
+anchor_bottom = 1.0
+offset_right = 64.0
+grow_vertical = 2
+script = ExtResource("4_c7bw8")
+
+[node name="Effects" type="VBoxContainer" parent="Menu/EffectsUI"]
+layout_mode = 2
+
+[connection signal="pressed" from="Menu/CharacterMenuButtons/HBoxContainer/Stats" to="." method="_on_stats_pressed"]
+[connection signal="pressed" from="Menu/CharacterMenuButtons/HBoxContainer/Inventory" to="." method="_on_inventory_pressed"]
+[connection signal="pressed" from="Menu/CharacterMenuButtons/HBoxContainer/Skills" to="." method="_on_skills_pressed"]
+[connection signal="pressed" from="Menu/CharacterMenuButtons/HBoxContainer/Effects" to="." method="_on_effects_pressed"]
+[connection signal="pressed" from="Menu/CharacterMenuButtons/HBoxContainer/Close" to="." method="_on_close_pressed"]
+[connection signal="pressed" from="Menu/InventoryUI/InventoryContainer/ActionButton" to="Menu/InventoryUI" method="_on_action_button_pressed"]
+[connection signal="pressed" from="Menu/InventoryUI/InventoryContainer/UnequipButton" to="Menu/InventoryUI" method="_on_unequip_button_pressed"]

@@ -1,0 +1,18 @@
+[gd_scene load_steps=2 format=3 uid="uid://buyertqp85xfq"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wne3h"]
+content_margin_left = 5.0
+content_margin_top = 10.0
+content_margin_right = 5.0
+content_margin_bottom = 10.0
+
+[node name="EffectLabel" type="Label"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 12
+theme_override_styles/normal = SubResource("StyleBoxFlat_wne3h")
+autowrap_mode = 2

@@ -24,12 +24,16 @@ func load_game(slot: int) -> Dictionary:
 func build_game_state() -> Dictionary:
 	return {
 		"party": PartyManager.to_dict(),
+		"dungeon": MapInstance.to_dict()
 	}
 
 func apply_game_state(state: Dictionary) -> void:
 	if state.has("party"):
 		PartyManager.from_dict(state["party"])
-		emit_signal("party_reloaded")
+	if state.has("dungeon"):
+		MapInstance.from_dict(state["dungeon"])
+		Dungeon.load_map(state["dungeon"]["dungeon"]["id"], state["dungeon"])
+	emit_signal("party_reloaded")
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("quicksave"):

@@ -37,6 +37,7 @@ var derived_resistance: int = 0
 var attack: int = 0
 var max_health: int = 0
 var max_mana: int = 0
+var max_sp: int = 20
 var speed: int = 0
 var defense: int = 0
 var magic_power: int = 0

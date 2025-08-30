@@ -1,11 +1,9 @@
 extends Control
 class_name InventoryUI
 
-var party_manager := PartyManager
-var selected_index: int = 0
+var bound_character: CharacterInstance = null
 
 @onready var inventory_container: VBoxContainer = $InventoryContainer
-@onready var character_name_label: Label = $InventoryContainer/CharacterName
 @onready var equipped_list: ItemList = $InventoryContainer/EquippedList
 @onready var inventory_list: ItemList = $InventoryContainer/InventoryList
 @onready var action_button: Button = $InventoryContainer/ActionButton
@@ -20,37 +18,23 @@ var selected_index: int = 0
 @onready var effects_label: Label = $ItemInfoPanel/EffectsLabel
 @onready var modifiers_label: Label = $ItemInfoPanel/ModifiersLabel
 
-func _ready():
-	inventory_container.visible = false
-	party_manager.connect("member_added", Callable(self, "_on_member_added"))
-	SaveManager.connect("party_reloaded", Callable(self, "_on_party_reloaded"))
-	inventory_list.item_selected.connect(_on_inventory_item_selected)
-	equipped_list.item_selected.connect(_on_euipped_item_selected)
+func bind_character(character: CharacterInstance):
+	bound_character = character
 	refresh_lists()
 
-func _on_member_added(character: CharacterInstance, row_i, slot_i):
-	if party_manager.members.size() == 1:
-		selected_index = 0
-		refresh_lists()
+func _ready():
+	inventory_list.item_selected.connect(_on_inventory_item_selected)
+	equipped_list.item_selected.connect(_on_euipped_item_selected)
 
 func refresh_lists():
-	var members = party_manager.members
-	if members.size() == 0:
-		return
-
-	selected_index = clamp(selected_index, 0, members.size() - 1)
-	var player: CharacterInstance = members[selected_index]
-
-	character_name_label.text = player.resource.name
-
 	equipped_list.clear()
-	for slot_name in player.equipment.keys():
-		var item: ItemInstance = player.equipment[slot_name]
+	for slot_name in bound_character.equipment.keys():
+		var item: ItemInstance = bound_character.equipment[slot_name]
 		var display_name = "%s: %s" % [slot_name.capitalize(), item.get_item_name() if item else "<empty>"]
 		equipped_list.add_item(display_name)
 
 	inventory_list.clear()
-	for item in player.inventory.get_all_items():
+	for item in bound_character.inventory.get_all_items():
 		inventory_list.add_item(item.get_item_name())
 
 	action_button.visible = false
@@ -59,8 +43,7 @@ func refresh_lists():
 func _on_inventory_item_selected(index: int):
 	equipped_list.deselect_all()
 	unequip_button.visible = false
-	var player: CharacterInstance = party_manager.members[selected_index]
-	var item: ItemInstance = player.inventory.get_all_items()[index]
+	var item: ItemInstance = bound_character.inventory.get_all_items()[index]
 	show_item_info(item)
 	
 	if item is GearInstance:
@@ -75,12 +58,11 @@ func _on_inventory_item_selected(index: int):
 func _on_euipped_item_selected(index: int):
 	inventory_list.deselect_all()
 	action_button.visible = false
-	var player: CharacterInstance = party_manager.members[selected_index]
 
-	var slot_names = player.equipment.keys()
+	var slot_names = bound_character.equipment.keys()
 	var slot_name = slot_names[index]
 
-	var item: GearInstance = player.equipment[slot_name]
+	var item: GearInstance = bound_character.equipment[slot_name]
 	show_item_info(item)
 
 	if item:
@@ -89,46 +71,40 @@ func _on_euipped_item_selected(index: int):
 		unequip_button.visible = false
 
 func _on_action_button_pressed():
-	var player: CharacterInstance = party_manager.members[selected_index]
 	var selected_inventory_index = inventory_list.get_selected_items()
 	if selected_inventory_index.size() == 0:
 		return
 
 	var idx = selected_inventory_index[0]
-	var item: ItemInstance = player.inventory.get_all_items()[idx]
+	var item: ItemInstance = bound_character.inventory.get_all_items()[idx]
 
 	if item is GearInstance:
-		player.equip_item(item)
+		bound_character.equip_item(item)
 	elif item is ConsumableInstance:
-		item.use_item(player, item)
+		item.use_item(bound_character, item)
 
 	refresh_lists()
 
 func _on_unequip_button_pressed():
-	var player: CharacterInstance = party_manager.members[selected_index]
 	var idxs = equipped_list.get_selected_items()
 	if idxs.size() == 0:
 		return
 
-	var slot_name = player.equipment.keys()[idxs[0]]
-	var item: GearInstance = player.equipment[slot_name]
+	var slot_name = bound_character.equipment.keys()[idxs[0]]
+	var item: GearInstance = bound_character.equipment[slot_name]
 
 	if item:
-		player.unequip_slot(slot_name)
+		bound_character.unequip_slot(slot_name)
 
 	refresh_lists()
 
-func _on_next_button_pressed():
-	selected_index = (selected_index + 1) % party_manager.members.size()
-	refresh_lists()
-
-func _on_prev_button_pressed():
-	selected_index = (selected_index - 1 + party_manager.members.size()) % party_manager.members.size()
-	refresh_lists()
-
-func _on_inventory_pressed() -> void:
-	inventory_container.visible = not inventory_container.visible
-	item_info_panel.visible = false
+#func _on_next_button_pressed():
+	#selected_index = (selected_index + 1) % party_manager.members.size()
+	#refresh_lists()
+#
+#func _on_prev_button_pressed():
+	#selected_index = (selected_index - 1 + party_manager.members.size()) % party_manager.members.size()
+	#refresh_lists()
 
 func show_item_info(item: ItemInstance) -> void:
 	if item == null:
@@ -166,5 +142,6 @@ func show_item_info(item: ItemInstance) -> void:
 		else:
 			effects_label.text = ""
 
-func _on_party_reloaded():
-	refresh_lists()
+func close():
+	inventory_list.deselect_all()
+	item_info_panel.hide()

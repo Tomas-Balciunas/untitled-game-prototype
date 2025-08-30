@@ -21,7 +21,7 @@ const CharacterMenuScene = preload("res://scenes/ui/character/CharacterMenu.tscn
 func _ready():
 	SaveManager.connect("party_reloaded", Callable(self, "_on_party_reloaded"))
 	PartyManager.connect("member_added", Callable(self, "_on_member_added"))
-	
+	PartyManager._load_default()
 	character_menu = CharacterMenuScene.instantiate()
 	character_menu.hide()
 	get_tree().root.add_child.call_deferred(character_menu)
@@ -40,10 +40,11 @@ func _on_party_reloaded():
 func _on_member_added(character: CharacterInstance, row_index: int, slot_index: int):
 	var character_ui = formation[row_index][slot_index]
 	character_ui.bind(character)
-	character_ui.show()
 	
 	character.connect("health_changed", Callable(character_ui, "_on_health_changed"))
 	character.connect("mana_changed", Callable(character_ui, "_on_mana_changed"))
+	if character_ui.is_connected("open_character_menu_requested", Callable(self, "_on_open_character_menu_requested")):
+		character_ui.disconnect("open_character_menu_requested", Callable(self, "_on_open_character_menu_requested"))
 	character_ui.connect("open_character_menu_requested", Callable(self, "_on_open_character_menu_requested"))
 
 #func _on_member_removed(character: CharacterInstance):

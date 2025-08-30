@@ -51,3 +51,9 @@ func on_trigger(event: TriggerEvent) -> void:
 			if owner:
 				print("Poison expired on %s" % owner.resource.name)
 				owner.remove_effect(self)
+
+func _get_name() -> String:
+	return "Poison"
+	
+func get_description() -> String:
+	return "Deals %s damage per turn, %s turns remaining" % [damage_per_turn, _remaining]
