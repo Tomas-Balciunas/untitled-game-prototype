@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://c8n1llsvvhonb"]
+[gd_scene load_steps=14 format=3 uid="uid://c8n1llsvvhonb"]
 
 [ext_resource type="MeshLibrary" uid="uid://uso6cfmk5r51" path="res://tileset white.tres" id="1_mdjaj"]
 [ext_resource type="PackedScene" uid="uid://c8fyl6fq4crr0" path="res://maps/_encounter/EncounterSpawner.tscn" id="2_w2sle"]
@@ -8,11 +8,14 @@
 [ext_resource type="Script" uid="uid://cs78wsbme5ww4" path="res://maps/hub/TransitionData.gd" id="7_kjsaj"]
 [ext_resource type="Resource" uid="uid://d34tlmbjgrfkv" path="res://maps/_encounter/starting area/basic_test_2.tres" id="7_w2sle"]
 [ext_resource type="Resource" uid="uid://ca1h8vjjk8vcm" path="res://maps/crypt/crypt_00.tres" id="8_w2sle"]
-[ext_resource type="Script" uid="uid://8n2g1of6dlbp" path="res://maps/hub/rest_area.gd" id="9_kjsaj"]
+[ext_resource type="Script" uid="uid://8n2g1of6dlbp" path="res://maps/hub/RestAreaInteractable.gd" id="9_kjsaj"]
+[ext_resource type="PackedScene" uid="uid://bg5f2e2nphlkl" path="res://scenes/Interactable.tscn" id="10_lk5gk"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_g1pjd"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_lk5gk"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_lk5gk"]
 
 [node name="StartingArea" type="GridMap"]
 mesh_library = ExtResource("1_mdjaj")
@@ -48,8 +51,18 @@ shape = SubResource("BoxShape3D_g1pjd")
 [node name="Rest" type="Node" parent="."]
 
 [node name="Area3D" type="Area3D" parent="Rest"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, -20)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, -20)
 script = ExtResource("9_kjsaj")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Rest/Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 shape = SubResource("BoxShape3D_lk5gk")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Rest/Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+mesh = SubResource("BoxMesh_lk5gk")
+
+[node name="Interactable" type="Node" parent="."]
+
+[node name="Interactable" parent="Interactable" instance=ExtResource("10_lk5gk")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 1, -20)

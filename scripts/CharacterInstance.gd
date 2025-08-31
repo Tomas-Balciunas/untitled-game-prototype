@@ -36,8 +36,8 @@ var equipment := {
 	"helmet": null,
 	"boots": null,
 	"gloves": null,
-	"ring1": null,
-	"ring2": null
+	"ring": null,
+	"amulet": null
 }
 
 func _init(res: CharacterResource) -> void:
@@ -279,11 +279,8 @@ func get_slot_name_for_item(item: GearInstance) -> String:
 		Item.ItemType.HELMET: return "helmet"
 		Item.ItemType.BOOTS: return "boots"
 		Item.ItemType.GLOVES: return "gloves"
-		Item.ItemType.RING:
-			if equipment["ring1"] == null:
-				return "ring1"
-			else:
-				return "ring2"
+		Item.ItemType.RING: return "ring"
+		Item.ItemType.AMULET: return "amulet"
 		_: return ""
 
 func to_dict() -> Dictionary:

@@ -2,7 +2,7 @@ extends Panel
 
 class_name PartyMemberSlot
 
-signal target_clicked(target)
+#signal target_clicked(target)
 signal open_character_menu_requested(character_instance)
 
 var character_instance: CharacterInstance
@@ -30,11 +30,11 @@ func hide_info():
 	var cont = $MarginContainer
 	cont.visible = false
 
-func _on_health_changed(_old_health: int, new_health: int) -> void:
+func _on_health_changed(_old_health: int, _new_health: int) -> void:
 	$MarginContainer/GridContainer/LabelValueContainer/Values/HPContainer/CurrentHP.text = str(character_instance.stats.current_health)
 	$MarginContainer/GridContainer/LabelValueContainer/Values/HPContainer/MaxHP.text = str(character_instance.stats.max_health)
 
-func _on_mana_changed(_old_mana: int, new_mana: int) -> void:
+func _on_mana_changed(_old_mana: int, _new_mana: int) -> void:
 	$MarginContainer/GridContainer/LabelValueContainer/Values/MPContainer/CurrentMP.text = str(character_instance.stats.current_mana)
 	$MarginContainer/GridContainer/LabelValueContainer/Values/MPContainer/MaxMP.text = str(character_instance.stats.max_mana)
 

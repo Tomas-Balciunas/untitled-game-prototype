@@ -11,7 +11,6 @@ func print_line(line: String):
 	print_text()
 	
 func print_text():
-	var full_text: String = "\n".join(_text)
 	if cont:
 		cont.text = "\n".join(_text)
 	else:

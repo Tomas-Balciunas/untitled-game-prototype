@@ -3,8 +3,6 @@ class_name PoisonOnHit
 
 var damage_per_turn: int = 5
 
-@export var _chance: float = 1.0
-
 func listened_triggers() -> Array:
 	return [EffectTriggers.ON_DAMAGE_APPLIED]
 	

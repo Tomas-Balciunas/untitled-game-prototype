@@ -1,15 +1,15 @@
-extends Control
+extends Panel
 class_name InventoryUI
 
 var bound_character: CharacterInstance = null
 
-@onready var inventory_container: VBoxContainer = $InventoryContainer
-@onready var equipped_list: ItemList = $InventoryContainer/EquippedList
-@onready var inventory_list: ItemList = $InventoryContainer/InventoryList
-@onready var action_button: Button = $InventoryContainer/ActionButton
-@onready var unequip_button: Button = $InventoryContainer/UnequipButton
-@onready var next_button: Button = $InventoryContainer/NextButton
-@onready var prev_button: Button = $InventoryContainer/PrevButton
+const item_slot = preload("res://gear/ItemSlot.tscn")
+
+@onready var inventory_container: VBoxContainer = $Inventory
+@onready var equipped_list: VBoxContainer = $Inventory/EquippedList
+@onready var inventory_list: VBoxContainer = $Inventory/InventoryList
+@onready var action_button: Button = $Inventory/ActionButton
+@onready var unequip_button: Button = $Inventory/UnequipButton
 
 @onready var item_info_panel: VBoxContainer = $ItemInfoPanel
 @onready var item_name_label: Label = $ItemInfoPanel/ItemName
@@ -18,33 +18,31 @@ var bound_character: CharacterInstance = null
 @onready var effects_label: Label = $ItemInfoPanel/EffectsLabel
 @onready var modifiers_label: Label = $ItemInfoPanel/ModifiersLabel
 
+var _selected_item: ItemInstance = null
+
 func bind_character(character: CharacterInstance):
 	bound_character = character
 	refresh_lists()
 
-func _ready():
-	inventory_list.item_selected.connect(_on_inventory_item_selected)
-	equipped_list.item_selected.connect(_on_euipped_item_selected)
-
 func refresh_lists():
-	equipped_list.clear()
-	for slot_name in bound_character.equipment.keys():
-		var item: ItemInstance = bound_character.equipment[slot_name]
-		var display_name = "%s: %s" % [slot_name.capitalize(), item.get_item_name() if item else "<empty>"]
-		equipped_list.add_item(display_name)
+	equipped_list.bind_equipped(bound_character, self)
 
-	inventory_list.clear()
+	for child in inventory_list.get_children():
+		child.queue_free()
 	for item in bound_character.inventory.get_all_items():
-		inventory_list.add_item(item.get_item_name())
+		var slot = item_slot.instantiate()
+		inventory_list.add_child(slot)
+		slot.bind(item)
+		slot.item_hovered.connect(show_item_info)
+		slot.item_unhovered.connect(hide_item_info)
+		slot.item_selected.connect(_on_inventory_item_selected)
 
 	action_button.visible = false
 	unequip_button.visible = false
 
-func _on_inventory_item_selected(index: int):
-	equipped_list.deselect_all()
+func _on_inventory_item_selected(item: ItemInstance):
 	unequip_button.visible = false
-	var item: ItemInstance = bound_character.inventory.get_all_items()[index]
-	show_item_info(item)
+	_selected_item = item
 	
 	if item is GearInstance:
 		action_button.text = "Equip"
@@ -55,15 +53,9 @@ func _on_inventory_item_selected(index: int):
 	else:
 		action_button.visible = false
 		
-func _on_euipped_item_selected(index: int):
-	inventory_list.deselect_all()
+func _on_equipped_item_selected(item: GearInstance):
 	action_button.visible = false
-
-	var slot_names = bound_character.equipment.keys()
-	var slot_name = slot_names[index]
-
-	var item: GearInstance = bound_character.equipment[slot_name]
-	show_item_info(item)
+	_selected_item = item
 
 	if item:
 		unequip_button.visible = true
@@ -71,40 +63,24 @@ func _on_euipped_item_selected(index: int):
 		unequip_button.visible = false
 
 func _on_action_button_pressed():
-	var selected_inventory_index = inventory_list.get_selected_items()
-	if selected_inventory_index.size() == 0:
-		return
+	if not _selected_item:
+		push_error("Trying to equip/use null selected item")
 
-	var idx = selected_inventory_index[0]
-	var item: ItemInstance = bound_character.inventory.get_all_items()[idx]
-
-	if item is GearInstance:
-		bound_character.equip_item(item)
-	elif item is ConsumableInstance:
-		item.use_item(bound_character, item)
+	if _selected_item is GearInstance:
+		bound_character.equip_item(_selected_item)
+	elif _selected_item is ConsumableInstance:
+		_selected_item.use_item(bound_character, _selected_item)
 
 	refresh_lists()
 
 func _on_unequip_button_pressed():
-	var idxs = equipped_list.get_selected_items()
-	if idxs.size() == 0:
-		return
+	if not _selected_item:
+		push_error("Trying to unequip null selected item")
 
-	var slot_name = bound_character.equipment.keys()[idxs[0]]
-	var item: GearInstance = bound_character.equipment[slot_name]
-
-	if item:
-		bound_character.unequip_slot(slot_name)
+	var slot_name = bound_character.get_slot_name_for_item(_selected_item)
+	bound_character.unequip_slot(slot_name)
 
 	refresh_lists()
-
-#func _on_next_button_pressed():
-	#selected_index = (selected_index + 1) % party_manager.members.size()
-	#refresh_lists()
-#
-#func _on_prev_button_pressed():
-	#selected_index = (selected_index - 1 + party_manager.members.size()) % party_manager.members.size()
-	#refresh_lists()
 
 func show_item_info(item: ItemInstance) -> void:
 	if item == null:
@@ -141,7 +117,9 @@ func show_item_info(item: ItemInstance) -> void:
 			effects_label.text = "\n".join(effect_lines)
 		else:
 			effects_label.text = ""
+			
+func hide_item_info():
+	item_info_panel.visible = false
 
 func close():
-	inventory_list.deselect_all()
 	item_info_panel.hide()

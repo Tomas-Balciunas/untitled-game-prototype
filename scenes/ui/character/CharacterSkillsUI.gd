@@ -1,0 +1,18 @@
+extends Node
+
+@onready var skills_container = $Skills
+const SkillLabel = preload("res://scenes/ui/character/SkillLabel.tscn")
+
+func bind_character(character: CharacterInstance):
+	clear_skills()
+	for skill in character.learnt_skills:
+		add_skill(skill)
+
+func clear_skills():
+	for child in skills_container.get_children():
+		child.queue_free()
+
+func add_skill(skill: Skill):
+	var label = SkillLabel.instantiate()
+	label.text = "%s: %s" % [skill._get_name(), skill.get_description()]
+	skills_container.add_child(label)

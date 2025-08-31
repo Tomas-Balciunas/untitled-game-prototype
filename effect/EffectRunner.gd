@@ -55,7 +55,7 @@ func _sort_effects(a, b) -> int:
 	var pb := int(eb.get_meta("priority")) if eb.has_meta("priority") else 0
 	return -1 if pa > pb else (1 if pa < pb else 0)
 
-static func _passes_scope(effect: Effect, event: TriggerEvent, is_template = false) -> bool:
+static func _passes_scope(effect: Effect, event: TriggerEvent, _is_template = false) -> bool:
 	if event.trigger not in effect.listened_triggers():
 		return false
 

@@ -3,8 +3,6 @@ class_name PoisonOnConsume
 
 @export var damage_per_turn: int = 10
 
-@export var _chance: float = 1.0
-
 func listened_triggers() -> Array:
 	return [EffectTriggers.ON_USE_CONSUMABLE]
 	

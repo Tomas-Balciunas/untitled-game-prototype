@@ -1,0 +1,24 @@
+[gd_scene load_steps=5 format=3 uid="uid://bg5f2e2nphlkl"]
+
+[ext_resource type="Script" uid="uid://dnq4ykl1fuw13" path="res://scenes/RecruitmentBoardInteractable.gd" id="1_c6f01"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_0iwdk"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_c6f01"]
+albedo_color = Color(0.290196, 0.596078, 0.180392, 1)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_c6f01"]
+material = SubResource("StandardMaterial3D_c6f01")
+
+[node name="Interactable" type="Area3D"]
+disable_mode = 2
+collision_layer = 9
+collision_mask = 9
+input_capture_on_drag = true
+script = ExtResource("1_c6f01")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("CylinderShape3D_0iwdk")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("CylinderMesh_c6f01")

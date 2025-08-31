@@ -1,6 +1,6 @@
 extends Node
 
-signal healing_resolved(ctx: HealingContext)
+#signal healing_resolved(ctx: HealingContext)
 
 func apply_effect(action: EffectApplicationAction) -> EffectApplicationContext:
 	return _apply_core(
@@ -17,6 +17,7 @@ func _apply_core(source: CharacterInstance, target: CharacterInstance, effect: E
 	ctx.target    = target
 	ctx.effect  = effect
 	ctx.callable = callable
+	ctx.actively_cast = actively_cast
 	
 	var event = TriggerEvent.new()
 	event.actor = ctx.source

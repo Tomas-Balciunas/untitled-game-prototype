@@ -11,3 +11,7 @@ func _on_player_entered_area(body):
 			push_error("Starting transition error: no transition data found!")
 		
 		TransitionManager.transit_to_map_start(map_data.id)
+
+
+func _on_mouse_entered() -> void:
+	print("test")

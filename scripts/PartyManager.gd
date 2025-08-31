@@ -145,8 +145,6 @@ func from_dict(data: Dictionary) -> void:
 			members.append(inst)
 			var position = add_member_to_formation(inst)
 			if position.size() > 0:
-				var row_i = position[0]
-				var slot_i = position[1]
 				print("Character added to party: %s" % inst.resource.name)
 			else:
 				push_error("Adding character to formation error: no free slots")

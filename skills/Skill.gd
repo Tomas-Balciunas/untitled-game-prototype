@@ -15,7 +15,8 @@ class_name Skill
 @export var bounce_instances: int = 0
 
 
-#func execute(user: CharacterInstance, targets: Array):
-	#var runner = effect_scene.instantiate()
-	#runner.setup(user, targets)
-	#runner.run()
+func _get_name() -> String:
+	return name
+	
+func get_description() -> String:
+	return description

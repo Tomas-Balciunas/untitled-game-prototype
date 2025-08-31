@@ -10,6 +10,7 @@ script = ExtResource("1_p0vlq")
 
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.34984, -0.302716)
+current = true
 fov = 93.0034
 
 [node name="OmniLight3D" type="OmniLight3D" parent="Camera3D"]
@@ -25,6 +26,9 @@ shape = SubResource("BoxShape3D_p0vlq")
 
 [node name="FrontRay" type="RayCast3D" parent="."]
 target_position = Vector3(0, 0, -2)
+collide_with_areas = true
+debug_shape_custom_color = Color(0.678431, 0, 0, 1)
+debug_shape_thickness = 3
 
 [node name="BackRay" type="RayCast3D" parent="."]
 target_position = Vector3(0, 0, 2)

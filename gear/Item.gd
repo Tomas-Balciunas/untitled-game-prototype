@@ -9,6 +9,7 @@ enum ItemType {
 	BOOTS,
 	GLOVES,
 	RING,
+	AMULET,
 	CONSUMABLE,
 	QUEST
 }

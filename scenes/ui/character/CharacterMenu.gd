@@ -4,8 +4,9 @@ class_name CharacterMenu
 @onready var stats_tab = $Menu/StatsUI
 @onready var inventory_tab = $Menu/InventoryUI
 @onready var effects_tab = $Menu/EffectsUI
+@onready var skills_tab = $Menu/SkillsUI
 
-@onready var inventory_container: VBoxContainer = $Menu/InventoryUI/InventoryContainer
+@onready var inventory_container: VBoxContainer = $Menu/InventoryUI/Inventory
 @onready var item_info_panel: VBoxContainer = $Menu/InventoryUI/ItemInfoPanel
 
 @onready var party_panel = get_tree().get_root().get_node("Main/PartyPanel")
@@ -32,7 +33,8 @@ func show_tab(tab: String):
 	var tabs := {
 		"stats": stats_tab,
 		"inventory": inventory_tab,
-		"effects": effects_tab
+		"effects": effects_tab,
+		"skills": skills_tab
 	}
 	
 	for key in tabs.keys():
@@ -52,7 +54,8 @@ func _on_stats_pressed() -> void:
 
 
 func _on_skills_pressed() -> void:
-	pass # Replace with function body.
+	skills_tab.bind_character(character_instance)
+	show_tab("skills")
 
 
 func _on_effects_pressed() -> void:
