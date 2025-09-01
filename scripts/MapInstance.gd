@@ -40,7 +40,7 @@ func update_player_position(pos: Vector2i, facing: Vector3):
 func mark_encounter_cleared(id: String, encounter_id: String) -> void:
 	cleared_encounters[id].append(encounter_id)
 
-func is_encounter_cleared(map_id: String, encounter_id: String) -> bool:
+func is_encounter_cleared(_map_id: String, encounter_id: String) -> bool:
 	if not cleared_encounters.has(map_id):
 		return false
 	return cleared_encounters[map_id].has(encounter_id)

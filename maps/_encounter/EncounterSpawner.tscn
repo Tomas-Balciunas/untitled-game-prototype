@@ -1,6 +1,7 @@
-[gd_scene load_steps=3 format=3 uid="uid://c8fyl6fq4crr0"]
+[gd_scene load_steps=4 format=3 uid="uid://c8fyl6fq4crr0"]
 
-[ext_resource type="Script" uid="uid://domtntexnhum4" path="res://scenes/DungeonEncounter.gd" id="1_84wrc"]
+[ext_resource type="Script" uid="uid://domtntexnhum4" path="res://maps/_encounter/DungeonEncounter.gd" id="1_84wrc"]
+[ext_resource type="Script" uid="uid://b3lcbi0qtem2e" path="res://scripts/triggerables/BattleTriggerable.gd" id="2_p26es"]
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_py4d4"]
 
@@ -8,6 +9,7 @@
 script = ExtResource("1_84wrc")
 
 [node name="EncounterArea" type="Area3D" parent="."]
+script = ExtResource("2_p26es")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="EncounterArea"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)

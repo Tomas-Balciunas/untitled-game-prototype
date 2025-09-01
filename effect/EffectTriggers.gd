@@ -8,6 +8,7 @@ const ON_POST_HIT := "on_post_hit"
 const ON_DAMAGE_ABOUT_TO_BE_APPLIED := "damage_about_to_be_applied"
 const ON_BEFORE_RECEIVE_DAMAGE := "on_before_receive_damage"
 const ON_DAMAGE_APPLIED := "damage_applied"
+const ON_DEATH := "on_death"
 
 const ON_HEAL := "on_heal"
 const ON_RECEIVE_HEAL := "on_receive_heal"

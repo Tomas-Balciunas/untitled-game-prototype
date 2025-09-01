@@ -6,7 +6,7 @@ class_name Heal
 func listened_triggers() -> Array:
 	return [EffectTriggers.ON_USE_CONSUMABLE]
 	
-func can_process(event: TriggerEvent) -> bool:
+func can_process(_event: TriggerEvent) -> bool:
 	return true
 
 func on_trigger(event: TriggerEvent) -> void:

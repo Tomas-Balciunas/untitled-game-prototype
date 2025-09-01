@@ -66,6 +66,10 @@ func _apply_core(source: CharacterInstance, target: CharacterInstance, damage_ty
 	
 	BattleTextLines.print_line("%s dealt %f %s damage to %s" % [ctx.source.resource.name, ctx.final_value, DamageTypes.to_str(ctx.type), ctx.target.resource.name])
 	target.set_current_health(target.stats.current_health - ctx.final_value)
+	if target.is_dead:
+		event.trigger = EffectTriggers.ON_DEATH
+		EffectRunner.process_trigger(event)
+		return ctx
 	
 	event.trigger = EffectTriggers.ON_DAMAGE_APPLIED
 	EffectRunner.process_trigger(event)
@@ -79,6 +83,7 @@ func _apply_core(source: CharacterInstance, target: CharacterInstance, damage_ty
 		revenge.defender = counter_target
 		revenge.type = ctx.target.damage_type
 		revenge.base_value = ctx.target.stats.attack
+		revenge.actively_cast = true #important, setting it to false would not trigger counterattack chain
 		BattleTextLines.print_line("%s counterattacks!" % ctx.target.resource.name)
 		self.apply_attack(revenge)
 

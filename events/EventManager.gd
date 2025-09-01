@@ -1,15 +1,15 @@
 extends Node
 
-signal start_event_encounter(data: Dictionary)
-
 @onready var party_panel = get_tree().get_root().get_node("Main/PartyPanel")
 var current_event: Array = []
 var event_step: int = 0
 
 func process_event(event_id: String):
+	GameState.set_event()
 	var event = EventRegistry.get_event(event_id)
 	
 	if not event or EventFlags.is_event_completed(event_id):
+		GameState.set_idle()
 		return
 	
 	party_panel.disable_party_ui()
@@ -39,7 +39,14 @@ func handle_text(sequence: Dictionary):
 	
 func handle_encounter(sequence):
 	var arena = sequence["arena"]
-	emit_signal("start_event_encounter", { "arena": arena })
+	var enemies: Array[CharacterResource] = []
+	for enemy in sequence["enemies"]:
+		enemies.append(CharacterRegistry.get_character(enemy))
+	var data = EncounterData.new()
+	data.id = "whatever"
+	data.arena = arena
+	data.enemies = enemies
+	EncounterManager.start_encounter(data)
 	party_panel.enable_party_ui()
 	await EncounterManager.encounter_ended
 	if not current_event.is_empty() and current_event.size() > event_step:

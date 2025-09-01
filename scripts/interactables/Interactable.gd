@@ -12,7 +12,7 @@ func _ready():
 
 	self.input_event.connect(_on_input_event)
 
-func _on_input_event(camera: Camera3D, event: InputEvent, click_position: Vector3, click_normal: Vector3, shape_idx: int):
+func _on_input_event(_camera: Camera3D, event: InputEvent, _click_position: Vector3, _click_normal: Vector3, _shape_idx: int):
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
 		if _can_interact():
 			_interact()
@@ -25,7 +25,7 @@ func _can_interact() -> bool:
 func _interact():
 	print("Interacted with ", name)
 
-func _process(delta):
+func _process(_delta):
 	if highlight_on_hover and player != null:
 		var dist = player.global_position.distance_to(global_position)
 		_set_highlight(dist <= interact_distance)

@@ -1,12 +1,8 @@
-[gd_scene load_steps=16 format=3 uid="uid://c8n1llsvvhonb"]
+[gd_scene load_steps=12 format=3 uid="uid://c8n1llsvvhonb"]
 
 [ext_resource type="MeshLibrary" uid="uid://uso6cfmk5r51" path="res://tileset white.tres" id="1_mdjaj"]
 [ext_resource type="PackedScene" uid="uid://c8fyl6fq4crr0" path="res://maps/_encounter/EncounterSpawner.tscn" id="2_w2sle"]
-[ext_resource type="Resource" uid="uid://glboqdt0keow" path="res://maps/_encounter/starting area/basic_test.tres" id="3_2pqfk"]
-[ext_resource type="PackedScene" uid="uid://ddaoggfmpimc3" path="res://characters/foes/Balmer/body.tscn" id="4_kjsaj"]
-[ext_resource type="PackedScene" uid="uid://coq12fusghinq" path="res://characters/foes/_fallback/body.tscn" id="6_lk5gk"]
 [ext_resource type="Script" uid="uid://dbfiub7761eey" path="res://scripts/triggerables/MapTransitionTriggerable.gd" id="7_lk5gk"]
-[ext_resource type="Resource" uid="uid://d34tlmbjgrfkv" path="res://maps/_encounter/starting area/basic_test_2.tres" id="7_w2sle"]
 [ext_resource type="Resource" uid="uid://ca1h8vjjk8vcm" path="res://maps/crypt/crypt_00.tres" id="8_w2sle"]
 [ext_resource type="Script" uid="uid://8n2g1of6dlbp" path="res://scripts/interactables/RestAreaInteractable.gd" id="9_kjsaj"]
 [ext_resource type="PackedScene" uid="uid://bg5f2e2nphlkl" path="res://scripts/interactables/Interactable.tscn" id="10_lk5gk"]
@@ -33,13 +29,11 @@ metadata/_editor_floor_ = Vector3(0, 0, 0)
 
 [node name="EncounterSpawner" parent="Enemies" instance=ExtResource("2_w2sle")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, -2)
-encounter_data = ExtResource("3_2pqfk")
-enemy_scene = ExtResource("6_lk5gk")
+script = null
 
 [node name="EncounterSpawner2" parent="Enemies" instance=ExtResource("2_w2sle")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, -3)
-encounter_data = ExtResource("7_w2sle")
-enemy_scene = ExtResource("4_kjsaj")
+script = null
 
 [node name="Transitions" type="Node" parent="."]
 

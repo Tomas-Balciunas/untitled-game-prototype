@@ -15,7 +15,7 @@ var events: Dictionary = {
 			"type": "encounter",
 			"arena": "arena_default_00", 
 			# for now hardcoded enemies in battle manager will spawn
-			"enemies": []
+			"enemies": ["e_enemy_002", "0000"]
 		},
 		{
 			"type": "text",

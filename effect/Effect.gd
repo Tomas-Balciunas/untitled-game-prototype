@@ -22,13 +22,13 @@ var _is_instance := false
 var owner: CharacterInstance = null
 var _is_runtime_instance := false
 
-func set_source(source: CharacterInstance):
+func set_source(_source: CharacterInstance):
 	pass
 	
 func listened_triggers() -> Array:
 	return []
 	
-func can_process(event: TriggerEvent) -> bool:
+func can_process(_event: TriggerEvent) -> bool:
 	return false
 
 func _get_name() -> String:

@@ -9,23 +9,20 @@ var battle_scene: PackedScene = preload("res://scenes/BattleScene.tscn")
 var current_battle_scene: BattleScene = null
 
 func _ready():
-	EventManager.connect("start_event_encounter", Callable(self, "start_encounter"))
 	transition_battle.modulate.a = 0.0
 
-func start_encounter(encounter_data: Dictionary):
-	if GameState.current_state not in [GameState.States.IDLE, GameState.States.CUTSCENE]:
+func start_encounter(data: EncounterData):
+	if GameState.current_state not in [GameState.States.IDLE, GameState.States.EVENT]:
 		return
 		
 	GameState.current_state = GameState.States.IN_BATTLE
-	print("EncounterManager: Starting encounter:", encounter_data)
-	var arena_id = encounter_data["arena"]
-	var enemy_ids = encounter_data["enemies"]
-	var encounter_id = encounter_data["id"]
-	var enemies: Array[CharacterResource] = []
-	var arena = MapManager.get_arena(arena_id)
+	print("EncounterManager: Starting encounter:", data.id)
 	
-	for id in enemy_ids:
-		enemies.append(CharacterRegistry.get_character(id))
+	var enemies: Array[CharacterResource] = []
+	var arena = MapManager.get_arena(data.arena)
+	
+	for enemy in data.enemies:
+		enemies.append(CharacterRegistry.get_character(enemy.id))
 	
 	var tween = get_tree().create_tween()
 	tween.tween_property(transition_battle, "modulate:a", 1.0, 0.5)
@@ -33,8 +30,8 @@ func start_encounter(encounter_data: Dictionary):
 	
 	current_battle_scene = battle_scene.instantiate()
 	get_tree().get_root().get_node("Main").add_child(current_battle_scene)
-	current_battle_scene.initiate(arena, enemies, encounter_id)
-	emit_signal("encounter_started", encounter_data)
+	current_battle_scene.initiate(arena, enemies, data.id)
+	emit_signal("encounter_started", data)
 	
 	tween = get_tree().create_tween()
 	tween.tween_property(transition_battle, "modulate:a", 0.0, 0.5)

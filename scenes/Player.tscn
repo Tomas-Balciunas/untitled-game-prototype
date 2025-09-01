@@ -26,7 +26,6 @@ shape = SubResource("BoxShape3D_p0vlq")
 
 [node name="FrontRay" type="RayCast3D" parent="."]
 target_position = Vector3(0, 0, -2)
-collide_with_areas = true
 debug_shape_custom_color = Color(0.678431, 0, 0, 1)
 debug_shape_thickness = 3
 
