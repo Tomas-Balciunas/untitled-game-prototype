@@ -86,6 +86,8 @@ text = "Effects"
 [node name="Talk" type="Button" parent="Menu/CharacterMenuButtons/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
+focus_mode = 0
+keep_pressed_outside = true
 text = "Talk"
 
 [node name="Close" type="Button" parent="Menu/CharacterMenuButtons/HBoxContainer"]
@@ -456,6 +458,7 @@ layout_mode = 2
 [connection signal="pressed" from="Menu/CharacterMenuButtons/HBoxContainer/Inventory" to="." method="_on_inventory_pressed"]
 [connection signal="pressed" from="Menu/CharacterMenuButtons/HBoxContainer/Skills" to="." method="_on_skills_pressed"]
 [connection signal="pressed" from="Menu/CharacterMenuButtons/HBoxContainer/Effects" to="." method="_on_effects_pressed"]
+[connection signal="pressed" from="Menu/CharacterMenuButtons/HBoxContainer/Talk" to="." method="_on_talk_pressed"]
 [connection signal="pressed" from="Menu/CharacterMenuButtons/HBoxContainer/Close" to="." method="_on_close_pressed"]
 [connection signal="pressed" from="Menu/InventoryUI/Inventory/ActionButton" to="Menu/InventoryUI" method="_on_action_button_pressed"]
 [connection signal="pressed" from="Menu/InventoryUI/Inventory/UnequipButton" to="Menu/InventoryUI" method="_on_unequip_button_pressed"]

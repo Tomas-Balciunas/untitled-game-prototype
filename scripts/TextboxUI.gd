@@ -40,6 +40,7 @@ func _on_typing_tick():
 func _unhandled_input(event):
 	if not is_visible():
 		return
+		
 	if event.is_action_pressed("ui_accept"):
 		if typing_timer.is_stopped():
 			hide()

@@ -30,3 +30,11 @@ const DEFAULT_ATTRIBUTES = preload("res://characters/_attribute/_Unknown.tres")
 @export var default_effects: Array[Effect] = []
 @export var default_damage_type: DamageTypes.Type
 @export var default_items: Array[Item] = []
+
+@export var interactions: CharacterInteraction
+
+func get_interactions() -> CharacterInteraction:
+	if interactions == null:
+		push_warning("%s has no dialogue assigned!" % name)
+		return null
+	return interactions.duplicate(true)

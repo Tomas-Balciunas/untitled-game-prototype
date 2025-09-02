@@ -1,7 +1,7 @@
 extends Node
 
 var events: Dictionary = {
-	# eventually events will move into their separate files
+	# eventually events will move into their separate files i think
 	"test_event_000": [
 		{
 			"type": "text",
@@ -14,7 +14,6 @@ var events: Dictionary = {
 		{
 			"type": "encounter",
 			"arena": "arena_default_00", 
-			# for now hardcoded enemies in battle manager will spawn
 			"enemies": ["e_enemy_002", "0000"]
 		},
 		{

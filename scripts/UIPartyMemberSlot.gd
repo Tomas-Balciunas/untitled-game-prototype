@@ -40,7 +40,7 @@ func _on_mana_changed(_old_mana: int, _new_mana: int) -> void:
 
 func _on_gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
-		if targeting_enabled:
+		if BattleContext.in_battle and targeting_enabled:
 			if not character_instance:
 				print("Invalid party member selected")
 				return
@@ -48,10 +48,11 @@ func _on_gui_input(event: InputEvent) -> void:
 			print("targeted ", character_instance.resource.name)
 			TargetingManager.emit_signal("target_clicked", self)
 		else:
-			if not character_instance:
-				print("Invalid party member selected")
-				return
-			emit_signal("open_character_menu_requested", character_instance)
+			if not BattleContext.in_battle:
+				if not character_instance:
+					print("Invalid party member selected")
+					return
+				emit_signal("open_character_menu_requested", character_instance)
 
 func disable_slot_targeting():
 	targeting_enabled = false

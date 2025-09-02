@@ -42,6 +42,7 @@ EffectApplicationResolver="*res://scripts/resolvers/EffectApplicationResolver.gd
 ItemsRegistry="*res://gear/ItemRegistry.gd"
 SaveManager="*res://scripts/SaveManager.gd"
 EffectRegistry="*res://effect/EffectRegistry.gd"
+ConversationManager="*res://scripts/DialogueManager.gd"
 
 [display]
 

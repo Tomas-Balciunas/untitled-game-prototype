@@ -1,0 +1,7 @@
+[gd_resource type="Resource" script_class="LiliInteractions" load_steps=2 format=3 uid="uid://coilrntx01n8m"]
+
+[ext_resource type="Script" uid="uid://bohp86ydwcbi1" path="res://characters/allies/Lili/LiliInteractions.gd" id="1_8bqej"]
+
+[resource]
+script = ExtResource("1_8bqej")
+metadata/_custom_type_script = "uid://bohp86ydwcbi1"
