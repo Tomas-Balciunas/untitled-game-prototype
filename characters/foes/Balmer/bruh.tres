@@ -1,0 +1,7 @@
+[gd_resource type="Resource" script_class="TestBattleEvent" load_steps=2 format=3 uid="uid://ip0mvclno866"]
+
+[ext_resource type="Script" uid="uid://cefbxqy0qohbr" path="res://scripts/TestBattleEvent.gd" id="1_yfw2g"]
+
+[resource]
+script = ExtResource("1_yfw2g")
+metadata/_custom_type_script = "uid://cefbxqy0qohbr"

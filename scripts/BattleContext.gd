@@ -1,6 +1,7 @@
 extends Node
 
 var in_battle: bool = false
+var event_running: bool = false
 var manager: BattleManager = null
 var enemy_grid: Node = null
 var encounter_id: String = ""

@@ -2,6 +2,9 @@ extends Resource
 
 class_name CharacterInteraction
 
+const MENU_TALK = "menu_talk"
+const BATTLE_EVENT = "battle_event"
+
 var interactions: Dictionary = {}
 
 func get_dialogue(_topic: String, _id: String):

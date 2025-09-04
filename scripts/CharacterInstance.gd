@@ -29,6 +29,7 @@ var job: Job
 var gender: Gender
 var race: Race
 var inventory: Inventory
+var battle_events: Array[BattleEvent]
 
 var equipment := {
 	"weapon": null,
@@ -134,7 +135,7 @@ func set_current_mana(new_mana: int) -> void:
 	print("%s MP %s/%s" % [resource.name, stats.current_mana, stats.max_mana])
 
 func prepare_for_battle() -> void:
-	for e in effects:
+	for e: Effect in effects:
 		e.prepare_for_battle(self)
 
 func cleanup_after_battle() -> void:

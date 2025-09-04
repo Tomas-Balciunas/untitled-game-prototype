@@ -13,7 +13,7 @@ const DEFAULT_ATTRIBUTES = preload("res://characters/_attribute/_Unknown.tres")
 
 @export var attributes: Attributes = DEFAULT_ATTRIBUTES
 
-@export var id: String = "0000"
+@export var id: String
 
 @export var character_body: PackedScene
 @export var portrait: Texture
@@ -32,9 +32,4 @@ const DEFAULT_ATTRIBUTES = preload("res://characters/_attribute/_Unknown.tres")
 @export var default_items: Array[Item] = []
 
 @export var interactions: CharacterInteraction
-
-func get_interactions() -> CharacterInteraction:
-	if interactions == null:
-		push_warning("%s has no dialogue assigned!" % name)
-		return null
-	return interactions.duplicate(true)
+@export var battle_events: Array[BattleEvent]

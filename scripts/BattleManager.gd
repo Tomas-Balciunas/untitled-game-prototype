@@ -43,16 +43,19 @@ var current_battler: CharacterInstance = null
 func begin(_enemies: Array[CharacterInstance]):
 	TargetingManager.configure_for_battle(camera)
 	TargetingManager.connect("target_clicked", Callable(self, "_on_target_selected"))
-	TargetingManager.connect("target_hovered", Callable(self, "_on_enemy_hovered"))
-	TargetingManager.connect("target_unhovered", Callable(self, "_on_enemy_unhovered"))
+	
 	
 	var party_members = PartyManager.members
 	
-	for b in party_members + _enemies:
+	for b: CharacterInstance in party_members + _enemies:
 		b.turn_meter = 0
 		_register_battler(b)
 		b.prepare_for_battle()
-		b.prepare_for_battle()
+		for e: BattleEvent in b.resource.battle_events:
+			var inst = e.duplicate(true)
+			inst.prepare(b)
+			b.battle_events.append(inst)
+			var test
 	
 	current_state = BattleState.PROCESS_TURNS
 
@@ -309,12 +312,6 @@ func _corpse_janny():
 		emit_signal("enemy_died", dead)
 		#_play_death_animation(dead)
 	_to_cleanup.clear()
-
-func _on_enemy_hovered(target: EnemySlot):
-	target.hover()
-	
-func _on_enemy_unhovered(target: EnemySlot):
-	target.unhover()
 
 func disable_all_targeting():
 	TargetingManager.disable_targeting()

@@ -61,6 +61,7 @@ func _apply_core(source: CharacterInstance, target: CharacterInstance, damage_ty
 	var calculator = DamageCalculator.new(ctx, defense_ignore)
 	ctx.final_value = max(calculator.get_final_damage(), 0)
 	
+	BattleEventBus.before_receive_damage.emit(ctx)
 	event.trigger = EffectTriggers.ON_DAMAGE_ABOUT_TO_BE_APPLIED
 	EffectRunner.process_trigger(event)
 	

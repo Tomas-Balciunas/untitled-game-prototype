@@ -1,7 +1,5 @@
 extends Node
 
-signal target_hovered(target)
-signal target_unhovered(previous)
 signal target_clicked(target)
 
 enum TargetType {
@@ -52,12 +50,12 @@ func _update_hovered_target(mouse_pos: Vector2):
 			node = node.get_parent()
 		if node != current_hovered:
 			if current_hovered:
-				emit_signal("target_unhovered", current_hovered)
+				current_hovered.unhover()
 			current_hovered = node
-			emit_signal("target_hovered", current_hovered)
+			current_hovered.hover()
 	else:
 		if current_hovered:
-			emit_signal("target_unhovered", current_hovered)
+			current_hovered.unhover()
 			current_hovered = null
 
 func configure_for_battle(new_camera: Camera3D):
