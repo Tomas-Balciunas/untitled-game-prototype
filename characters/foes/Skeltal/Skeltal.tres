@@ -1,10 +1,11 @@
-[gd_resource type="Resource" script_class="CharacterResource" load_steps=11 format=3 uid="uid://wuehd43nakji"]
+[gd_resource type="Resource" script_class="CharacterResource" load_steps=12 format=3 uid="uid://wuehd43nakji"]
 
 [ext_resource type="Script" uid="uid://bp0biy0knxw2o" path="res://effect/Effect.gd" id="1_73qgh"]
 [ext_resource type="Script" uid="uid://dq4acpkde276p" path="res://skills/Skill.gd" id="1_cc3t0"]
 [ext_resource type="Resource" uid="uid://bm8voqn41431y" path="res://characters/_attribute/_Unknown.tres" id="1_goqyc"]
 [ext_resource type="Script" uid="uid://bwn4gpkaijqsg" path="res://scripts/CharacterResource.gd" id="1_km1me"]
 [ext_resource type="Resource" uid="uid://badgfln40mudj" path="res://effect/_passive/resistance poison/PoisonRes.tres" id="2_d15h4"]
+[ext_resource type="Script" uid="uid://cbelvg2fndssu" path="res://scripts/BattleEvent.gd" id="2_gcpvx"]
 [ext_resource type="Resource" uid="uid://cm3vin4wtxpjv" path="res://effect/_passive/counterattack/Counterattack.tres" id="4_e8tyq"]
 [ext_resource type="Resource" uid="uid://ccd45ithmlluj" path="res://characters/_gender/_Unknown.tres" id="5_e8tyq"]
 [ext_resource type="Script" uid="uid://b06vmgrh4qa8i" path="res://gear/Item.gd" id="5_mpmjy"]
@@ -31,4 +32,5 @@ default_skills = Array[ExtResource("1_cc3t0")]([null])
 default_effects = Array[ExtResource("1_73qgh")]([ExtResource("2_d15h4"), ExtResource("4_e8tyq")])
 default_damage_type = 0
 default_items = Array[ExtResource("5_mpmjy")]([])
+battle_events = Array[ExtResource("2_gcpvx")]([])
 metadata/_custom_type_script = "uid://bwn4gpkaijqsg"

@@ -3,7 +3,7 @@ extends Node
 signal damage_resolved(ctx: DamageContext)
 
 func apply_attack(action: AttackAction) -> DamageContext:
-	return _apply_core(
+	return await _apply_core(
 		action.attacker,
 		action.defender,
 		action.type,
@@ -19,7 +19,7 @@ func apply_skill(skill: SkillAction) -> DamageContext:
 	if skill.modifier != 0.0:
 		calculated_damage += calculated_damage * skill.modifier
 	
-	return _apply_core(
+	return await _apply_core(
 		skill.attacker, 				# char inst
 		skill.defender, 				# char inst
 		skill.skill.damage_type,		# dmg element, overrides attacker's element
@@ -62,6 +62,7 @@ func _apply_core(source: CharacterInstance, target: CharacterInstance, damage_ty
 	ctx.final_value = max(calculator.get_final_damage(), 0)
 	
 	BattleEventBus.before_receive_damage.emit(ctx)
+	await BattleFlow.wait_if_paused()
 	event.trigger = EffectTriggers.ON_DAMAGE_ABOUT_TO_BE_APPLIED
 	EffectRunner.process_trigger(event)
 	
@@ -84,7 +85,7 @@ func _apply_core(source: CharacterInstance, target: CharacterInstance, damage_ty
 		revenge.defender = counter_target
 		revenge.type = ctx.target.damage_type
 		revenge.base_value = ctx.target.stats.attack
-		revenge.actively_cast = true #important, setting it to false would not trigger counterattack chain
+		revenge.actively_cast = false #important, setting it to false would not trigger counterattack chain
 		BattleTextLines.print_line("%s counterattacks!" % ctx.target.resource.name)
 		self.apply_attack(revenge)
 

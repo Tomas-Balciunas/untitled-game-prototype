@@ -43,6 +43,7 @@ SaveManager="*res://scripts/SaveManager.gd"
 EffectRegistry="*res://effect/EffectRegistry.gd"
 ConversationManager="*res://scripts/DialogueManager.gd"
 BattleEventBus="*res://scripts/BattleEventBus.gd"
+BattleFlow="*res://scripts/BattleFlow.gd"
 
 [display]
 

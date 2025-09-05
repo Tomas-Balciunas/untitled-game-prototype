@@ -41,6 +41,7 @@ var _pending_target: CharacterInstance = null
 var current_battler: CharacterInstance = null
 
 func begin(_enemies: Array[CharacterInstance]):
+	BattleEventBus.event_concluded.connect(Callable(self, "_on_event_concluded"))
 	TargetingManager.configure_for_battle(camera)
 	TargetingManager.connect("target_clicked", Callable(self, "_on_target_selected"))
 	
@@ -64,7 +65,11 @@ func _process(_delta):
 		_corpse_janny()
 		current_state = BattleState.CHECK_END
 		return
-	
+		
+	if BattleContext.event_running:
+		current_state = BattleState.ANIMATING
+		return
+
 	match current_state:
 		BattleState.PROCESS_TURNS:
 			_process_turn_queue()
@@ -158,7 +163,7 @@ func _on_target_selected(target_slot):
 	_resolve_player_action()
 
 func _resolve_player_action():
-	_perform_player_action(_pending_action, _pending_target)
+	await _perform_player_action(_pending_action, _pending_target)
 	current_state = BattleState.TURN_END
 
 func _perform_player_action(action: String, target: CharacterInstance):
@@ -177,7 +182,7 @@ func _perform_player_action(action: String, target: CharacterInstance):
 				atk.base_value = current_battler.stats.attack
 				atk.type = current_battler.damage_type
 				atk.actively_cast = true
-				DamageResolver.apply_attack(atk)
+				await DamageResolver.apply_attack(atk)
 		"skill":
 			var targeting = _pending_options[0].targeting_type
 			var _targets = get_applicable_targets(target, targeting)
@@ -363,3 +368,6 @@ func get_applicable_targets(current: CharacterInstance, type: TargetingManager.T
 		
 func same_side(a: CharacterInstance, b: CharacterInstance) -> bool:
 	return (a in party) == (b in party)
+
+func _on_event_concluded():
+	BattleContext.event_running = false

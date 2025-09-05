@@ -2,6 +2,8 @@ extends Resource
 
 class_name BattleEvent
 
+signal event_resolved()
+
 var _is_connected: bool = false
 var _owner: CharacterInstance = null
 
