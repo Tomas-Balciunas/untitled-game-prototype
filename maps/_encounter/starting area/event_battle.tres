@@ -5,6 +5,7 @@
 
 [resource]
 script = ExtResource("2_pdm8l")
+id = ""
 description = ""
 enemies = Array[ExtResource("1_3m7ep")]([])
 arena = "arena_default_00"

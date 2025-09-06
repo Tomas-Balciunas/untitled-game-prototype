@@ -33,3 +33,10 @@ const DEFAULT_ATTRIBUTES = preload("res://characters/_attribute/_Unknown.tres")
 
 @export var interactions: CharacterInteraction
 @export var battle_events: Array[BattleEvent]
+
+func get_interactions():
+	if interactions:
+		return interactions
+		
+	push_error("%s doesn't have interactions assigned!" % name)
+	return null

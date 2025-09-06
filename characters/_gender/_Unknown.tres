@@ -16,6 +16,6 @@ metadata/_custom_type_script = "uid://blqk30gl013xc"
 
 [resource]
 script = ExtResource("1_5d6xe")
-name = 2
+name = 1
 attributes = SubResource("Resource_aawqy")
 metadata/_custom_type_script = "uid://c548a16bd0808"

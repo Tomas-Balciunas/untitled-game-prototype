@@ -13,4 +13,6 @@ func prepare(_own: CharacterInstance):
 func run():
 	pass #execute the event
 
-# TODO: figure out how to pause battle while event is processing
+# TODO: figure out how to pause battle while event is processing - kinda done?
+# TODO: need to be able to process event on specific battles
+# TODO: and ability to add battle events

@@ -248,14 +248,19 @@ func _process_enemy_turn():
 
 	var target = valid_targets.pick_random()
 	current_state = BattleState.ANIMATING
-	await get_tree().create_timer(0.5).timeout
+	var slot = enemy_grid.get_slot_for(current_battler)
+	var strike_point = camera.global_position + camera.global_transform.basis.z * -2.0
+	strike_point.y = slot.global_position.y
+
+	await slot.perform_attack_toward_camera(strike_point)
 
 	var atk = AttackAction.new()
 	atk.attacker = current_battler
 	atk.defender   = target
 	atk.base_value = current_battler.stats.attack
 	atk.actively_cast = true
-	DamageResolver.apply_attack(atk)
+	await DamageResolver.apply_attack(atk)
+	await slot.position_back()
 	
 	current_state = BattleState.TURN_END
 

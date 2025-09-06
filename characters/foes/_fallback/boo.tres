@@ -1,10 +1,12 @@
-[gd_resource type="Resource" script_class="CharacterResource" load_steps=9 format=3 uid="uid://btr7k6tmwt3qi"]
+[gd_resource type="Resource" script_class="CharacterResource" load_steps=11 format=3 uid="uid://btr7k6tmwt3qi"]
 
 [ext_resource type="Script" uid="uid://bwn4gpkaijqsg" path="res://scripts/CharacterResource.gd" id="1_04kyn"]
 [ext_resource type="Resource" uid="uid://bm8voqn41431y" path="res://characters/_attribute/_Unknown.tres" id="1_7y0bu"]
 [ext_resource type="PackedScene" uid="uid://coq12fusghinq" path="res://characters/foes/_fallback/body.tscn" id="1_a2n8i"]
+[ext_resource type="Script" uid="uid://cbelvg2fndssu" path="res://scripts/BattleEvent.gd" id="2_y8skw"]
 [ext_resource type="Script" uid="uid://bp0biy0knxw2o" path="res://effect/Effect.gd" id="3_xdmfg"]
 [ext_resource type="Script" uid="uid://dq4acpkde276p" path="res://skills/Skill.gd" id="4_y8skw"]
+[ext_resource type="Script" uid="uid://b06vmgrh4qa8i" path="res://gear/Item.gd" id="5_7mwlc"]
 [ext_resource type="Resource" uid="uid://ccd45ithmlluj" path="res://characters/_gender/_Unknown.tres" id="5_d1mbr"]
 [ext_resource type="Resource" uid="uid://cs2tci0dc3vvo" path="res://characters/_class/_Unknown.tres" id="6_7mwlc"]
 [ext_resource type="Resource" uid="uid://lcgngc3c13fc" path="res://characters/_race/_Unknown.tres" id="7_rbf6s"]
@@ -29,4 +31,6 @@ prefers_front_row = true
 default_skills = Array[ExtResource("4_y8skw")]([])
 default_effects = Array[ExtResource("3_xdmfg")]([])
 default_damage_type = 0
+default_items = Array[ExtResource("5_7mwlc")]([])
+battle_events = Array[ExtResource("2_y8skw")]([])
 metadata/_custom_type_script = "uid://bwn4gpkaijqsg"

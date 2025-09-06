@@ -2,6 +2,8 @@ extends CharacterInteraction
 
 class_name LiliInteractions
 
+const FATAL_HIT = "fatal_hit"
+
 func _init():
 	interactions = {
 		MENU_TALK: {
@@ -13,5 +15,11 @@ func _init():
 				"type": "text",
 				"text": ["test 3", "test 4"]
 			},
+		},
+		BATTLE_EVENT: {
+			FATAL_HIT: {
+				"type": "text",
+				"text": ["this wont hurt me!"]
+			}
 		}
 	}

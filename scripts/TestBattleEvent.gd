@@ -16,7 +16,7 @@ func run():
 func before_receive_damage(ctx: DamageContext):
 	if ctx.target == _owner and ctx.final_value >= _owner.stats.current_health and times > 0:
 		BattleFlow.pause()
-		var interaction: TestInteractions = _owner.resource.interactions
+		var interaction: CharacterInteraction = _owner.resource.interactions
 		var lines = _owner.resource.interactions.get_dialogue(interaction.BATTLE_EVENT, interaction.FATAL_HIT)
 		ConversationManager.show_dialogue(_owner.resource.name, lines["text"])
 		ctx.final_value = 0

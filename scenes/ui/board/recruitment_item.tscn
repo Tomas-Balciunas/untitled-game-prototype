@@ -1,0 +1,21 @@
+[gd_scene load_steps=2 format=3 uid="uid://dykvuin0p8hpo"]
+
+[ext_resource type="Script" uid="uid://gim41j33867q" path="res://scenes/ui/board/RecruitmentItemUI.gd" id="1_cs6gj"]
+
+[node name="RecruitmentItem" type="HBoxContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_cs6gj")
+
+[node name="Name" type="Label" parent="."]
+layout_mode = 2
+
+[node name="Hire" type="Button" parent="."]
+layout_mode = 2
+focus_mode = 0
+text = "Hire"
+
+[connection signal="pressed" from="Hire" to="." method="_on_hire_pressed"]

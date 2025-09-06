@@ -1,11 +1,13 @@
-[gd_resource type="Resource" script_class="CharacterResource" load_steps=15 format=3 uid="uid://dh8kad7brt53b"]
+[gd_resource type="Resource" script_class="CharacterResource" load_steps=17 format=3 uid="uid://dh8kad7brt53b"]
 
 [ext_resource type="Script" uid="uid://dq4acpkde276p" path="res://skills/Skill.gd" id="1_5gn58"]
 [ext_resource type="Script" uid="uid://bp0biy0knxw2o" path="res://effect/Effect.gd" id="1_7ajkr"]
 [ext_resource type="Script" uid="uid://blqk30gl013xc" path="res://characters/_attribute/Attributes.gd" id="1_lgdsj"]
 [ext_resource type="Script" uid="uid://bwn4gpkaijqsg" path="res://scripts/CharacterResource.gd" id="1_tuon3"]
+[ext_resource type="Script" uid="uid://cbelvg2fndssu" path="res://scripts/BattleEvent.gd" id="2_715sk"]
 [ext_resource type="Resource" uid="uid://eiwm6khdbjki" path="res://characters/_race/Human.tres" id="2_gmj68"]
 [ext_resource type="Resource" uid="uid://c4v8018wjpyyf" path="res://effect/_passive/healing/HealBoost.tres" id="3_1ui0v"]
+[ext_resource type="PackedScene" uid="uid://cm7x52527bbq5" path="res://characters/allies/Lili/LiliBody.tscn" id="3_715sk"]
 [ext_resource type="Resource" uid="uid://pchf07nevgay" path="res://characters/_gender/Female.tres" id="3_abpod"]
 [ext_resource type="Resource" uid="uid://dt2wtnoyod5yd" path="res://effect/_passive/mp_cost/MpCostReduction.tres" id="4_23xqr"]
 [ext_resource type="Resource" uid="uid://dgxlt0x8p42nw" path="res://effect/_passive/damage share/DamageShare.tres" id="5_7lkq3"]
@@ -32,6 +34,7 @@ job = ExtResource("8_23xqr")
 gender = ExtResource("3_abpod")
 attributes = SubResource("Resource_n7wih")
 id = "a_lili_1"
+character_body = ExtResource("3_715sk")
 name = "Lili"
 attack_power = 18
 health_points = 200
@@ -46,4 +49,5 @@ default_effects = Array[ExtResource("1_7ajkr")]([ExtResource("3_1ui0v"), ExtReso
 default_damage_type = 0
 default_items = Array[ExtResource("6_7lkq3")]([ExtResource("7_n60ku")])
 interactions = ExtResource("10_pwtr7")
+battle_events = Array[ExtResource("2_715sk")]([])
 metadata/_custom_type_script = "uid://bwn4gpkaijqsg"

@@ -15,16 +15,16 @@ func add_member(id: String) -> void:
 	var res := CharacterRegistry.get_character(id)
 	if res:
 		var inst := CharacterInstance.new(res)
-		members.append(inst)
 		var position = add_member_to_formation(inst)
 		
 		if position.size() > 0:
+			members.append(inst)
 			var row_i = position[0]
 			var slot_i = position[1]
 			emit_signal("member_added", inst, row_i, slot_i)
 			print("Character added to party: %s" % inst.resource.name)
 		else:
-			push_error("Adding character to formation error: no free slots")
+			push_error("Adding character error: no free slots")
 		
 	else:
 		push_error("Character not found: %s" % id)

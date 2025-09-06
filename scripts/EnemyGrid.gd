@@ -3,7 +3,7 @@ class_name EnemyFormation
 
 const FRONT_ROW_Z    := -2.0
 const BACK_ROW_Z     := 0.0
-const SLOT_SPACING_X := 2.5
+const SLOT_SPACING_X := 2
 const MAX_SLOTS      := 5
 
 const Enemy3DScene = preload("res://scenes/EnemySlot.tscn")
@@ -50,18 +50,21 @@ func place_all_enemies(enemies: Array[CharacterInstance]) -> void:
 	for i in range(front_enemies.size()):
 		var slot = Enemy3DScene.instantiate() as EnemySlot
 		var idx = front_start + i
-		slot.bind(front_enemies[i])
 		slot.position = front_positions[idx]
 		add_child(slot)
+		slot.bind(front_enemies[i])
+		slot.capture_home()  
 		front_slots[idx] = slot
+		
 
 	var back_start = int((MAX_SLOTS - back_enemies.size()) * 0.5)
 	for j in range(back_enemies.size()):
 		var slot = Enemy3DScene.instantiate() as EnemySlot
 		var idx = back_start + j
-		slot.bind(back_enemies[j])
 		slot.position = back_positions[idx]
 		add_child(slot)
+		slot.bind(back_enemies[j])
+		slot.capture_home() 
 		back_slots[idx] = slot
 		
 	for i in back_enemies.size():
@@ -82,6 +85,17 @@ func remove_slot_for(enemy: CharacterInstance) -> void:
 			slot.queue_free()
 			back_slots[j] = null
 			return
+			
+func get_slot_for(enemy: CharacterInstance):
+	for i in range(MAX_SLOTS):
+		var slot = front_slots[i]
+		if slot and slot.character_instance == enemy:
+			return slot
+
+	for j in range(MAX_SLOTS):
+		var slot = back_slots[j]
+		if slot and slot.character_instance == enemy:
+			return slot
 
 func _promote_from_back_to_front(index: int) -> void:
 	var back = back_slots[index]
@@ -89,6 +103,7 @@ func _promote_from_back_to_front(index: int) -> void:
 		back_slots[index]  = null
 		front_slots[index] = back
 		back.position      = front_positions[index]
+		back.capture_home()
 
 func clear_slots() -> void:
 	for slot in front_slots + back_slots:

@@ -1,0 +1,34 @@
+[gd_resource type="Resource" script_class="Job" load_steps=6 format=3 uid="uid://bbd7uboqwf5gb"]
+
+[ext_resource type="Script" uid="uid://bp0biy0knxw2o" path="res://effect/Effect.gd" id="1_ht54m"]
+[ext_resource type="Script" uid="uid://blqk30gl013xc" path="res://characters/_attribute/Attributes.gd" id="1_v728n"]
+[ext_resource type="Script" uid="uid://xepac0r71qt2" path="res://characters/_class/Job.gd" id="2_v728n"]
+[ext_resource type="Script" uid="uid://dq4acpkde276p" path="res://skills/Skill.gd" id="3_rhq7f"]
+
+[sub_resource type="Resource" id="Resource_rhq7f"]
+script = ExtResource("1_v728n")
+str = 6
+iq = 2
+pie = 5
+vit = 10
+dex = 2
+spd = 3
+luk = 4
+metadata/_custom_type_script = "uid://blqk30gl013xc"
+
+[resource]
+script = ExtResource("2_v728n")
+name = 1
+attributes = SubResource("Resource_rhq7f")
+skills = Array[ExtResource("3_rhq7f")]([])
+effects = Array[ExtResource("1_ht54m")]([])
+attribute_modifiers = {
+"DEX": 1,
+"IQ": 1,
+"LUK": 2,
+"PIE": 2,
+"SPD": 1,
+"STR": 2,
+"VIT": 3
+}
+metadata/_custom_type_script = "uid://xepac0r71qt2"

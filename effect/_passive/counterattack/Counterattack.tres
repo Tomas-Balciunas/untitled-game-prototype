@@ -4,6 +4,7 @@
 
 [resource]
 script = ExtResource("1_h5gnt")
+chance = 1.0
 id = "counterattack_00"
 name = "counterattack"
 description = "Unnamed Effect"

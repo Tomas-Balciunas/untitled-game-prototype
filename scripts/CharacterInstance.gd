@@ -152,6 +152,10 @@ func apply_effect(effect: Effect, source: CharacterInstance = null) -> Effect:
 		inst.set_source(source)
 	
 	inst.on_apply(self)
+	
+	if not effect.should_append():
+		return inst
+	
 	effects.append(inst)
 	
 	return inst

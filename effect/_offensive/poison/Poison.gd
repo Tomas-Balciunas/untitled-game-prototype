@@ -2,9 +2,13 @@ extends Effect
 class_name PoisonEffect
 
 var damage_per_turn: int = 5
-
+var stacks: int = 1
 var _remaining: int = 0
 var _source: CharacterInstance = null
+var _should_refresh_duration := true
+
+func _is_stackable() -> bool:
+	return true
 
 func set_source(source: CharacterInstance) -> void:
 	_source = source
@@ -18,6 +22,15 @@ func on_apply(new_owner: CharacterInstance) -> void:
 	_is_runtime_instance = true
 	owner = new_owner
 	_remaining = duration_turns
+	# TODO tidy this up
+	for effect in owner.effects:
+		if effect is PoisonEffect:
+			_should_append = false
+			effect.stacks += 1
+			
+			if _should_refresh_duration:
+				effect._remaining = duration_turns
+			
 	BattleTextLines.print_line("Poison applied to %s for %d turns" % [owner.resource.name, duration_turns])
 	_register_if_needed()
 
@@ -39,7 +52,7 @@ func on_trigger(event: TriggerEvent) -> void:
 		tick.attacker = _source if _source != null else owner
 		tick.defender = owner
 		tick.type = DamageTypes.Type.POISON
-		tick.base_value = damage_per_turn
+		tick.base_value = damage_per_turn * stacks
 		tick.options = tick.options.duplicate() if tick.options else {}
 		tick.options["dot"] = true
 		DamageResolver.apply_attack(tick)
@@ -56,4 +69,4 @@ func _get_name() -> String:
 	return "Poison"
 	
 func get_description() -> String:
-	return "Deals %s damage per turn, %s turns remaining" % [damage_per_turn, _remaining]
+	return "Deals %s damage per turn, %s turns remaining" % [damage_per_turn * stacks, _remaining]

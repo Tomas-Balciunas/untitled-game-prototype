@@ -37,7 +37,7 @@ func load_map(map_id: String, load_data = null):
 	player.set_grid_pos(player_position, player_facing, TILE_SIZE)
 
 func _on_encounter_started(_data: EncounterData):
-	player.global_position = Vector3(0, 1, -8)
+	player.global_position = Vector3(0, 0, -7)
 	player.rotation_degrees.y = 180
 	self.visible = false
 	if current_map_scene:

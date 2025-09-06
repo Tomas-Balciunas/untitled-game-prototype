@@ -73,5 +73,9 @@ func _on_close_pressed() -> void:
 
 func _on_talk_pressed() -> void:
 	var interaction = character_instance.resource.get_interactions()
+	
+	if not interaction:
+		return
+	
 	var menu_interaction = interaction.get_dialogue("menu_talk", "random_01")
 	ConversationManager.show_dialogue(character_instance.resource.name, menu_interaction["text"])

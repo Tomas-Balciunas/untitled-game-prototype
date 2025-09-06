@@ -5,8 +5,12 @@
 [sub_resource type="BoxShape3D" id="BoxShape3D_p0vlq"]
 size = Vector3(0.620972, 1.62979, 0.552612)
 
-[node name="Player" type="Node3D"]
+[node name="Player" type="CharacterBody3D" groups=["player"]]
 script = ExtResource("1_p0vlq")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.816819, 0)
+shape = SubResource("BoxShape3D_p0vlq")
 
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.34984, -0.302716)
@@ -18,16 +22,8 @@ transform = Transform3D(1, 0, 0, 0, 0.0297301, 0, 0, 0, 1, 0, 0, 0.312911)
 light_color = Color(0.585928, 0.568995, 0.564924, 1)
 omni_range = 6.66321
 
-[node name="CharacterBody3D" type="CharacterBody3D" parent="." groups=["player"]]
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="CharacterBody3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.816819, 0)
-shape = SubResource("BoxShape3D_p0vlq")
-
 [node name="FrontRay" type="RayCast3D" parent="."]
 target_position = Vector3(0, 0, -2)
-debug_shape_custom_color = Color(0.678431, 0, 0, 1)
-debug_shape_thickness = 3
 
 [node name="BackRay" type="RayCast3D" parent="."]
 target_position = Vector3(0, 0, 2)

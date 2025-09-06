@@ -1,0 +1,45 @@
+[gd_resource type="Resource" script_class="CharacterResource" load_steps=11 format=3 uid="uid://dk7pc5rr0xhbs"]
+
+[ext_resource type="Script" uid="uid://blqk30gl013xc" path="res://characters/_attribute/Attributes.gd" id="1_klpoy"]
+[ext_resource type="Script" uid="uid://cbelvg2fndssu" path="res://scripts/BattleEvent.gd" id="2_8awbe"]
+[ext_resource type="Script" uid="uid://bp0biy0knxw2o" path="res://effect/Effect.gd" id="3_8dd4x"]
+[ext_resource type="Script" uid="uid://b06vmgrh4qa8i" path="res://gear/Item.gd" id="4_3lheu"]
+[ext_resource type="Script" uid="uid://dq4acpkde276p" path="res://skills/Skill.gd" id="5_ci8co"]
+[ext_resource type="Resource" uid="uid://pchf07nevgay" path="res://characters/_gender/Female.tres" id="6_8awbe"]
+[ext_resource type="Resource" uid="uid://bbd7uboqwf5gb" path="res://characters/_class/Knight.tres" id="7_8dd4x"]
+[ext_resource type="Resource" uid="uid://eiwm6khdbjki" path="res://characters/_race/Human.tres" id="8_3lheu"]
+[ext_resource type="Script" uid="uid://bwn4gpkaijqsg" path="res://scripts/CharacterResource.gd" id="9_0ou40"]
+
+[sub_resource type="Resource" id="Resource_ci8co"]
+script = ExtResource("1_klpoy")
+str = 1
+iq = 1
+pie = 2
+vit = 4
+dex = 1
+spd = 2
+luk = 3
+metadata/_custom_type_script = "uid://blqk30gl013xc"
+
+[resource]
+script = ExtResource("9_0ou40")
+race = ExtResource("8_3lheu")
+job = ExtResource("7_8dd4x")
+gender = ExtResource("6_8awbe")
+attributes = SubResource("Resource_ci8co")
+id = "a_coura_1"
+name = "Coura"
+attack_power = 5
+health_points = 20
+mana_points = 10
+defense = 10
+speed = 10
+experience = 400
+slot_width = 1
+prefers_front_row = false
+default_skills = Array[ExtResource("5_ci8co")]([])
+default_effects = Array[ExtResource("3_8dd4x")]([])
+default_damage_type = 0
+default_items = Array[ExtResource("4_3lheu")]([])
+battle_events = Array[ExtResource("2_8awbe")]([])
+metadata/_custom_type_script = "uid://bwn4gpkaijqsg"

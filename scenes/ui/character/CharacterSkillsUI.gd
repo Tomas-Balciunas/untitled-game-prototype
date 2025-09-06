@@ -5,8 +5,9 @@ const SkillLabel = preload("res://scenes/ui/character/SkillLabel.tscn")
 
 func bind_character(character: CharacterInstance):
 	clear_skills()
-	for skill in character.learnt_skills:
-		add_skill(skill)
+	if character.learnt_skills.size() > 0:
+		for skill in character.learnt_skills:
+			add_skill(skill)
 
 func clear_skills():
 	for child in skills_container.get_children():

@@ -1,6 +1,6 @@
 [gd_scene load_steps=8 format=3 uid="uid://ddaoggfmpimc3"]
 
-[ext_resource type="Texture2D" uid="uid://cjh84x068jx5c" path="res://balmer-andromalius-57x88-alpha.png" id="1_h6klw"]
+[ext_resource type="Texture2D" uid="uid://cjh84x068jx5c" path="res://test sprites 3.png" id="1_h6klw"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_dwbtb"]
 size = Vector3(1.46509, 2.61436, 0.1)
@@ -37,7 +37,7 @@ animations = [{
 "texture": SubResource("AtlasTexture_hddcw")
 }],
 "loop": true,
-"name": &"Idle",
+"name": &"idle",
 "speed": 6.0
 }]
 
@@ -53,6 +53,4 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.73461, 0)
 pixel_size = 0.03
 texture_filter = 0
 sprite_frames = SubResource("SpriteFrames_lwah8")
-animation = &"Idle"
-frame = 3
-frame_progress = 0.162162
+animation = &"idle"

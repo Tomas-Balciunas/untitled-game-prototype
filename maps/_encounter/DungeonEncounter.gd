@@ -15,3 +15,4 @@ func _ready():
 	encounter_area.encounter = encounter_data
 	var visual = enemy_scene.instantiate()
 	add_child(visual)
+	visual.get_node("Sprite").play("idle")

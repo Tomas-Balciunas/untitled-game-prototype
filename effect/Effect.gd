@@ -17,10 +17,12 @@ enum EffectCategory {
 @export var category: EffectCategory = EffectCategory.OTHER
 @export var duration_turns: int = -1
 
+var _stackable := false
 var _is_registered := false
 var _is_instance := false
 var owner: CharacterInstance = null
 var _is_runtime_instance := false
+var _should_append := true
 
 func set_source(_source: CharacterInstance):
 	pass
@@ -62,3 +64,9 @@ func _unregister() -> void:
 	if not _is_registered:
 		return
 	_is_registered = false
+
+func _is_stackable() -> bool:
+	return _stackable
+
+func should_append() -> bool:
+	return _should_append
