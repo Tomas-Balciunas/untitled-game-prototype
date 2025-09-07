@@ -13,6 +13,7 @@ const TURN_THRESHOLD = 1000
 @onready var camera: Camera3D = get_viewport().get_camera_3d()
 @onready var party_panel = get_tree().get_root().get_node("Main/PartyPanel")
 @onready var enemy_grid = null
+@onready var ally_grid = null
 
 enum BattleState {
 	IDLE,
@@ -39,6 +40,7 @@ var _pending_action: String = ""
 var _pending_options: Array = []
 var _pending_target: CharacterInstance = null
 var current_battler: CharacterInstance = null
+var action_queue: Array[AttackAction] = []
 
 func begin(_enemies: Array[CharacterInstance]):
 	BattleEventBus.event_concluded.connect(Callable(self, "_on_event_concluded"))
@@ -158,7 +160,7 @@ func _on_player_action_selected(action: String, options: Array):
 func _on_target_selected(target_slot):
 	disable_all_targeting()
 	_pending_target = target_slot.character_instance
-	if target_slot is EnemySlot:
+	if target_slot is FormationSlot:
 		target_slot.unhover()
 	_resolve_player_action()
 
@@ -167,14 +169,18 @@ func _resolve_player_action():
 	current_state = BattleState.TURN_END
 
 func _perform_player_action(action: String, target: CharacterInstance):
+	var attacker_slot = get_slot(current_battler)
+	
 	match action:
 		"attack":
+			var target_slot = get_slot(target)
 			var targeting = current_battler.equipment["weapon"].template.targeting if current_battler.equipment["weapon"] else TargetingManager.TargetType.SINGLE
 			var _targets = get_applicable_targets(target, targeting)
+			await attacker_slot.perform_attack_toward_target(target_slot)
 			for t in _targets:
 				if not t:
 					continue
-				if t is EnemySlot:
+				if t is FormationSlot:
 					t = t.character_instance
 				var atk = AttackAction.new()
 				atk.attacker = current_battler
@@ -198,7 +204,7 @@ func _perform_player_action(action: String, target: CharacterInstance):
 			for t in _targets:
 				if not t:
 					continue
-				if t is EnemySlot:
+				if t is FormationSlot:
 					t = t.character_instance
 					
 				if _pending_options[0] is HealingSkill:
@@ -227,7 +233,7 @@ func _perform_player_action(action: String, target: CharacterInstance):
 			for t in _targets:
 				if not t:
 					continue
-				if t is EnemySlot:
+				if t is FormationSlot:
 					t = t.character_instance
 				var cons = ConsumableAction.new()
 				cons.consumable = _pending_options[0]
@@ -235,6 +241,9 @@ func _perform_player_action(action: String, target: CharacterInstance):
 				cons.target = t
 				cons.actively_cast = true
 				ConsumableResolver.apply_consumable(cons)
+				
+	await attacker_slot.position_back()
+	await process_queue()
 
 func _process_enemy_turn():
 	if current_battler == null:
@@ -248,11 +257,10 @@ func _process_enemy_turn():
 
 	var target = valid_targets.pick_random()
 	current_state = BattleState.ANIMATING
-	var slot = enemy_grid.get_slot_for(current_battler)
-	var strike_point = camera.global_position + camera.global_transform.basis.z * -2.0
-	strike_point.y = slot.global_position.y
+	var attacker_slot = get_slot(current_battler)
+	var target_slot = get_slot(target)
 
-	await slot.perform_attack_toward_camera(strike_point)
+	await attacker_slot.perform_attack_toward_target(target_slot)
 
 	var atk = AttackAction.new()
 	atk.attacker = current_battler
@@ -260,7 +268,9 @@ func _process_enemy_turn():
 	atk.base_value = current_battler.stats.attack
 	atk.actively_cast = true
 	await DamageResolver.apply_attack(atk)
-	await slot.position_back()
+	
+	await attacker_slot.position_back()
+	await process_queue()
 	
 	current_state = BattleState.TURN_END
 
@@ -320,7 +330,6 @@ func _corpse_janny():
 		#battle_ui.remove_character(dead)
 		
 		emit_signal("enemy_died", dead)
-		#_play_death_animation(dead)
 	_to_cleanup.clear()
 
 func disable_all_targeting():
@@ -376,3 +385,22 @@ func same_side(a: CharacterInstance, b: CharacterInstance) -> bool:
 
 func _on_event_concluded():
 	BattleContext.event_running = false
+
+func process_queue():
+	# TODO need to consider clean up and end checks
+	while action_queue.size() > 0:
+		var a = action_queue[0]
+		var target = get_slot(a.defender)
+		var attacker: FormationSlot = get_slot(a.attacker)
+		await attacker.perform_attack_toward_target(target)
+		await DamageResolver.apply_attack(a)
+		await attacker.position_back()
+		action_queue.pop_front()
+		
+func get_slot(char: CharacterInstance):
+	if enemies.has(char):
+		return enemy_grid.get_slot_for(char)
+	if party.has(char):
+		return ally_grid.get_slot_for(char)
+	
+	push_error("Orphaned character! - %s" % char.resource.name)

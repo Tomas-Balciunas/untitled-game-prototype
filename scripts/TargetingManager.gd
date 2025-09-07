@@ -60,7 +60,7 @@ func _update_hovered_target(mouse_pos: Vector2):
 
 func configure_for_battle(new_camera: Camera3D):
 	targeting_enabled = true
-	target_class = "EnemySlot"
+	target_class = "FormationSlot"
 	collision_mask = 1 << 2
 	camera = new_camera
 	space_state = camera.get_world_3d().direct_space_state

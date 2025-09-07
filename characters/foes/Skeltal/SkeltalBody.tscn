@@ -1,4 +1,4 @@
-[gd_scene load_steps=3 format=3 uid="uid://d4joau1vi0icu"]
+[gd_scene load_steps=5 format=3 uid="uid://d4joau1vi0icu"]
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_8j8tm"]
 
@@ -10,6 +10,14 @@ animations = [{
 "speed": 5.0
 }]
 
+[sub_resource type="Animation" id="Animation_8nviq"]
+resource_name = "new_animation"
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_4i5g1"]
+_data = {
+&"new_animation": SubResource("Animation_8nviq")
+}
+
 [node name="CharacterBody" type="StaticBody3D"]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
@@ -20,3 +28,9 @@ shape = SubResource("CylinderShape3D_8j8tm")
 sprite_frames = SubResource("SpriteFrames_d6ujx")
 animation = &"idle"
 frame_progress = 0.345833
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+root_node = NodePath("../Sprite")
+libraries = {
+&"": SubResource("AnimationLibrary_4i5g1")
+}

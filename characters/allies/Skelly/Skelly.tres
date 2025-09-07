@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="CharacterResource" load_steps=18 format=3 uid="uid://bbddeexd37t5i"]
+[gd_resource type="Resource" script_class="CharacterResource" load_steps=19 format=3 uid="uid://bbddeexd37t5i"]
 
 [ext_resource type="Script" uid="uid://bp0biy0knxw2o" path="res://effect/Effect.gd" id="1_l3iqv"]
 [ext_resource type="Script" uid="uid://blqk30gl013xc" path="res://characters/_attribute/Attributes.gd" id="1_ohgca"]
@@ -6,11 +6,12 @@
 [ext_resource type="Script" uid="uid://dq4acpkde276p" path="res://skills/Skill.gd" id="1_yod8j"]
 [ext_resource type="Script" uid="uid://cbelvg2fndssu" path="res://scripts/BattleEvent.gd" id="2_4twd5"]
 [ext_resource type="Resource" uid="uid://j0lr1j1qp7cc" path="res://gear/weapon/wooden_sword.tres" id="3_ohgca"]
-[ext_resource type="Resource" uid="uid://dgxlt0x8p42nw" path="res://effect/_passive/damage share/DamageShare.tres" id="3_rhf32"]
+[ext_resource type="PackedScene" uid="uid://cm7x52527bbq5" path="res://characters/allies/Lili/LiliBody.tscn" id="3_tyjbr"]
 [ext_resource type="Resource" uid="uid://eiwm6khdbjki" path="res://characters/_race/Human.tres" id="4_l3iqv"]
 [ext_resource type="Resource" uid="uid://b40pmjuvgrvn4" path="res://characters/_gender/Male.tres" id="4_p4kuy"]
 [ext_resource type="Resource" uid="uid://crai3lto44aqg" path="res://characters/_class/Thief.tres" id="4_uhviy"]
 [ext_resource type="Script" uid="uid://b06vmgrh4qa8i" path="res://gear/Item.gd" id="4_yu6ia"]
+[ext_resource type="Resource" uid="uid://cm3vin4wtxpjv" path="res://effect/_passive/counterattack/Counterattack.tres" id="5_g0fbc"]
 [ext_resource type="Resource" uid="uid://le73mm4vmyfe" path="res://gear/ring/ring1.tres" id="6_t07cl"]
 [ext_resource type="Resource" uid="uid://bbj7l20sqiitu" path="res://gear/ring/ring2.tres" id="7_jtp86"]
 [ext_resource type="Resource" uid="uid://cvqxsxqpm34oh" path="res://gear/chest/armor.tres" id="8_ympyx"]
@@ -35,6 +36,7 @@ job = ExtResource("4_uhviy")
 gender = ExtResource("4_p4kuy")
 attributes = SubResource("Resource_rhf32")
 id = "a_skelly_1"
+character_body = ExtResource("3_tyjbr")
 name = "Skelly"
 attack_power = 10
 health_points = 200
@@ -45,7 +47,7 @@ experience = 0
 slot_width = 1
 prefers_front_row = true
 default_skills = Array[ExtResource("1_yod8j")]([])
-default_effects = Array[ExtResource("1_l3iqv")]([ExtResource("3_rhf32")])
+default_effects = Array[ExtResource("1_l3iqv")]([ExtResource("5_g0fbc")])
 default_damage_type = 1
 default_items = Array[ExtResource("4_yu6ia")]([ExtResource("3_ohgca"), ExtResource("6_t07cl"), ExtResource("7_jtp86"), ExtResource("8_ympyx"), ExtResource("9_jtp86"), ExtResource("10_ympyx")])
 battle_events = Array[ExtResource("2_4twd5")]([])

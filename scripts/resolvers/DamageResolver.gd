@@ -86,7 +86,6 @@ func _apply_core(source: CharacterInstance, target: CharacterInstance, damage_ty
 		revenge.type = ctx.target.damage_type
 		revenge.base_value = ctx.target.stats.attack
 		revenge.actively_cast = false #important, setting it to false would not trigger counterattack chain
-		BattleTextLines.print_line("%s counterattacks!" % ctx.target.resource.name)
-		self.apply_attack(revenge)
-
+		BattleContext.manager.action_queue.append(revenge)
+		BattleTextLines.print_line("%s counterattacks!" % revenge.attacker.resource.name)
 	return ctx
