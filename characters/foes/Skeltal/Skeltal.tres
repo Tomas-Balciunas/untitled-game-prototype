@@ -6,7 +6,7 @@
 [ext_resource type="Script" uid="uid://bwn4gpkaijqsg" path="res://scripts/CharacterResource.gd" id="1_km1me"]
 [ext_resource type="Resource" uid="uid://badgfln40mudj" path="res://effect/_passive/resistance poison/PoisonRes.tres" id="2_d15h4"]
 [ext_resource type="Script" uid="uid://cbelvg2fndssu" path="res://scripts/BattleEvent.gd" id="2_gcpvx"]
-[ext_resource type="PackedScene" uid="uid://d4joau1vi0icu" path="res://characters/foes/Skeltal/SkeltalBody.tscn" id="3_gcpvx"]
+[ext_resource type="PackedScene" uid="uid://d1d22624sxbqg" path="res://characters/foes/Skeltal/EnemyBody2.tscn" id="3_gcpvx"]
 [ext_resource type="Resource" uid="uid://ccd45ithmlluj" path="res://characters/_gender/_Unknown.tres" id="5_e8tyq"]
 [ext_resource type="Script" uid="uid://b06vmgrh4qa8i" path="res://gear/Item.gd" id="5_mpmjy"]
 [ext_resource type="Resource" uid="uid://cs2tci0dc3vvo" path="res://characters/_class/_Unknown.tres" id="6_mpmjy"]

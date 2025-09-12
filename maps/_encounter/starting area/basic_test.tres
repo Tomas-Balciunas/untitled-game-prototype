@@ -1,13 +1,15 @@
-[gd_resource type="Resource" script_class="EncounterData" load_steps=4 format=3 uid="uid://glboqdt0keow"]
+[gd_resource type="Resource" script_class="EncounterData" load_steps=6 format=3 uid="uid://glboqdt0keow"]
 
 [ext_resource type="Script" uid="uid://bsiblcov0noq8" path="res://maps/_encounter/EncounterData.gd" id="1_gpiuf"]
 [ext_resource type="Script" uid="uid://bwn4gpkaijqsg" path="res://scripts/CharacterResource.gd" id="1_nucur"]
 [ext_resource type="Resource" uid="uid://dh8kad7brt53b" path="res://characters/allies/Lili/Lili.tres" id="2_7g45o"]
+[ext_resource type="Resource" uid="uid://dq6o86j5axtjb" path="res://characters/foes/Balmer/Balmer.tres" id="3_iqc0y"]
+[ext_resource type="Resource" uid="uid://wuehd43nakji" path="res://characters/foes/Skeltal/Skeltal.tres" id="4_pg0v6"]
 
 [resource]
 script = ExtResource("1_gpiuf")
 id = "starting_area_01"
 description = "whatever"
-enemies = Array[ExtResource("1_nucur")]([ExtResource("2_7g45o"), ExtResource("2_7g45o"), ExtResource("2_7g45o")])
+enemies = Array[ExtResource("1_nucur")]([ExtResource("2_7g45o"), ExtResource("3_iqc0y"), ExtResource("4_pg0v6")])
 arena = "arena_default_00"
 metadata/_custom_type_script = "uid://bsiblcov0noq8"

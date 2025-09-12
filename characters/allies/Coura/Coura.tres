@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://blqk30gl013xc" path="res://characters/_attribute/Attributes.gd" id="1_klpoy"]
 [ext_resource type="Script" uid="uid://cbelvg2fndssu" path="res://scripts/BattleEvent.gd" id="2_8awbe"]
-[ext_resource type="PackedScene" uid="uid://cm7x52527bbq5" path="res://characters/allies/Lili/LiliBody.tscn" id="3_8awbe"]
+[ext_resource type="PackedScene" uid="uid://cn1t1ijg24ek1" path="res://characters/allies/Lili/LiliBody2.tscn" id="3_8awbe"]
 [ext_resource type="Script" uid="uid://bp0biy0knxw2o" path="res://effect/Effect.gd" id="3_8dd4x"]
 [ext_resource type="Script" uid="uid://b06vmgrh4qa8i" path="res://gear/Item.gd" id="4_3lheu"]
 [ext_resource type="Script" uid="uid://dq4acpkde276p" path="res://skills/Skill.gd" id="5_ci8co"]

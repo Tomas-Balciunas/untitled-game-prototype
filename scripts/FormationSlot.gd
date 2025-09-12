@@ -3,10 +3,11 @@ extends Node3D
 class_name FormationSlot
 
 var character_instance: CharacterInstance
-var sprite_instance: AnimatedSprite3D
+var sprite_instance: Sprite3D
 var body_instance: CharacterBody
 var fallback: CharacterResource = load("res://characters/foes/_fallback/boo.tres")
 var home_global: Vector3
+var animation_player: AnimationPlayer
 
 func bind(character: CharacterInstance):
 	character_instance = character
@@ -23,8 +24,9 @@ func bind(character: CharacterInstance):
 		print("Body is missing for character: %s id: %s. Defaulting to fallback enemy", [getName(), character_instance.resource.id])
 
 	body_instance = body_scene.instantiate()
-	sprite_instance = body_instance.get_node("Sprite") as AnimatedSprite3D
-	sprite_instance.animation_finished.connect(_on_anim_finish)
+	sprite_instance = body_instance.get_node("Sprite") as Sprite3D
+	animation_player = body_instance.get_node("AnimationPlayer") as AnimationPlayer
+	animation_player.animation_finished.connect(_on_anim_finish)
 	self.add_child(body_instance)
 
 	if not sprite_instance:
@@ -51,12 +53,12 @@ func clear():
 func _on_damaged(damage: int, char: CharacterInstance):
 	body_instance.play_damaged()
 
-func _on_anim_finish():
+func _on_anim_finish(e):
+	print(e)
 	body_instance.play_idle()
 
 func perform_attack_toward_target(target: FormationSlot) -> void:
 	var tween = create_tween()
-	await body_instance.play_run()
 	var to_target      = target.global_position - global_position
 	var attack_offset  = to_target.normalized() * 1
 	var stop_position  = target.global_position - attack_offset
@@ -67,10 +69,10 @@ func perform_attack_toward_target(target: FormationSlot) -> void:
 
 
 func position_back():
-	if sprite_instance.is_playing():
-		var anim = sprite_instance.animation
-		if not sprite_instance.sprite_frames.get_animation_loop(anim):
-			await sprite_instance.animation_finished
+	if animation_player.is_playing() and animation_player.current_animation:
+		var anim = animation_player.current_animation
+		if not animation_player.get_animation(anim).loop_mode:
+			await animation_player.animation_finished
 			
 	if self.global_position == home_global:
 		return

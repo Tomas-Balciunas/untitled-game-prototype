@@ -3,7 +3,7 @@ extends FormationBase
 class_name AllyFormation
 
 const FRONT_ROW_Z    := -8.0
-const BACK_ROW_Z     := -4.0
+const BACK_ROW_Z     := -10.0
 const SLOT_SPACING_X := 2
 const MAX_SLOTS      := 3
 

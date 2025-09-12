@@ -3,12 +3,12 @@
 [ext_resource type="MeshLibrary" uid="uid://uso6cfmk5r51" path="res://tileset white.tres" id="1_mdjaj"]
 [ext_resource type="PackedScene" uid="uid://c8fyl6fq4crr0" path="res://maps/_encounter/EncounterSpawner.tscn" id="2_w2sle"]
 [ext_resource type="Resource" uid="uid://glboqdt0keow" path="res://maps/_encounter/starting area/basic_test.tres" id="3_2pqfk"]
+[ext_resource type="PackedScene" uid="uid://cn1t1ijg24ek1" path="res://characters/allies/Lili/LiliBody2.tscn" id="4_kjsaj"]
 [ext_resource type="Script" uid="uid://dbfiub7761eey" path="res://scripts/triggerables/MapTransitionTriggerable.gd" id="7_lk5gk"]
 [ext_resource type="Resource" uid="uid://ca1h8vjjk8vcm" path="res://maps/crypt/crypt_00.tres" id="8_w2sle"]
 [ext_resource type="Script" uid="uid://8n2g1of6dlbp" path="res://scripts/interactables/RestAreaInteractable.gd" id="9_kjsaj"]
 [ext_resource type="PackedScene" uid="uid://bg5f2e2nphlkl" path="res://scripts/interactables/Interactable.tscn" id="10_lk5gk"]
 [ext_resource type="Script" uid="uid://b656vk4s4jm03" path="res://scripts/triggerables/EventTriggerable.gd" id="11_bgo3i"]
-[ext_resource type="PackedScene" uid="uid://cm7x52527bbq5" path="res://characters/allies/Lili/LiliBody.tscn" id="12_uvgea"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_g1pjd"]
 
@@ -32,7 +32,7 @@ metadata/_editor_floor_ = Vector3(0, 0, 0)
 [node name="EncounterSpawner" parent="Enemies" instance=ExtResource("2_w2sle")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.0896, 0, -1.35566)
 encounter_data = ExtResource("3_2pqfk")
-enemy_scene = ExtResource("12_uvgea")
+enemy_scene = ExtResource("4_kjsaj")
 
 [node name="Transitions" type="Node" parent="."]
 

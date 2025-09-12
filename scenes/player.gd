@@ -19,13 +19,14 @@ func _ready():
 	TransitionManager.connect("map_transition_ended", Callable(self, "_on_map_transition_ended"))
 
 func _physics_process(_delta):
-	if GameState.is_busy():
-		return
+	
 	if tween is Tween:
 		if tween.is_running():
 			return
 			
 	if Input.is_action_pressed("move_forward") and not front_ray.is_colliding():
+		if GameState.is_busy():
+			return
 		tween = create_tween().set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
 		tween.tween_property(self, "transform", transform.translated_local(Vector3.FORWARD * 2), TRAVEL_TIME)
 		await tween.finished
@@ -36,6 +37,8 @@ func _physics_process(_delta):
 		return
 		
 	if Input.is_action_pressed("move_backwards") and not back_ray.is_colliding():
+		if GameState.is_busy():
+			return
 		tween = create_tween().set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
 		tween.tween_property(self, "transform", transform.translated_local(Vector3.BACK * 2), TRAVEL_TIME)
 		await tween.finished
@@ -46,6 +49,8 @@ func _physics_process(_delta):
 		return
 		
 	if Input.is_action_pressed("strafe_left") and not left_ray.is_colliding():
+		if GameState.is_busy():
+			return
 		tween = create_tween().set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
 		tween.tween_property(self, "transform", transform.translated_local(Vector3.LEFT * 2), TRAVEL_TIME)
 		await tween.finished
@@ -56,6 +61,8 @@ func _physics_process(_delta):
 		return
 		
 	if Input.is_action_pressed("strafe_right") and not right_ray.is_colliding():
+		if GameState.is_busy():
+			return
 		tween = create_tween().set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
 		tween.tween_property(self, "transform", transform.translated_local(Vector3.RIGHT * 2), TRAVEL_TIME)
 		await tween.finished
