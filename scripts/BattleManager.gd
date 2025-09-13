@@ -8,8 +8,6 @@ signal enemy_died(dead: CharacterInstance)
 
 const TURN_THRESHOLD = 1000
 
-@onready var dungeon = get_tree().get_root().get_node("Main/Dungeon")
-@onready var player = get_tree().get_root().get_node("Main/Dungeon/Player")
 @onready var camera: Camera3D = get_viewport().get_camera_3d()
 @onready var party_panel = get_tree().get_root().get_node("Main/PartyPanel")
 @onready var enemy_grid = null
@@ -58,7 +56,6 @@ func begin(_enemies: Array[CharacterInstance]):
 			var inst = e.duplicate(true)
 			inst.prepare(b)
 			b.battle_events.append(inst)
-			var test
 	
 	current_state = BattleState.PROCESS_TURNS
 
@@ -170,13 +167,15 @@ func _resolve_player_action():
 
 func _perform_player_action(action: String, target: CharacterInstance):
 	var attacker_slot = get_slot(current_battler)
+	var target_slot = get_slot(target)
 	
 	match action:
 		"attack":
-			var target_slot = get_slot(target)
 			var targeting = current_battler.equipment["weapon"].template.targeting if current_battler.equipment["weapon"] else TargetingManager.TargetType.SINGLE
 			var _targets = get_applicable_targets(target, targeting)
+			
 			await attacker_slot.perform_attack_toward_target(target_slot)
+			
 			for t in _targets:
 				if not t:
 					continue
@@ -200,6 +199,8 @@ func _perform_player_action(action: String, target: CharacterInstance):
 				return
 				
 			current_battler.set_current_mana(current_battler.stats.current_mana - mp_cost)
+			
+			await attacker_slot.perform_attack_toward_target(target_slot)
 			
 			for t in _targets:
 				if not t:
@@ -230,6 +231,9 @@ func _perform_player_action(action: String, target: CharacterInstance):
 		"item":
 			var targeting = _pending_options[0].template.targeting_type
 			var _targets = get_applicable_targets(target, targeting)
+			
+			await attacker_slot.perform_attack_toward_target(target_slot)
+			
 			for t in _targets:
 				if not t:
 					continue

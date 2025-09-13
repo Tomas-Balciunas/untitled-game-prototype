@@ -1,0 +1,31 @@
+[gd_scene load_steps=2 format=3 uid="uid://bdlg0nlvckuof"]
+
+[ext_resource type="Script" uid="uid://dgbnt15i33rs5" path="res://scenes/character_create.gd" id="1_hps7s"]
+
+[node name="CharacterCreate" type="PanelContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_hps7s")
+
+[node name="JobButton" type="OptionButton" parent="."]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+
+[node name="Overview" type="VBoxContainer" parent="."]
+layout_mode = 2
+size_flags_horizontal = 8
+
+[node name="Job" type="Label" parent="Overview"]
+layout_mode = 2
+
+[node name="Create" type="Button" parent="."]
+layout_mode = 2
+size_flags_vertical = 8
+text = "Create"
+
+[connection signal="item_selected" from="JobButton" to="." method="_on_option_button_item_selected"]
+[connection signal="pressed" from="Create" to="." method="_on_create_pressed"]

@@ -1,6 +1,6 @@
 extends Node
 
-@onready var party_panel = get_tree().get_root().get_node("Main/PartyPanel")
+var party_panel
 var current_event: Array = []
 var event_step: int = 0
 
@@ -11,7 +11,7 @@ func process_event(event_id: String):
 	if not event or EventFlags.is_event_completed(event_id):
 		GameState.set_idle()
 		return
-	
+	party_panel = get_tree().get_root().get_node("Main/PartyPanel")
 	party_panel.disable_party_ui()
 	
 	for step_data in event:

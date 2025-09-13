@@ -13,5 +13,5 @@ func bind(character: CharacterResource):
 			hire_btn.disabled = true
 
 func _on_hire_pressed() -> void:
-	PartyManager.add_member(hiree.id)
+	PartyManager.add_member(hiree)
 	hire_btn.disabled = true

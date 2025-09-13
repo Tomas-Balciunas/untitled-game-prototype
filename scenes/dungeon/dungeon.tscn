@@ -1,8 +1,0 @@
-[gd_scene format=3 uid="uid://0g8fcobbvi84"]
-
-[node name="Dungeon" type="GridMap"]
-cell_size = Vector3(1, 1, 1)
-cell_center_y = false
-data = {
-"cells": PackedInt32Array(5, 1, 1441794)
-}

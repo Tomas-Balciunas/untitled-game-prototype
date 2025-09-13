@@ -1,5 +1,4 @@
 extends Control
-class_name TextboxUI
 
 signal text_advance
 
@@ -13,12 +12,22 @@ var char_index: int = 0
 var typing_timer: Timer
 
 func _ready():
+	ConversationManager.request_dialogue.connect(_on_request_dialogue)
 	hide()
 	typing_timer = Timer.new()
 	add_child(typing_timer)
 	typing_timer.wait_time = show_speed
 	typing_timer.one_shot = false
 	typing_timer.connect("timeout", Callable(self, "_on_typing_tick"))
+	
+func _on_request_dialogue(speaker: String, lines: Array):
+	show()
+	await _play_lines(speaker, lines)
+	ConversationManager.notify_finished()
+	
+func _play_lines(speaker: String, lines: Array) -> void:
+	for line in lines:
+		await show_text(speaker, line)
 
 func show_text(speaker: String, text: String) -> void:
 	speaker_label.text = speaker

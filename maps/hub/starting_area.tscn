@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://c8n1llsvvhonb"]
+[gd_scene load_steps=15 format=3 uid="uid://c8n1llsvvhonb"]
 
 [ext_resource type="MeshLibrary" uid="uid://uso6cfmk5r51" path="res://tileset white.tres" id="1_mdjaj"]
 [ext_resource type="PackedScene" uid="uid://c8fyl6fq4crr0" path="res://maps/_encounter/EncounterSpawner.tscn" id="2_w2sle"]
@@ -17,6 +17,15 @@
 [sub_resource type="BoxMesh" id="BoxMesh_lk5gk"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_bgo3i"]
+
+[sub_resource type="Environment" id="Environment_kjsaj"]
+background_energy_multiplier = 0.28
+ambient_light_energy = 1.14
+fog_enabled = true
+fog_light_color = Color(0.501114, 0.536127, 0.591149, 1)
+fog_light_energy = 0.85
+fog_density = 0.0283
+fog_sky_affect = 0.0
 
 [node name="StartingArea" type="GridMap"]
 mesh_library = ExtResource("1_mdjaj")
@@ -72,3 +81,6 @@ event_id = "test_event_000"
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Events/Area3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 1, -4)
 shape = SubResource("BoxShape3D_bgo3i")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_kjsaj")

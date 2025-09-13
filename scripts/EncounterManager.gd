@@ -3,13 +3,10 @@ extends Node
 signal encounter_started(encounter_data)
 signal encounter_ended(result)
 
-@onready var transition_battle = get_tree().get_root().get_node("Main/BattleTransition")
+var transition_battle
 
 var battle_scene: PackedScene = preload("res://scenes/BattleScene.tscn")
 var current_battle_scene: BattleScene = null
-
-func _ready():
-	transition_battle.modulate.a = 0.0
 
 func start_encounter(data: EncounterData):
 	if GameState.current_state not in [GameState.States.IDLE, GameState.States.EVENT]:
@@ -17,6 +14,7 @@ func start_encounter(data: EncounterData):
 		
 	GameState.current_state = GameState.States.IN_BATTLE
 	print("EncounterManager: Starting encounter:", data.id)
+	transition_battle = get_tree().get_root().get_node("Main/EncounterManager/BattleTransition")
 	
 	var enemies: Array[CharacterResource] = []
 	var arena = MapManager.get_arena(data.arena)
@@ -25,6 +23,8 @@ func start_encounter(data: EncounterData):
 		enemies.append(CharacterRegistry.get_character(enemy.id))
 	
 	var tween = get_tree().create_tween()
+	transition_battle.modulate.a = 0.0
+	transition_battle.visible = true
 	tween.tween_property(transition_battle, "modulate:a", 1.0, 0.5)
 	await tween.finished
 	
@@ -35,6 +35,7 @@ func start_encounter(data: EncounterData):
 	
 	tween = get_tree().create_tween()
 	tween.tween_property(transition_battle, "modulate:a", 0.0, 0.5)
+	transition_battle.visible = false
 	await tween.finished
 
 func end_encounter(result):

@@ -11,12 +11,11 @@ config_version=5
 [application]
 
 config/name="misery"
-run/main_scene="uid://cphcmsugjsscn"
+run/main_scene="uid://cy17x515s2gnd"
 config/features=PackedStringArray("4.4", "Forward Plus")
 
 [autoload]
 
-Dungeon="*res://scenes/dungeon/Dungeon.gd"
 EffectTriggers="*res://effect/EffectTriggers.gd"
 MapInstance="*res://scripts/MapInstance.gd"
 MapManager="*res://scripts/MapManager.gd"
@@ -35,15 +34,15 @@ BattleTextLines="*res://scripts/BattleText.gd"
 BattleContext="*res://scripts/BattleContext.gd"
 TransitionManager="*res://scripts/TransitionManager.gd"
 GameState="*res://scenes/GameState.gd"
-RestManager="*res://scripts/RestManager.gd"
 EffectRunner="*res://effect/EffectRunner.gd"
 EffectApplicationResolver="*res://scripts/resolvers/EffectApplicationResolver.gd"
 ItemsRegistry="*res://gear/ItemRegistry.gd"
 SaveManager="*res://scripts/SaveManager.gd"
 EffectRegistry="*res://effect/EffectRegistry.gd"
-ConversationManager="*res://scripts/DialogueManager.gd"
+ConversationManager="*res://scripts/ConversationManager.gd"
 BattleEventBus="*res://scripts/BattleEventBus.gd"
 BattleFlow="*res://scripts/BattleFlow.gd"
+RestManager="*res://scripts/RestManager.gd"
 
 [display]
 

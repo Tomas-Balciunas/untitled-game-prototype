@@ -1,14 +1,12 @@
 extends Node3D
 
-@onready var transition_rect = get_tree().get_root().get_node("Main/TransitionRect")
-var player: Node3D
+@onready var player = $Player
+@onready var transition_rect = $TransitionRect
 var current_map_scene: Node = null
 
 const TILE_SIZE = 2.0
 
 func _ready():
-	player = get_tree().get_root().get_node("Main/Dungeon/Player")
-	
 	EncounterManager.connect("encounter_started", Callable(self, "_on_encounter_started"))
 	EncounterManager.connect("encounter_ended", Callable(self, "_on_encounter_ended"))
 	player.connect("player_moved", Callable(self, "_on_player_moved"))

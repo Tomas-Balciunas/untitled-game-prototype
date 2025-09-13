@@ -11,23 +11,19 @@ var formation = [
 	[null, null, null]
 ]
 
-func add_member(id: String) -> void:
-	var res := CharacterRegistry.get_character(id)
-	if res:
-		var inst := CharacterInstance.new(res)
-		var position = add_member_to_formation(inst)
-		
-		if position.size() > 0:
-			members.append(inst)
-			var row_i = position[0]
-			var slot_i = position[1]
-			emit_signal("member_added", inst, row_i, slot_i)
-			print("Character added to party: %s" % inst.resource.name)
-		else:
-			push_error("Adding character error: no free slots")
-		
+func add_member(res: CharacterResource) -> void:
+	var inst := CharacterInstance.new(res)
+	var position = add_member_to_formation(inst)
+	
+	if position.size() > 0:
+		members.append(inst)
+		var row_i = position[0]
+		var slot_i = position[1]
+		emit_signal("member_added", inst, row_i, slot_i)
+		print("Character added to party: %s" % inst.resource.name)
 	else:
-		push_error("Character not found: %s" % id)
+		push_error("Adding character error: no free slots")
+	
 
 func add_member_to_formation(character: CharacterInstance) -> Array:
 	for row_i in range(formation.size()):
@@ -149,6 +145,9 @@ func from_dict(data: Dictionary) -> void:
 			else:
 				push_error("Adding character to formation error: no free slots")
 
-func _load_default():
-	for id in [CharacterIDs.SKELLY, CharacterIDs.LILI]:
-		add_member(id)
+func create_main_protagonist():
+	pass
+
+#func _load_default():
+	#for id in [CharacterIDs.SKELLY, CharacterIDs.LILI]:
+		#add_member(id)

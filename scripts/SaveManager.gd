@@ -32,7 +32,7 @@ func apply_game_state(state: Dictionary) -> void:
 		PartyManager.from_dict(state["party"])
 	if state.has("dungeon"):
 		MapInstance.from_dict(state["dungeon"])
-		Dungeon.load_map(state["dungeon"]["dungeon"]["id"], state["dungeon"])
+		#Dungeon.load_map(state["dungeon"]["dungeon"]["id"], state["dungeon"])
 	emit_signal("party_reloaded")
 
 func _unhandled_input(event: InputEvent) -> void:

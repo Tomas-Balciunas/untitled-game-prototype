@@ -12,6 +12,20 @@ var events: Dictionary = {
 			]
 		},
 		{
+			"type": "text",
+			"speaker": "Someone Else",
+			"text": [
+				"Test",
+			]
+		},
+		{
+			"type": "text",
+			"speaker": "Unknown Entity",
+			"text": [
+				"Whatever",
+			]
+		},
+		{
 			"type": "encounter",
 			"arena": "arena_default_00", 
 			"enemies": ["e_enemy_002", "0000"]

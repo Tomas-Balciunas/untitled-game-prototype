@@ -1,0 +1,36 @@
+[gd_scene load_steps=3 format=3 uid="uid://dnc1nd7cu8at3"]
+
+[ext_resource type="PackedScene" uid="uid://ed1wo7vfltsb" path="res://scenes/Player.tscn" id="2_1v1rp"]
+
+[sub_resource type="Environment" id="Environment_o6xl0"]
+background_mode = 2
+background_color = Color(1, 1, 1, 1)
+ambient_light_color = Color(1, 1, 1, 1)
+ambient_light_sky_contribution = 0.0
+ambient_light_energy = 0.01
+ssao_enabled = true
+ssao_radius = 0.49
+ssao_intensity = 1.66
+fog_enabled = true
+fog_light_color = Color(0.772549, 0.85098, 1, 1)
+fog_light_energy = 0.09
+volumetric_fog_density = 0.0
+
+[node name="Dungeon" type="GridMap"]
+cell_size = Vector3(1, 1, 1)
+cell_center_y = false
+
+[node name="Player" parent="." instance=ExtResource("2_1v1rp")]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_o6xl0")
+
+[node name="TransitionRect" type="ColorRect" parent="."]
+layout_direction = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.0694218, 0.00964971, 0.263646, 1)
