@@ -22,7 +22,11 @@ func initiate(arena: PackedScene, enemies: Array[CharacterResource], encounter_i
 	load_arena(arena)
 	var enemy_instances = load_enemies(enemies)
 	ally_grid.place_all_allies()
+	var player = get_tree().get_root().get_node("Main/Dungeon/Player")
+	player.global_position = Vector3(0, 0, -7)
+	player.rotation_degrees.y = 180
 	BattleContext.fill_context(battle_manager, enemy_grid, encounter_id)
+	
 	battle_manager.begin(enemy_instances)
 	
 func load_arena(arena_scene: PackedScene):

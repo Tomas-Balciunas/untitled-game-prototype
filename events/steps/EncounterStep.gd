@@ -18,6 +18,6 @@ func run(_manager: Node) -> void:
 	data.arena = arena
 	data.enemies = enemy_instances
 	
-	EncounterManager.start_encounter(data)
+	EncounterBus.encounter_started.emit(data)
 	_manager.party_panel.enable_party_ui()
-	await EncounterManager.encounter_ended
+	await EncounterBus.encounter_ended

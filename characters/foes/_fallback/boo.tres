@@ -2,9 +2,9 @@
 
 [ext_resource type="Script" uid="uid://bwn4gpkaijqsg" path="res://scripts/CharacterResource.gd" id="1_04kyn"]
 [ext_resource type="Resource" uid="uid://bm8voqn41431y" path="res://characters/_attribute/_Unknown.tres" id="1_7y0bu"]
-[ext_resource type="PackedScene" uid="uid://coq12fusghinq" path="res://characters/foes/_fallback/body.tscn" id="1_a2n8i"]
 [ext_resource type="Script" uid="uid://cbelvg2fndssu" path="res://scripts/BattleEvent.gd" id="2_y8skw"]
 [ext_resource type="Script" uid="uid://bp0biy0knxw2o" path="res://effect/Effect.gd" id="3_xdmfg"]
+[ext_resource type="PackedScene" uid="uid://d1d22624sxbqg" path="res://characters/foes/Skeltal/EnemyBody2.tscn" id="3_y8skw"]
 [ext_resource type="Script" uid="uid://dq4acpkde276p" path="res://skills/Skill.gd" id="4_y8skw"]
 [ext_resource type="Script" uid="uid://b06vmgrh4qa8i" path="res://gear/Item.gd" id="5_7mwlc"]
 [ext_resource type="Resource" uid="uid://ccd45ithmlluj" path="res://characters/_gender/_Unknown.tres" id="5_d1mbr"]
@@ -18,7 +18,7 @@ job = ExtResource("6_7mwlc")
 gender = ExtResource("5_d1mbr")
 attributes = ExtResource("1_7y0bu")
 id = "e_enemy_001"
-character_body = ExtResource("1_a2n8i")
+character_body = ExtResource("3_y8skw")
 name = "Boo"
 attack_power = 1
 health_points = 20

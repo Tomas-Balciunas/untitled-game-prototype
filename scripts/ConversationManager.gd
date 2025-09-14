@@ -1,17 +1,21 @@
 extends Node
 
-signal request_dialogue(speaker: String, lines: Array)
-signal dialogue_finished
-signal choice_made(index: int)
+@onready var textbox: TextboxUI = $TextboxUI
 
-func show_dialogue(speaker: String, lines: Array):
-	request_dialogue.emit(speaker, lines)
+func _ready() -> void:
+	ConversationBus.request_conversation.connect(_on_request_dialogue)
 
-func notify_finished():
-	dialogue_finished.emit()
+func _on_request_dialogue(speaker: String, lines: Array) -> void:
+	await _play_lines(speaker, lines)
+	ConversationBus.conversation_finished.emit()
 
-func notify_choice(index: int):
-	choice_made.emit(index)
+func _play_lines(speaker: String, lines: Array) -> void:
+	for line in lines:
+		textbox.show_line(speaker, line)
+		await textbox.finished_line
+
+#func notify_choice(index: int):
+	#choice_made.emit(index)
 
 #func show_choices(speaker: String, prompt: String, options: Array[String]) -> int:
 	#if not _textbox_ui:

@@ -13,8 +13,8 @@ var can_move = true
 var tween : Tween
 
 func _ready():
-	EncounterManager.connect("encounter_started", Callable(self, "_on_encounter_started"))
-	EncounterManager.connect("encounter_ended", Callable(self, "_on_encounter_ended"))
+	EncounterBus.connect("encounter_started", Callable(self, "_on_encounter_started"))
+	EncounterBus.connect("encounter_ended", Callable(self, "_on_encounter_ended"))
 	TransitionManager.connect("map_transition_started", Callable(self, "_on_map_transition_started"))
 	TransitionManager.connect("map_transition_ended", Callable(self, "_on_map_transition_ended"))
 

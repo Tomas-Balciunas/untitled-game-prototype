@@ -7,4 +7,4 @@ func _fire(_data: Dictionary):
 	if not encounter:
 		return
 	
-	EncounterManager.start_encounter(encounter)
+	EncounterBus.encounter_started.emit(encounter)

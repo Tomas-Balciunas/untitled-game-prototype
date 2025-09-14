@@ -22,7 +22,6 @@ MapManager="*res://scripts/MapManager.gd"
 CharacterRegistry="*res://scripts/CharacterRegistry.gd"
 PartyManager="*res://scripts/PartyManager.gd"
 TileFactory="*res://__legacy/TileFactory.gd"
-EncounterManager="*res://scripts/EncounterManager.gd"
 TargetingManager="*res://scripts/TargetingManager.gd"
 ConsumableResolver="*res://scripts/resolvers/ConsumableResolver.gd"
 DamageResolver="*res://scripts/resolvers/DamageResolver.gd"
@@ -39,10 +38,11 @@ EffectApplicationResolver="*res://scripts/resolvers/EffectApplicationResolver.gd
 ItemsRegistry="*res://gear/ItemRegistry.gd"
 SaveManager="*res://scripts/SaveManager.gd"
 EffectRegistry="*res://effect/EffectRegistry.gd"
-ConversationManager="*res://scripts/ConversationManager.gd"
 BattleEventBus="*res://scripts/BattleEventBus.gd"
 BattleFlow="*res://scripts/BattleFlow.gd"
 RestManager="*res://scripts/RestManager.gd"
+ConversationBus="*res://scripts/bus/ConversationBus.gd"
+EncounterBus="*res://scripts/bus/EncounterBus.gd"
 
 [display]
 

@@ -7,8 +7,8 @@ var current_map_scene: Node = null
 const TILE_SIZE = 2.0
 
 func _ready():
-	EncounterManager.connect("encounter_started", Callable(self, "_on_encounter_started"))
-	EncounterManager.connect("encounter_ended", Callable(self, "_on_encounter_ended"))
+	EncounterBus.connect("encounter_started", Callable(self, "_on_encounter_started"))
+	EncounterBus.connect("encounter_ended", Callable(self, "_on_encounter_ended"))
 	player.connect("player_moved", Callable(self, "_on_player_moved"))
 	TransitionManager.connect("map_transition_started", Callable(self, "transition_to_map"))
 	
@@ -35,8 +35,6 @@ func load_map(map_id: String, load_data = null):
 	player.set_grid_pos(player_position, player_facing, TILE_SIZE)
 
 func _on_encounter_started(_data: EncounterData):
-	player.global_position = Vector3(0, 0, -7)
-	player.rotation_degrees.y = 180
 	self.visible = false
 	if current_map_scene:
 		current_map_scene.queue_free()

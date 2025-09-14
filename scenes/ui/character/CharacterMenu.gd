@@ -78,4 +78,4 @@ func _on_talk_pressed() -> void:
 		return
 	
 	var menu_interaction = interaction.get_dialogue("menu_talk", "random_01")
-	ConversationManager.show_dialogue(character_instance.resource.name, menu_interaction["text"])
+	ConversationBus.request_conversation.emit(character_instance.resource.name, menu_interaction["text"])

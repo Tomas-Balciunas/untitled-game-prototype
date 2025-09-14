@@ -9,5 +9,5 @@ func _init(data: Dictionary):
 	lines = data.get("text", [])
 
 func run(_manager: Node) -> void:
-	ConversationManager.show_dialogue(speaker, lines)
-	await ConversationManager.dialogue_finished
+	ConversationBus.request_conversation.emit(speaker, lines)
+	await ConversationBus.conversation_finished

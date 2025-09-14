@@ -1,13 +1,19 @@
 extends Node
 class_name GenderRegistry
 
-var genders: Array[Gender] = []
+static var genders: Array[Gender] = []
 
-func _ready():
+static func get_all() -> Array[Gender]:
 	for file in DirAccess.get_files_at("res://characters/_gender/"):
 		if file.ends_with(".tres") and not file.begins_with("_Unknown"):
 			var res: Gender = load("res://characters/_gender/" + file)
 			genders.append(res)
-
-func get_all() -> Array[Gender]:
+			
 	return genders
+
+static func type_to_string(value: int) -> String:
+	for key in Gender.Name.keys():
+		if Gender.Name[key] == value:	
+			return key.capitalize()
+			
+	return "Unknown"

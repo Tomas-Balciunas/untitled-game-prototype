@@ -33,49 +33,6 @@ color = Color(0.0694218, 0.00964971, 0.263646, 1)
 [node name="PartyPanel" parent="." instance=ExtResource("5_85g3d")]
 
 [node name="UIRoot" type="CanvasLayer" parent="."]
-script = ExtResource("5_tipki")
-
-[node name="TextboxUI" type="Control" parent="UIRoot"]
-layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_bottom = -4.0
-grow_horizontal = 2
-grow_vertical = 2
-script = ExtResource("5_tbgi4")
-
-[node name="Panel" type="Panel" parent="UIRoot/TextboxUI"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_bottom = 4.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="SpeakerLabel" type="Label" parent="UIRoot/TextboxUI/Panel"]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.325
-anchor_top = 0.714
-anchor_right = 0.505
-anchor_bottom = 0.804
-offset_top = -0.0400085
-offset_right = 108.8
-offset_bottom = 7.56
-theme_override_font_sizes/font_size = 20
-
-[node name="TextLabel" type="Label" parent="UIRoot/TextboxUI/Panel"]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.32
-anchor_top = 0.839
-anchor_right = 0.56
-anchor_bottom = 1.0
-offset_left = -6.10352e-05
-offset_top = 0.255981
-theme_override_font_sizes/font_size = 20
 
 [node name="LevelUp" type="CanvasLayer" parent="."]
 follow_viewport_scale = 0.001
@@ -200,10 +157,12 @@ text = "done"
 
 [node name="BattleTextLines" parent="." instance=ExtResource("10_choun")]
 
-[node name="EncounterManager" type="Node" parent="."]
+[node name="Managers" type="Node" parent="."]
+
+[node name="EncounterManager" type="Node" parent="Managers"]
 script = ExtResource("9_85g3d")
 
-[node name="BattleTransition" type="ColorRect" parent="EncounterManager"]
+[node name="BattleTransition" type="ColorRect" parent="Managers/EncounterManager"]
 visible = false
 anchors_preset = 15
 anchor_right = 1.0
@@ -212,3 +171,48 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 color = Color(0.545098, 0, 0, 1)
+
+[node name="ConversationManager" type="Node" parent="Managers"]
+script = ExtResource("5_tipki")
+
+[node name="TextboxUI" type="Control" parent="Managers/ConversationManager"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_bottom = -4.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("5_tbgi4")
+
+[node name="Panel" type="Panel" parent="Managers/ConversationManager/TextboxUI"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_bottom = 4.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="SpeakerLabel" type="Label" parent="Managers/ConversationManager/TextboxUI/Panel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.325
+anchor_top = 0.714
+anchor_right = 0.505
+anchor_bottom = 0.804
+offset_top = -0.0400085
+offset_right = 108.8
+offset_bottom = 7.56
+theme_override_font_sizes/font_size = 20
+
+[node name="TextLabel" type="Label" parent="Managers/ConversationManager/TextboxUI/Panel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.32
+anchor_top = 0.839
+anchor_right = 0.56
+anchor_bottom = 1.0
+offset_left = -6.10352e-05
+offset_top = 0.255981
+theme_override_font_sizes/font_size = 20

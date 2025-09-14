@@ -7,10 +7,10 @@ const RecruitmentItem = preload("res://scenes/ui/board/recruitment_item.tscn")
 
 func bind(characters: Array[CharacterResource]):
 	#list.queue_free()
-	for char in characters:
+	for chara in characters:
 		var item = RecruitmentItem.instantiate()
 		list.add_child(item)
-		item.bind(char)
+		item.bind(chara)
 		
 
 

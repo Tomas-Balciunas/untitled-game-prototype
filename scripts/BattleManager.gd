@@ -285,7 +285,7 @@ func _handle_flee():
 	var success = randf() < 1
 	if success:
 		print("Party flees successfully!")
-		EncounterManager.end_encounter("flee")
+		EncounterBus.encounter_ended.emit("flee")
 		current_state = BattleState.IDLE
 		queue_free()
 	else:
@@ -301,13 +301,13 @@ func _check_end_conditions():
 
 func _handle_win():
 	print("Victory! Handle rewards here.")
-	EncounterManager.end_encounter("win")
+	EncounterBus.encounter_ended.emit("win")
 	current_state = BattleState.IDLE
 	queue_free()
 
 func _handle_lose():
 	print("Defeat! Handle game over here.")
-	EncounterManager.end_encounter("lose")
+	EncounterBus.encounter_ended.emit("lose")
 	current_state = BattleState.IDLE
 	queue_free()
 	
