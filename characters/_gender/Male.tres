@@ -11,7 +11,7 @@ pie = 1
 vit = 1
 dex = 0
 spd = 0
-luk = -1
+luk = 0
 metadata/_custom_type_script = "uid://blqk30gl013xc"
 
 [resource]

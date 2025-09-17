@@ -47,6 +47,7 @@ offset_bottom = -39.0
 grow_horizontal = 2
 grow_vertical = 0
 size_flags_vertical = 8
+focus_mode = 0
 text = "Create"
 
 [node name="Classes" type="VBoxContainer" parent="."]
@@ -83,5 +84,173 @@ offset_top = -81.0
 offset_right = 519.0
 offset_bottom = 23.0
 grow_vertical = 2
+
+[node name="Attributes" type="GridContainer" parent="."]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -321.0
+offset_top = -175.0
+offset_right = -186.0
+offset_bottom = 66.0
+grow_horizontal = 0
+grow_vertical = 2
+columns = 2
+
+[node name="Labels" type="VBoxContainer" parent="Attributes"]
+layout_mode = 2
+
+[node name="STR" type="Label" parent="Attributes/Labels"]
+layout_mode = 2
+size_flags_vertical = 6
+text = "Strength"
+
+[node name="IQ" type="Label" parent="Attributes/Labels"]
+layout_mode = 2
+size_flags_vertical = 6
+text = "Intelligence"
+
+[node name="PIE" type="Label" parent="Attributes/Labels"]
+layout_mode = 2
+size_flags_vertical = 6
+text = "Piety"
+
+[node name="VIT" type="Label" parent="Attributes/Labels"]
+layout_mode = 2
+size_flags_vertical = 6
+text = "Vitality"
+
+[node name="DEX" type="Label" parent="Attributes/Labels"]
+layout_mode = 2
+size_flags_vertical = 6
+text = "Dexterity"
+
+[node name="SPD" type="Label" parent="Attributes/Labels"]
+layout_mode = 2
+size_flags_vertical = 6
+text = "Speed"
+
+[node name="LUK" type="Label" parent="Attributes/Labels"]
+layout_mode = 2
+size_flags_vertical = 6
+text = "Luck"
+
+[node name="Values" type="VBoxContainer" parent="Attributes"]
+layout_mode = 2
+
+[node name="STR" type="HBoxContainer" parent="Attributes/Values"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Dec" type="Button" parent="Attributes/Values/STR"]
+layout_mode = 2
+text = "-"
+
+[node name="Value" type="Label" parent="Attributes/Values/STR"]
+layout_mode = 2
+
+[node name="Inc" type="Button" parent="Attributes/Values/STR"]
+layout_mode = 2
+text = "+"
+
+[node name="IQ" type="HBoxContainer" parent="Attributes/Values"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Dec" type="Button" parent="Attributes/Values/IQ"]
+layout_mode = 2
+text = "-"
+
+[node name="Value" type="Label" parent="Attributes/Values/IQ"]
+layout_mode = 2
+
+[node name="Inc" type="Button" parent="Attributes/Values/IQ"]
+layout_mode = 2
+text = "+"
+
+[node name="PIE" type="HBoxContainer" parent="Attributes/Values"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Dec" type="Button" parent="Attributes/Values/PIE"]
+layout_mode = 2
+text = "-"
+
+[node name="Value" type="Label" parent="Attributes/Values/PIE"]
+layout_mode = 2
+
+[node name="Inc" type="Button" parent="Attributes/Values/PIE"]
+layout_mode = 2
+text = "+"
+
+[node name="VIT" type="HBoxContainer" parent="Attributes/Values"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Dec" type="Button" parent="Attributes/Values/VIT"]
+layout_mode = 2
+text = "-"
+
+[node name="Value" type="Label" parent="Attributes/Values/VIT"]
+layout_mode = 2
+
+[node name="Inc" type="Button" parent="Attributes/Values/VIT"]
+layout_mode = 2
+text = "+"
+
+[node name="DEX" type="HBoxContainer" parent="Attributes/Values"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Dec" type="Button" parent="Attributes/Values/DEX"]
+layout_mode = 2
+text = "-"
+
+[node name="Value" type="Label" parent="Attributes/Values/DEX"]
+layout_mode = 2
+
+[node name="Inc" type="Button" parent="Attributes/Values/DEX"]
+layout_mode = 2
+text = "+"
+
+[node name="SPD" type="HBoxContainer" parent="Attributes/Values"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Dec" type="Button" parent="Attributes/Values/SPD"]
+layout_mode = 2
+text = "-"
+
+[node name="Value" type="Label" parent="Attributes/Values/SPD"]
+layout_mode = 2
+
+[node name="Inc" type="Button" parent="Attributes/Values/SPD"]
+layout_mode = 2
+text = "+"
+
+[node name="LUK" type="HBoxContainer" parent="Attributes/Values"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Dec" type="Button" parent="Attributes/Values/LUK"]
+layout_mode = 2
+text = "-"
+
+[node name="Value" type="Label" parent="Attributes/Values/LUK"]
+layout_mode = 2
+
+[node name="Inc" type="Button" parent="Attributes/Values/LUK"]
+layout_mode = 2
+text = "+"
+
+[node name="Points" type="Label" parent="."]
+layout_mode = 0
+offset_left = 967.0
+offset_top = 474.0
+offset_right = 1007.0
+offset_bottom = 497.0
 
 [connection signal="pressed" from="Create" to="." method="_on_create_pressed"]
