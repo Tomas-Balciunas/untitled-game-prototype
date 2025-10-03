@@ -208,6 +208,7 @@ func _on_create_pressed() -> void:
 	res.gender = chosen_gender
 	res.race = chosen_race
 	res.attributes = chosen_attributes
+	res.is_main = true
 	
 	await get_tree().change_scene_to_file("res://scenes/main.tscn")
 	PartyManager.add_member(res)

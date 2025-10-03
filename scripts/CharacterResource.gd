@@ -14,6 +14,7 @@ const DEFAULT_ATTRIBUTES = preload("res://characters/_attribute/_Unknown.tres")
 @export var attributes: Attributes = DEFAULT_ATTRIBUTES
 
 @export var id: String
+var is_main: bool = false
 
 @export var character_body: PackedScene
 @export var portrait: Texture

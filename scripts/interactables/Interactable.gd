@@ -4,7 +4,7 @@ class_name Interactable
 @export var interact_distance: float = 3.0
 @export var highlight_on_hover: bool = true
 
-@onready var player: Node3D = get_tree().get_root().get_node("Main/Dungeon/Player")
+@onready var player: Node3D = get_tree().get_root().get_node("Main/Player")
 
 func _ready():
 	if not $CollisionShape3D:

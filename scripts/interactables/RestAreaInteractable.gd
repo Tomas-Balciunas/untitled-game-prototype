@@ -1,5 +1,5 @@
 extends Interactable
 
 func _interact():
-	RestManager.on_level_up_requested()
+	RestManager.enter_rest_area()
 		

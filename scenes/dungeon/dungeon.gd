@@ -1,6 +1,6 @@
 extends Node3D
 
-@onready var player = $Player
+@onready var player = get_tree().get_root().get_node("Main/Player")
 @onready var transition_rect = $TransitionRect
 var current_map_scene: Node = null
 

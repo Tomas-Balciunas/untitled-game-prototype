@@ -11,6 +11,7 @@ signal mana_restored(amount: int, source: CharacterInstance)
 signal died(ded: CharacterInstance)
 
 var is_dead: bool = false
+var is_main: bool = false
 
 var level: int = 1
 var current_experience: int = 0
@@ -47,6 +48,7 @@ func _init(res: CharacterResource) -> void:
 	fill_stats(res)
 	fill_attributes(res)
 	resource = res
+	is_main = res.is_main
 	
 	inventory = Inventory.new()
 	

@@ -1,0 +1,31 @@
+[gd_scene load_steps=2 format=3 uid="uid://bt8r1y1mx61mt"]
+
+[ext_resource type="MeshLibrary" uid="uid://uso6cfmk5r51" path="res://tileset white.tres" id="1_xmafn"]
+
+[node name="RestArea01" type="GridMap"]
+mesh_library = ExtResource("1_xmafn")
+cell_size = Vector3(1, 1, 1)
+cell_center_y = false
+data = {
+"cells": PackedInt32Array(65535, 65535, 1048578, 65534, 65535, 1048578, 65534, 65534, 1048578, 65535, 65534, 1048578, 0, 65534, 1048578, 1, 65534, 1048578, 1, 65535, 1048578, 0, 65535, 1048578, 65534, 0, 1048578, 65534, 1, 1048578, 65535, 1, 1048578, 65535, 0, 1048578, 0, 1, 2, 0, 0, 2, 1, 0, 2, 1, 1, 2, 65533, 2, 655361, 2, 2, 1441793, 65533, 65533, 1048577, 2, 65533, 1, 2, 1, 1441792, 2, 0, 1441792, 2, 65535, 1441792, 2, 65534, 1441792, 1, 2, 655360, 0, 2, 655360, 65535, 2, 655360, 65534, 2, 655360, 65533, 1, 1048576, 65533, 0, 1048576, 65533, 65535, 1048576, 65533, 65534, 1048576, 65534, 65533, 0, 65535, 65533, 0, 0, 65533, 0, 1, 65533, 0)
+}
+
+[node name="PartySpots" type="Node" parent="."]
+
+[node name="Marker3D" type="Marker3D" parent="PartySpots"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.52945)
+
+[node name="Marker3D2" type="Marker3D" parent="PartySpots"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.12069, 0, -1.54694)
+
+[node name="Marker3D3" type="Marker3D" parent="PartySpots"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.23398, 0, -1.55079)
+
+[node name="Marker3D4" type="Marker3D" parent="PartySpots"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.53527, 0, 0)
+
+[node name="Marker3D5" type="Marker3D" parent="PartySpots"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.57664, 0, 0)
+
+[node name="EntrySpot" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1.40619)
