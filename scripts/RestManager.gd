@@ -1,8 +1,11 @@
 extends Node
 
+signal entered_rest_area
+
 var level_up_screen
 var to_level_up: Array[CharacterInstance] = []
-@onready var player = get_tree().get_root().get_node("Main/Player")
+var _last_position
+var _last_facing
 
 func on_rest_button_pressed():
 	to_level_up = PartyManager.members.filter(func(c): return c.current_experience > c.experience_to_next_level)
@@ -19,33 +22,58 @@ func on_level_up_requested():
 
 func enter_rest_area():
 	var dungeon = get_tree().get_root().get_node("Main/Dungeon")
+	var player = get_tree().get_root().get_node("Main/Player")
+	_last_position = MapInstance.player_previous_position
+	_last_facing = MapInstance.player_facing
 	dungeon.visible = false
 	dungeon.process_mode = Node.PROCESS_MODE_DISABLED
 	
 	var rest_area = load("res://maps/_rest/crypt/RestArea01.tscn").instantiate()
+	get_tree().get_root().get_node("Main").add_child(rest_area)
 	rest_area.global_position = Vector3(10000, 0, 10000)
-	get_tree().get_root().add_child(rest_area)
+	rest_area.name = "RestArea"
 	
 	var entry_spot = rest_area.get_node("EntrySpot")
 	player.global_transform = entry_spot.global_transform
-	player.reparent(rest_area)
 
 	var spots = rest_area.get_node("PartySpots").get_children()
 	var members: Array[CharacterInstance] = PartyManager.members.duplicate()
-
-	for i in range(min(spots.size(), members.size())):
+	
+	spots.shuffle()
+	var interactable_scene = load("res://scripts/interactables/CharacterInteractable.tscn")
+	
+	for i in range(members.size()):
 		var char: CharacterInstance = members[i]
+		
 		if char.is_main:
 			continue
-		var character_scene = char.resource.character_body.instantiate()
-
-		character_scene.global_transform = spots[i].global_transform
-		rest_area.add_child(character_scene)
+			
+		var rest_character = char.resource.character_body.instantiate()
+		var interactable = interactable_scene.instantiate()
+		
+		rest_character.global_transform = spots[i].global_transform
+		interactable.global_transform = spots[i].global_transform
+		
+		rest_area.add_child(interactable)
+		rest_area.add_child(rest_character)
+		
+		interactable.set_character(char)
+		rest_character.collision.disabled = true
+		
+	for member in PartyManager.members:
+		var manager: ExperienceManager = member.resource.experience_manager
+		manager.level_up_character(member)
+	
+	emit_signal("entered_rest_area")
 
 func exit_rest_area():
 	var dungeon = get_tree().get_root().get_node("Main/Dungeon")
+	var player = get_tree().get_root().get_node("Main/Player")
+	var rest_area = get_tree().get_root().get_node("Main/RestArea")
+	
+	rest_area.queue_free()
 	dungeon.visible = true
+	player.set_grid_pos(_last_position, _last_facing, 2.0)
 	dungeon.process_mode = Node.PROCESS_MODE_INHERIT
 
-	var rest_area = get_tree().get_root().get_node("Main/RestArea")
-	rest_area.queue_free()
+# TODO: game state managing to prevent transition while player is tweening

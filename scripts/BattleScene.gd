@@ -22,7 +22,7 @@ func initiate(arena: PackedScene, enemies: Array[CharacterResource], encounter_i
 	load_arena(arena)
 	var enemy_instances = load_enemies(enemies)
 	ally_grid.place_all_allies()
-	var player = get_tree().get_root().get_node("Main/Dungeon/Player")
+	var player = get_tree().get_root().get_node("Main/Player")
 	player.global_position = Vector3(0, 0.7, -12)
 	player.rotation_degrees.y = 180
 	player.rotation_degrees.x = -10

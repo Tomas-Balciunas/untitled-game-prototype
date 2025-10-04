@@ -7,6 +7,8 @@ const DEFAULT_JOB    = preload("res://characters/_class/_Unknown.tres")
 const DEFAULT_GENDER = preload("res://characters/_gender/_Unknown.tres")
 const DEFAULT_ATTRIBUTES = preload("res://characters/_attribute/_Unknown.tres")
 
+const DEFAULT_EXPERIENCE_MANAGER := preload("res://scripts/experience/ExperienceManager.tres")
+
 @export var race: Race = DEFAULT_RACE
 @export var job: Job = DEFAULT_JOB
 @export var gender: Gender = DEFAULT_GENDER
@@ -34,6 +36,7 @@ var is_main: bool = false
 
 @export var interactions: CharacterInteraction
 @export var battle_events: Array[BattleEvent]
+@export var experience_manager: ExperienceManager = DEFAULT_EXPERIENCE_MANAGER
 
 func get_interactions():
 	if interactions:

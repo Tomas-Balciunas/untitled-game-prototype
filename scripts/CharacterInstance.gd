@@ -15,7 +15,6 @@ var is_main: bool = false
 
 var level: int = 1
 var current_experience: int = 0
-var experience_to_next_level: int = 100
 var unspent_attribute_points: int = 0
 var resource: CharacterResource
 var stats: Stats
@@ -45,6 +44,7 @@ var equipment := {
 func _init(res: CharacterResource) -> void:
 	current_experience = 5000
 	stats = Stats.new()
+	stats._owner = self
 	fill_stats(res)
 	fill_attributes(res)
 	resource = res
@@ -102,7 +102,7 @@ func _init(res: CharacterResource) -> void:
 			inst.on_apply(self)
 			effects.append(inst)
 	
-	stats.recalculate_stats(self, true, true)
+	stats.recalculate_stats(true, true)
 
 func set_current_health(new_health: int) -> void:
 	var old = stats.current_health
@@ -199,20 +199,6 @@ func fill_attributes(res: CharacterResource):
 func get_attack_power():
 	pass
 
-func get_experience_to_next_level() -> int:
-	return 100 * level
-
-func gain_experience() -> void:
-	while current_experience >= experience_to_next_level:
-		current_experience -= experience_to_next_level
-		level_up()
-
-func level_up() -> void:
-	level += 1
-	unspent_attribute_points += 1
-	experience_to_next_level = get_experience_to_next_level()
-	print("%s has reached level %d!" % [resource.name, level])
-
 func increase_attribute(attr: String) -> bool:
 	if unspent_attribute_points <= 0:
 		return false
@@ -228,7 +214,7 @@ func increase_attribute(attr: String) -> bool:
 		_: return false
 
 	unspent_attribute_points -= 1
-	stats.recalculate_stats(self, true, true)
+	stats.recalculate_stats(true, true)
 	return true
 
 func equip_item(item: GearInstance) -> bool:
@@ -255,7 +241,7 @@ func equip_item(item: GearInstance) -> bool:
 	for m in item.get_all_modifiers():
 		stats.add_modifier(m)
 		
-	stats.recalculate_stats(self)
+	stats.recalculate_stats()
 	
 	return true
 
@@ -275,7 +261,7 @@ func unequip_slot(slot_name: String) -> bool:
 	
 	equipment[slot_name] = null
 	inventory.add_item(item)
-	stats.recalculate_stats(self)
+	stats.recalculate_stats()
 	
 	return true
 
@@ -397,5 +383,5 @@ static func from_dict(data: Dictionary) -> CharacterInstance:
 					gear.modifiers = gear_res.modifiers
 					inst.equip_item(gear)
 					
-	inst.stats.recalculate_stats(inst)
+	inst.stats.recalculate_stats()
 	return inst

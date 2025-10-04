@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=3 uid="uid://brvwv03uswfkq"]
+
+[ext_resource type="Script" uid="uid://dx2cesy4y18ya" path="res://__legacy/RestCharacter.gd" id="1_7cok7"]
+[ext_resource type="PackedScene" uid="uid://by6h41r13mtkd" path="res://scripts/interactables/CharacterInteractable.tscn" id="2_3aem7"]
+
+[node name="RestCharacter" type="Node3D"]
+script = ExtResource("1_7cok7")
+
+[node name="Sprite3D" type="Sprite3D" parent="."]
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+
+[node name="Interactable" parent="." instance=ExtResource("2_3aem7")]

@@ -1,0 +1,7 @@
+[gd_resource type="Resource" script_class="ExperienceManager" load_steps=2 format=3 uid="uid://c5qyqcmwx0qfy"]
+
+[ext_resource type="Script" uid="uid://cgllfcpvodqsg" path="res://scripts/experience/ExperienceManager.gd" id="1_mk6mi"]
+
+[resource]
+script = ExtResource("1_mk6mi")
+metadata/_custom_type_script = "uid://cgllfcpvodqsg"

@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=3 uid="uid://by6h41r13mtkd"]
+
+[ext_resource type="Script" uid="uid://6bdlidm6lnit" path="res://scripts/interactables/CharacterInteractable.gd" id="1_s283h"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_0iwdk"]
+
+[node name="Interactable" type="Area3D"]
+disable_mode = 2
+collision_layer = 9
+collision_mask = 9
+input_capture_on_drag = true
+script = ExtResource("1_s283h")
+highlight_on_hover = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("CylinderShape3D_0iwdk")

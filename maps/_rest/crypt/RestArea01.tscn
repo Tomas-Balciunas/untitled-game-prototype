@@ -1,31 +1,62 @@
-[gd_scene load_steps=2 format=3 uid="uid://bt8r1y1mx61mt"]
+[gd_scene load_steps=6 format=3 uid="uid://bt8r1y1mx61mt"]
 
 [ext_resource type="MeshLibrary" uid="uid://uso6cfmk5r51" path="res://tileset white.tres" id="1_xmafn"]
+[ext_resource type="Script" uid="uid://bg8tki00gn8pe" path="res://scripts/interactables/RestAreaLeaveInteractable.gd" id="2_nap3g"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_0iwdk"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_c6f01"]
+albedo_color = Color(0.290196, 0.596078, 0.180392, 1)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_c6f01"]
+material = SubResource("StandardMaterial3D_c6f01")
 
 [node name="RestArea01" type="GridMap"]
 mesh_library = ExtResource("1_xmafn")
 cell_size = Vector3(1, 1, 1)
 cell_center_y = false
 data = {
-"cells": PackedInt32Array(65535, 65535, 1048578, 65534, 65535, 1048578, 65534, 65534, 1048578, 65535, 65534, 1048578, 0, 65534, 1048578, 1, 65534, 1048578, 1, 65535, 1048578, 0, 65535, 1048578, 65534, 0, 1048578, 65534, 1, 1048578, 65535, 1, 1048578, 65535, 0, 1048578, 0, 1, 2, 0, 0, 2, 1, 0, 2, 1, 1, 2, 65533, 2, 655361, 2, 2, 1441793, 65533, 65533, 1048577, 2, 65533, 1, 2, 1, 1441792, 2, 0, 1441792, 2, 65535, 1441792, 2, 65534, 1441792, 1, 2, 655360, 0, 2, 655360, 65535, 2, 655360, 65534, 2, 655360, 65533, 1, 1048576, 65533, 0, 1048576, 65533, 65535, 1048576, 65533, 65534, 1048576, 65534, 65533, 0, 65535, 65533, 0, 0, 65533, 0, 1, 65533, 0)
+"cells": PackedInt32Array(65535, 65535, 1048578, 65534, 65535, 1048578, 65534, 65534, 1048578, 65535, 65534, 1048578, 0, 65534, 1048578, 1, 65534, 1048578, 1, 65535, 1048578, 0, 65535, 1048578, 65534, 0, 1048578, 65534, 1, 1048578, 65535, 1, 1048578, 65535, 0, 1048578, 0, 1, 2, 0, 0, 2, 1, 0, 2, 1, 1, 2, 65534, 2, 1048578, 65535, 2, 1048578, 0, 2, 1048578, 1, 2, 1048578, 65533, 2, 1048578, 65533, 1, 1048578, 65533, 0, 1048578, 65533, 65535, 1048578, 65533, 65534, 1048578, 2, 2, 1441794, 2, 1, 1441794, 2, 0, 1441794, 2, 65535, 1441794, 2, 65534, 1441794, 2, 65533, 1441794, 1, 65533, 1441794, 0, 65533, 1441794, 65535, 65533, 1441794, 65534, 65533, 1441794, 65533, 65533, 1441794, 65533, 3, 1441794, 65532, 3, 1441794, 65532, 2, 1441794, 65532, 1, 1441794, 65532, 0, 1441794, 65532, 65535, 1441794, 65532, 65534, 1441794, 65532, 65533, 1441794, 65532, 65532, 1441794, 65533, 65532, 1441794, 65534, 65532, 1441794, 65535, 65532, 1441794, 0, 65532, 1441794, 1, 65532, 1441794, 2, 65532, 1441794, 65534, 3, 1441794, 65535, 3, 1441794, 0, 3, 1441794, 1, 3, 1441794, 2, 3, 1441794, 3, 3, 1441794, 3, 2, 1441794, 3, 1, 1441794, 3, 0, 1441794, 3, 65535, 1441794, 3, 65534, 1441794, 3, 65533, 1441794, 3, 65532, 1441794, 4, 65531, 1, 3, 65531, 0, 2, 65531, 0, 1, 65531, 0, 0, 65531, 0, 65535, 65531, 0, 65534, 65531, 0, 65533, 65531, 0, 65531, 65531, 1048577, 4, 4, 1441793, 65531, 4, 655361, 65532, 4, 655360, 65533, 4, 655360, 65534, 4, 655360, 65535, 4, 655360, 0, 4, 655360, 1, 4, 655360, 2, 4, 655360, 3, 4, 655360, 3, 5, 655360, 65531, 3, 1048576, 65531, 2, 1048576, 65531, 1, 1048576, 65531, 0, 1048576, 65531, 65535, 1048576, 65531, 65534, 1048576, 65531, 65533, 1048576, 65531, 65532, 1048576, 65532, 65531, 0, 4, 65532, 1441792, 4, 65533, 1441792, 4, 65534, 1441792, 4, 65535, 1441792, 4, 0, 1441792, 4, 1, 1441792, 4, 2, 1441792, 4, 3, 1441792)
 }
 
 [node name="PartySpots" type="Node" parent="."]
 
 [node name="Marker3D" type="Marker3D" parent="PartySpots"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.52945)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -4.52945)
 
 [node name="Marker3D2" type="Marker3D" parent="PartySpots"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.12069, 0, -1.54694)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.79294, 0, -4.54694)
 
 [node name="Marker3D3" type="Marker3D" parent="PartySpots"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.23398, 0, -1.55079)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.76602, 0, -4.55079)
 
 [node name="Marker3D4" type="Marker3D" parent="PartySpots"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.53527, 0, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.05768, 0, -4.29479)
 
 [node name="Marker3D5" type="Marker3D" parent="PartySpots"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.57664, 0, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.07238, 0, -4.31949)
+
+[node name="Marker3D6" type="Marker3D" parent="PartySpots"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.5919, 0, -0.0138258)
+
+[node name="Marker3D7" type="Marker3D" parent="PartySpots"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.45497, 0, 2.37575)
+
+[node name="Marker3D8" type="Marker3D" parent="PartySpots"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.36262, 0, -0.0244865)
 
 [node name="EntrySpot" type="Marker3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1.40619)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 2.00159)
+
+[node name="Interactable" type="Area3D" parent="."]
+disable_mode = 2
+collision_layer = 9
+collision_mask = 9
+input_capture_on_drag = true
+script = ExtResource("2_nap3g")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Interactable"]
+shape = SubResource("CylinderShape3D_0iwdk")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Interactable"]
+mesh = SubResource("CylinderMesh_c6f01")

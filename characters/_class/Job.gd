@@ -25,3 +25,8 @@ enum Name {
 	Attributes.SPD: 1,
 	Attributes.LUK: 1
 }
+
+@export var stat_per_level: Dictionary = {
+	Stats.Stat.HEALTH: 1,
+	Stats.Stat.MANA: 1,
+}

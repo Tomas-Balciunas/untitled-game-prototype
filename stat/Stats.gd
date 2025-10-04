@@ -1,5 +1,4 @@
 extends Node
-
 class_name Stats
 
 enum Stat {
@@ -13,6 +12,8 @@ enum Stat {
 	MAGIC_DEFENSE,
 	RESISTANCE,
 }
+
+var _owner: CharacterInstance = null
 
 var base_attack: int = 0
 var base_health: int = 0
@@ -59,12 +60,18 @@ func remove_modifier(m: StatModifier) -> void:
 	modifiers.erase(m)
 
 
-func recalculate_stats(character: CharacterInstance, should_fill_hp: bool = false, should_fill_mp: bool = false):
+func recalculate_stats(should_fill_hp: bool = false, should_fill_mp: bool = false):
+	if _owner == null:
+		push_error("Stats has no owner! Assign a CharacterInstance to stats.owner")
+		return
+
+	var character = _owner
 	var attr_mods = character.job.attribute_modifiers
-# TODO: improve attr scaling to accommodate several sources of scaling for a single stat and custom scaling for characters
+	var lvl_mods = character.job.stat_per_level
+
 	derived_attack       = base_attack       + character.attributes.str * attr_mods.get(Attributes.STR, 1)
-	derived_health       = base_health       + character.attributes.vit * attr_mods.get(Attributes.VIT, 1)
-	derived_mana         = base_mana         + character.attributes.iq  * attr_mods.get(Attributes.IQ, 1)
+	derived_health       = base_health       + (character.attributes.vit * attr_mods.get(Attributes.VIT, 1)) + (lvl_mods.get(Stat.HEALTH, 1) * (character.level - 1))
+	derived_mana         = base_mana         + (character.attributes.iq  * attr_mods.get(Attributes.IQ, 1)) + (lvl_mods.get(Stat.MANA, 1) * (character.level - 1))
 	derived_speed        = base_speed        + character.attributes.spd * attr_mods.get(Attributes.SPD, 1)
 	derived_defense      = base_defense      + character.attributes.vit * attr_mods.get(Attributes.VIT, 1)
 	derived_magic_power  = base_magic_power  + character.attributes.iq  * attr_mods.get(Attributes.IQ, 1)
@@ -133,7 +140,6 @@ func recalculate_stats(character: CharacterInstance, should_fill_hp: bool = fals
 
 	if should_fill_hp:
 		fill_hp()
-		
 	if should_fill_mp:
 		fill_mp()
 		
@@ -143,7 +149,6 @@ func recalculate_stats(character: CharacterInstance, should_fill_hp: bool = fals
 
 func fill_hp():
 	current_health = max_health
-
 
 func fill_mp():
 	current_mana = max_mana
