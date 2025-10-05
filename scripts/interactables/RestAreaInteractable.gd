@@ -4,5 +4,5 @@ func _interact():
 	if GameState.is_busy():
 		return
 		
-	RestManager.enter_rest_area()
+	RestBus.enter_rest_area_requested.emit()
 		

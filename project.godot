@@ -40,9 +40,9 @@ SaveManager="*res://scripts/SaveManager.gd"
 EffectRegistry="*res://effect/EffectRegistry.gd"
 BattleEventBus="*res://scripts/BattleEventBus.gd"
 BattleFlow="*res://scripts/BattleFlow.gd"
-RestManager="*res://scripts/RestManager.gd"
 ConversationBus="*res://scripts/bus/ConversationBus.gd"
 EncounterBus="*res://scripts/bus/EncounterBus.gd"
+RestBus="*res://scripts/bus/RestBus.gd"
 
 [display]
 

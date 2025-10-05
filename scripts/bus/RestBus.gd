@@ -1,0 +1,9 @@
+extends Node
+
+signal enter_rest_area_requested
+signal entered_rest_area
+
+signal rest_character_interaction_requested
+
+signal exit_rest_area_requested
+signal exited_rest_area

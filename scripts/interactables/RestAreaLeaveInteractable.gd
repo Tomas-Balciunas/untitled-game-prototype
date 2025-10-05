@@ -1,4 +1,4 @@
 extends Interactable
 
 func _interact():
-	RestManager.exit_rest_area()
+	RestBus.exit_rest_area_requested.emit()

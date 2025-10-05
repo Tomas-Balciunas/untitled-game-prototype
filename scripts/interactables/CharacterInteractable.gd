@@ -8,7 +8,8 @@ func _interact():
 	if !character:
 		push_error("Character not assigned to character interactable!")
 	
-	print("interacted with %s" % character.resource.name)
+	RestBus.rest_character_interaction_requested.emit(character)
 
 func set_character(char: CharacterInstance):
 	character = char
+	

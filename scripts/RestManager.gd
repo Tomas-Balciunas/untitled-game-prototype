@@ -1,11 +1,14 @@
 extends Node
 
-signal entered_rest_area
-
 var level_up_screen
 var to_level_up: Array[CharacterInstance] = []
 var _last_position
 var _last_facing
+
+func _ready() -> void:
+	RestBus.enter_rest_area_requested.connect(enter_rest_area)
+	RestBus.exit_rest_area_requested.connect(exit_rest_area)
+	RestBus.rest_character_interaction_requested.connect(_on_rest_character_interaction_requested)
 
 func on_rest_button_pressed():
 	to_level_up = PartyManager.members.filter(func(c): return c.current_experience > c.experience_to_next_level)
@@ -30,7 +33,7 @@ func enter_rest_area():
 	
 	var rest_area = load("res://maps/_rest/crypt/RestArea01.tscn").instantiate()
 	get_tree().get_root().get_node("Main").add_child(rest_area)
-	rest_area.global_position = Vector3(10000, 0, 10000)
+	rest_area.global_position = Vector3(10, 0, 10)
 	rest_area.name = "RestArea"
 	
 	var entry_spot = rest_area.get_node("EntrySpot")
@@ -63,8 +66,6 @@ func enter_rest_area():
 	for member in PartyManager.members:
 		var manager: ExperienceManager = member.resource.experience_manager
 		manager.level_up_character(member)
-	
-	emit_signal("entered_rest_area")
 
 func exit_rest_area():
 	var dungeon = get_tree().get_root().get_node("Main/Dungeon")
@@ -77,3 +78,12 @@ func exit_rest_area():
 	dungeon.process_mode = Node.PROCESS_MODE_INHERIT
 
 # TODO: game state managing to prevent transition while player is tweening
+
+func _on_rest_character_interaction_requested(char: CharacterInstance):
+	var menu = get_tree().root.get_node("CharacterMenu")
+	
+	if !menu:
+		push_error("Menu not found")
+		
+	menu.bind(char)
+	menu.show()

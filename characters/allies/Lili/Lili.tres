@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="CharacterResource" load_steps=17 format=3 uid="uid://dh8kad7brt53b"]
+[gd_resource type="Resource" script_class="CharacterResource" load_steps=18 format=3 uid="uid://dh8kad7brt53b"]
 
 [ext_resource type="Script" uid="uid://bp0biy0knxw2o" path="res://effect/Effect.gd" id="1_7ajkr"]
 [ext_resource type="Script" uid="uid://blqk30gl013xc" path="res://characters/_attribute/Attributes.gd" id="1_lgdsj"]
@@ -15,6 +15,7 @@
 [ext_resource type="Resource" uid="uid://7xtbwq8efwlh" path="res://characters/_class/Priest.tres" id="8_23xqr"]
 [ext_resource type="Resource" uid="uid://coilrntx01n8m" path="res://characters/allies/Lili/new_resource.tres" id="10_pwtr7"]
 [ext_resource type="Script" uid="uid://dq4acpkde276p" path="res://skills/Skill.gd" id="10_tttne"]
+[ext_resource type="Resource" uid="uid://c5qyqcmwx0qfy" path="res://scripts/experience/ExperienceManager.tres" id="11_tttne"]
 
 [sub_resource type="Resource" id="Resource_n7wih"]
 script = ExtResource("1_lgdsj")
@@ -50,4 +51,5 @@ default_damage_type = 0
 default_items = Array[ExtResource("6_7lkq3")]([ExtResource("7_n60ku")])
 interactions = ExtResource("10_pwtr7")
 battle_events = Array[ExtResource("2_715sk")]([])
+experience_manager = ExtResource("11_tttne")
 metadata/_custom_type_script = "uid://bwn4gpkaijqsg"

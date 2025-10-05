@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="CharacterResource" load_steps=12 format=3 uid="uid://wuehd43nakji"]
+[gd_resource type="Resource" script_class="CharacterResource" load_steps=13 format=3 uid="uid://wuehd43nakji"]
 
 [ext_resource type="Script" uid="uid://bp0biy0knxw2o" path="res://effect/Effect.gd" id="1_73qgh"]
 [ext_resource type="Script" uid="uid://dq4acpkde276p" path="res://skills/Skill.gd" id="1_cc3t0"]
@@ -11,6 +11,7 @@
 [ext_resource type="Script" uid="uid://b06vmgrh4qa8i" path="res://gear/Item.gd" id="5_mpmjy"]
 [ext_resource type="Resource" uid="uid://cs2tci0dc3vvo" path="res://characters/_class/_Unknown.tres" id="6_mpmjy"]
 [ext_resource type="Resource" uid="uid://lcgngc3c13fc" path="res://characters/_race/_Unknown.tres" id="7_gcpvx"]
+[ext_resource type="Resource" uid="uid://c5qyqcmwx0qfy" path="res://scripts/experience/ExperienceManager.tres" id="8_tl2ml"]
 
 [resource]
 script = ExtResource("1_km1me")
@@ -34,4 +35,5 @@ default_effects = Array[ExtResource("1_73qgh")]([ExtResource("2_d15h4")])
 default_damage_type = 0
 default_items = Array[ExtResource("5_mpmjy")]([])
 battle_events = Array[ExtResource("2_gcpvx")]([])
+experience_manager = ExtResource("8_tl2ml")
 metadata/_custom_type_script = "uid://bwn4gpkaijqsg"

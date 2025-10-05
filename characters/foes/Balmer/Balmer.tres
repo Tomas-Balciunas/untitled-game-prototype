@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="CharacterResource" load_steps=13 format=3 uid="uid://dq6o86j5axtjb"]
+[gd_resource type="Resource" script_class="CharacterResource" load_steps=14 format=3 uid="uid://dq6o86j5axtjb"]
 
 [ext_resource type="Script" uid="uid://bwn4gpkaijqsg" path="res://scripts/CharacterResource.gd" id="1_l56jw"]
 [ext_resource type="Resource" uid="uid://bm8voqn41431y" path="res://characters/_attribute/_Unknown.tres" id="1_uy2ep"]
@@ -11,6 +11,7 @@
 [ext_resource type="Resource" uid="uid://ccd45ithmlluj" path="res://characters/_gender/_Unknown.tres" id="5_2p1x5"]
 [ext_resource type="Resource" uid="uid://cs2tci0dc3vvo" path="res://characters/_class/_Unknown.tres" id="6_0q48i"]
 [ext_resource type="Resource" uid="uid://lcgngc3c13fc" path="res://characters/_race/_Unknown.tres" id="7_mwqcq"]
+[ext_resource type="Resource" uid="uid://c5qyqcmwx0qfy" path="res://scripts/experience/ExperienceManager.tres" id="8_mwqcq"]
 [ext_resource type="Resource" uid="uid://crmvlqsjtoeqp" path="res://characters/foes/Balmer/new_resource_interac.tres" id="9_0q48i"]
 
 [resource]
@@ -36,4 +37,5 @@ default_damage_type = 0
 default_items = Array[ExtResource("4_qj1j7")]([])
 interactions = ExtResource("9_0q48i")
 battle_events = Array[ExtResource("2_2p1x5")]([ExtResource("3_0q48i")])
+experience_manager = ExtResource("8_mwqcq")
 metadata/_custom_type_script = "uid://bwn4gpkaijqsg"

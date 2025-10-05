@@ -1,15 +1,10 @@
-[gd_scene load_steps=6 format=3 uid="uid://bt8r1y1mx61mt"]
+[gd_scene load_steps=4 format=3 uid="uid://bt8r1y1mx61mt"]
 
 [ext_resource type="MeshLibrary" uid="uid://uso6cfmk5r51" path="res://tileset white.tres" id="1_xmafn"]
 [ext_resource type="Script" uid="uid://bg8tki00gn8pe" path="res://scripts/interactables/RestAreaLeaveInteractable.gd" id="2_nap3g"]
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_0iwdk"]
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_c6f01"]
-albedo_color = Color(0.290196, 0.596078, 0.180392, 1)
-
-[sub_resource type="CylinderMesh" id="CylinderMesh_c6f01"]
-material = SubResource("StandardMaterial3D_c6f01")
+height = 0.979492
 
 [node name="RestArea01" type="GridMap"]
 mesh_library = ExtResource("1_xmafn")
@@ -22,33 +17,34 @@ data = {
 [node name="PartySpots" type="Node" parent="."]
 
 [node name="Marker3D" type="Marker3D" parent="PartySpots"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -4.52945)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -3.80216)
 
 [node name="Marker3D2" type="Marker3D" parent="PartySpots"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.79294, 0, -4.54694)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.79294, 0, -3.8789)
 
 [node name="Marker3D3" type="Marker3D" parent="PartySpots"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.76602, 0, -4.55079)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.76602, 0, -3.8863)
 
 [node name="Marker3D4" type="Marker3D" parent="PartySpots"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.05768, 0, -4.29479)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.05768, 0, -3.99045)
 
 [node name="Marker3D5" type="Marker3D" parent="PartySpots"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.07238, 0, -4.31949)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.07238, 0, -3.87696)
 
 [node name="Marker3D6" type="Marker3D" parent="PartySpots"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.5919, 0, -0.0138258)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.12555, 0, -0.0138258)
 
 [node name="Marker3D7" type="Marker3D" parent="PartySpots"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.45497, 0, 2.37575)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.94465, 0, 2.37575)
 
 [node name="Marker3D8" type="Marker3D" parent="PartySpots"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.36262, 0, -0.0244865)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.94145, 0, -0.0244865)
 
 [node name="EntrySpot" type="Marker3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 2.00159)
 
 [node name="Interactable" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.00013, 0)
 disable_mode = 2
 collision_layer = 9
 collision_mask = 9
@@ -56,7 +52,5 @@ input_capture_on_drag = true
 script = ExtResource("2_nap3g")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Interactable"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.510254, 0)
 shape = SubResource("CylinderShape3D_0iwdk")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Interactable"]
-mesh = SubResource("CylinderMesh_c6f01")

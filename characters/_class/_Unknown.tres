@@ -31,4 +31,8 @@ attribute_modifiers = {
 "STR": 0,
 "VIT": 0
 }
+stat_per_level = {
+1: 1,
+2: 1
+}
 metadata/_custom_type_script = "uid://xepac0r71qt2"
