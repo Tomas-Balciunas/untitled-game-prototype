@@ -41,7 +41,6 @@ speed = null
 experience = 400
 slot_width = null
 prefers_front_row = false
-default_skills = Array[ExtResource("3_ma71o")]([])
 default_effects = null
 default_damage_type = null
 default_items = null

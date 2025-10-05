@@ -30,7 +30,7 @@ func start_encounter(data: EncounterData):
 	
 	current_battle_scene = battle_scene.instantiate()
 	get_tree().get_root().get_node("Main").add_child(current_battle_scene)
-	current_battle_scene.initiate(arena, enemies, data.id)
+	current_battle_scene.initiate(arena, enemies, data)
 	
 	tween = get_tree().create_tween()
 	tween.tween_property(transition_battle, "modulate:a", 0.0, 0.5)
@@ -39,7 +39,11 @@ func start_encounter(data: EncounterData):
 
 func end_encounter(result):
 	if result == "win":
-		MapInstance.mark_encounter_cleared(MapInstance.map_id, BattleContext.encounter_id)
+		MapInstance.mark_encounter_cleared(MapInstance.map_id, BattleContext.encounter_data.id)
+		
+		#TODO find a better place
+		for member in PartyManager.members:
+			member.resource.experience_manager.grant_experience_to_character(member, BattleContext.encounter_data.experience_reward)
 	
 	current_battle_scene.queue_free()
 	get_tree().get_root().get_node("Main").remove_child(current_battle_scene)

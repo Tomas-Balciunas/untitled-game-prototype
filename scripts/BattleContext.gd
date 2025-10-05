@@ -4,16 +4,16 @@ var in_battle: bool = false
 var event_running: bool = false
 var manager: BattleManager = null
 var enemy_grid: Node = null
-var encounter_id: String = ""
+var encounter_data: EncounterData = null
 
-func fill_context(battle_manager: BattleManager, enemy_formation: Node, id: String):
+func fill_context(battle_manager: BattleManager, enemy_formation: Node, data: EncounterData):
 	in_battle = true
 	manager = battle_manager
 	enemy_grid = enemy_formation
-	encounter_id = id
+	encounter_data = data
 
 func clear_context():
 	in_battle = false
 	manager = null
 	enemy_grid = null
-	encounter_id = ""
+	encounter_data = null

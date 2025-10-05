@@ -67,17 +67,16 @@ func recalculate_stats(should_fill_hp: bool = false, should_fill_mp: bool = fals
 
 	var character = _owner
 	var attr_mods = character.job.attribute_modifiers
-	var lvl_mods = character.job.stat_per_level
 
-	derived_attack       = base_attack       + character.attributes.str * attr_mods.get(Attributes.STR, 1)
-	derived_health       = base_health       + (character.attributes.vit * attr_mods.get(Attributes.VIT, 1)) + (lvl_mods.get(Stat.HEALTH, 1) * (character.level - 1))
-	derived_mana         = base_mana         + (character.attributes.iq  * attr_mods.get(Attributes.IQ, 1)) + (lvl_mods.get(Stat.MANA, 1) * (character.level - 1))
-	derived_speed        = base_speed        + character.attributes.spd * attr_mods.get(Attributes.SPD, 1)
-	derived_defense      = base_defense      + character.attributes.vit * attr_mods.get(Attributes.VIT, 1)
-	derived_magic_power  = base_magic_power  + character.attributes.iq  * attr_mods.get(Attributes.IQ, 1)
-	derived_divine_power = base_divine_power + character.attributes.pie * attr_mods.get(Attributes.PIE, 1)
-	derived_magic_defense= base_magic_defense+ character.attributes.vit  * attr_mods.get(Attributes.VIT, 1)
-	derived_resistance   = base_resistance   + character.attributes.pie * attr_mods.get(Attributes.PIE, 1)
+	derived_attack       = base_attack       + character.attributes.str * attr_mods.get(Attributes.STR, 1) + (character.job.attack_growth       * (character.level - 1))
+	derived_health       = base_health       + character.attributes.vit * attr_mods.get(Attributes.VIT, 1) + (character.job.health_growth       * (character.level - 1))
+	derived_mana         = base_mana         + character.attributes.iq  * attr_mods.get(Attributes.IQ, 1) + (character.job.mana_growth         * (character.level - 1))
+	derived_speed        = base_speed        + character.attributes.spd * attr_mods.get(Attributes.SPD, 1) + (character.job.speed_growth        * (character.level - 1))
+	derived_defense      = base_defense      + character.attributes.vit * attr_mods.get(Attributes.VIT, 1) + (character.job.defense_growth      * (character.level - 1))
+	derived_magic_power  = base_magic_power  + character.attributes.iq  * attr_mods.get(Attributes.IQ, 1) + (character.job.magic_power_growth  * (character.level - 1))
+	derived_divine_power = base_divine_power + character.attributes.pie * attr_mods.get(Attributes.PIE, 1) + (character.job.divine_power_growth * (character.level - 1))
+	derived_magic_defense= base_magic_defense+ character.attributes.vit * attr_mods.get(Attributes.VIT, 1) + (character.job.magic_defense_growth* (character.level - 1))
+	derived_resistance   = base_resistance   + character.attributes.pie * attr_mods.get(Attributes.PIE, 1) + (character.job.resistance_growth   * (character.level - 1))
 
 	for slot in character.equipment.values():
 		if slot == null:

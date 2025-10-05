@@ -12,8 +12,6 @@ var visual: CharacterBody3D
 var origin: Vector3
 var rng := RandomNumberGenerator.new()
 
-var _patrol_timer: Timer
-
 func _ready():
 	assert(encounter_data)
 	assert(enemy_scene)
@@ -27,7 +25,7 @@ func _ready():
 	add_child(visual)
 	
 	origin = global_transform.origin
-	_start_patrol()
+	#_start_patrol()
 	
 func _start_patrol():
 	_patrol_step()

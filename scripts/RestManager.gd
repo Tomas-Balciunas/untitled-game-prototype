@@ -46,12 +46,12 @@ func enter_rest_area():
 	var interactable_scene = load("res://scripts/interactables/CharacterInteractable.tscn")
 	
 	for i in range(members.size()):
-		var char: CharacterInstance = members[i]
+		var chara: CharacterInstance = members[i]
 		
-		if char.is_main:
+		if chara.is_main:
 			continue
 			
-		var rest_character = char.resource.character_body.instantiate()
+		var rest_character = chara.resource.character_body.instantiate()
 		var interactable = interactable_scene.instantiate()
 		
 		rest_character.global_transform = spots[i].global_transform
@@ -60,7 +60,7 @@ func enter_rest_area():
 		rest_area.add_child(interactable)
 		rest_area.add_child(rest_character)
 		
-		interactable.set_character(char)
+		interactable.set_character(chara)
 		rest_character.collision.disabled = true
 		
 	for member in PartyManager.members:
@@ -79,11 +79,11 @@ func exit_rest_area():
 
 # TODO: game state managing to prevent transition while player is tweening
 
-func _on_rest_character_interaction_requested(char: CharacterInstance):
+func _on_rest_character_interaction_requested(chara: CharacterInstance):
 	var menu = get_tree().root.get_node("CharacterMenu")
 	
 	if !menu:
 		push_error("Menu not found")
 		
-	menu.bind(char)
+	menu.bind(chara)
 	menu.show()

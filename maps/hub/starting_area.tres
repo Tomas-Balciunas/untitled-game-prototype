@@ -1,7 +1,11 @@
-[gd_resource type="Resource" script_class="MapData" load_steps=3 format=3 uid="uid://b4gmcra6euk78"]
+[gd_resource type="Resource" script_class="MapData" load_steps=7 format=3 uid="uid://b4gmcra6euk78"]
 
+[ext_resource type="Script" uid="uid://bwn4gpkaijqsg" path="res://scripts/CharacterResource.gd" id="1_21vy2"]
 [ext_resource type="Script" uid="uid://i6llluly1w8" path="res://scripts/MapData.gd" id="1_c5v37"]
 [ext_resource type="PackedScene" uid="uid://c8n1llsvvhonb" path="res://maps/hub/starting_area.tscn" id="1_kteej"]
+[ext_resource type="Resource" uid="uid://wuehd43nakji" path="res://characters/foes/Skeltal/Skeltal.tres" id="2_jcma2"]
+[ext_resource type="Resource" uid="uid://dq6o86j5axtjb" path="res://characters/foes/Balmer/Balmer.tres" id="3_sgibn"]
+[ext_resource type="Resource" uid="uid://btr7k6tmwt3qi" path="res://characters/foes/_fallback/boo.tres" id="4_v02c1"]
 
 [resource]
 script = ExtResource("1_c5v37")
@@ -10,4 +14,4 @@ name = "Beginning Area"
 data = ExtResource("1_kteej")
 theme = "default"
 start_pos = Vector2i(0, 1)
-transitions = {}
+available_enemies = Array[ExtResource("1_21vy2")]([ExtResource("2_jcma2"), ExtResource("3_sgibn"), ExtResource("4_v02c1")])

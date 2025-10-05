@@ -11,7 +11,8 @@ func _register_all() -> void:
 		"res://characters/allies/Skelly/Skelly.tres",
 		"res://characters/foes/Skeltal/Skeltal.tres",
 		"res://characters/foes/Balmer/Balmer.tres",
-		"res://characters/allies/Coura/Coura.tres"
+		"res://characters/allies/Coura/Coura.tres",
+		"res://characters/foes/_fallback/boo.tres"
 	]
 	
 	for path in res_paths:

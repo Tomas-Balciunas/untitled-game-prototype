@@ -12,7 +12,7 @@ config_version=5
 
 config/name="misery"
 run/main_scene="uid://cy17x515s2gnd"
-config/features=PackedStringArray("4.4", "Forward Plus")
+config/features=PackedStringArray("4.5", "Forward Plus")
 
 [autoload]
 
@@ -43,6 +43,10 @@ BattleFlow="*res://scripts/BattleFlow.gd"
 ConversationBus="*res://scripts/bus/ConversationBus.gd"
 EncounterBus="*res://scripts/bus/EncounterBus.gd"
 RestBus="*res://scripts/bus/RestBus.gd"
+
+[debug]
+
+gdscript/warnings/unused_signal=0
 
 [display]
 

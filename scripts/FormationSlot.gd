@@ -50,7 +50,7 @@ func clear():
 	#$Portrait.texture = null
 	$NameLabel.text = ""
 
-func _on_damaged(damage: int, char: CharacterInstance):
+func _on_damaged(_damage: int, _char: CharacterInstance):
 	body_instance.play_damaged()
 
 func _on_anim_finish(e):

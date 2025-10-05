@@ -12,7 +12,7 @@ class_name CharacterBody
 var _last_anim: String = ""
 var _last_pos: Vector3
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	var pos = global_transform.origin
 	var move_vec = pos - _last_pos
 	move_vec.y = 0.0
@@ -85,7 +85,7 @@ func play_damaged():
 		if animation_tree:
 			animation_tree.active = true
 
-func _on_damaged(a, b):
+func _on_damaged(_a, _b):
 	play_damaged()
 	
 

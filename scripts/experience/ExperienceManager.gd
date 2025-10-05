@@ -15,3 +15,6 @@ func level_up_character(character: CharacterInstance) -> void:
 		BattleTextLines.print_line("%s has leveled up to %s!" % [character.resource.name, character.level])
 	
 	character.stats.recalculate_stats()
+
+func grant_experience_to_character(character: CharacterInstance, amount: int):
+	character.current_experience += amount

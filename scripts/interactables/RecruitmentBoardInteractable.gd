@@ -1,6 +1,6 @@
 extends Interactable
 
-var available_characters: Array = ["a_coura_1", "0000", "a_lili_1"]
+var available_characters: Array = ["a_coura_1", "a_lili_1"]
 var characters: Array[CharacterResource] = []
 const RecruitmentBoard = preload("res://scenes/ui/board/recruitment_board.tscn")
 

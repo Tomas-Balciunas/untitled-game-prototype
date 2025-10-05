@@ -7,21 +7,11 @@
 
 [sub_resource type="Resource" id="Resource_ayw6p"]
 script = ExtResource("1_flgxd")
-str = 0
-iq = 0
-pie = 0
-vit = 0
-dex = 0
-spd = 0
-luk = 0
 metadata/_custom_type_script = "uid://blqk30gl013xc"
 
 [resource]
 script = ExtResource("2_flgxd")
-name = 5
 attributes = SubResource("Resource_ayw6p")
-skills = Array[ExtResource("3_ayw6p")]([])
-effects = Array[ExtResource("1_fhtal")]([])
 attribute_modifiers = {
 "DEX": 0,
 "IQ": 0,
@@ -30,9 +20,5 @@ attribute_modifiers = {
 "SPD": 0,
 "STR": 0,
 "VIT": 0
-}
-stat_per_level = {
-1: 1,
-2: 1
 }
 metadata/_custom_type_script = "uid://xepac0r71qt2"

@@ -41,7 +41,7 @@ grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_gue48")
 
 [node name="Name" type="Label" parent="Menu"]
-layout_mode = 2
+layout_mode = 0
 offset_left = 505.0
 offset_top = 26.0
 offset_right = 640.0
@@ -288,7 +288,6 @@ autowrap_mode = 2
 layout_mode = 2
 
 [node name="StatsUI" type="PanelContainer" parent="Menu"]
-visible = false
 layout_mode = 1
 anchors_preset = 9
 anchor_bottom = 1.0
@@ -297,6 +296,16 @@ grow_vertical = 2
 script = ExtResource("3_fpsvm")
 
 [node name="Stats" type="VBoxContainer" parent="Menu/StatsUI"]
+layout_mode = 2
+
+[node name="Exp" type="HBoxContainer" parent="Menu/StatsUI/Stats"]
+layout_mode = 2
+
+[node name="ExpKey" type="Label" parent="Menu/StatsUI/Stats/Exp"]
+layout_mode = 2
+text = "Experience: "
+
+[node name="ExpValue" type="Label" parent="Menu/StatsUI/Stats/Exp"]
 layout_mode = 2
 
 [node name="HP" type="HBoxContainer" parent="Menu/StatsUI/Stats"]

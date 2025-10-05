@@ -32,6 +32,14 @@ func load_map(map_id: String, load_data = null):
 	var player_position = MapInstance.player_previous_position
 	var player_facing = MapInstance.player_facing
 	
+	if current_map_scene.has_node("Enemies"):
+		if current_map_scene.get_node("Enemies").has_method("populate_enemy_spawn_points"):
+			current_map_scene.get_node("Enemies").call_deferred("populate_enemy_spawn_points")
+		else:
+			push_error("Missing enemy spawn populate method!")
+	else:
+		push_error("Missing Enemies node!")
+	
 	player.set_grid_pos(player_position, player_facing, TILE_SIZE)
 
 func _on_encounter_started(_data: EncounterData):

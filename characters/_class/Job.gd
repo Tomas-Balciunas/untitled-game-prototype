@@ -26,7 +26,12 @@ enum Name {
 	Attributes.LUK: 1
 }
 
-@export var stat_per_level: Dictionary = {
-	Stats.Stat.HEALTH: 1,
-	Stats.Stat.MANA: 1,
-}
+@export var health_growth: float = 0
+@export var mana_growth: float = 0
+@export var attack_growth: float = 0
+@export var defense_growth: float = 0
+@export var speed_growth: float = 0
+@export var magic_power_growth: float = 0
+@export var divine_power_growth: float = 0
+@export var magic_defense_growth: float = 0
+@export var resistance_growth: float = 0

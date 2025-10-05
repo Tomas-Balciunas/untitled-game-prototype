@@ -5,17 +5,9 @@
 
 [sub_resource type="Resource" id="Resource_224k0"]
 script = ExtResource("1_pifk7")
-str = 0
-iq = 0
-pie = 0
-vit = 0
-dex = 0
-spd = 0
-luk = 0
 metadata/_custom_type_script = "uid://blqk30gl013xc"
 
 [resource]
 script = ExtResource("1_da4rb")
-name = 4
 attributes = SubResource("Resource_224k0")
 metadata/_custom_type_script = "uid://cc4tchcma6k2f"

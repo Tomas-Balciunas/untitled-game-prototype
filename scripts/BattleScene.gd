@@ -18,15 +18,15 @@ func _ready() -> void:
 	
 	battle_manager.enemy_died.connect(enemy_grid._on_enemy_died)
 
-func initiate(arena: PackedScene, enemies: Array[CharacterResource], encounter_id: String):
+func initiate(arena: PackedScene, enemies: Array[CharacterResource], data: EncounterData):
 	load_arena(arena)
 	var enemy_instances = load_enemies(enemies)
 	ally_grid.place_all_allies()
 	var player = get_tree().get_root().get_node("Main/Player")
-	player.global_position = Vector3(0, 0.7, -12)
+	player.global_position = Vector3(0, 0, -8)
 	player.rotation_degrees.y = 180
 	player.rotation_degrees.x = -10
-	BattleContext.fill_context(battle_manager, enemy_grid, encounter_id)
+	BattleContext.fill_context(battle_manager, enemy_grid, data)
 	
 	battle_manager.begin(enemy_instances)
 	

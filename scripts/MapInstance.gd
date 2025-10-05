@@ -10,6 +10,7 @@ var player_facing = Vector3.FORWARD
 var triggered_events := {}
 var cleared_encounters: Dictionary = {}
 var transitions := {}
+var available_enemies: Array[CharacterResource] = []
 
 func hydrate_from_resource(map_resource):
 	map_id = map_resource.id
@@ -18,6 +19,7 @@ func hydrate_from_resource(map_resource):
 	player_position = map_resource.start_pos
 	player_previous_position = player_position
 	cleared_encounters[map_id] = []
+	available_enemies = map_resource.available_enemies
 	
 func hydrate_from_load(load_data):
 	if load_data.has("dungeon"):

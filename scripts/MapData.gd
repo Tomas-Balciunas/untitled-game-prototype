@@ -8,3 +8,4 @@ class_name MapData
 @export var theme: String = ""
 @export var start_pos: Vector2i = Vector2i.ZERO
 @export var transitions: Dictionary = {}
+@export var available_enemies: Array[CharacterResource]

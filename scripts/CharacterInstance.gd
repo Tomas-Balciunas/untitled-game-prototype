@@ -42,7 +42,6 @@ var equipment := {
 }
 
 func _init(res: CharacterResource) -> void:
-	current_experience = 5000
 	stats = Stats.new()
 	stats._owner = self
 	fill_stats(res)
