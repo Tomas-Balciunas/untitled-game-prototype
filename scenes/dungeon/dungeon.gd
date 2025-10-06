@@ -43,11 +43,15 @@ func load_map(map_id: String, load_data = null):
 	player.set_grid_pos(player_position, player_facing, TILE_SIZE)
 
 func _on_encounter_started(_data: EncounterData):
-	self.visible = false
-	if current_map_scene:
-		current_map_scene.queue_free()
-		current_map_scene = null
-
+	call_deferred("_deactivate_dungeon")
+	#if current_map_scene:
+		#current_map_scene.queue_free()
+		#current_map_scene = null
+		
+func _deactivate_dungeon():
+	#self.visible = false
+	self.process_mode = Node.PROCESS_MODE_DISABLED
+	
 func handle_event(event: String):
 	print(event)
 
@@ -64,11 +68,15 @@ func transition_to_map(map_id: String):
 func _on_player_moved(data: Dictionary):
 	MapInstance.update_player_position(data["grid_position"], data["grid_direction"])
 
-func _on_encounter_ended(result):
+func _on_encounter_ended(result, _data):
 	print("Back from battle with result:", result)
 	self.visible = true
-	
-	load_map(MapInstance.map_id)
+	process_mode = Node.PROCESS_MODE_INHERIT
+	var player_position = MapInstance.player_previous_position
+	var player_facing = MapInstance.player_facing
+	player.set_grid_pos(player_position, player_facing, TILE_SIZE)
+
+	#load_map(MapInstance.map_id)
 
 func _kill_map():
 	if current_map_scene:

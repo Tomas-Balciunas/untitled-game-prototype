@@ -10,6 +10,7 @@ script = ExtResource("1_84wrc")
 
 [node name="EncounterArea" type="Area3D" parent="."]
 script = ExtResource("2_p26es")
+trigger_once = false
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="EncounterArea"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)

@@ -30,6 +30,7 @@ func start_encounter(data: EncounterData):
 	
 	current_battle_scene = battle_scene.instantiate()
 	get_tree().get_root().get_node("Main").add_child(current_battle_scene)
+	current_battle_scene.global_position = Vector3(1000, 0, 1000)
 	current_battle_scene.initiate(arena, enemies, data)
 	
 	tween = get_tree().create_tween()
@@ -37,18 +38,18 @@ func start_encounter(data: EncounterData):
 	transition_battle.visible = false
 	await tween.finished
 
-func end_encounter(result):
+func end_encounter(result, data):
 	if result == "win":
-		MapInstance.mark_encounter_cleared(MapInstance.map_id, BattleContext.encounter_data.id)
+		MapInstance.mark_encounter_cleared(MapInstance.map_id, data.id)
 		
 		#TODO find a better place
 		for member in PartyManager.members:
-			member.resource.experience_manager.grant_experience_to_character(member, BattleContext.encounter_data.experience_reward)
+			member.resource.experience_manager.grant_experience_to_character(member, data.experience_reward)
 	
 	current_battle_scene.queue_free()
 	get_tree().get_root().get_node("Main").remove_child(current_battle_scene)
 	current_battle_scene = null
 	print("EncounterManager: Ending encounter with result:", result)
-	#EncounterBus.encounter_ended.emit(result)
 	BattleContext.clear_context()
+	print(data)
 	GameState.current_state = GameState.States.IDLE

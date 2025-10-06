@@ -59,10 +59,16 @@ func _on_anim_finish(e):
 
 func perform_attack_toward_target(target: FormationSlot) -> void:
 	var tween = create_tween()
-	var to_target      = target.global_position - global_position
-	var attack_offset  = to_target.normalized() * 1
-	var stop_position  = target.global_position - attack_offset
-	tween.tween_property(self, "position", stop_position, 0.5).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+
+	var parent_space = get_parent()
+	var self_pos_local = parent_space.to_local(global_position)
+	var target_pos_local = parent_space.to_local(target.global_position)
+
+	var to_target = target_pos_local - self_pos_local
+	var attack_offset = to_target.normalized() * 1.0
+	var stop_position_local = target_pos_local - attack_offset
+
+	tween.tween_property(self, "position", stop_position_local, 0.5).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
 	await tween.finished
 
 	await body_instance.play_attack()
@@ -73,13 +79,16 @@ func position_back():
 		var anim = animation_player.current_animation
 		if not animation_player.get_animation(anim).loop_mode:
 			await animation_player.animation_finished
-			
-	if self.global_position == home_global:
+
+	var parent_space = get_parent()
+	var home_local = parent_space.to_local(home_global)
+
+	if position == home_local:
 		return
-		
+
 	var tween_back = create_tween()
 	body_instance.play_run_back()
-	tween_back.tween_property(self, "position", home_global, 0.5).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+	tween_back.tween_property(self, "position", home_local, 0.5).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
 	await tween_back.finished
 
 	body_instance.play_idle()

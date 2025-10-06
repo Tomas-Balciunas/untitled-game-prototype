@@ -33,7 +33,7 @@ func enter_rest_area():
 	
 	var rest_area = load("res://maps/_rest/crypt/RestArea01.tscn").instantiate()
 	get_tree().get_root().get_node("Main").add_child(rest_area)
-	rest_area.global_position = Vector3(10, 0, 10)
+	rest_area.global_position = Vector3(100, 0, 100)
 	rest_area.name = "RestArea"
 	
 	var entry_spot = rest_area.get_node("EntrySpot")

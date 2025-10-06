@@ -285,9 +285,8 @@ func _handle_flee():
 	var success = randf() < 1
 	if success:
 		print("Party flees successfully!")
-		EncounterBus.encounter_ended.emit("flee")
+		EncounterBus.encounter_ended.emit("flee", BattleContext.encounter_data)
 		current_state = BattleState.IDLE
-		queue_free()
 	else:
 		print("Failed to flee!")
 
@@ -303,13 +302,11 @@ func _handle_win():
 	print("Victory! Handle rewards here.")
 	EncounterBus.encounter_ended.emit("win")
 	current_state = BattleState.IDLE
-	queue_free()
 
 func _handle_lose():
 	print("Defeat! Handle game over here.")
 	EncounterBus.encounter_ended.emit("lose")
 	current_state = BattleState.IDLE
-	queue_free()
 	
 func _register_battler(battler: CharacterInstance):
 	battlers.append(battler)
@@ -401,10 +398,10 @@ func process_queue():
 		await attacker.position_back()
 		action_queue.pop_front()
 		
-func get_slot(char: CharacterInstance):
-	if enemies.has(char):
-		return enemy_grid.get_slot_for(char)
-	if party.has(char):
-		return ally_grid.get_slot_for(char)
+func get_slot(chara: CharacterInstance):
+	if enemies.has(chara):
+		return enemy_grid.get_slot_for(chara)
+	if party.has(chara):
+		return ally_grid.get_slot_for(chara)
 	
-	push_error("Orphaned character! - %s" % char.resource.name)
+	push_error("Orphaned character! - %s" % chara.resource.name)

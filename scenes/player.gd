@@ -87,7 +87,7 @@ func snap_to_grid(tile_size: float = 2.0):
 func _on_encounter_started(_encounter_data):
 	can_move = false
 	
-func _on_encounter_ended(_result):
+func _on_encounter_ended(_result, _data):
 	can_move = true
 	
 func _on_map_transition_started(_id):

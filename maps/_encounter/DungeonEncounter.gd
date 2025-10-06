@@ -15,6 +15,7 @@ var rng := RandomNumberGenerator.new()
 func _ready():
 	assert(encounter_data)
 	assert(enemy_scene)
+	EncounterBus.encounter_ended.connect(_on_encounter_ended)
 	
 	if MapInstance.is_encounter_cleared(MapInstance.map_id, encounter_data.id):
 		queue_free()
@@ -48,3 +49,7 @@ func _on_step_finished():
 	var idle = rng.randf_range(idle_time_min, idle_time_max)
 	await get_tree().create_timer(idle).timeout
 	_start_patrol()
+
+func _on_encounter_ended(_res, data):
+	if data.id == encounter_data.id:
+		self.queue_free()
