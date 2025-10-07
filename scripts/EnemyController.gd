@@ -11,13 +11,21 @@ func populate_enemy_spawn_points():
 		push_error("Map instance has no available enemies!")
 		
 	var points = get_children()
+	
 	for point in points:
 		if not point is Marker3D:
 			continue
-
-		var encounter_data := build_encounter()
-		if not encounter_data:
-			continue
+		
+		if point.spawn_id == "":
+			push_error("% map doesnt have a spawn id in marker!" % MapInstance.map_id)
+			
+		var encounter_data
+		var saved_encounter = MapInstance.get_encounter(point.spawn_id)
+		
+		if !saved_encounter:
+			encounter_data = build_encounter(point.spawn_id)
+		else:
+			encounter_data = saved_encounter
 
 		var spawner = spawner_scene.instantiate()
 		spawner.encounter_data = encounter_data
@@ -25,9 +33,9 @@ func populate_enemy_spawn_points():
 		spawner.enemy_scene = encounter_data.enemies[0].character_body
 		add_child(spawner)
 
-func build_encounter() -> EncounterData:
+func build_encounter(spawn_id: String) -> EncounterData:
 	var data := EncounterData.new()
-	data.id = "enc_" + str(Time.get_ticks_msec())
+	data.id = spawn_id
 	data.arena = "arena_default_00"
 
 	var pool = MapInstance.available_enemies

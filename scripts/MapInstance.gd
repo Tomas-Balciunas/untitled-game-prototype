@@ -8,6 +8,7 @@ var player_position = Vector2i()
 var player_previous_position = Vector2i()
 var player_facing = Vector3.FORWARD
 var triggered_events := {}
+var encounters := {}
 var cleared_encounters: Dictionary = {}
 var transitions := {}
 var available_enemies: Array[CharacterResource] = []
@@ -38,11 +39,27 @@ func update_player_position(pos: Vector2i, facing: Vector3):
 		event.trigger = EffectTriggers.ON_TURN_END
 		event.actor = c
 		EffectRunner.process_trigger(event)
+		
+func add_encounter(data: EncounterData):
+	if not encounters.has(map_id):
+		encounters[map_id] = {}
 
-func mark_encounter_cleared(id: String, encounter_id: String) -> void:
-	cleared_encounters[id].append(encounter_id)
+	if encounters[map_id].has(data.id):
+		return
+	
+	encounters[map_id][data.id] = data
+	
+func get_encounter(id: String):
+	if encounters.has(map_id):
+		if encounters[map_id].has(id):
+			return encounters[map_id][id]
+			
+	return null
 
-func is_encounter_cleared(_map_id: String, encounter_id: String) -> bool:
+func mark_encounter_cleared(encounter_id: String) -> void:
+	cleared_encounters[map_id].append(encounter_id)
+
+func is_encounter_cleared(encounter_id: String) -> bool:
 	if not cleared_encounters.has(map_id):
 		return false
 	return cleared_encounters[map_id].has(encounter_id)
@@ -52,7 +69,8 @@ func to_dict() -> Dictionary:
 		"id": map_id,
 		"player_position": player_position,
 		"player_facing": player_facing,
-		"cleared_encounters": cleared_encounters
+		"cleared_encounters": cleared_encounters,
+		"encounters": encounters
 	}
 	
 	return { "dungeon": dungeon_data }
@@ -63,3 +81,4 @@ func from_dict(data: Dictionary):
 		player_position = dungeon["player_position"]
 		player_facing = dungeon["player_facing"]
 		cleared_encounters = dungeon["cleared_encounters"]
+		encounters = dungeon["encounters"]

@@ -1,7 +1,8 @@
-[gd_scene load_steps=13 format=3 uid="uid://c8n1llsvvhonb"]
+[gd_scene load_steps=14 format=3 uid="uid://c8n1llsvvhonb"]
 
 [ext_resource type="MeshLibrary" uid="uid://uso6cfmk5r51" path="res://tileset white.tres" id="1_mdjaj"]
 [ext_resource type="Script" uid="uid://7pao6hs651jh" path="res://scripts/EnemyController.gd" id="2_g1pjd"]
+[ext_resource type="Script" uid="uid://kf1ly5o4evhs" path="res://scripts/SpawnId.gd" id="3_w2sle"]
 [ext_resource type="Script" uid="uid://dbfiub7761eey" path="res://scripts/triggerables/MapTransitionTriggerable.gd" id="7_lk5gk"]
 [ext_resource type="Resource" uid="uid://ca1h8vjjk8vcm" path="res://maps/crypt/crypt_00.tres" id="8_w2sle"]
 [ext_resource type="Script" uid="uid://8n2g1of6dlbp" path="res://scripts/interactables/RestAreaInteractable.gd" id="9_kjsaj"]
@@ -39,15 +40,23 @@ script = ExtResource("2_g1pjd")
 
 [node name="Marker3D" type="Marker3D" parent="Enemies"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.6091213, 0, 6.07604)
+script = ExtResource("3_w2sle")
+spawn_id = "spawn_01"
 
 [node name="Marker3D2" type="Marker3D" parent="Enemies"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -18.351437, 0, 6.4214334)
+script = ExtResource("3_w2sle")
+spawn_id = "spawn_02"
 
 [node name="Marker3D3" type="Marker3D" parent="Enemies"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -18.096066, 0, -6.1178665)
+script = ExtResource("3_w2sle")
+spawn_id = "spawn_03"
 
 [node name="Marker3D4" type="Marker3D" parent="Enemies"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.447188, 0, -5.7185793)
+script = ExtResource("3_w2sle")
+spawn_id = "spawn_04"
 
 [node name="Transitions" type="Node" parent="."]
 

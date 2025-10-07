@@ -57,7 +57,7 @@ func begin(_enemies: Array[CharacterInstance]):
 			inst.prepare(b)
 			b.battle_events.append(inst)
 	
-	current_state = BattleState.PROCESS_TURNS
+	current_state = BattleState.CHECK_END
 
 func _process(_delta):
 	if _to_cleanup.size() > 0:
@@ -300,12 +300,12 @@ func _check_end_conditions():
 
 func _handle_win():
 	print("Victory! Handle rewards here.")
-	EncounterBus.encounter_ended.emit("win")
+	EncounterBus.encounter_ended.emit("win", BattleContext.encounter_data)
 	current_state = BattleState.IDLE
 
 func _handle_lose():
 	print("Defeat! Handle game over here.")
-	EncounterBus.encounter_ended.emit("lose")
+	EncounterBus.encounter_ended.emit("lose", BattleContext.encounter_data)
 	current_state = BattleState.IDLE
 	
 func _register_battler(battler: CharacterInstance):

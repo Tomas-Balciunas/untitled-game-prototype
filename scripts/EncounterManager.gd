@@ -40,7 +40,7 @@ func start_encounter(data: EncounterData):
 
 func end_encounter(result, data):
 	if result == "win":
-		MapInstance.mark_encounter_cleared(MapInstance.map_id, data.id)
+		MapInstance.mark_encounter_cleared(data.id)
 		
 		#TODO find a better place
 		for member in PartyManager.members:

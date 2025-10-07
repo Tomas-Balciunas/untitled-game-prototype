@@ -17,7 +17,9 @@ func _ready():
 	assert(enemy_scene)
 	EncounterBus.encounter_ended.connect(_on_encounter_ended)
 	
-	if MapInstance.is_encounter_cleared(MapInstance.map_id, encounter_data.id):
+	MapInstance.add_encounter(encounter_data)
+	
+	if MapInstance.is_encounter_cleared(encounter_data.id):
 		queue_free()
 		return
 	

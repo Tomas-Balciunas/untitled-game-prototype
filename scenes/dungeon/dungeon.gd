@@ -49,7 +49,7 @@ func _on_encounter_started(_data: EncounterData):
 		#current_map_scene = null
 		
 func _deactivate_dungeon():
-	#self.visible = false
+	self.visible = false
 	self.process_mode = Node.PROCESS_MODE_DISABLED
 	
 func handle_event(event: String):
