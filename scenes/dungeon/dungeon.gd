@@ -7,6 +7,7 @@ var current_map_scene: Node = null
 const TILE_SIZE = 2.0
 
 func _ready():
+	LoadBus.loaded.connect(load_map)
 	EncounterBus.connect("encounter_started", Callable(self, "_on_encounter_started"))
 	EncounterBus.connect("encounter_ended", Callable(self, "_on_encounter_ended"))
 	player.connect("player_moved", Callable(self, "_on_player_moved"))

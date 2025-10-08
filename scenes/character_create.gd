@@ -1,6 +1,7 @@
 extends Control
 
 const MAX_POINTS := 10
+const MC = preload("uid://dvky7cvffgf22")
 
 @onready var job_ov: Label = $Overview/Job
 @onready var race_ov: Label = $Overview/Race
@@ -202,7 +203,7 @@ func update_attributes():
 	display_attributes = attr
 
 func _on_create_pressed() -> void:
-	var res = CharacterResource.new()
+	var res = MC
 	res.name = "Test"
 	res.job = chosen_job
 	res.gender = chosen_gender

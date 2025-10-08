@@ -15,3 +15,12 @@ static func type_to_string(value: int) -> String:
 		if Race.Name[key] == value:	
 			return key.capitalize()
 	return "Unknown"
+	
+static func get_by_name(value: String):
+	for file in DirAccess.get_files_at("res://characters/_race/"):
+		if file.ends_with(".tres") and file.begins_with(value):
+			var res: Race = load("res://characters/_race/" + file)
+			
+			return res
+		
+	return null

@@ -7,6 +7,7 @@ func _ready() -> void:
 
 func _register_all() -> void:
 	var res_paths = [
+		"res://characters/allies/MC/MC.tres",
 		"res://characters/allies/Lili/Lili.tres",
 		"res://characters/allies/Skelly/Skelly.tres",
 		"res://characters/foes/Skeltal/Skeltal.tres",

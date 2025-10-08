@@ -47,12 +47,26 @@ func add_encounter(data: EncounterData):
 	if encounters[map_id].has(data.id):
 		return
 	
-	encounters[map_id][data.id] = data
+	encounters[map_id][data.id] = {
+		"id": data.id,
+		"enemies": data.enemies.map(func(e): return e.id),
+		"arena": data.arena,
+		"xp": data.experience_reward
+	}
 	
 func get_encounter(id: String):
 	if encounters.has(map_id):
 		if encounters[map_id].has(id):
-			return encounters[map_id][id]
+			var data = encounters[map_id][id]
+			var enc = EncounterData.new()
+			var enemeis: Array[CharacterResource] = []
+			for i in data["enemies"]:
+				var e = CharacterRegistry.get_character(id)
+				enemeis.append(e)
+			enc.id = data["id"]
+			enc.enemies = enemeis
+			enc.arena = data["arena"]
+			enc.experience_reward = data["xp"]
 			
 	return null
 
@@ -82,3 +96,4 @@ func from_dict(data: Dictionary):
 		player_facing = dungeon["player_facing"]
 		cleared_encounters = dungeon["cleared_encounters"]
 		encounters = dungeon["encounters"]
+		LoadBus.loaded.emit(dungeon["id"])

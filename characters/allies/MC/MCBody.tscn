@@ -1,11 +1,11 @@
-[gd_scene load_steps=3 format=3 uid="uid://blnliyj8pdx80"]
+[gd_scene load_steps=3 format=3 uid="uid://cpmmymjxgn2v7"]
 
-[ext_resource type="Script" uid="uid://dr1sxm5h6jdqr" path="res://scenes/CharacterBody.gd" id="1_d6ujx"]
+[ext_resource type="Script" uid="uid://dr1sxm5h6jdqr" path="res://scenes/CharacterBody.gd" id="1_oy86h"]
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_8j8tm"]
 
 [node name="CharacterBody" type="CharacterBody3D"]
-script = ExtResource("1_d6ujx")
+script = ExtResource("1_oy86h")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.877679, 0)

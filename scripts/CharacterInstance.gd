@@ -301,6 +301,10 @@ func to_dict() -> Dictionary:
 		"xp": current_experience,
 		"hp": stats.current_health,
 		"mp": stats.current_mana,
+		"race": race.name,
+		"gender": gender.name,
+		"job": job.name,
+		"main": is_main,
 		"unspent_points": unspent_attribute_points,
 		"attributes": {
 			"str": attributes.str,
@@ -323,7 +327,14 @@ static func from_dict(data: Dictionary) -> CharacterInstance:
 		push_error("Character resource not found for id %s" % data["id"])
 		return null
 
+	res.race = RaceRegistry.get_by_name(RaceRegistry.type_to_string(data["race"])) 
+	res.gender = GenderRegistry.get_by_name(GenderRegistry.type_to_string(data["gender"])) 
+	res.job = JobRegistry.get_by_name(JobRegistry.type_to_string(data["job"])) 
 	var inst := CharacterInstance.new(res)
+	
+	if data["main"]:
+		inst.is_main = data["main"]
+	
 	inst.level = data.get("level", 1)
 	inst.current_experience = data.get("xp", 0)
 	inst.unspent_attribute_points = data.get("unspent_points", 0)

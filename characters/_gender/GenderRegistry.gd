@@ -17,3 +17,12 @@ static func type_to_string(value: int) -> String:
 			return key.capitalize()
 			
 	return "Unknown"
+
+static func get_by_name(value: String):
+	for file in DirAccess.get_files_at("res://characters/_gender/"):
+		if file.ends_with(".tres") and file.begins_with(value):
+			var res: Gender = load("res://characters/_gender/" + file)
+			
+			return res
+
+	return null
