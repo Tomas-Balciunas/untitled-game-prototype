@@ -25,6 +25,8 @@ var effects: Array[Effect] = []
 var gear_effects: Dictionary = {}
 var damage_type: DamageTypes.Type
 var attributes: Attributes
+var level_up_attributes: Attributes
+var starting_attributes: Attributes
 var job: Job
 var gender: Gender
 var race: Race
@@ -42,12 +44,15 @@ var equipment := {
 }
 
 func _init(res: CharacterResource) -> void:
+	resource = res
+	level_up_attributes = Attributes.new()
+	starting_attributes = Attributes.new()
 	stats = Stats.new()
 	stats._owner = self
 	fill_stats(res)
-	fill_attributes(res)
-	resource = res
+	fill_attributes()
 	is_main = res.is_main
+	current_experience = 5000
 	
 	inventory = Inventory.new()
 	
@@ -185,15 +190,19 @@ func fill_stats(res: CharacterResource):
 	stats.base_defense = res.defense
 	stats.base_speed = res.speed
 
-func fill_attributes(res: CharacterResource):
+func fill_attributes():
 	attributes = Attributes.new()
-	attributes.add(res.attributes)
-	if res.race:
-		attributes.add(res.race.attributes)
-	if res.gender:
-		attributes.add(res.gender.attributes)
-	if res.job:
-		attributes.add(res.job.attributes)
+	attributes.add(resource.attributes)
+	if resource.race:
+		attributes.add(resource.race.attributes)
+	if resource.gender:
+		attributes.add(resource.gender.attributes)
+	if resource.job:
+		attributes.add(resource.job.attributes)
+	if level_up_attributes:
+		attributes.add(level_up_attributes)
+	if starting_attributes:
+		attributes.add(starting_attributes)
 
 func get_attack_power():
 	pass
@@ -315,6 +324,24 @@ func to_dict() -> Dictionary:
 			"spd": attributes.spd,
 			"luk": attributes.luk
 		},
+		"level_up_attributes": {
+			"str": level_up_attributes.str,
+			"iq": level_up_attributes.iq,
+			"pie": level_up_attributes.pie,
+			"vit": level_up_attributes.vit,
+			"dex": level_up_attributes.dex,
+			"spd": level_up_attributes.spd,
+			"luk": level_up_attributes.luk
+		},
+		"starting_attributes": {
+			"str": starting_attributes.str,
+			"iq": starting_attributes.iq,
+			"pie": starting_attributes.pie,
+			"vit": starting_attributes.vit,
+			"dex": starting_attributes.dex,
+			"spd": starting_attributes.spd,
+			"luk": starting_attributes.luk
+		},
 		"equipment": equip_dict,
 		"inventory": inventory_arr,
 		"effects": effect_arr
@@ -339,6 +366,16 @@ static func from_dict(data: Dictionary) -> CharacterInstance:
 	inst.current_experience = data.get("xp", 0)
 	inst.unspent_attribute_points = data.get("unspent_points", 0)
 
+	if data.has("level_up_attributes"):
+		var a = data["level_up_attributes"]
+		inst.level_up_attributes.str = a.get("str")
+		inst.level_up_attributes.iq  = a.get("iq")
+		inst.level_up_attributes.pie = a.get("pie")
+		inst.level_up_attributes.vit = a.get("vit")
+		inst.level_up_attributes.dex = a.get("dex")
+		inst.level_up_attributes.spd = a.get("spd")
+		inst.level_up_attributes.luk = a.get("luk")
+		
 	if data.has("attributes"):
 		var a = data["attributes"]
 		inst.attributes.str = a.get("str", inst.attributes.str)
@@ -348,6 +385,16 @@ static func from_dict(data: Dictionary) -> CharacterInstance:
 		inst.attributes.dex = a.get("dex", inst.attributes.dex)
 		inst.attributes.spd = a.get("spd", inst.attributes.spd)
 		inst.attributes.luk = a.get("luk", inst.attributes.luk)
+	
+	if data.has("starting_attributes"):
+		var a = data["starting_attributes"]
+		inst.starting_attributes.str = a.get("str", inst.starting_attributes.str)
+		inst.starting_attributes.iq  = a.get("iq", inst.starting_attributes.iq)
+		inst.starting_attributes.pie = a.get("pie", inst.starting_attributes.pie)
+		inst.starting_attributes.vit = a.get("vit", inst.starting_attributes.vit)
+		inst.starting_attributes.dex = a.get("dex", inst.starting_attributes.dex)
+		inst.starting_attributes.spd = a.get("spd", inst.starting_attributes.spd)
+		inst.starting_attributes.luk = a.get("luk", inst.starting_attributes.luk)
 
 	inst.stats.current_health = data.get("hp", inst.stats.max_health)
 	inst.stats.current_mana = data.get("mp", inst.stats.max_mana)

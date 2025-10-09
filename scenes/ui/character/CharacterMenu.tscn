@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://brybglg3yhb62"]
+[gd_scene load_steps=14 format=3 uid="uid://brybglg3yhb62"]
 
 [ext_resource type="Script" uid="uid://ilm5qu0yhhaa" path="res://scenes/ui/character/CharacterMenu.gd" id="1_gue48"]
 [ext_resource type="Script" uid="uid://df1gmeiyv6avc" path="res://gear/InventoryUI.gd" id="2_ynqil"]
@@ -7,6 +7,7 @@
 [ext_resource type="Script" uid="uid://buitthkb5usu" path="res://scenes/ui/character/CharacterEffectsUI.gd" id="4_c7bw8"]
 [ext_resource type="Script" uid="uid://c4besodi2o6y8" path="res://gear/EquippedItemSlot.gd" id="4_khbyc"]
 [ext_resource type="Script" uid="uid://dmcb1v1d6ac3" path="res://scenes/ui/character/CharacterSkillsUI.gd" id="7_khbyc"]
+[ext_resource type="Script" uid="uid://bfewgc370mbue" path="res://scenes/ui/character/CharacterLevelUpUI.gd" id="8_x73w5"]
 
 [sub_resource type="Theme" id="Theme_gue48"]
 
@@ -89,6 +90,10 @@ size_flags_horizontal = 3
 focus_mode = 0
 keep_pressed_outside = true
 text = "Talk"
+
+[node name="LevelUp" type="Button" parent="Menu/CharacterMenuButtons/HBoxContainer"]
+layout_mode = 2
+text = "Level Up"
 
 [node name="Close" type="Button" parent="Menu/CharacterMenuButtons/HBoxContainer"]
 layout_mode = 2
@@ -288,6 +293,7 @@ autowrap_mode = 2
 layout_mode = 2
 
 [node name="StatsUI" type="PanelContainer" parent="Menu"]
+visible = false
 layout_mode = 1
 anchors_preset = 9
 anchor_bottom = 1.0
@@ -463,11 +469,178 @@ script = ExtResource("7_khbyc")
 [node name="Skills" type="VBoxContainer" parent="Menu/SkillsUI"]
 layout_mode = 2
 
+[node name="LevelUpUI" type="Panel" parent="Menu"]
+layout_mode = 0
+offset_right = 304.0
+offset_bottom = 264.0
+script = ExtResource("8_x73w5")
+
+[node name="Attributes" type="GridContainer" parent="Menu/LevelUpUI"]
+layout_mode = 0
+offset_left = 8.0
+offset_right = 143.0
+offset_bottom = 241.0
+columns = 2
+
+[node name="Labels" type="VBoxContainer" parent="Menu/LevelUpUI/Attributes"]
+layout_mode = 2
+
+[node name="STR" type="Label" parent="Menu/LevelUpUI/Attributes/Labels"]
+layout_mode = 2
+size_flags_vertical = 6
+text = "Strength"
+
+[node name="IQ" type="Label" parent="Menu/LevelUpUI/Attributes/Labels"]
+layout_mode = 2
+size_flags_vertical = 6
+text = "Intelligence"
+
+[node name="PIE" type="Label" parent="Menu/LevelUpUI/Attributes/Labels"]
+layout_mode = 2
+size_flags_vertical = 6
+text = "Piety"
+
+[node name="VIT" type="Label" parent="Menu/LevelUpUI/Attributes/Labels"]
+layout_mode = 2
+size_flags_vertical = 6
+text = "Vitality"
+
+[node name="DEX" type="Label" parent="Menu/LevelUpUI/Attributes/Labels"]
+layout_mode = 2
+size_flags_vertical = 6
+text = "Dexterity"
+
+[node name="SPD" type="Label" parent="Menu/LevelUpUI/Attributes/Labels"]
+layout_mode = 2
+size_flags_vertical = 6
+text = "Speed"
+
+[node name="LUK" type="Label" parent="Menu/LevelUpUI/Attributes/Labels"]
+layout_mode = 2
+size_flags_vertical = 6
+text = "Luck"
+
+[node name="Values" type="VBoxContainer" parent="Menu/LevelUpUI/Attributes"]
+layout_mode = 2
+
+[node name="STR" type="HBoxContainer" parent="Menu/LevelUpUI/Attributes/Values"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Dec" type="Button" parent="Menu/LevelUpUI/Attributes/Values/STR"]
+layout_mode = 2
+text = "-"
+
+[node name="Value" type="Label" parent="Menu/LevelUpUI/Attributes/Values/STR"]
+layout_mode = 2
+
+[node name="Inc" type="Button" parent="Menu/LevelUpUI/Attributes/Values/STR"]
+layout_mode = 2
+text = "+"
+
+[node name="IQ" type="HBoxContainer" parent="Menu/LevelUpUI/Attributes/Values"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Dec" type="Button" parent="Menu/LevelUpUI/Attributes/Values/IQ"]
+layout_mode = 2
+text = "-"
+
+[node name="Value" type="Label" parent="Menu/LevelUpUI/Attributes/Values/IQ"]
+layout_mode = 2
+
+[node name="Inc" type="Button" parent="Menu/LevelUpUI/Attributes/Values/IQ"]
+layout_mode = 2
+text = "+"
+
+[node name="PIE" type="HBoxContainer" parent="Menu/LevelUpUI/Attributes/Values"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Dec" type="Button" parent="Menu/LevelUpUI/Attributes/Values/PIE"]
+layout_mode = 2
+text = "-"
+
+[node name="Value" type="Label" parent="Menu/LevelUpUI/Attributes/Values/PIE"]
+layout_mode = 2
+
+[node name="Inc" type="Button" parent="Menu/LevelUpUI/Attributes/Values/PIE"]
+layout_mode = 2
+text = "+"
+
+[node name="VIT" type="HBoxContainer" parent="Menu/LevelUpUI/Attributes/Values"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Dec" type="Button" parent="Menu/LevelUpUI/Attributes/Values/VIT"]
+layout_mode = 2
+text = "-"
+
+[node name="Value" type="Label" parent="Menu/LevelUpUI/Attributes/Values/VIT"]
+layout_mode = 2
+
+[node name="Inc" type="Button" parent="Menu/LevelUpUI/Attributes/Values/VIT"]
+layout_mode = 2
+text = "+"
+
+[node name="DEX" type="HBoxContainer" parent="Menu/LevelUpUI/Attributes/Values"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Dec" type="Button" parent="Menu/LevelUpUI/Attributes/Values/DEX"]
+layout_mode = 2
+text = "-"
+
+[node name="Value" type="Label" parent="Menu/LevelUpUI/Attributes/Values/DEX"]
+layout_mode = 2
+
+[node name="Inc" type="Button" parent="Menu/LevelUpUI/Attributes/Values/DEX"]
+layout_mode = 2
+text = "+"
+
+[node name="SPD" type="HBoxContainer" parent="Menu/LevelUpUI/Attributes/Values"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Dec" type="Button" parent="Menu/LevelUpUI/Attributes/Values/SPD"]
+layout_mode = 2
+text = "-"
+
+[node name="Value" type="Label" parent="Menu/LevelUpUI/Attributes/Values/SPD"]
+layout_mode = 2
+
+[node name="Inc" type="Button" parent="Menu/LevelUpUI/Attributes/Values/SPD"]
+layout_mode = 2
+text = "+"
+
+[node name="LUK" type="HBoxContainer" parent="Menu/LevelUpUI/Attributes/Values"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Dec" type="Button" parent="Menu/LevelUpUI/Attributes/Values/LUK"]
+layout_mode = 2
+text = "-"
+
+[node name="Value" type="Label" parent="Menu/LevelUpUI/Attributes/Values/LUK"]
+layout_mode = 2
+
+[node name="Inc" type="Button" parent="Menu/LevelUpUI/Attributes/Values/LUK"]
+layout_mode = 2
+text = "+"
+
+[node name="Points" type="Label" parent="Menu/LevelUpUI"]
+layout_mode = 0
+offset_left = 160.0
+offset_top = 216.0
+offset_right = 295.0
+offset_bottom = 239.0
+
 [connection signal="pressed" from="Menu/CharacterMenuButtons/HBoxContainer/Stats" to="." method="_on_stats_pressed"]
 [connection signal="pressed" from="Menu/CharacterMenuButtons/HBoxContainer/Inventory" to="." method="_on_inventory_pressed"]
 [connection signal="pressed" from="Menu/CharacterMenuButtons/HBoxContainer/Skills" to="." method="_on_skills_pressed"]
 [connection signal="pressed" from="Menu/CharacterMenuButtons/HBoxContainer/Effects" to="." method="_on_effects_pressed"]
 [connection signal="pressed" from="Menu/CharacterMenuButtons/HBoxContainer/Talk" to="." method="_on_talk_pressed"]
+[connection signal="pressed" from="Menu/CharacterMenuButtons/HBoxContainer/LevelUp" to="." method="_on_level_up_pressed"]
 [connection signal="pressed" from="Menu/CharacterMenuButtons/HBoxContainer/Close" to="." method="_on_close_pressed"]
 [connection signal="pressed" from="Menu/InventoryUI/Inventory/ActionButton" to="Menu/InventoryUI" method="_on_action_button_pressed"]
 [connection signal="pressed" from="Menu/InventoryUI/Inventory/UnequipButton" to="Menu/InventoryUI" method="_on_unequip_button_pressed"]

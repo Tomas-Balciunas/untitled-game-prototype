@@ -11,7 +11,7 @@ var formation = [
 	[null, null, null]
 ]
 
-func add_member(res: CharacterResource) -> void:
+func add_member(res: CharacterResource):
 	var inst := CharacterInstance.new(res)
 	var position = add_member_to_formation(inst)
 	
@@ -21,9 +21,13 @@ func add_member(res: CharacterResource) -> void:
 		var slot_i = position[1]
 		emit_signal("member_added", inst, row_i, slot_i)
 		print("Character added to party: %s" % inst.resource.name)
+		
+		return inst
 	else:
 		push_error("Adding character error: no free slots")
-	
+		
+		return null
+		
 
 func add_member_to_formation(character: CharacterInstance) -> Array:
 	for row_i in range(formation.size()):

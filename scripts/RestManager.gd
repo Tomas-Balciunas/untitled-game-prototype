@@ -76,6 +76,7 @@ func exit_rest_area():
 	dungeon.visible = true
 	player.set_grid_pos(_last_position, _last_facing, 2.0)
 	dungeon.process_mode = Node.PROCESS_MODE_INHERIT
+	SaveManager.save_game(0)
 
 # TODO: game state managing to prevent transition while player is tweening
 

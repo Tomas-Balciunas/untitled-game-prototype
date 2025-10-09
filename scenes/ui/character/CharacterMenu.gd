@@ -5,6 +5,9 @@ class_name CharacterMenu
 @onready var inventory_tab = $Menu/InventoryUI
 @onready var effects_tab = $Menu/EffectsUI
 @onready var skills_tab = $Menu/SkillsUI
+@onready var level_up_tab: Panel = $Menu/LevelUpUI
+@onready var level_up_button: Button = $Menu/CharacterMenuButtons/HBoxContainer/LevelUp
+
 
 @onready var inventory_container: VBoxContainer = $Menu/InventoryUI/Inventory
 @onready var item_info_panel: VBoxContainer = $Menu/InventoryUI/ItemInfoPanel
@@ -27,14 +30,21 @@ func bind(character: CharacterInstance) -> void:
 	battle_text_lines.disable_battle_text_lines_ui()
 	$Menu/Name.text = character.resource.name
 	stats_tab.bind_character(character_instance)
+		
 	show_tab("stats")
 	
 func show_tab(tab: String):
+	if character_instance.unspent_attribute_points <= 0:
+		level_up_button.visible = false
+	else:
+		level_up_button.visible = true
+		
 	var tabs := {
 		"stats": stats_tab,
 		"inventory": inventory_tab,
 		"effects": effects_tab,
-		"skills": skills_tab
+		"skills": skills_tab,
+		"levelup": level_up_tab
 	}
 	
 	for key in tabs.keys():
@@ -79,3 +89,8 @@ func _on_talk_pressed() -> void:
 	
 	var menu_interaction = interaction.get_dialogue("menu_talk", "random_01")
 	ConversationBus.request_conversation.emit(character_instance.resource.name, menu_interaction["text"])
+
+
+func _on_level_up_pressed() -> void:
+	level_up_tab.bind_character(character_instance)
+	show_tab("levelup")

@@ -208,11 +208,19 @@ func _on_create_pressed() -> void:
 	res.job = chosen_job
 	res.gender = chosen_gender
 	res.race = chosen_race
-	res.attributes = chosen_attributes
+	res.attributes = Attributes.new()
 	res.is_main = true
+	var inst = PartyManager.add_member(res)
+	
+	if !inst:
+		push_error("something went horribly wrong - created character instance is null, check party size?")
+	
+	inst.starting_attributes = chosen_attributes
+	inst.fill_attributes()
+	inst.stats.recalculate_stats()
 	
 	await get_tree().change_scene_to_file("res://scenes/main.tscn")
-	PartyManager.add_member(res)
+	
 
 func update_points():
 	points_display.text = "Points left: %s" % points

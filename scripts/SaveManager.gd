@@ -4,7 +4,8 @@ signal party_reloaded
 
 const SAVE_PATH := "user://save_slot_%d.save"
 
-func save_game(slot: int, game_state: Dictionary) -> void:
+func save_game(slot: int) -> void:
+	var game_state = build_game_state()
 	var file = FileAccess.open(SAVE_PATH % slot, FileAccess.WRITE)
 	if file:
 		file.store_var(game_state)
@@ -37,7 +38,7 @@ func apply_game_state(state: Dictionary) -> void:
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("quicksave"):
-		save_game(0, build_game_state())
+		save_game(0)
 	if event.is_action_pressed("quickload"):
 		var state = load_game(0)
 		if state.size() > 0:
