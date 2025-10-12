@@ -60,7 +60,9 @@ func begin(_enemies: Array[CharacterInstance]):
 	current_state = BattleState.CHECK_END
 
 func _process(_delta):
-	if _to_cleanup.size() > 0:
+	# cleanup has potential to fuck up battle state if states arent managed carefully
+	# due to forced CHECK_END
+	if _to_cleanup.size() > 0 and current_state != BattleState.ANIMATING:
 		_corpse_janny()
 		current_state = BattleState.CHECK_END
 		return
@@ -115,9 +117,10 @@ func _on_turn_start():
 	if is_party_member:
 		current_state = BattleState.PLAYER_TURN
 		party_panel.highlight_member(current_battler)
-		print("Player turn for:", current_battler.resource.name)
 	else:
 		current_state = BattleState.ENEMY_TURN
+	
+	print("Player turn for:", current_battler.resource.name)
 
 func _on_turn_end():
 	var event = TriggerEvent.new()
@@ -174,6 +177,7 @@ func _perform_player_action(action: String, target: CharacterInstance):
 			var targeting = current_battler.equipment["weapon"].template.targeting if current_battler.equipment["weapon"] else TargetingManager.TargetType.SINGLE
 			var _targets = get_applicable_targets(target, targeting)
 			
+			current_state = BattleState.ANIMATING
 			await attacker_slot.perform_attack_toward_target(target_slot)
 			
 			for t in _targets:
@@ -200,7 +204,8 @@ func _perform_player_action(action: String, target: CharacterInstance):
 				
 			current_battler.set_current_mana(current_battler.stats.current_mana - mp_cost)
 			
-			await attacker_slot.perform_attack_toward_target(target_slot)
+			current_state = BattleState.ANIMATING
+			attacker_slot.perform_attack_toward_target(target_slot)
 			
 			for t in _targets:
 				if not t:
@@ -232,6 +237,7 @@ func _perform_player_action(action: String, target: CharacterInstance):
 			var targeting = _pending_options[0].template.targeting_type
 			var _targets = get_applicable_targets(target, targeting)
 			
+			current_state = BattleState.ANIMATING
 			await attacker_slot.perform_attack_toward_target(target_slot)
 			
 			for t in _targets:
@@ -263,14 +269,15 @@ func _process_enemy_turn():
 	current_state = BattleState.ANIMATING
 	var attacker_slot = get_slot(current_battler)
 	var target_slot = get_slot(target)
-
-	await attacker_slot.perform_attack_toward_target(target_slot)
-
+	
 	var atk = AttackAction.new()
 	atk.attacker = current_battler
 	atk.defender   = target
 	atk.base_value = current_battler.stats.attack
 	atk.actively_cast = true
+
+	await attacker_slot.perform_attack_toward_target(target_slot)
+	
 	await DamageResolver.apply_attack(atk)
 	
 	await attacker_slot.position_back()

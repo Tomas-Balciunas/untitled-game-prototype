@@ -51,8 +51,8 @@ gdscript/warnings/unused_signal=0
 
 [display]
 
-window/size/viewport_width=1280
-window/size/viewport_height=768
+window/size/viewport_width=2000
+window/size/viewport_height=1200
 
 [editor]
 

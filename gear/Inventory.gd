@@ -26,3 +26,6 @@ func get_all_items() -> Array[ItemInstance]:
 
 func find_by_type(type: int) -> Array[ItemInstance]:
 	return slots.filter(func(i): return i.type == type)
+
+func has_free_slot():
+	return max_slots > len(slots)

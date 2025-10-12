@@ -76,6 +76,11 @@ func exit_rest_area():
 	dungeon.visible = true
 	player.set_grid_pos(_last_position, _last_facing, 2.0)
 	dungeon.process_mode = Node.PROCESS_MODE_INHERIT
+	
+	for member in PartyManager.members:
+		member.set_current_health(member.stats.max_health)
+		member.set_current_mana(member.stats.max_mana)
+		
 	SaveManager.save_game(0)
 
 # TODO: game state managing to prevent transition while player is tweening

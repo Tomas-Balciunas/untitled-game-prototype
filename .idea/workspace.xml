@@ -4,7 +4,23 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="bf5b9448-0040-49cd-b5e8-60429c893263" name="Changes" comment="instanced stats. maybe a better system idk man" />
+    <list default="true" id="bf5b9448-0040-49cd-b5e8-60429c893263" name="Changes" comment="instanced stats. maybe a better system idk man">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/characters/allies/Skelly/219198-14902c93fb8b1a10b23c1f10f7dc6334.png.import" beforeDir="false" afterPath="$PROJECT_DIR$/characters/allies/Skelly/219198-14902c93fb8b1a10b23c1f10f7dc6334.png.import" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/characters/allies/Skelly/NicePng_chrono-trigger-png_2720665.png.import" beforeDir="false" afterPath="$PROJECT_DIR$/characters/allies/Skelly/NicePng_chrono-trigger-png_2720665.png.import" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/characters/foes/Balmer/219247-6cdde8c35dac084c38e70faab7ba7f2a.png.import" beforeDir="false" afterPath="$PROJECT_DIR$/characters/foes/Balmer/219247-6cdde8c35dac084c38e70faab7ba7f2a.png.import" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/characters/foes/Skeltal/219169-f863df69f4ba01ca40a9ae2d1d3b0209.png.import" beforeDir="false" afterPath="$PROJECT_DIR$/characters/foes/Skeltal/219169-f863df69f4ba01ca40a9ae2d1d3b0209.png.import" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gear/Inventory.gd" beforeDir="false" afterPath="$PROJECT_DIR$/gear/Inventory.gd" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/hub/starting_area.tscn" beforeDir="false" afterPath="$PROJECT_DIR$/maps/hub/starting_area.tscn" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/project.godot" beforeDir="false" afterPath="$PROJECT_DIR$/project.godot" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/BattleManager.gd" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/BattleManager.gd" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test sprites 2.png.import" beforeDir="false" afterPath="$PROJECT_DIR$/test sprites 2.png.import" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test sprites 3.png.import" beforeDir="false" afterPath="$PROJECT_DIR$/test sprites 3.png.import" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test sprites 4.png.import" beforeDir="false" afterPath="$PROJECT_DIR$/test sprites 4.png.import" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/white tileset.glb.import" beforeDir="false" afterPath="$PROJECT_DIR$/white tileset.glb.import" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/white tileset_atlas.png.import" beforeDir="false" afterPath="$PROJECT_DIR$/white tileset_atlas.png.import" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/white tileset_atlas_n.png.import" beforeDir="false" afterPath="$PROJECT_DIR$/white tileset_atlas_n.png.import" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -15,7 +31,7 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
-    <option name="RESET_MODE" value="MIXED" />
+    <option name="RESET_MODE" value="HARD" />
     <option name="UPDATE_TYPE" value="REBASE" />
   </component>
   <component name="GitHubPullRequestSearchHistory">{
@@ -36,7 +52,9 @@
   &quot;associatedIndex&quot;: 5
 }</component>
   <component name="ProjectId" id="2zk5ZJmlipFDlIF4W93SkgV179j" />
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
