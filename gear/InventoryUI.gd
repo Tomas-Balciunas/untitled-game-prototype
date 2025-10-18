@@ -20,17 +20,17 @@ const item_slot = preload("res://gear/ItemSlot.tscn")
 
 var _selected_item: ItemInstance = null
 
-func bind_character(character: CharacterInstance):
+func bind_character(character: CharacterInstance) -> void:
 	bound_character = character
 	refresh_lists()
 
-func refresh_lists():
+func refresh_lists() -> void:
 	equipped_list.bind_equipped(bound_character, self)
 
 	for child in inventory_list.get_children():
 		child.queue_free()
 	for item in bound_character.inventory.get_all_items():
-		var slot = item_slot.instantiate()
+		var slot := item_slot.instantiate()
 		inventory_list.add_child(slot)
 		slot.bind(item)
 		slot.item_hovered.connect(show_item_info)
@@ -40,7 +40,7 @@ func refresh_lists():
 	action_button.visible = false
 	unequip_button.visible = false
 
-func _on_inventory_item_selected(item: ItemInstance):
+func _on_inventory_item_selected(item: ItemInstance) -> void:
 	unequip_button.visible = false
 	_selected_item = item
 	
@@ -53,7 +53,7 @@ func _on_inventory_item_selected(item: ItemInstance):
 	else:
 		action_button.visible = false
 		
-func _on_equipped_item_selected(item: GearInstance):
+func _on_equipped_item_selected(item: GearInstance) -> void:
 	action_button.visible = false
 	_selected_item = item
 
@@ -62,7 +62,7 @@ func _on_equipped_item_selected(item: GearInstance):
 	else:
 		unequip_button.visible = false
 
-func _on_action_button_pressed():
+func _on_action_button_pressed() -> void:
 	if not _selected_item:
 		push_error("Trying to equip/use null selected item")
 
@@ -73,11 +73,11 @@ func _on_action_button_pressed():
 
 	refresh_lists()
 
-func _on_unequip_button_pressed():
+func _on_unequip_button_pressed() -> void:
 	if not _selected_item:
 		push_error("Trying to unequip null selected item")
 
-	var slot_name = bound_character.get_slot_name_for_item(_selected_item)
+	var slot_name := bound_character.get_slot_name_for_item(_selected_item)
 	bound_character.unequip_slot(slot_name)
 
 	refresh_lists()
@@ -92,16 +92,16 @@ func show_item_info(item: ItemInstance) -> void:
 	item_type_label.text = item.item_type_to_string(item.template.type)
 
 	if item is GearInstance:
-		var base_stats = item.get_base_stats()
+		var base_stats: Dictionary = item.get_base_stats()
 		var stat_lines: Array[String] = []
-		for stat in base_stats.keys():
+		for stat: Stats.Stat in base_stats.keys():
 			if base_stats[stat] != 0:
 				stat_lines.append("%s: %d" % [Stats.stat_to_string(stat), base_stats[stat]])
 		stats_label.text = "\n".join(stat_lines)
 		
 		if item.get_all_modifiers().size() > 0:
 			var mod_lines: Array[String] = []
-			for mod in item.get_all_modifiers():
+			for mod: StatModifier in item.get_all_modifiers():
 				mod_lines.append("%s" % mod.get_description())
 			modifiers_label.text = "\n".join(mod_lines)
 		else:
@@ -112,14 +112,14 @@ func show_item_info(item: ItemInstance) -> void:
 	if item is ConsumableInstance or item is GearInstance:
 		if item.get_all_effects().size() > 0:
 			var effect_lines: Array[String] = []
-			for e in item.get_all_effects():
+			for e: Effect in item.get_all_effects():
 				effect_lines.append("%s" % e.get_description())
 			effects_label.text = "\n".join(effect_lines)
 		else:
 			effects_label.text = ""
 			
-func hide_item_info():
+func hide_item_info() -> void:
 	item_info_panel.visible = false
 
-func close():
+func close() -> void:
 	item_info_panel.hide()

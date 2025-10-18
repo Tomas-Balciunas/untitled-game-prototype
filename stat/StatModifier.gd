@@ -17,4 +17,9 @@ func compute_value(_character: CharacterInstance) -> float:
 	return value
 
 func get_description() -> String:
-	return description
+	var suffix: String
+	if type == Type.ADDITIVE:
+		suffix = "+%s" % roundi(value)
+	else:
+		suffix = "%s%%" % roundi(value * 100)
+	return "%s (%s)" % [description, suffix]

@@ -1,11 +1,11 @@
 extends Node
 
-var maps = {
+var maps: Dictionary = {
 	"area_00": load("res://maps/hub/starting_area.tres"),
 	"crypt_00": load("res://maps/crypt/crypt_00.tres")
 }
 
-var arenas = {
+var arenas: Dictionary = {
 	"arena_default_00": load("res://maps/_arena/default/arena_default_00.tscn")
 }
 
@@ -19,5 +19,5 @@ func get_arena(id: String) -> PackedScene:
 		return arenas[id]
 	return null
 
-func is_transition(tile_data: Dictionary):
+func is_transition(tile_data: Dictionary) -> bool:
 	return "transition" in tile_data and tile_data["transition"] 

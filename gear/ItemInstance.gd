@@ -20,6 +20,7 @@ func item_type_to_string(item_type: Item.ItemType) -> String:
 		Item.ItemType.BOOTS: "Boots",
 		Item.ItemType.GLOVES: "Gloves",
 		Item.ItemType.RING: "Ring",
+		Item.ItemType.AMULET: "Amulet",
 		Item.ItemType.CONSUMABLE: "Consumable",
 		Item.ItemType.QUEST: "Quest Item"
 	}

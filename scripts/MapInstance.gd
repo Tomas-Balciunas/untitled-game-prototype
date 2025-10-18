@@ -4,16 +4,16 @@ var map_id: String
 var current_map_name: String = ""
 var theme: String = ""
 var map_data: PackedScene
-var player_position = Vector2i()
-var player_previous_position = Vector2i()
-var player_facing = Vector3.FORWARD
+var player_position: Vector2i = Vector2i()
+var player_previous_position: Vector2i = Vector2i()
+var player_facing: Vector3 = Vector3.FORWARD
 var triggered_events := {}
 var encounters := {}
 var cleared_encounters: Dictionary = {}
 var transitions := {}
 var available_enemies: Array[CharacterResource] = []
 
-func hydrate_from_resource(map_resource):
+func hydrate_from_resource(map_resource: MapData) -> void:
 	map_id = map_resource.id
 	current_map_name = map_resource.name
 	map_data = map_resource.data
@@ -22,25 +22,25 @@ func hydrate_from_resource(map_resource):
 	cleared_encounters[map_id] = []
 	available_enemies = map_resource.available_enemies
 	
-func hydrate_from_load(load_data):
+func hydrate_from_load(load_data: Dictionary) -> void:
 	if load_data.has("dungeon"):
-		var dungeon = load_data["dungeon"]
+		var dungeon: Dictionary = load_data["dungeon"]
 		player_previous_position = dungeon["player_position"]
 		player_facing = dungeon["player_facing"]
 		cleared_encounters = dungeon["cleared_encounters"]
 
-func update_player_position(pos: Vector2i, facing: Vector3):
+func update_player_position(pos: Vector2i, facing: Vector3) -> void:
 	player_previous_position = player_position
 	player_position = pos
 	player_facing = facing
 	
 	for c in PartyManager.members:
-		var event = TriggerEvent.new()
+		var event: TriggerEvent = TriggerEvent.new()
 		event.trigger = EffectTriggers.ON_TURN_END
 		event.actor = c
 		EffectRunner.process_trigger(event)
 		
-func add_encounter(data: EncounterData):
+func add_encounter(data: EncounterData) -> void:
 	if not encounters.has(map_id):
 		encounters[map_id] = {}
 
@@ -89,9 +89,9 @@ func to_dict() -> Dictionary:
 	
 	return { "dungeon": dungeon_data }
 	
-func from_dict(data: Dictionary):
+func from_dict(data: Dictionary) -> void:
 	if data.has("dungeon"):
-		var dungeon = data["dungeon"].duplicate(true)
+		var dungeon: Dictionary = data["dungeon"].duplicate(true)
 		player_position = dungeon["player_position"]
 		player_facing = dungeon["player_facing"]
 		cleared_encounters = dungeon["cleared_encounters"]

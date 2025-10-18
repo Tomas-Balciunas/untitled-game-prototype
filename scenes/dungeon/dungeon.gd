@@ -1,12 +1,12 @@
 extends Node3D
 
-@onready var player = get_tree().get_root().get_node("Main/Player")
-@onready var transition_rect = $TransitionRect
+@onready var player: CharacterBody3D = get_tree().get_root().get_node("Main/Player")
+@onready var transition_rect: ColorRect = $TransitionRect
 var current_map_scene: Node = null
 
 const TILE_SIZE = 2.0
 
-func _ready():
+func _ready() -> void:
 	LoadBus.loaded.connect(load_map)
 	EncounterBus.connect("encounter_started", Callable(self, "_on_encounter_started"))
 	EncounterBus.connect("encounter_ended", Callable(self, "_on_encounter_ended"))
@@ -16,8 +16,8 @@ func _ready():
 	transition_rect.modulate.a = 0.0
 	load_map("area_00")
 
-func load_map(map_id: String, load_data = null):
-	var map_resource = MapManager.get_map(map_id)
+func load_map(map_id: String, load_data = null) -> void:
+	var map_resource: MapData = MapManager.get_map(map_id)
 	
 	_kill_map()
 	
@@ -30,8 +30,8 @@ func load_map(map_id: String, load_data = null):
 
 	current_map_scene = MapInstance.map_data.instantiate()
 	self.add_child(current_map_scene)
-	var player_position = MapInstance.player_previous_position
-	var player_facing = MapInstance.player_facing
+	var player_position: Vector2i = MapInstance.player_previous_position
+	var player_facing: Vector3 = MapInstance.player_facing
 	
 	if current_map_scene.has_node("Enemies"):
 		if current_map_scene.get_node("Enemies").has_method("populate_enemy_spawn_points"):
@@ -43,21 +43,21 @@ func load_map(map_id: String, load_data = null):
 	
 	player.set_grid_pos(player_position, player_facing, TILE_SIZE)
 
-func _on_encounter_started(_data: EncounterData):
+func _on_encounter_started(_data: EncounterData) -> void:
 	call_deferred("_deactivate_dungeon")
 	#if current_map_scene:
 		#current_map_scene.queue_free()
 		#current_map_scene = null
 		
-func _deactivate_dungeon():
+func _deactivate_dungeon() -> void:
 	self.visible = false
 	self.process_mode = Node.PROCESS_MODE_DISABLED
 	
-func handle_event(event: String):
+func handle_event(event: String) -> void:
 	print(event)
 
-func transition_to_map(map_id: String):
-	var tween = get_tree().create_tween()
+func transition_to_map(map_id: String) -> void:
+	var tween: Tween = get_tree().create_tween()
 	tween.tween_property(transition_rect, "modulate:a", 1.0, 0.5)
 	await tween.finished
 	load_map(map_id)
@@ -66,20 +66,20 @@ func transition_to_map(map_id: String):
 	await tween.finished
 	TransitionManager.transit_to_map_end()
 
-func _on_player_moved(data: Dictionary):
+func _on_player_moved(data: Dictionary) -> void:
 	MapInstance.update_player_position(data["grid_position"], data["grid_direction"])
 
-func _on_encounter_ended(result, _data):
+func _on_encounter_ended(result: String, _data: EncounterData) -> void:
 	print("Back from battle with result:", result)
 	self.visible = true
 	process_mode = Node.PROCESS_MODE_INHERIT
-	var player_position = MapInstance.player_previous_position
-	var player_facing = MapInstance.player_facing
+	var player_position: Vector2i = MapInstance.player_previous_position
+	var player_facing: Vector3 = MapInstance.player_facing
 	player.set_grid_pos(player_position, player_facing, TILE_SIZE)
 
 	#load_map(MapInstance.map_id)
 
-func _kill_map():
+func _kill_map() -> void:
 	if current_map_scene:
 		current_map_scene.queue_free()
 		current_map_scene = null

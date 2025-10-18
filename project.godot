@@ -44,15 +44,17 @@ ConversationBus="*res://scripts/bus/ConversationBus.gd"
 EncounterBus="*res://scripts/bus/EncounterBus.gd"
 RestBus="*res://scripts/bus/RestBus.gd"
 LoadBus="*res://scripts/LoadBus.gd"
+NotificationBus="*res://scripts/bus/NotificationBus.gd"
 
 [debug]
 
 gdscript/warnings/unused_signal=0
+gdscript/warnings/untyped_declaration=1
 
 [display]
 
-window/size/viewport_width=2000
-window/size/viewport_height=1200
+window/size/viewport_width=1200
+window/size/viewport_height=800
 
 [editor]
 
