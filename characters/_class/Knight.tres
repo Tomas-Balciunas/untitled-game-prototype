@@ -20,15 +20,15 @@ metadata/_custom_type_script = "uid://blqk30gl013xc"
 script = ExtResource("2_v728n")
 name = 1
 attributes = SubResource("Resource_rhq7f")
-attribute_modifiers = {
-"DEX": 1,
-"IQ": 1,
-"LUK": 2,
-"PIE": 2,
-"SPD": 1,
-"STR": 2,
-"VIT": 3
+stat_level_growth = {
+"ATTACK": 0.0,
+"DEFENSE": 0.0,
+"DIVINE_POWER": 0.0,
+"HEALTH": 3.0,
+"MAGIC_DEFENSE": 0.0,
+"MAGIC_POWER": 0.0,
+"MANA": 0.0,
+"RESISTANCE": 0.0,
+"SPEED": 0.0
 }
-health_growth = 2.5
-mana_growth = 0.8
 metadata/_custom_type_script = "uid://xepac0r71qt2"

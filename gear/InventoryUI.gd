@@ -94,9 +94,9 @@ func show_item_info(item: ItemInstance) -> void:
 	if item is GearInstance:
 		var base_stats: Dictionary = item.get_base_stats()
 		var stat_lines: Array[String] = []
-		for stat: Stats.Stat in base_stats.keys():
+		for stat: String in base_stats.keys():
 			if base_stats[stat] != 0:
-				stat_lines.append("%s: %d" % [Stats.stat_to_string(stat), base_stats[stat]])
+				stat_lines.append("%s: %d" % [Stats.stat_to_name(stat), base_stats[stat]])
 		stats_label.text = "\n".join(stat_lines)
 		
 		if item.get_all_modifiers().size() > 0:

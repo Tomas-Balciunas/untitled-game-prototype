@@ -18,15 +18,4 @@ metadata/_custom_type_script = "uid://blqk30gl013xc"
 script = ExtResource("2_v5w75")
 name = 0
 attributes = SubResource("Resource_jqe3r")
-attribute_modifiers = {
-"DEX": 1,
-"IQ": 1,
-"LUK": 1,
-"PIE": 1,
-"SPD": 1,
-"STR": 2,
-"VIT": 2
-}
-health_growth = 1.7
-mana_growth = 0.5
 metadata/_custom_type_script = "uid://xepac0r71qt2"

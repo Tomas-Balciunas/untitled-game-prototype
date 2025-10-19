@@ -6,6 +6,6 @@
 script = ExtResource("1_e47ts")
 name = "Defense"
 description = "Increases defense"
-attribute = 4
+stat = 4
 value = 10.0
 metadata/_custom_type_script = "uid://cyhrh3l20i5dm"

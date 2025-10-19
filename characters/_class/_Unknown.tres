@@ -12,13 +12,4 @@ metadata/_custom_type_script = "uid://blqk30gl013xc"
 [resource]
 script = ExtResource("2_flgxd")
 attributes = SubResource("Resource_ayw6p")
-attribute_modifiers = {
-"DEX": 0,
-"IQ": 0,
-"LUK": 0,
-"PIE": 0,
-"SPD": 0,
-"STR": 0,
-"VIT": 0
-}
 metadata/_custom_type_script = "uid://xepac0r71qt2"

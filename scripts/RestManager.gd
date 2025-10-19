@@ -1,31 +1,17 @@
 extends Node
 
-var level_up_screen
 var to_level_up: Array[CharacterInstance] = []
-var _last_position
-var _last_facing
+var _last_position: Vector2i
+var _last_facing: Vector3
 
 func _ready() -> void:
 	RestBus.enter_rest_area_requested.connect(enter_rest_area)
 	RestBus.exit_rest_area_requested.connect(exit_rest_area)
 	RestBus.rest_character_interaction_requested.connect(_on_rest_character_interaction_requested)
 
-func on_rest_button_pressed():
-	to_level_up = PartyManager.members.filter(func(c): return c.current_experience > c.experience_to_next_level)
-	next_character_level_up()
-
-func next_character_level_up():
-	if to_level_up.size() > 0:
-		level_up_screen.show_for_character(to_level_up.pop_front())
-
-func on_level_up_requested():
-	level_up_screen = get_tree().get_root().get_node("Main/LevelUp")
-	level_up_screen.show()
-	on_rest_button_pressed()
-
-func enter_rest_area():
-	var dungeon = get_tree().get_root().get_node("Main/Dungeon")
-	var player = get_tree().get_root().get_node("Main/Player")
+func enter_rest_area() -> void:
+	var dungeon := get_tree().get_root().get_node("Main/Dungeon")
+	var player := get_tree().get_root().get_node("Main/Player")
 	_last_position = MapInstance.player_previous_position
 	_last_facing = MapInstance.player_facing
 	dungeon.visible = false
@@ -43,7 +29,7 @@ func enter_rest_area():
 	var members: Array[CharacterInstance] = PartyManager.members.duplicate()
 	
 	spots.shuffle()
-	var interactable_scene = load("res://scripts/interactables/CharacterInteractable.tscn")
+	var interactable_scene := load("res://scripts/interactables/CharacterInteractable.tscn")
 	
 	for i in range(members.size()):
 		var chara: CharacterInstance = members[i]
@@ -51,8 +37,8 @@ func enter_rest_area():
 		if chara.is_main:
 			continue
 			
-		var rest_character = chara.resource.character_body.instantiate()
-		var interactable = interactable_scene.instantiate()
+		var rest_character := chara.resource.character_body.instantiate()
+		var interactable: Interactable = interactable_scene.instantiate()
 		
 		rest_character.global_transform = spots[i].global_transform
 		interactable.global_transform = spots[i].global_transform
@@ -67,10 +53,10 @@ func enter_rest_area():
 		var manager: ExperienceManager = member.resource.experience_manager
 		manager.level_up_character(member)
 
-func exit_rest_area():
-	var dungeon = get_tree().get_root().get_node("Main/Dungeon")
-	var player = get_tree().get_root().get_node("Main/Player")
-	var rest_area = get_tree().get_root().get_node("Main/RestArea")
+func exit_rest_area() -> void:
+	var dungeon := get_tree().get_root().get_node("Main/Dungeon")
+	var player := get_tree().get_root().get_node("Main/Player")
+	var rest_area := get_tree().get_root().get_node("Main/RestArea")
 	
 	rest_area.queue_free()
 	dungeon.visible = true
@@ -78,15 +64,15 @@ func exit_rest_area():
 	dungeon.process_mode = Node.PROCESS_MODE_INHERIT
 	
 	for member in PartyManager.members:
-		member.set_current_health(member.stats.max_health)
-		member.set_current_mana(member.stats.max_mana)
+		member.set_current_health(member.stats.get_final_stat(Stats.HEALTH))
+		member.set_current_mana(member.stats.get_final_stat(Stats.MANA))
 		
 	SaveManager.save_game(0)
 
 # TODO: game state managing to prevent transition while player is tweening
 
-func _on_rest_character_interaction_requested(chara: CharacterInstance):
-	var menu = get_tree().root.get_node("CharacterMenu")
+func _on_rest_character_interaction_requested(chara: CharacterInstance) -> void:
+	var menu := get_tree().root.get_node("CharacterMenu")
 	
 	if !menu:
 		push_error("Menu not found")

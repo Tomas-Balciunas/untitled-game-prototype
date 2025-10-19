@@ -6,6 +6,6 @@
 script = ExtResource("1_l3gob")
 name = "Speed"
 description = "Increases speed"
-attribute = 3
+stat = 3
 value = 3.0
 metadata/_custom_type_script = "uid://cyhrh3l20i5dm"

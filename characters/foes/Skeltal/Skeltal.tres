@@ -15,25 +15,19 @@
 
 [resource]
 script = ExtResource("1_km1me")
-race = ExtResource("7_gcpvx")
-job = ExtResource("6_mpmjy")
-gender = ExtResource("5_e8tyq")
-attributes = ExtResource("1_goqyc")
 id = "0000"
 character_body = ExtResource("3_gcpvx")
 name = "Skeleton"
-attack_power = 20
-health_points = 50
-mana_points = 10
-defense = 10
-speed = 11
-experience = 0
-slot_width = 1
-prefers_front_row = true
-default_skills = Array[ExtResource("1_cc3t0")]([])
 default_effects = Array[ExtResource("1_73qgh")]([ExtResource("2_d15h4")])
-default_damage_type = 0
-default_items = Array[ExtResource("5_mpmjy")]([])
-battle_events = Array[ExtResource("2_gcpvx")]([])
-experience_manager = ExtResource("8_tl2ml")
+base_stats = {
+"ATTACK": 10.0,
+"DEFENSE": 5.0,
+"DIVINE_POWER": 5.0,
+"HEALTH": 20.0,
+"MAGIC_DEFENSE": 5.0,
+"MAGIC_POWER": 5.0,
+"MANA": 5.0,
+"RESISTANCE": 5.0,
+"SPEED": 5.0
+}
 metadata/_custom_type_script = "uid://bwn4gpkaijqsg"

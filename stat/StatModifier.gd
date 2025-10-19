@@ -8,7 +8,7 @@ enum Type {
 
 @export var name: String
 @export var description: String
-@export var attribute: Stats.Stat = Stats.Stat.ATTACK
+@export var stat: Stats.Stat
 @export var type: Type = Type.ADDITIVE
 @export var value: float = 0.0
 @export var priority: int = 0

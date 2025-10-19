@@ -47,41 +47,28 @@ func generate() -> Array[GearInstance]:
 	var generated_gear: Array[GearInstance] = []
 	for i in range(quantity):
 		var type: Item.ItemType = requested_types[randi() % len(requested_types)]
-		var item: GearInstance
+		var item: Gear
 		
 		if type == Item.ItemType.WEAPON:
 			var weapon := Weapon.new()
 			weapon.type = type
 			weapon.modifiers.append(BasicFlatModifierList.get_random_modifier())
 			weapon.modifiers.append(BasicFlatModifierList.get_random_modifier())
-			var inst := GearInstance.new()
-			inst.template = weapon
-			inst.template.name = "Basic %s" % inst.item_type_to_string(type)
-			inst.extra_modifiers = weapon.modifiers
-			
-			item = inst
+			item = weapon
 		else:
 			var gear := Gear.new()
 			gear.type = type
 			gear.modifiers.append(BasicFlatModifierList.get_random_modifier())
 			gear.modifiers.append(BasicFlatModifierList.get_random_modifier())
-			var instance := GearInstance.new()
-			instance.template = gear
-			instance.template.name = "Basic %s" % instance.item_type_to_string(type)
-			instance.extra_modifiers = gear.modifiers
+			item = gear
 			
-			item = instance
+		for stat: String in item.base_stats.keys():
+			item.base_stats[stat] = randi() % 15
 			
-		item.template.base_attack = randi() % 15 + 1
-		item.template.base_defense = randi() % 10 + 1
-		item.template.base_divine_power = randi() % 10 + 1
-		item.template.base_health = randi() % 20 + 1
-		item.template.base_magic_defense = randi() % 10 + 1
-		item.template.base_magic_power = randi() % 10 + 1
-		item.template.base_mana = randi() % 10 + 1
-		item.template.base_resistance = randi() % 10 + 1
-		item.template.base_speed = randi() % 5 + 1
+		var inst := GearInstance.new(item)
+		inst.template.name = "Basic %s" % inst.item_type_to_string(type)
 		
-		generated_gear.append(item)
+		
+		generated_gear.append(inst)
 		
 	return generated_gear

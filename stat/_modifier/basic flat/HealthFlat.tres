@@ -6,6 +6,6 @@
 script = ExtResource("1_x7hrc")
 name = "Health"
 description = "Increases health"
-attribute = 1
+stat = 1
 value = 10.0
 metadata/_custom_type_script = "uid://cyhrh3l20i5dm"

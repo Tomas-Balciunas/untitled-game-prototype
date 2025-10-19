@@ -20,15 +20,4 @@ script = ExtResource("2_lyfav")
 name = 3
 attributes = SubResource("Resource_0qdgc")
 skills = Array[ExtResource("3_cd4k3")]([ExtResource("5_lu6jk"), ExtResource("6_rx8nc")])
-attribute_modifiers = {
-"DEX": 1,
-"IQ": 2,
-"LUK": 1,
-"PIE": 2,
-"SPD": 1,
-"STR": 1,
-"VIT": 1
-}
-health_growth = 1.0
-mana_growth = 2.0
 metadata/_custom_type_script = "uid://xepac0r71qt2"

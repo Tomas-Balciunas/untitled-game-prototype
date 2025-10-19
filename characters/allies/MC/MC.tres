@@ -16,4 +16,15 @@
 script = ExtResource("10_fb0jw")
 id = "mc"
 character_body = ExtResource("3_2usx5")
+base_stats = {
+"ATTACK": 10.0,
+"DEFENSE": 10.0,
+"DIVINE_POWER": 10.0,
+"HEALTH": 50.0,
+"MAGIC_DEFENSE": 10.0,
+"MAGIC_POWER": 10.0,
+"MANA": 5.0,
+"RESISTANCE": 10.0,
+"SPEED": 3.0
+}
 metadata/_custom_type_script = "uid://bwn4gpkaijqsg"

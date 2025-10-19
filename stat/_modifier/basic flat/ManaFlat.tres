@@ -6,6 +6,6 @@
 script = ExtResource("1_v8i84")
 name = "Mana"
 description = "Increases mana"
-attribute = 2
+stat = 2
 value = 7.0
 metadata/_custom_type_script = "uid://cyhrh3l20i5dm"

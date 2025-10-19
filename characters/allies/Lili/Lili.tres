@@ -37,9 +37,29 @@ attributes = SubResource("Resource_n7wih")
 id = "a_lili_1"
 character_body = ExtResource("3_715sk")
 name = "Lili"
-attack_power = 18
-speed = 11
 default_effects = Array[ExtResource("1_7ajkr")]([ExtResource("3_1ui0v"), ExtResource("4_23xqr"), ExtResource("7_715sk")])
 default_items = Array[ExtResource("6_7lkq3")]([ExtResource("7_n60ku")])
+base_stats = {
+&"ATTACK": 5.0,
+&"DEFENSE": 5.0,
+&"DIVINE_POWER": 10.0,
+&"HEALTH": 25.0,
+&"MAGIC_DEFENSE": 15.0,
+&"MAGIC_POWER": 15.0,
+&"MANA": 20.0,
+&"RESISTANCE": 15.0,
+&"SPEED": 7.0
+}
+stat_level_growth = {
+&"ATTACK": 0.5,
+&"DEFENSE": 1.0,
+&"DIVINE_POWER": 3.0,
+&"HEALTH": 2.0,
+&"MAGIC_DEFENSE": 2.0,
+&"MAGIC_POWER": 2.0,
+&"MANA": 5.0,
+&"RESISTANCE": 1.0,
+&"SPEED": 0.2
+}
 interactions = ExtResource("10_pwtr7")
 metadata/_custom_type_script = "uid://bwn4gpkaijqsg"

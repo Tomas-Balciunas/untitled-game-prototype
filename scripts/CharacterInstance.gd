@@ -47,9 +47,8 @@ func _init(res: CharacterResource) -> void:
 	resource = res
 	level_up_attributes = Attributes.new()
 	starting_attributes = Attributes.new()
-	stats = Stats.new()
+	stats = Stats.new(res.base_stats)
 	stats._owner = self
-	fill_stats(res)
 	fill_attributes()
 	is_main = res.is_main
 	current_experience = 5000
@@ -58,23 +57,20 @@ func _init(res: CharacterResource) -> void:
 	
 	for item in res.default_items:
 		if item is Gear:
-			var gear = GearInstance.new()
-			gear.template = item
-			gear.effects = item.effects
-			gear.modifiers = item.modifiers
+			var gear := GearInstance.new(item)
 			inventory.add_item(gear)
 			
 			continue
 			
 		if item is ConsumableItem:
-			var cons = ConsumableInstance.new()
+			var cons := ConsumableInstance.new()
 			cons.template = item
 			cons.effects = item.effects
 			inventory.add_item(cons)
 			
 			continue
 		
-		var inst = ItemInstance.new()
+		var inst := ItemInstance.new()
 		inst.template = item
 		inventory.add_item(inst)
 	
@@ -109,8 +105,8 @@ func _init(res: CharacterResource) -> void:
 	stats.recalculate_stats(true, true)
 
 func set_current_health(new_health: int) -> void:
-	var old = stats.current_health
-	var new = clamp(new_health, 0, stats.max_health)
+	var old := stats.current_health
+	var new: float = clamp(new_health, 0, stats.get_final_stat(Stats.HEALTH))
 	
 	if new < old:
 		stats.current_health = new
@@ -125,11 +121,11 @@ func set_current_health(new_health: int) -> void:
 		is_dead = true
 		print("%s is dead" % resource.name)
 		emit_signal("died", self)
-	print("%s HP %s/%s" % [resource.name, stats.current_health, stats.max_health])
+	print("%s HP %s/%s" % [resource.name, stats.current_health, stats.get_final_stat(Stats.HEALTH)])
 	
 func set_current_mana(new_mana: int) -> void:
-	var old = stats.current_mana
-	var new = clamp(new_mana, 0, stats.max_mana)
+	var old := stats.current_mana
+	var new: float = clamp(new_mana, 0, stats.get_final_stat(Stats.MANA))
 	
 	if new < old:
 		stats.current_mana = new
@@ -138,7 +134,7 @@ func set_current_mana(new_mana: int) -> void:
 		stats.current_mana = new
 		emit_signal("mana_restored", stats.current_mana - old, self)
 	emit_signal("mana_changed", old, stats.current_mana)
-	print("%s MP %s/%s" % [resource.name, stats.current_mana, stats.max_mana])
+	print("%s MP %s/%s" % [resource.name, stats.current_mana, stats.get_final_stat(Stats.HEALTH)])
 
 func prepare_for_battle() -> void:
 	for e: Effect in effects:
@@ -173,24 +169,16 @@ func remove_effect(effect: Effect) -> void:
 			effect.on_expire(self)
 		
 func process_effects(trigger: String, ctx: ActionContext = null) -> void:
-	for effect in effects.duplicate():
+	for effect: Effect in effects.duplicate():
 		if effect.has_method("on_trigger"):
-			var event = TriggerEvent.new()
+			var event := TriggerEvent.new()
 			event.actor = self
 			event.trigger = trigger
 			event.ctx = ctx
 			effect.on_trigger(event)
 		
-func fill_stats(res: CharacterResource):
-	stats.base_attack = res.attack_power
-	stats.current_health = res.health_points
-	stats.base_health = res.health_points
-	stats.current_mana = res.mana_points
-	stats.base_mana = res.mana_points
-	stats.base_defense = res.defense
-	stats.base_speed = res.speed
 
-func fill_attributes():
+func fill_attributes() -> void:
 	attributes = Attributes.new()
 	attributes.add(resource.attributes)
 	if resource.race:
@@ -203,9 +191,6 @@ func fill_attributes():
 		attributes.add(level_up_attributes)
 	if starting_attributes:
 		attributes.add(starting_attributes)
-
-func get_attack_power():
-	pass
 
 func increase_attribute(attr: String) -> bool:
 	if unspent_attribute_points <= 0:
@@ -226,7 +211,7 @@ func increase_attribute(attr: String) -> bool:
 	return true
 
 func equip_item(item: GearInstance) -> bool:
-	var slot_name = get_slot_name_for_item(item)
+	var slot_name := get_slot_name_for_item(item)
 
 	if not slot_name:
 		return false
@@ -241,7 +226,7 @@ func equip_item(item: GearInstance) -> bool:
 	var insts: Array = []
 	
 	for e in item.get_all_effects():
-		var inst = apply_effect(e)
+		var inst := apply_effect(e)
 		insts.append(inst)
 		
 	gear_effects[slot_name] = insts
@@ -259,7 +244,7 @@ func unequip_slot(slot_name: String) -> bool:
 	if not item:
 		return false
 
-	for inst in gear_effects.get(slot_name, []):
+	for inst: Effect in gear_effects.get(slot_name, []):
 		remove_effect(inst)
 	
 	gear_effects.erase(slot_name)
@@ -402,20 +387,17 @@ static func from_dict(data: Dictionary) -> CharacterInstance:
 	if data.has("inventory"):
 		inst.inventory.slots = []
 		for id: String in data["inventory"]:
-			var item_res = ItemsRegistry.get_item(id)
+			var item_res := ItemsRegistry.get_item(id)
 			
 			if not item_res:
 				push_error("Item not found! %s" % id)
 			
 			if item_res is Gear:
-				var gear = GearInstance.new()
-				gear.template = item_res
-				gear.effects = item_res.effects
-				gear.modifiers = item_res.modifiers
+				var gear := GearInstance.new(item_res)
 				inst.inventory.add_item(gear)
 			
 			if item_res is ConsumableItem:
-				var cons = ConsumableInstance.new()
+				var cons := ConsumableInstance.new()
 				cons.template = item_res
 				cons.effects = item_res.effects
 				inst.inventory.add_item(cons)
@@ -423,7 +405,7 @@ static func from_dict(data: Dictionary) -> CharacterInstance:
 	if data.has("effects"):
 		inst.effects = []
 		for effect_id in data["effects"]:
-			var effect = EffectRegistry.get_effect(effect_id)
+			var effect := EffectRegistry.get_effect(effect_id)
 			if not effect:
 				push_error("Effect not found: %s" % effect_id)
 			inst.apply_effect(effect)
@@ -434,10 +416,7 @@ static func from_dict(data: Dictionary) -> CharacterInstance:
 			if item_id != null:
 				var gear_res = ItemsRegistry.get_item(item_id)
 				if gear_res and gear_res is Gear:
-					var gear = GearInstance.new()
-					gear.template = gear_res
-					gear.effects = gear_res.effects
-					gear.modifiers = gear_res.modifiers
+					var gear = GearInstance.new(gear_res)
 					inst.equip_item(gear)
 					
 	inst.stats.recalculate_stats()

@@ -3,24 +3,22 @@ class_name GearInstance
 
 var enhancement_level: int = 0
 
+var stats: Dictionary = Stats.STATS
+
 var effects: Array[Effect] = []
 var modifiers: Array[StatModifier] = []
 
 var extra_modifiers: Array[StatModifier] = []
 var extra_effects: Array[Effect] = []
 
+func _init(resource: Gear) -> void:
+	template = resource
+	stats = resource.base_stats
+	effects = resource.effects
+	modifiers = resource.modifiers
+
 func get_base_stats() -> Dictionary:
-	return {
-		Stats.Stat.ATTACK: template.base_attack,
-		Stats.Stat.HEALTH: template.base_health,
-		Stats.Stat.SPEED: template.base_speed,
-		Stats.Stat.MANA: template.base_mana,
-		Stats.Stat.DEFENSE: template.base_defense,
-		Stats.Stat.MAGIC_POWER: template.base_magic_power,
-		Stats.Stat.DIVINE_POWER: template.base_divine_power,
-		Stats.Stat.MAGIC_DEFENSE: template.base_magic_defense,
-		Stats.Stat.RESISTANCE: template.base_resistance,
-	}
+	return template.base_stats
 
 func get_all_modifiers() -> Array[StatModifier]:
 	var mods: Array[StatModifier] = []

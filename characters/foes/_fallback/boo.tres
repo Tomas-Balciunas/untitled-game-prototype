@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="CharacterResource" load_steps=11 format=3 uid="uid://btr7k6tmwt3qi"]
+[gd_resource type="Resource" script_class="CharacterResource" load_steps=12 format=3 uid="uid://btr7k6tmwt3qi"]
 
 [ext_resource type="Script" uid="uid://bwn4gpkaijqsg" path="res://scripts/CharacterResource.gd" id="1_04kyn"]
 [ext_resource type="Resource" uid="uid://bm8voqn41431y" path="res://characters/_attribute/_Unknown.tres" id="1_7y0bu"]
@@ -9,28 +9,24 @@
 [ext_resource type="Script" uid="uid://b06vmgrh4qa8i" path="res://gear/Item.gd" id="5_7mwlc"]
 [ext_resource type="Resource" uid="uid://ccd45ithmlluj" path="res://characters/_gender/_Unknown.tres" id="5_d1mbr"]
 [ext_resource type="Resource" uid="uid://cs2tci0dc3vvo" path="res://characters/_class/_Unknown.tres" id="6_7mwlc"]
+[ext_resource type="Resource" uid="uid://c5qyqcmwx0qfy" path="res://scripts/experience/ExperienceManager.tres" id="7_d1mbr"]
 [ext_resource type="Resource" uid="uid://lcgngc3c13fc" path="res://characters/_race/_Unknown.tres" id="7_rbf6s"]
 
 [resource]
 script = ExtResource("1_04kyn")
-race = ExtResource("7_rbf6s")
-job = ExtResource("6_7mwlc")
-gender = ExtResource("5_d1mbr")
-attributes = ExtResource("1_7y0bu")
 id = "e_enemy_001"
 character_body = ExtResource("3_y8skw")
 name = "Boo"
-attack_power = 1
-health_points = 20
-mana_points = 10
-defense = 20
-speed = 10
 experience = 100
-slot_width = 1
-prefers_front_row = true
-default_skills = Array[ExtResource("4_y8skw")]([])
-default_effects = Array[ExtResource("3_xdmfg")]([])
-default_damage_type = 0
-default_items = Array[ExtResource("5_7mwlc")]([])
-battle_events = Array[ExtResource("2_y8skw")]([])
+base_stats = {
+"ATTACK": 5.0,
+"DEFENSE": 5.0,
+"DIVINE_POWER": 5.0,
+"HEALTH": 8.0,
+"MAGIC_DEFENSE": 5.0,
+"MAGIC_POWER": 5.0,
+"MANA": 5.0,
+"RESISTANCE": 5.0,
+"SPEED": 5.0
+}
 metadata/_custom_type_script = "uid://bwn4gpkaijqsg"

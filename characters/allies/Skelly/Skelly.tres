@@ -39,10 +39,18 @@ attributes = SubResource("Resource_rhf32")
 id = "a_skelly_1"
 character_body = ExtResource("3_g0fbc")
 name = "Skelly"
-attack_power = 10
-health_points = 200
-speed = 12
 default_effects = Array[ExtResource("1_l3iqv")]([ExtResource("5_g0fbc")])
 default_damage_type = 1
 default_items = Array[ExtResource("4_yu6ia")]([ExtResource("3_ohgca"), ExtResource("6_t07cl"), ExtResource("7_jtp86"), ExtResource("8_ympyx"), ExtResource("9_jtp86"), ExtResource("10_ympyx")])
+base_stats = {
+"ATTACK": 10.0,
+"DEFENSE": 10.0,
+"DIVINE_POWER": 5.0,
+"HEALTH": 45.0,
+"MAGIC_DEFENSE": 10.0,
+"MAGIC_POWER": 5.0,
+"MANA": 7.0,
+"RESISTANCE": 10.0,
+"SPEED": 4.0
+}
 metadata/_custom_type_script = "uid://bwn4gpkaijqsg"
