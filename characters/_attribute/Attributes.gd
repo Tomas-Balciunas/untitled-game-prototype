@@ -39,3 +39,14 @@ func add(other: Attributes) -> void:
 
 static func to_str(value: int) -> String:
 	return AttributeRef.keys()[value]
+
+func get_attribute_by_enum(attr: String) -> int:
+	match attr:
+		STR: return str
+		IQ: return iq
+		PIE: return pie
+		VIT: return vit
+		DEX: return dex
+		SPD: return spd
+		LUK: return luk
+		_: return 0

@@ -381,8 +381,8 @@ static func from_dict(data: Dictionary) -> CharacterInstance:
 		inst.starting_attributes.spd = a.get("spd", inst.starting_attributes.spd)
 		inst.starting_attributes.luk = a.get("luk", inst.starting_attributes.luk)
 
-	inst.stats.current_health = data.get("hp", inst.stats.max_health)
-	inst.stats.current_mana = data.get("mp", inst.stats.max_mana)
+	inst.stats.current_health = data.get("hp", inst.stats.get_final_stat(Stats.HEALTH))
+	inst.stats.current_mana = data.get("mp", inst.stats.get_final_stat(Stats.MANA))
 
 	if data.has("inventory"):
 		inst.inventory.slots = []

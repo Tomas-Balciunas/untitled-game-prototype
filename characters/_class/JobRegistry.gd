@@ -17,7 +17,7 @@ static func type_to_string(value: int) -> String:
 			return key.capitalize()
 	return "Unknown"
 
-static func get_by_name(value: String):
+static func get_by_name(value: String) -> Resource:
 	for file in DirAccess.get_files_at("res://characters/_class/"):
 		if file.ends_with(".tres") and file.begins_with(value):
 			var res: Job = load("res://characters/_class/" + file)

@@ -159,7 +159,7 @@ func _on_player_action_selected(action: String, options: Array) -> void:
 			enable_all_targeting()
 			return
 
-func _on_target_selected(target_slot: FormationSlot) -> void:
+func _on_target_selected(target_slot) -> void:
 	disable_all_targeting()
 	_pending_target = target_slot.character_instance
 	if target_slot is FormationSlot:

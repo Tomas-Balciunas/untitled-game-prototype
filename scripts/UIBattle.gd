@@ -4,32 +4,32 @@ signal action_selected(action: String, options: Array)
 
 var current_battler: CharacterInstance = null
 
-@onready var attack_button = $VBoxContainer/AttackButton
-@onready var defend_button = $VBoxContainer/DefendButton
-@onready var skill_button = $VBoxContainer/SkillButton
-@onready var item_button = $VBoxContainer/ItemButton
-@onready var flee_button = $VBoxContainer/FleeButton
-@onready var skill_popup = $Skill
-@onready var skill_list_container = $Skill/ScrollContainer/SkillListContainer
-@onready var item_popup = $Item
-@onready var item_list_container = $Item/ScrollContainer/ItemListContainer
+@onready var attack_button := $VBoxContainer/AttackButton
+@onready var defend_button := $VBoxContainer/DefendButton
+@onready var skill_button := $VBoxContainer/SkillButton
+@onready var item_button := $VBoxContainer/ItemButton
+@onready var flee_button := $VBoxContainer/FleeButton
+@onready var skill_popup := $Skill
+@onready var skill_list_container := $Skill/ScrollContainer/SkillListContainer
+@onready var item_popup := $Item
+@onready var item_list_container := $Item/ScrollContainer/ItemListContainer
 
-@onready var skill_info_panel = $Skill/SkillInfoPanel
-@onready var skill_info_name_label = $Skill/SkillInfoPanel/SkillName
-@onready var skill_info_cost_label = $Skill/SkillInfoPanel/SkillCost
-@onready var skill_info_description_label = $Skill/SkillInfoPanel/SkillDescription
+@onready var skill_info_panel := $Skill/SkillInfoPanel
+@onready var skill_info_name_label := $Skill/SkillInfoPanel/SkillName
+@onready var skill_info_cost_label := $Skill/SkillInfoPanel/SkillCost
+@onready var skill_info_description_label := $Skill/SkillInfoPanel/SkillDescription
 
-@onready var item_info_panel = $Item/ItemInfoPanel
-@onready var item_info_name_label = $Item/ItemInfoPanel/ItemName
-@onready var item_info_description_label = $Item/ItemInfoPanel/ItemDescription
+@onready var item_info_panel := $Item/ItemInfoPanel
+@onready var item_info_name_label := $Item/ItemInfoPanel/ItemName
+@onready var item_info_description_label := $Item/ItemInfoPanel/ItemDescription
 
-func _on_battler_change(battler, is_party_member: bool):
+func _on_battler_change(battler: CharacterInstance, is_party_member: bool) -> void:
 	if is_party_member:
 		current_battler = battler
 		_populate_skill_list()
 		_populate_item_list()
 	
-func _on_turn_started(is_party_member: bool):
+func _on_turn_started(is_party_member: bool) -> void:
 	if is_party_member:
 		show()
 		skill_popup.visible = false
@@ -57,7 +57,7 @@ func _on_item_selected(item) -> void:
 	emit_signal("action_selected", "item", [item])
 	skill_popup.hide()
 
-func highlight_action(action: String):
+func highlight_action(action: String) -> void:
 	_reset_all_button_highlights()
 	
 	match action:
@@ -72,11 +72,11 @@ func highlight_action(action: String):
 		"item":
 			_highlight_button(item_button)
 
-func _highlight_button(button: Button):
+func _highlight_button(button: Button) -> void:
 	button.add_theme_color_override("font_color", Color.YELLOW)
 
-func _reset_all_button_highlights():
-	var buttons = [attack_button, defend_button, flee_button, skill_button, item_button]
+func _reset_all_button_highlights() -> void:
+	var buttons := [attack_button, defend_button, flee_button, skill_button, item_button]
 	for b in buttons:
 		b.add_theme_color_override("font_color", Color.WHITE)
 
@@ -90,15 +90,15 @@ func _on_item_button_pressed() -> void:
 	item_popup.visible = true
 	skill_popup.visible = false
 	
-func _populate_item_list():
+func _populate_item_list() -> void:
 	for child in item_list_container.get_children():
 		child.queue_free()
 
-	var items = current_battler.inventory.get_all_items()
+	var items := current_battler.inventory.get_all_items()
 	for item in items:
 		if not item is ConsumableInstance:
 			continue
-		var btn = Button.new()
+		var btn := Button.new()
 		btn.text = item.get_item_name()
 		btn.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		btn.pressed.connect(_on_item_selected.bind(item))
@@ -106,11 +106,11 @@ func _populate_item_list():
 		btn.mouse_exited.connect(_on_item_unhover)
 		item_list_container.add_child(btn)
 
-func _populate_skill_list():
+func _populate_skill_list() -> void:
 	for child in skill_list_container.get_children():
 		child.queue_free()
 
-	var skills = []
+	var skills := []
 	for s in current_battler.learnt_skills:
 		skills.append(s)
 	
@@ -121,7 +121,7 @@ func _populate_skill_list():
 			if e.has_method("modify_mp_cost"):
 				mp_cost = e.modify_mp_cost(mp_cost)
 				
-		var btn = Button.new()
+		var btn := Button.new()
 		btn.text = "%s (%d MP)" % [skill["name"], mp_cost]
 		btn.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		btn.pressed.connect(_on_skill_selected.bind(skill))
@@ -133,19 +133,19 @@ func _populate_skill_list():
 		
 		skill_list_container.add_child(btn)
 
-func _on_skill_hover(skill: Skill):
+func _on_skill_hover(skill: Skill) -> void:
 	skill_info_panel.visible = true
 	skill_info_name_label.text = skill.name
 	skill_info_cost_label.text = "MP: %s, SP: %s" % [skill.mp_cost, skill.sp_cost]
 	skill_info_description_label.text = skill.description
 
-func _on_skill_unhover():
+func _on_skill_unhover() -> void:
 	skill_info_panel.visible = false
 	
-func _on_item_hover(item: ConsumableInstance):
+func _on_item_hover(item: ConsumableInstance) -> void:
 	item_info_panel.visible = true
 	item_info_name_label.text = item.get_item_name()
 	item_info_description_label.text = item.get_item_description()
 
-func _on_item_unhover():
+func _on_item_unhover() -> void:
 	item_info_panel.visible = false

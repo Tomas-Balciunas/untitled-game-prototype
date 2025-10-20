@@ -12,7 +12,7 @@
 [ext_resource type="Script" uid="uid://b06vmgrh4qa8i" path="res://gear/Item.gd" id="6_7lkq3"]
 [ext_resource type="Resource" uid="uid://cm3vin4wtxpjv" path="res://effect/_passive/counterattack/Counterattack.tres" id="7_715sk"]
 [ext_resource type="Resource" uid="uid://cyq5e4qjfhb80" path="res://gear/consumable/hp pot minor/hp_pot.tres" id="7_n60ku"]
-[ext_resource type="Resource" uid="uid://7xtbwq8efwlh" path="res://characters/_class/Priest.tres" id="8_23xqr"]
+[ext_resource type="Resource" uid="uid://br55c33pop4ux" path="res://characters/_class/Priest.tres" id="8_23xqr"]
 [ext_resource type="Resource" uid="uid://coilrntx01n8m" path="res://characters/allies/Lili/new_resource.tres" id="10_pwtr7"]
 [ext_resource type="Script" uid="uid://dq4acpkde276p" path="res://skills/Skill.gd" id="10_tttne"]
 [ext_resource type="Resource" uid="uid://c5qyqcmwx0qfy" path="res://scripts/experience/ExperienceManager.tres" id="11_tttne"]

@@ -6,17 +6,7 @@
 
 [resource]
 script = ExtResource("3_gotoq")
-base_attack = 0
-base_health = 0
-base_speed = 0
-base_mana = 0
-base_defense = 0
-base_magic_power = 0
-base_divine_power = 0
-base_magic_defense = 0
-base_resistance = 0
-modifiers = Array[ExtResource("2_0whkx")]([])
-effects = Array[ExtResource("1_ti43n")]([])
+base_stats = null
 id = "ring_02"
 name = "Ring 2"
 type = 5

@@ -9,7 +9,7 @@ func _ready() -> void:
 	EncounterBus.encounter_started.connect(start_encounter)
 	EncounterBus.encounter_ended.connect(end_encounter)
 
-func start_encounter(data: EncounterData):
+func start_encounter(data: EncounterData) -> void:
 	if GameState.current_state not in [GameState.States.IDLE, GameState.States.EVENT]:
 		return
 		
@@ -17,12 +17,12 @@ func start_encounter(data: EncounterData):
 	print("EncounterManager: Starting encounter:", data.id)
 	
 	var enemies: Array[CharacterResource] = []
-	var arena = MapManager.get_arena(data.arena)
+	var arena := MapManager.get_arena(data.arena)
 	
 	for enemy in data.enemies:
 		enemies.append(CharacterRegistry.get_character(enemy.id))
 	
-	var tween = get_tree().create_tween()
+	var tween := get_tree().create_tween()
 	transition_battle.modulate.a = 0.0
 	transition_battle.visible = true
 	tween.tween_property(transition_battle, "modulate:a", 1.0, 0.5)
@@ -38,7 +38,7 @@ func start_encounter(data: EncounterData):
 	transition_battle.visible = false
 	await tween.finished
 
-func end_encounter(result, data):
+func end_encounter(result: String, data: EncounterData) -> void:
 	if result == "win":
 		MapInstance.mark_encounter_cleared(data.id)
 		

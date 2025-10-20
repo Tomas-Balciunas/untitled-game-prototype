@@ -1,34 +1,34 @@
-[gd_resource type="Resource" script_class="Job" load_steps=6 format=3 uid="uid://bbd7uboqwf5gb"]
+[gd_resource type="Resource" script_class="KnightClass" load_steps=6 format=3 uid="uid://cdu3c36ji1mmg"]
 
 [ext_resource type="Script" uid="uid://bp0biy0knxw2o" path="res://effect/Effect.gd" id="1_ht54m"]
 [ext_resource type="Script" uid="uid://blqk30gl013xc" path="res://characters/_attribute/Attributes.gd" id="1_v728n"]
-[ext_resource type="Script" uid="uid://xepac0r71qt2" path="res://characters/_class/Job.gd" id="2_v728n"]
+[ext_resource type="Script" uid="uid://6gf11w4qa7j8" path="res://characters/_class/Knight.gd" id="2_ht54m"]
 [ext_resource type="Script" uid="uid://dq4acpkde276p" path="res://skills/Skill.gd" id="3_rhq7f"]
 
-[sub_resource type="Resource" id="Resource_rhq7f"]
+[sub_resource type="Resource" id="Resource_v728n"]
 script = ExtResource("1_v728n")
-str = 6
-iq = 2
-pie = 5
-vit = 10
-dex = 2
-spd = 3
-luk = 4
+str = 2
+iq = 1
+pie = 1
+vit = 4
+dex = 1
+spd = 1
+luk = 2
 metadata/_custom_type_script = "uid://blqk30gl013xc"
 
 [resource]
-script = ExtResource("2_v728n")
+script = ExtResource("2_ht54m")
 name = 1
-attributes = SubResource("Resource_rhq7f")
+attributes = SubResource("Resource_v728n")
 stat_level_growth = {
-"ATTACK": 0.0,
-"DEFENSE": 0.0,
-"DIVINE_POWER": 0.0,
-"HEALTH": 3.0,
-"MAGIC_DEFENSE": 0.0,
-"MAGIC_POWER": 0.0,
-"MANA": 0.0,
-"RESISTANCE": 0.0,
-"SPEED": 0.0
+"ATTACK": 2.0,
+"DEFENSE": 5.0,
+"DIVINE_POWER": 2.0,
+"HEALTH": 9.0,
+"MAGIC_DEFENSE": 5.0,
+"MAGIC_POWER": 1.0,
+"MANA": 1.0,
+"RESISTANCE": 10.0,
+"SPEED": 0.3
 }
-metadata/_custom_type_script = "uid://xepac0r71qt2"
+metadata/_custom_type_script = "uid://6gf11w4qa7j8"

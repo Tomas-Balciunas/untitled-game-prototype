@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="Gear" load_steps=4 format=3 uid="uid://bkdajsw3r0i5r"]
+
+[ext_resource type="Script" uid="uid://bp0biy0knxw2o" path="res://effect/Effect.gd" id="1_5oecy"]
+[ext_resource type="Script" uid="uid://cyhrh3l20i5dm" path="res://stat/StatModifier.gd" id="2_m5hry"]
+[ext_resource type="Script" uid="uid://dnxjp78vsivnq" path="res://gear/Gear.gd" id="3_creqq"]
+
+[resource]
+script = ExtResource("3_creqq")
+base_stats = null
+metadata/_custom_type_script = "uid://dnxjp78vsivnq"

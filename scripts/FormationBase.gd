@@ -30,7 +30,7 @@ func remove_slot_for(enemy: CharacterInstance) -> void:
 			back_slots[j] = null
 			return
 			
-func get_slot_for(enemy: CharacterInstance):
+func get_slot_for(enemy: CharacterInstance) -> FormationSlot:
 	for i in range(max_slots):
 		var slot = front_slots[i]
 		if slot and slot.character_instance == enemy:
@@ -40,6 +40,8 @@ func get_slot_for(enemy: CharacterInstance):
 		var slot = back_slots[j]
 		if slot and slot.character_instance == enemy:
 			return slot
+			
+	return null
 
 func _promote_from_back_to_front(index: int) -> void:
 	var back = back_slots[index]
@@ -87,7 +89,7 @@ func get_blast_enemies(target: CharacterInstance) -> Array[CharacterInstance]:
 	push_error("Blast Targeting: Target not found!")
 	return [target]
 
-func get_row_enemies(target: CharacterInstance):
+func get_row_enemies(target: CharacterInstance) -> Array[FormationSlot]:
 	for i in range(max_slots):
 		var slot = front_slots[i]
 		if slot and slot.character_instance == target:
@@ -97,13 +99,13 @@ func get_row_enemies(target: CharacterInstance):
 func get_adjacent_enemies(target: CharacterInstance) -> Array[CharacterInstance]:
 	for i in range(max_slots):
 		if front_slots[i] and front_slots[i].character_instance == target:
-			var row =  get_adjacent_in_row(front_slots, i)
-			var column = get_adjacent_in_column(back_slots, i, front_slots[i])
+			var row :=  get_adjacent_in_row(front_slots, i)
+			var column := get_adjacent_in_column(back_slots, i, front_slots[i])
 			return array_unique(row, column)
 			
 		if back_slots[i] and back_slots[i].character_instance == target:
-			var row =  get_adjacent_in_row(back_slots, i)
-			var column = get_adjacent_in_column(front_slots, i, back_slots[i])
+			var row :=  get_adjacent_in_row(back_slots, i)
+			var column := get_adjacent_in_column(front_slots, i, back_slots[i])
 			return array_unique(row, column)
 			
 	push_error("Adjacent Targeting: Target not found!")

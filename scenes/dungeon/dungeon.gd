@@ -14,21 +14,23 @@ func _ready() -> void:
 	TransitionManager.connect("map_transition_started", Callable(self, "transition_to_map"))
 	
 	transition_rect.modulate.a = 0.0
-	load_map("area_00")
+	load_map("beginning_area_01")
 
 func load_map(map_id: String, load_data = null) -> void:
-	var map_resource: MapData = MapManager.get_map(map_id)
+	#TODO: safety
+	var map_data = MapManager.get_map_data(map_id)
+	var map_scene = MapManager.get_map(map_id)
 	
 	_kill_map()
 	
 	if MapInstance.map_id != map_id or not MapInstance.map_id:
 		print("Dungeon: Loading new map")
-		MapInstance.hydrate_from_resource(map_resource)
+		MapInstance.hydrate_from_resource(map_data)
 		
 	if load_data:
 		MapInstance.hydrate_from_load(load_data)
 
-	current_map_scene = MapInstance.map_data.instantiate()
+	current_map_scene = map_scene.instantiate()
 	self.add_child(current_map_scene)
 	var player_position: Vector2i = MapInstance.player_previous_position
 	var player_facing: Vector3 = MapInstance.player_facing

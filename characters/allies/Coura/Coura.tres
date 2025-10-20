@@ -5,7 +5,7 @@
 [ext_resource type="Script" uid="uid://dq4acpkde276p" path="res://skills/Skill.gd" id="3_ma71o"]
 [ext_resource type="Script" uid="uid://cgllfcpvodqsg" path="res://scripts/experience/ExperienceManager.gd" id="4_g8tir"]
 [ext_resource type="Resource" uid="uid://pchf07nevgay" path="res://characters/_gender/Female.tres" id="6_8awbe"]
-[ext_resource type="Resource" uid="uid://bbd7uboqwf5gb" path="res://characters/_class/Knight.tres" id="7_8dd4x"]
+[ext_resource type="Resource" uid="uid://cdu3c36ji1mmg" path="res://characters/_class/Knight.tres" id="7_8dd4x"]
 [ext_resource type="Resource" uid="uid://eiwm6khdbjki" path="res://characters/_race/Human.tres" id="8_3lheu"]
 [ext_resource type="Script" uid="uid://bwn4gpkaijqsg" path="res://scripts/CharacterResource.gd" id="9_0ou40"]
 

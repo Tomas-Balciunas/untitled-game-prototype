@@ -43,8 +43,8 @@ func _init(qty: int, types: Array[Item.ItemType] = []) -> void:
 	quantity = qty
 	requested_types = types
 
-func generate() -> Array[GearInstance]:
-	var generated_gear: Array[GearInstance] = []
+func generate() -> Array[Gear]:
+	var generated_gear: Array[Gear] = []
 	for i in range(quantity):
 		var type: Item.ItemType = requested_types[randi() % len(requested_types)]
 		var item: Gear
@@ -62,13 +62,12 @@ func generate() -> Array[GearInstance]:
 			gear.modifiers.append(BasicFlatModifierList.get_random_modifier())
 			item = gear
 			
+		item.base_stats = item.base_stats.duplicate(true)
+		item.name = "Basic %s" % item.item_type_to_string(type)
+		
 		for stat: String in item.base_stats.keys():
 			item.base_stats[stat] = randi() % 15
 			
-		var inst := GearInstance.new(item)
-		inst.template.name = "Basic %s" % inst.item_type_to_string(type)
-		
-		
-		generated_gear.append(inst)
+		generated_gear.append(item)
 		
 	return generated_gear

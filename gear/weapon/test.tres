@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="Weapon" load_steps=4 format=3 uid="uid://q7f7d7uhowtp"]
+
+[ext_resource type="Script" uid="uid://bp0biy0knxw2o" path="res://effect/Effect.gd" id="1_v8x13"]
+[ext_resource type="Script" uid="uid://cyhrh3l20i5dm" path="res://stat/StatModifier.gd" id="2_3vxde"]
+[ext_resource type="Script" uid="uid://dshxh47nef2ua" path="res://gear/weapon/weapon.gd" id="3_v3y85"]
+
+[resource]
+script = ExtResource("3_v3y85")
+base_stats = null
+metadata/_custom_type_script = "uid://dshxh47nef2ua"

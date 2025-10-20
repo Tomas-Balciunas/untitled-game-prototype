@@ -72,7 +72,7 @@ func recalculate_stats(should_fill_hp: bool = false, should_fill_mp: bool = fals
 			continue
 			
 		var value: int = base_stats[s]
-		derived_stats[s] = value + get_attribute_contribution(s, c, value) + get_level_contribution(s, c)
+		derived_stats[s] = value + get_attribute_contribution(s, c) + get_level_contribution(s, c)
 
 	for slot: ItemInstance in c.equipment.values():
 		if slot == null:
@@ -131,18 +131,21 @@ func fill_hp() -> void:
 func fill_mp() -> void:
 	current_mana = final_stats[MANA]
 	
-func get_attribute_contribution(stat: String, c: CharacterInstance, value: int) -> float:
+func get_attribute_contribution(stat: String, c: CharacterInstance) -> float:
 	var modifiers: Dictionary = c.job.get_stat_attribute_modifiers(stat)
 	
 	if modifiers.is_empty():
 		return 0.0
 	
-	var multiplier: float
+	var calculated_value: float
 	
-	for mult: float in modifiers.values():
-		multiplier += mult
-	
-	return value * multiplier
+	for attr: String in modifiers.keys():
+		var attribute_value := c.attributes.get_attribute_by_enum(attr)
+		var mult: float = modifiers[attr]
+		
+		calculated_value += attribute_value * mult
+		
+	return calculated_value
 	
 func get_level_contribution(stat: String, c: CharacterInstance) -> float:
 	return c.job.get_stat_level_growth(stat) * (c.level - 1) + c.resource.get_stat_level_growth(stat) * (c.level - 1)

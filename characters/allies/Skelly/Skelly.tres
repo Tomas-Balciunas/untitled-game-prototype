@@ -9,7 +9,6 @@
 [ext_resource type="Resource" uid="uid://j0lr1j1qp7cc" path="res://gear/weapon/wooden_sword.tres" id="3_ohgca"]
 [ext_resource type="Resource" uid="uid://eiwm6khdbjki" path="res://characters/_race/Human.tres" id="4_l3iqv"]
 [ext_resource type="Resource" uid="uid://b40pmjuvgrvn4" path="res://characters/_gender/Male.tres" id="4_p4kuy"]
-[ext_resource type="Resource" uid="uid://crai3lto44aqg" path="res://characters/_class/Thief.tres" id="4_uhviy"]
 [ext_resource type="Script" uid="uid://b06vmgrh4qa8i" path="res://gear/Item.gd" id="4_yu6ia"]
 [ext_resource type="Resource" uid="uid://cm3vin4wtxpjv" path="res://effect/_passive/counterattack/Counterattack.tres" id="5_g0fbc"]
 [ext_resource type="Resource" uid="uid://le73mm4vmyfe" path="res://gear/ring/ring1.tres" id="6_t07cl"]
@@ -18,6 +17,7 @@
 [ext_resource type="Resource" uid="uid://cyq5e4qjfhb80" path="res://gear/consumable/hp pot minor/hp_pot.tres" id="9_jtp86"]
 [ext_resource type="Resource" uid="uid://crgcpwx5r3sep" path="res://gear/consumable/poison flask minor/poison_flask.tres" id="10_ympyx"]
 [ext_resource type="Resource" uid="uid://c5qyqcmwx0qfy" path="res://scripts/experience/ExperienceManager.tres" id="14_tyjbr"]
+[ext_resource type="Resource" uid="uid://bswm14k77iahf" path="res://characters/_class/Fighter.tres" id="16_tyjbr"]
 
 [sub_resource type="Resource" id="Resource_rhf32"]
 script = ExtResource("1_ohgca")
@@ -33,7 +33,7 @@ metadata/_custom_type_script = "uid://blqk30gl013xc"
 [resource]
 script = ExtResource("1_s17id")
 race = ExtResource("4_l3iqv")
-job = ExtResource("4_uhviy")
+job = ExtResource("16_tyjbr")
 gender = ExtResource("4_p4kuy")
 attributes = SubResource("Resource_rhf32")
 id = "a_skelly_1"

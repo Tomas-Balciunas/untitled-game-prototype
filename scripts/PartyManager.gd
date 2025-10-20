@@ -6,14 +6,14 @@ signal member_added(character, row_i, slot_i)
 
 var members: Array[CharacterInstance] = []
 
-var formation = [
+var formation := [
 	[null, null, null],
 	[null, null, null]
 ]
 
-func add_member(res: CharacterResource):
+func add_member(res: CharacterResource) -> CharacterInstance:
 	var inst := CharacterInstance.new(res)
-	var position = add_member_to_formation(inst)
+	var position := add_member_to_formation(inst)
 	
 	if position.size() > 0:
 		members.append(inst)
@@ -44,7 +44,7 @@ func get_column_allies(current: CharacterInstance) -> Array[CharacterInstance]:
 			if formation[row_i][slot_i] == current:
 				var allies: Array[CharacterInstance] = []
 				allies.append(current)
-				var other_row_i = 1 - row_i
+				var other_row_i := 1 - row_i
 				var other = formation[other_row_i][slot_i]
 				
 				if other != null:
@@ -101,7 +101,7 @@ func get_adjacent_allies(current: CharacterInstance) -> Array[CharacterInstance]
 				if slot_i < formation[row_i].size() - 1 and formation[row_i][slot_i + 1] != null:
 					allies.append(formation[row_i][slot_i + 1])
 					
-				var other_row_i = 1 - row_i
+				var other_row_i := 1 - row_i
 				var column_ally = formation[other_row_i][slot_i]
 				
 				if column_ally != null and not allies.has(column_ally):
@@ -148,10 +148,3 @@ func from_dict(data: Dictionary) -> void:
 				print("Character added to party: %s" % inst.resource.name)
 			else:
 				push_error("Adding character to formation error: no free slots")
-
-func create_main_protagonist():
-	pass
-
-#func _load_default():
-	#for id in [CharacterIDs.SKELLY, CharacterIDs.LILI]:
-		#add_member(id)

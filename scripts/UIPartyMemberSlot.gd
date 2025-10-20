@@ -6,7 +6,7 @@ class_name PartyMemberSlot
 signal open_character_menu_requested(character_instance)
 
 var character_instance: CharacterInstance
-var targeting_enabled = false
+var targeting_enabled := false
 
 func _ready() -> void:
 	hide_info()
@@ -23,11 +23,11 @@ func bind(character: CharacterInstance) -> void:
 	
 	show_info()
 
-func show_info():
+func show_info() -> void:
 	$MarginContainer.visible = true
 
-func hide_info():
-	var cont = $MarginContainer
+func hide_info() -> void:
+	var cont := $MarginContainer
 	cont.visible = false
 
 func _on_health_changed(_old_health: int, _new_health: int) -> void:
@@ -54,10 +54,10 @@ func _on_gui_input(event: InputEvent) -> void:
 					return
 				emit_signal("open_character_menu_requested", character_instance)
 
-func disable_slot_targeting():
+func disable_slot_targeting() -> void:
 	targeting_enabled = false
 
-func enable_slot_targeting():
+func enable_slot_targeting() -> void:
 	targeting_enabled = true
 
 func _on_mouse_entered() -> void:
@@ -68,10 +68,10 @@ func _on_mouse_entered() -> void:
 func _on_mouse_exited() -> void:
 	$HoverOverlay.visible = false
 
-func highlight():
-	var tween = create_tween()
+func highlight() -> void:
+	var tween := create_tween()
 	tween.tween_property(self, "modulate", Color(0.8, 0.8, 0.4), 0.1).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
 
-func unhighlight():
-	var tween = create_tween()
+func unhighlight() -> void:
+	var tween := create_tween()
 	tween.tween_property(self, "modulate", Color(1.0, 1.0, 1.0), 0.1).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)

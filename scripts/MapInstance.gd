@@ -3,7 +3,6 @@ extends Node
 var map_id: String
 var current_map_name: String = ""
 var theme: String = ""
-var map_data: PackedScene
 var player_position: Vector2i = Vector2i()
 var player_previous_position: Vector2i = Vector2i()
 var player_facing: Vector3 = Vector3.FORWARD
@@ -13,14 +12,14 @@ var cleared_encounters: Dictionary = {}
 var transitions := {}
 var available_enemies: Array[CharacterResource] = []
 
-func hydrate_from_resource(map_resource: MapData) -> void:
-	map_id = map_resource.id
-	current_map_name = map_resource.name
-	map_data = map_resource.data
-	player_position = map_resource.start_pos
+func hydrate_from_resource(map_data: Dictionary) -> void:
+	map_id = map_data.id
+	current_map_name = map_data.name
+	#TODO: more safety checks
+	player_position = str_to_var("Vector2i" + map_data.starting_position)
 	player_previous_position = player_position
 	cleared_encounters[map_id] = []
-	available_enemies = map_resource.available_enemies
+	available_enemies = [CharacterRegistry.get_character(map_data.available_enemies[0])]
 	
 func hydrate_from_load(load_data: Dictionary) -> void:
 	if load_data.has("dungeon"):

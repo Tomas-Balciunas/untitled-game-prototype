@@ -1,21 +1,14 @@
-[gd_scene load_steps=18 format=3 uid="uid://c8n1llsvvhonb"]
+[gd_scene load_steps=15 format=3 uid="uid://c8n1llsvvhonb"]
 
 [ext_resource type="MeshLibrary" uid="uid://uso6cfmk5r51" path="res://tileset white.tres" id="1_mdjaj"]
 [ext_resource type="Script" uid="uid://7pao6hs651jh" path="res://scripts/EnemyController.gd" id="2_g1pjd"]
 [ext_resource type="Script" uid="uid://kf1ly5o4evhs" path="res://scripts/SpawnId.gd" id="3_w2sle"]
-[ext_resource type="Script" uid="uid://bwn4gpkaijqsg" path="res://scripts/CharacterResource.gd" id="6_bgo3i"]
 [ext_resource type="Script" uid="uid://dbfiub7761eey" path="res://scripts/triggerables/MapTransitionTriggerable.gd" id="7_lk5gk"]
-[ext_resource type="PackedScene" uid="uid://rmcp18hibovm" path="res://maps/crypt/crypt.tscn" id="7_uvgea"]
-[ext_resource type="Script" uid="uid://i6llluly1w8" path="res://scripts/MapData.gd" id="8_uo6qj"]
+[ext_resource type="Resource" uid="uid://ca1h8vjjk8vcm" path="res://maps/crypt/crypt_00.tres" id="8_w2sle"]
 [ext_resource type="Script" uid="uid://8n2g1of6dlbp" path="res://scripts/interactables/RestAreaInteractable.gd" id="9_kjsaj"]
 [ext_resource type="PackedScene" uid="uid://cxxgmoys7ineo" path="res://scenes/ChestBasic.tscn" id="9_lk5gk"]
 [ext_resource type="PackedScene" uid="uid://bg5f2e2nphlkl" path="res://scripts/interactables/Interactable.tscn" id="10_lk5gk"]
 [ext_resource type="Script" uid="uid://b656vk4s4jm03" path="res://scripts/triggerables/EventTriggerable.gd" id="11_bgo3i"]
-
-[sub_resource type="Resource" id="Resource_0wmue"]
-script = ExtResource("8_uo6qj")
-id = "crypt_00"
-data = ExtResource("7_uvgea")
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_g1pjd"]
 
@@ -76,7 +69,7 @@ spawn_id = "spawn_04"
 [node name="Area3D" type="Area3D" parent="Transitions"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 1, -8)
 script = ExtResource("7_lk5gk")
-map_data = SubResource("Resource_0wmue")
+map_data = ExtResource("8_w2sle")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Transitions/Area3D"]
 shape = SubResource("BoxShape3D_g1pjd")
