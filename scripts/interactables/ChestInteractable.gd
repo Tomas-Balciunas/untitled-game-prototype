@@ -3,6 +3,7 @@ extends Interactable
 class_name ChestInteractable
 
 @export var items: Array[Item]
+@export var quantity: int = 1
 
 func _interact() -> void:
 	build_items()
@@ -30,5 +31,5 @@ func build_items() -> void:
 	if not items.is_empty():
 		return
 		
-	var generator := GearGenerator.new(3)
+	var generator := GearGenerator.new(quantity)
 	items.append_array(generator.generate())

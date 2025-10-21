@@ -25,7 +25,7 @@ func instantiate() -> ItemInstance:
 	inst.template = self
 	return inst
 
-func item_type_to_string(item_type: Item.ItemType) -> String:
+static func item_type_to_string(item_type: Item.ItemType) -> String:
 	var names := {
 		Item.ItemType.WEAPON: "Weapon",
 		Item.ItemType.CHEST: "Chest Armor",

@@ -6,7 +6,7 @@ func _ready() -> void:
 	_register_all()
 
 func _register_all() -> void:
-	var res_paths = [
+	var res_paths := [
 		"res://characters/allies/MC/MC.tres",
 		"res://characters/allies/Lili/Lili.tres",
 		"res://characters/allies/Skelly/Skelly.tres",
@@ -16,8 +16,8 @@ func _register_all() -> void:
 		"res://characters/foes/_fallback/boo.tres"
 	]
 	
-	for path in res_paths:
-		var res = ResourceLoader.load(path)
+	for path: String in res_paths:
+		var res := ResourceLoader.load(path)
 		if res:
 			register_character(res)
 
@@ -26,3 +26,11 @@ func register_character(res: CharacterResource) -> void:
 
 func get_character(id: String) -> CharacterResource:
 	return characters.get(id)
+
+func get_characters(ids: Array) -> Array[CharacterResource]:
+	var collection: Array[CharacterResource] = []
+	for id: String in ids:
+		if characters.has(id):
+			collection.append(characters[id])
+			
+	return collection

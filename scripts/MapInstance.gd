@@ -11,6 +11,7 @@ var encounters := {}
 var cleared_encounters: Dictionary = {}
 var transitions := {}
 var available_enemies: Array[CharacterResource] = []
+var available_tiers: Array = []
 
 func hydrate_from_resource(map_data: Dictionary) -> void:
 	map_id = map_data.id
@@ -19,12 +20,14 @@ func hydrate_from_resource(map_data: Dictionary) -> void:
 	player_position = str_to_var("Vector2i" + map_data.starting_position)
 	player_previous_position = player_position
 	cleared_encounters[map_id] = []
-	available_enemies = [CharacterRegistry.get_character(map_data.available_enemies[0])]
+	available_enemies = CharacterRegistry.get_characters(map_data.available_enemies)
+	available_tiers = map_data.gear_tiers
 	
 func hydrate_from_load(load_data: Dictionary) -> void:
 	if load_data.has("dungeon"):
 		var dungeon: Dictionary = load_data["dungeon"]
-		player_previous_position = dungeon["player_position"]
+		player_previous_position = str_to_var("Vector2i" + dungeon["player_position"])
+		player_position = str_to_var("Vector2i" + dungeon["player_position"])
 		player_facing = dungeon["player_facing"]
 		cleared_encounters = dungeon["cleared_encounters"]
 

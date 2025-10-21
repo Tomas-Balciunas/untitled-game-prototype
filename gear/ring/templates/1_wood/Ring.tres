@@ -1,0 +1,25 @@
+[gd_resource type="Resource" script_class="Gear" load_steps=4 format=3 uid="uid://dvk8txtug6uxg"]
+
+[ext_resource type="Script" uid="uid://bp0biy0knxw2o" path="res://effect/Effect.gd" id="1_1sv86"]
+[ext_resource type="Script" uid="uid://cyhrh3l20i5dm" path="res://stat/StatModifier.gd" id="2_7dvkv"]
+[ext_resource type="Script" uid="uid://dnxjp78vsivnq" path="res://gear/Gear.gd" id="3_s81hl"]
+
+[resource]
+script = ExtResource("3_s81hl")
+base_stats = {
+"ATTACK": 3.0,
+"DEFENSE": 0.0,
+"DIVINE_POWER": 0.0,
+"HEALTH": 0.0,
+"MAGIC_DEFENSE": 0.0,
+"MAGIC_POWER": 0.0,
+"MANA": 3.0,
+"RESISTANCE": 0.0,
+"SPEED": 0.0
+}
+tier = "WOOD"
+is_random = true
+max_modifiers = 1
+name = "Wood Ring"
+type = 5
+metadata/_custom_type_script = "uid://dnxjp78vsivnq"

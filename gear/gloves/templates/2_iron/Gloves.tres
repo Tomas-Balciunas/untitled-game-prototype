@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="Gear" load_steps=4 format=3 uid="uid://crfi3y5s3px83"]
+
+[ext_resource type="Script" uid="uid://bp0biy0knxw2o" path="res://effect/Effect.gd" id="1_2ipqp"]
+[ext_resource type="Script" uid="uid://cyhrh3l20i5dm" path="res://stat/StatModifier.gd" id="2_bix57"]
+[ext_resource type="Script" uid="uid://dnxjp78vsivnq" path="res://gear/Gear.gd" id="3_iekv0"]
+
+[resource]
+script = ExtResource("3_iekv0")
+base_stats = {
+"ATTACK": 3.0,
+"DEFENSE": 3.0,
+"DIVINE_POWER": 0.0,
+"HEALTH": 0.0,
+"MAGIC_DEFENSE": 2.0,
+"MAGIC_POWER": 0.0,
+"MANA": 0.0,
+"RESISTANCE": 2.0,
+"SPEED": 0.0
+}
+tier = "IRON"
+is_random = true
+name = "Iron Gloves"
+type = 4
+metadata/_custom_type_script = "uid://dnxjp78vsivnq"

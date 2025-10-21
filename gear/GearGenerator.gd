@@ -45,29 +45,40 @@ func _init(qty: int, types: Array[Item.ItemType] = []) -> void:
 
 func generate() -> Array[Gear]:
 	var generated_gear: Array[Gear] = []
+	var tiers: Array = MapInstance.available_tiers
+	
 	for i in range(quantity):
+		var tier := get_tier(tiers)
 		var type: Item.ItemType = requested_types[randi() % len(requested_types)]
-		var item: Gear
+		var item: Gear = ItemsRegistry.get_rand_template(tier, type)
+		
+		if !item:
+			push_error("Tier %s has no %s templates" % [tier, Item.item_type_to_string(type)])
+			return []
+			
+		item = item.duplicate(true)
 		
 		if type == Item.ItemType.WEAPON:
-			var weapon := Weapon.new()
+			var weapon := item
 			weapon.type = type
-			weapon.modifiers.append(BasicFlatModifierList.get_random_modifier())
-			weapon.modifiers.append(BasicFlatModifierList.get_random_modifier())
+			for k in range(weapon.max_modifiers):
+				weapon.modifiers.append(BasicFlatModifierList.get_random_modifier())
 			item = weapon
 		else:
-			var gear := Gear.new()
+			var gear := item
 			gear.type = type
-			gear.modifiers.append(BasicFlatModifierList.get_random_modifier())
-			gear.modifiers.append(BasicFlatModifierList.get_random_modifier())
+			for k in range(gear.max_modifiers):
+				gear.modifiers.append(BasicFlatModifierList.get_random_modifier())
+			
 			item = gear
 			
 		item.base_stats = item.base_stats.duplicate(true)
-		item.name = "Basic %s" % item.item_type_to_string(type)
-		
-		for stat: String in item.base_stats.keys():
-			item.base_stats[stat] = randi() % 15
 			
 		generated_gear.append(item)
 		
 	return generated_gear
+
+func get_tier(tiers: Array) -> String:
+	var rand := randi() % len(tiers)
+	
+	return tiers[rand]
