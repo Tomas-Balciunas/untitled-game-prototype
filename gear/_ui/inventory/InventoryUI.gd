@@ -3,12 +3,15 @@ class_name InventoryUI
 
 var bound_character: CharacterInstance = null
 
-const item_slot = preload("res://gear/ItemSlot.tscn")
+const ITEM_SLOT = preload("uid://bdksl8u0q4sv0")
+const ITEM_TRANSFER_SCENE = preload("uid://csn5t1mi03evw")
+
 
 @onready var inventory_container: VBoxContainer = $Inventory
 @onready var equipped_list: VBoxContainer = $Inventory/EquippedList
 @onready var inventory_list: VBoxContainer = $Inventory/InventoryList
 @onready var action_button: Button = $Inventory/ActionButton
+@onready var transfer_button: Button = $Inventory/TransferButton
 @onready var unequip_button: Button = $Inventory/UnequipButton
 
 @onready var item_info_panel: VBoxContainer = $ItemInfoPanel
@@ -18,7 +21,11 @@ const item_slot = preload("res://gear/ItemSlot.tscn")
 @onready var effects_label: Label = $ItemInfoPanel/EffectsLabel
 @onready var modifiers_label: Label = $ItemInfoPanel/ModifiersLabel
 
+
 var _selected_item: ItemInstance = null
+
+func _ready() -> void:
+	InventoryBus.request_inventory_refresh.connect(_on_request_inventory_refresh)
 
 func bind_character(character: CharacterInstance) -> void:
 	bound_character = character
@@ -30,7 +37,7 @@ func refresh_lists() -> void:
 	for child in inventory_list.get_children():
 		child.queue_free()
 	for item in bound_character.inventory.get_all_items():
-		var slot := item_slot.instantiate()
+		var slot := ITEM_SLOT.instantiate()
 		inventory_list.add_child(slot)
 		slot.bind(item)
 		slot.item_hovered.connect(show_item_info)
@@ -43,6 +50,8 @@ func refresh_lists() -> void:
 func _on_inventory_item_selected(item: ItemInstance) -> void:
 	unequip_button.visible = false
 	_selected_item = item
+	
+	transfer_button.visible = true
 	
 	if item is GearInstance:
 		action_button.text = "Equip"
@@ -123,3 +132,16 @@ func hide_item_info() -> void:
 
 func close() -> void:
 	item_info_panel.hide()
+	InventoryBus.inventory_closed.emit()
+
+
+func _on_transfer_button_pressed() -> void:
+	if len(PartyManager.members) <= 1:
+		NotificationBus.notification_requested.emit("No allies to transfer an item to!")
+	
+	var inst := ITEM_TRANSFER_SCENE.instantiate()
+	add_child(inst)
+	inst.bind(bound_character, _selected_item)
+
+func _on_request_inventory_refresh() -> void:
+	refresh_lists()

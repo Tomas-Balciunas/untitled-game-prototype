@@ -1,11 +1,11 @@
 [gd_scene load_steps=14 format=3 uid="uid://brybglg3yhb62"]
 
 [ext_resource type="Script" uid="uid://ilm5qu0yhhaa" path="res://scenes/ui/character/CharacterMenu.gd" id="1_gue48"]
-[ext_resource type="Script" uid="uid://df1gmeiyv6avc" path="res://gear/InventoryUI.gd" id="2_ynqil"]
+[ext_resource type="Script" uid="uid://df1gmeiyv6avc" path="res://gear/_ui/inventory/InventoryUI.gd" id="2_ynqil"]
 [ext_resource type="Script" uid="uid://dahxd5g0u3kcy" path="res://scenes/ui/character/CharacterStatsUI.gd" id="3_fpsvm"]
-[ext_resource type="Script" uid="uid://b2sfqqh521u6d" path="res://gear/EquippedSlotContainer.gd" id="3_wnbb8"]
+[ext_resource type="Script" uid="uid://b2sfqqh521u6d" path="res://gear/_ui/inventory/EquippedSlotContainer.gd" id="3_wnbb8"]
 [ext_resource type="Script" uid="uid://buitthkb5usu" path="res://scenes/ui/character/CharacterEffectsUI.gd" id="4_c7bw8"]
-[ext_resource type="Script" uid="uid://c4besodi2o6y8" path="res://gear/EquippedItemSlot.gd" id="4_khbyc"]
+[ext_resource type="Script" uid="uid://c4besodi2o6y8" path="res://gear/_ui/inventory/EquippedItemSlot.gd" id="4_khbyc"]
 [ext_resource type="Script" uid="uid://dmcb1v1d6ac3" path="res://scenes/ui/character/CharacterSkillsUI.gd" id="7_khbyc"]
 [ext_resource type="Script" uid="uid://bfewgc370mbue" path="res://scenes/ui/character/CharacterLevelUpUI.gd" id="8_x73w5"]
 
@@ -257,6 +257,10 @@ text = "Equip"
 [node name="UnequipButton" type="Button" parent="Menu/InventoryUI/Inventory"]
 layout_mode = 2
 text = "Unequip"
+
+[node name="TransferButton" type="Button" parent="Menu/InventoryUI/Inventory"]
+layout_mode = 2
+text = "Transfer"
 
 [node name="ItemInfoPanel" type="VBoxContainer" parent="Menu/InventoryUI"]
 layout_mode = 1
@@ -644,3 +648,4 @@ offset_bottom = 239.0
 [connection signal="pressed" from="Menu/CharacterMenuButtons/HBoxContainer/Close" to="." method="_on_close_pressed"]
 [connection signal="pressed" from="Menu/InventoryUI/Inventory/ActionButton" to="Menu/InventoryUI" method="_on_action_button_pressed"]
 [connection signal="pressed" from="Menu/InventoryUI/Inventory/UnequipButton" to="Menu/InventoryUI" method="_on_unequip_button_pressed"]
+[connection signal="pressed" from="Menu/InventoryUI/Inventory/TransferButton" to="Menu/InventoryUI" method="_on_transfer_button_pressed"]

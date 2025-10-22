@@ -1,0 +1,4 @@
+extends Node
+
+signal request_inventory_refresh
+signal inventory_closed

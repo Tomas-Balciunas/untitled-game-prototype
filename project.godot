@@ -45,6 +45,7 @@ EncounterBus="*res://scripts/bus/EncounterBus.gd"
 RestBus="*res://scripts/bus/RestBus.gd"
 LoadBus="*res://scripts/LoadBus.gd"
 NotificationBus="*res://scripts/bus/NotificationBus.gd"
+InventoryBus="*res://scripts/bus/InventoryBus.gd"
 
 [debug]
 

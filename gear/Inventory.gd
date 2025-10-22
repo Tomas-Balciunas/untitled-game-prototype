@@ -29,3 +29,18 @@ func find_by_type(type: int) -> Array[ItemInstance]:
 
 func has_free_slot() -> bool:
 	return max_slots > len(slots)
+
+func transfer_item(from: CharacterInstance, to: CharacterInstance, item: ItemInstance) -> void:
+	if !to.inventory.has_free_slot():
+		NotificationBus.notification_requested.emit("%s's inventory is full!" % to.resource.name)
+		return;
+	
+	var removed := from.inventory.remove_item(item)
+	
+	if removed:
+		var added := to.inventory.add_item(item)
+		
+		if added:
+			NotificationBus.notification_requested.emit("%s transferred to %s" % [item.get_item_name(), to.resource.name])
+		else:
+			NotificationBus.notification_requested.emit("%s's inventory is full!" % to.resource.name)

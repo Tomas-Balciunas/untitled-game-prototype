@@ -1,10 +1,10 @@
 extends Control
 class_name CharacterMenu
 
-@onready var stats_tab = $Menu/StatsUI
-@onready var inventory_tab = $Menu/InventoryUI
-@onready var effects_tab = $Menu/EffectsUI
-@onready var skills_tab = $Menu/SkillsUI
+@onready var stats_tab := $Menu/StatsUI
+@onready var inventory_tab := $Menu/InventoryUI
+@onready var effects_tab := $Menu/EffectsUI
+@onready var skills_tab := $Menu/SkillsUI
 @onready var level_up_tab: Panel = $Menu/LevelUpUI
 @onready var level_up_button: Button = $Menu/CharacterMenuButtons/HBoxContainer/LevelUp
 
@@ -12,10 +12,10 @@ class_name CharacterMenu
 @onready var inventory_container: VBoxContainer = $Menu/InventoryUI/Inventory
 @onready var item_info_panel: VBoxContainer = $Menu/InventoryUI/ItemInfoPanel
 
-@onready var party_panel = get_tree().get_root().get_node("Main/PartyPanel")
-@onready var battle_text_lines = get_tree().get_root().get_node("Main/BattleTextLines")
-@onready var menu = $Menu
-@onready var name_label = $Menu/Name
+@onready var party_panel := get_tree().get_root().get_node("Main/PartyPanel")
+@onready var battle_text_lines := get_tree().get_root().get_node("Main/BattleTextLines")
+@onready var menu := $Menu
+@onready var name_label := $Menu/Name
 
 var character_instance: CharacterInstance
 
@@ -33,7 +33,7 @@ func bind(character: CharacterInstance) -> void:
 		
 	show_tab("stats")
 	
-func show_tab(tab: String):
+func show_tab(tab: String) -> void:
 	if character_instance.unspent_attribute_points <= 0:
 		level_up_button.visible = false
 	else:
@@ -47,9 +47,11 @@ func show_tab(tab: String):
 		"levelup": level_up_tab
 	}
 	
-	for key in tabs.keys():
+	for key: String in tabs.keys():
 		if key == tab:
 			tabs[tab].visible = true
+			if tabs[tab].has_method("close"):
+				tabs[tab].close()
 			continue
 		tabs[key].visible = false
 
@@ -82,7 +84,7 @@ func _on_close_pressed() -> void:
 
 
 func _on_talk_pressed() -> void:
-	var interaction = character_instance.resource.get_interactions()
+	var interaction := character_instance.resource.get_interactions()
 	
 	if not interaction:
 		return

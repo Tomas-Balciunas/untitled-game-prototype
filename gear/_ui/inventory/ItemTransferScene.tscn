@@ -1,0 +1,33 @@
+[gd_scene load_steps=2 format=3 uid="uid://csn5t1mi03evw"]
+
+[ext_resource type="Script" uid="uid://woj046q5kose" path="res://gear/_ui/inventory/ItemTransferUI.gd" id="1_0vkpf"]
+
+[node name="ItemTransferScene" type="PanelContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 6
+size_flags_vertical = 6
+script = ExtResource("1_0vkpf")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+layout_mode = 2
+color = Color(0, 0, 0, 1)
+
+[node name="Container" type="VBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Info" type="VBoxContainer" parent="Container"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Container/Info"]
+layout_mode = 2
+text = "Transferring..."
+
+[node name="ItemLabel" type="Label" parent="Container/Info"]
+layout_mode = 2
+
+[node name="Selections" type="VBoxContainer" parent="Container"]
+layout_mode = 2
