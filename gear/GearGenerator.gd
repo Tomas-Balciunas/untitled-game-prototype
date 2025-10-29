@@ -43,8 +43,8 @@ func _init(qty: int, types: Array[Item.ItemType] = []) -> void:
 	quantity = qty
 	requested_types = types
 
-func generate() -> Array[Gear]:
-	var generated_gear: Array[Gear] = []
+func generate() -> Array[Item]:
+	var generated_gear: Array[Item] = []
 	var tiers: Array = MapInstance.available_tiers
 	
 	for i in range(quantity):

@@ -22,11 +22,7 @@ layout_mode = 2
 [node name="Info" type="VBoxContainer" parent="Container"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="Container/Info"]
-layout_mode = 2
-text = "Transferring..."
-
-[node name="ItemLabel" type="Label" parent="Container/Info"]
+[node name="HeaderLabel" type="Label" parent="Container/Info"]
 layout_mode = 2
 
 [node name="Selections" type="VBoxContainer" parent="Container"]

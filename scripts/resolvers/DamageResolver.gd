@@ -8,7 +8,7 @@ func apply_attack(action: AttackAction) -> DamageContext:
 		action.defender,
 		action.type,
 		action.base_value,
-		[],
+		action.effects,
 		action.actively_cast,
 		action.options
 	)

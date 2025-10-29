@@ -46,6 +46,7 @@ RestBus="*res://scripts/bus/RestBus.gd"
 LoadBus="*res://scripts/LoadBus.gd"
 NotificationBus="*res://scripts/bus/NotificationBus.gd"
 InventoryBus="*res://scripts/bus/InventoryBus.gd"
+ChestBus="*res://scripts/bus/ChestBus.gd"
 
 [debug]
 

@@ -41,8 +41,8 @@ var events: Dictionary = {
 	]
 }
 
-func get_event(id: String):
+func get_event(id: String) -> Array:
 	if events.has(id):
 		return events[id]
 	print("Event not found")
-	return null
+	return []

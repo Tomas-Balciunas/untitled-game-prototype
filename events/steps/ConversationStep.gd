@@ -4,8 +4,8 @@ class_name DialogueStep
 var speaker: String
 var lines: Array
 
-func _init(data: Dictionary):
-	speaker = data.get("speaker", "Unknown Entity")
+func _init(data: Dictionary) -> void:
+	speaker = data.get("speaker", "")
 	lines = data.get("text", [])
 
 func run(_manager: Node) -> void:

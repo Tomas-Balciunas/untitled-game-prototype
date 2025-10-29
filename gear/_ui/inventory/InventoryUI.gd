@@ -46,6 +46,7 @@ func refresh_lists() -> void:
 
 	action_button.visible = false
 	unequip_button.visible = false
+	transfer_button.visible = false
 
 func _on_inventory_item_selected(item: ItemInstance) -> void:
 	unequip_button.visible = false
@@ -142,6 +143,7 @@ func _on_transfer_button_pressed() -> void:
 	var inst := ITEM_TRANSFER_SCENE.instantiate()
 	add_child(inst)
 	inst.bind(bound_character, _selected_item)
+	_selected_item = null
 
 func _on_request_inventory_refresh() -> void:
 	refresh_lists()

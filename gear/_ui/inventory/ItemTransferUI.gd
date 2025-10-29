@@ -2,17 +2,21 @@ extends PanelContainer
 
 const CHARACTER_ITEM_TRANSFER_SLOT = preload("uid://bn884jwltf8gy")
 @onready var selections: VBoxContainer = $Container/Selections
-@onready var item_label: Label = $Container/Info/ItemLabel
+@onready var header_label: Label = $Container/Info/HeaderLabel
 
 
 var _item: ItemInstance = null
 var _from: CharacterInstance = null
 
 func bind(from: CharacterInstance, item: ItemInstance) -> void:
+	if !item:
+		NotificationBus.notification_requested.emit("Item not selected!")
+		queue_free()
+	
 	InventoryBus.inventory_closed.connect(_on_inventory_closed)
 	_item = item
 	_from = from
-	item_label.text = item.get_item_name()
+	header_label.text = "%s wants to transfer %s to.." % [from.resource.name, item.get_item_name()]
 	
 	var applicable_allies: Array[CharacterInstance] = []
 	
