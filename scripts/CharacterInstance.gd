@@ -54,6 +54,7 @@ func _init(res: CharacterResource) -> void:
 	current_experience = 5000
 	
 	inventory = Inventory.new()
+	inventory.owner = self
 	
 	for item in res.default_items:
 		if item is Gear:

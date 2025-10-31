@@ -22,11 +22,11 @@ func bind_equipped(character_instance: CharacterInstance, parent_ui: InventoryUI
 		var eq_slot = equipment[slot]
 		eq_slot.bind(character_instance.equipment[slot])
 		
-		#if not eq_slot.item_hovered.is_connected(parent_ui.show_item_info):
-			#eq_slot.item_hovered.connect(parent_ui.show_item_info)
-#
-		#if not eq_slot.item_unhovered.is_connected(parent_ui.hide_item_info):
-			#eq_slot.item_unhovered.connect(parent_ui.hide_item_info)
-#
-		#if not eq_slot.equipped_item_selected.is_connected(parent_ui._on_equipped_item_selected):
-			#eq_slot.equipped_item_selected.connect(parent_ui._on_equipped_item_selected)
+		if not eq_slot.item_hovered.is_connected(parent_ui.item_info_panel.show_item_info):
+			eq_slot.item_hovered.connect(parent_ui.item_info_panel.show_item_info)
+
+		if not eq_slot.item_unhovered.is_connected(parent_ui.item_info_panel.hide_item_info):
+			eq_slot.item_unhovered.connect(parent_ui.item_info_panel.hide_item_info)
+
+		if not eq_slot.equipped_item_selected.is_connected(parent_ui._on_equipped_item_selected):
+			eq_slot.equipped_item_selected.connect(parent_ui._on_equipped_item_selected)

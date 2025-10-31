@@ -2,17 +2,20 @@ extends Resource
 class_name Inventory
 
 @export var max_slots: int = 20
+var owner: CharacterInstance = null
 var slots: Array[ItemInstance] = []
 
 func add_item(item: ItemInstance) -> bool:
 	if max_slots > 0 and slots.size() >= max_slots:
 		return false
 	slots.append(item)
+	InventoryBus.character_slots_changed.emit(owner, len(slots))
 	return true
 
 func remove_item(item: ItemInstance) -> bool:
 	if item in slots:
 		slots.erase(item)
+		InventoryBus.character_slots_changed.emit(owner, len(slots))
 		return true
 		
 	push_error("Item %s not found" % item.name)

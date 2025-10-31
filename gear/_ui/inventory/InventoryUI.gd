@@ -13,10 +13,7 @@ const ITEM_TRANSFER_SCENE = preload("uid://csn5t1mi03evw")
 @onready var action_button: Button = $Inventory/ActionButton
 @onready var transfer_button: Button = $Inventory/TransferButton
 @onready var unequip_button: Button = $Inventory/UnequipButton
-
 @onready var item_info_panel: VBoxContainer = $ItemInfoPanel
-
-
 
 var _selected_item: ItemInstance = null
 
@@ -37,7 +34,7 @@ func refresh_lists() -> void:
 		inventory_list.add_child(slot)
 		slot.bind(item)
 		slot.item_hovered.connect(item_info_panel.show_item_info)
-		slot.item_unhovered.connect(hide_item_info)
+		slot.item_unhovered.connect(item_info_panel.hide_item_info)
 		slot.item_selected.connect(_on_inventory_item_selected)
 
 	action_button.visible = false
@@ -87,10 +84,6 @@ func _on_unequip_button_pressed() -> void:
 	bound_character.unequip_slot(slot_name)
 
 	refresh_lists()
-
-			
-func hide_item_info() -> void:
-	item_info_panel.visible = false
 
 func close() -> void:
 	item_info_panel.hide()

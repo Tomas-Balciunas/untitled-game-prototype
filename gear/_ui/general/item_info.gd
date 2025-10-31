@@ -41,3 +41,6 @@ func show_item_info(item: ItemInstance) -> void:
 			effects_label.text = "\n".join(effect_lines)
 		else:
 			effects_label.text = ""
+
+func hide_item_info() -> void:
+	self.visible = false
