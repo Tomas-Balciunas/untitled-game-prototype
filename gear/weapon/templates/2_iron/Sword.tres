@@ -20,5 +20,6 @@ base_stats = {
 }
 tier = "IRON"
 is_random = true
+id = "iron_sword_01"
 name = "Iron Sword"
 metadata/_custom_type_script = "uid://dshxh47nef2ua"

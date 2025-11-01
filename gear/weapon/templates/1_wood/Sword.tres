@@ -7,7 +7,6 @@
 [resource]
 script = ExtResource("3_s7vgx")
 accuracy_range = 15
-max_modifiers = 1
 base_stats = {
 "ATTACK": 10.0,
 "DEFENSE": 0.0,
@@ -21,5 +20,7 @@ base_stats = {
 }
 tier = "WOOD"
 is_random = true
-name = "Wooden Sword"
+max_modifiers = 1
+id = "wood_axe_01"
+name = "Crude Sword"
 metadata/_custom_type_script = "uid://dshxh47nef2ua"

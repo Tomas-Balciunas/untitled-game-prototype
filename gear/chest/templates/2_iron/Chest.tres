@@ -19,6 +19,7 @@ base_stats = {
 }
 tier = "IRON"
 is_random = true
+id = "iron_chest_01"
 name = "Iron Chest Armor"
 type = 1
 metadata/_custom_type_script = "uid://dnxjp78vsivnq"

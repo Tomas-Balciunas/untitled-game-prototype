@@ -44,6 +44,7 @@ func load_map(map_id: String, load_data = null) -> void:
 		push_error("Missing Enemies node!")
 	
 	player.set_grid_pos(player_position, player_facing, TILE_SIZE)
+	MapBus.map_finished_loading.emit(map_data)
 
 func _on_encounter_started(_data: EncounterData) -> void:
 	call_deferred("_deactivate_dungeon")

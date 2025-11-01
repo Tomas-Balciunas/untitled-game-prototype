@@ -20,6 +20,7 @@ base_stats = {
 tier = "IRON"
 is_random = true
 max_modifiers = 3
+id = "iron_amulet_01"
 name = "Iron Amulet"
 type = 6
 metadata/_custom_type_script = "uid://dnxjp78vsivnq"

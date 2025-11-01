@@ -25,13 +25,13 @@ func place_all_allies() -> void:
 	var front_allies := []
 	var back_allies  := []
 	
-	for a in PartyManager.formation[0]:
+	for a: CharacterInstance in PartyManager.formation[0]:
 		if front_allies.size() < MAX_SLOTS:
 			front_allies.append(a)
 		else:
 			push_error("Too many allies in front row!")
 			
-	for b in PartyManager.formation[1]:
+	for b: CharacterInstance in PartyManager.formation[1]:
 		if back_allies.size() < MAX_SLOTS:
 			back_allies.append(b)
 		else:
@@ -39,7 +39,7 @@ func place_all_allies() -> void:
 
 	var front_start := int((MAX_SLOTS - front_allies.size()) * 0.5)
 	for i in range(front_allies.size()):
-		var inst = front_allies[i]
+		var inst: CharacterInstance = front_allies[i]
 		if inst:
 			var slot := SlotScene.instantiate() as FormationSlot
 			var idx := front_start + i
@@ -52,7 +52,7 @@ func place_all_allies() -> void:
 
 	var back_start := int((MAX_SLOTS - back_allies.size()) * 0.5)
 	for j in range(back_allies.size()):
-		var inst = back_allies[j]
+		var inst: CharacterInstance = back_allies[j]
 		if inst:
 			var slot := SlotScene.instantiate() as FormationSlot
 			var idx := back_start + j

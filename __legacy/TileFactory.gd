@@ -32,7 +32,7 @@ func get_tile_scene(theme: String, tile_type: String) -> PackedScene:
 	push_error("Missing tile: %s - %s" % [theme, tile_type])
 	return tiles["default"]["floor"]  # Fallback
 
-func get_scene(theme: String):
+func get_scene(theme: String) -> String:
 	if theme in tiles:
 		return tiles[theme]
 	push_error("Missing theme: %s" % [theme])

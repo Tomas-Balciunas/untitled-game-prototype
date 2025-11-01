@@ -13,7 +13,7 @@ func process_trigger(event: TriggerEvent) -> void:
 			effects_to_run.append({ "effect": e, "owner": event.actor })
 	
 	if BattleContext.in_battle:
-		var battlers = BattleContext.manager.battlers
+		var battlers := BattleContext.manager.battlers
 		for b in battlers:
 			for e in b.effects:
 				if not _passes_scope(e, event):

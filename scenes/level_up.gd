@@ -1,9 +1,9 @@
 extends CanvasLayer
 
-@onready var name_label = $Panel/CharacterName
-@onready var level_label = $Panel/LevelLabel
-@onready var points_label = $Panel/PointsLabel
-@onready var attr_labels = {
+@onready var name_label := $Panel/CharacterName
+@onready var level_label := $Panel/LevelLabel
+@onready var points_label := $Panel/PointsLabel
+@onready var attr_labels := {
 	"STR": $Panel/AttributesContainer/STR_Row/STR_Label,
 	"IQ": $Panel/AttributesContainer/IQ_Row/IQ_Label,
 	"PIE": $Panel/AttributesContainer/PIE_Row/PIE_Label,
@@ -12,7 +12,7 @@ extends CanvasLayer
 	"SPD": $Panel/AttributesContainer/SPD_Row/SPD_Label,
 	"LUK": $Panel/AttributesContainer/LUK_Row/LUK_Label
 }
-@onready var attr_buttons = {
+@onready var attr_buttons := {
 	"STR": $Panel/AttributesContainer/STR_Row/STR_Button,
 	"IQ": $Panel/AttributesContainer/IQ_Row/IQ_Button,
 	"PIE": $Panel/AttributesContainer/PIE_Row/PIE_Button,
@@ -21,17 +21,17 @@ extends CanvasLayer
 	"SPD": $Panel/AttributesContainer/SPD_Row/SPD_Button,
 	"LUK": $Panel/AttributesContainer/LUK_Row/LUK_Button
 }
-@onready var done_button = $Panel/DoneButton
+@onready var done_button := $Panel/DoneButton
 
 var character: CharacterInstance
 
-func show_for_character(c: CharacterInstance):
+func show_for_character(c: CharacterInstance) -> void:
 	character = c
 	character.gain_experience()
 	update_ui()
 	visible = true
 
-func _ready():
+func _ready() -> void:
 	hide()
 	for attr in attr_buttons.keys():
 		attr_buttons[attr].pressed.connect(func():
@@ -40,7 +40,7 @@ func _ready():
 		)
 	done_button.pressed.connect(hide)
 
-func update_ui():
+func update_ui() -> void:
 	name_label.text = character.resource.name
 	level_label.text = "Level: %d" % character.level
 	points_label.text = "Points: %d" % character.unspent_attribute_points

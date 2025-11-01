@@ -1,9 +1,10 @@
 [gd_resource type="Resource" script_class="StatModifier" load_steps=2 format=3 uid="uid://c1x6oj5j0rm1f"]
 
-[ext_resource type="Script" uid="uid://cyhrh3l20i5dm" path="res://stat/StatModifier.gd" id="1_l3gob"]
+[ext_resource type="Script" uid="uid://cyhrh3l20i5dm" path="res://stat/StatModifier.gd" id="1_0ek6h"]
 
 [resource]
-script = ExtResource("1_l3gob")
+script = ExtResource("1_0ek6h")
+id = "basic_flat_speed"
 name = "Speed"
 description = "Increases speed"
 stat = 3

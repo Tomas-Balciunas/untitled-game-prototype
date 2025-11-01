@@ -7,6 +7,7 @@ extends Node
 @onready var modifiers_label: Label = $ModifiersLabel
 
 func show_item_info(item: ItemInstance) -> void:
+	clear_info()
 	if item == null:
 		self.visible = false
 		return
@@ -41,6 +42,13 @@ func show_item_info(item: ItemInstance) -> void:
 			effects_label.text = "\n".join(effect_lines)
 		else:
 			effects_label.text = ""
+			
+func clear_info() -> void:
+	item_name_label.text = ""
+	item_type_label.text = ""
+	stats_label.text = ""
+	effects_label.text = ""
+	modifiers_label.text = ""
 
 func hide_item_info() -> void:
 	self.visible = false

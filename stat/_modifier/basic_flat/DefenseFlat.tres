@@ -1,9 +1,10 @@
 [gd_resource type="Resource" script_class="StatModifier" load_steps=2 format=3 uid="uid://dsmi8iu6gtp6x"]
 
-[ext_resource type="Script" uid="uid://cyhrh3l20i5dm" path="res://stat/StatModifier.gd" id="1_e47ts"]
+[ext_resource type="Script" uid="uid://cyhrh3l20i5dm" path="res://stat/StatModifier.gd" id="1_ovi8f"]
 
 [resource]
-script = ExtResource("1_e47ts")
+script = ExtResource("1_ovi8f")
+id = "basic_flat_defense"
 name = "Defense"
 description = "Increases defense"
 stat = 4

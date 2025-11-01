@@ -13,9 +13,18 @@ var extra_effects: Array[Effect] = []
 
 func _init(resource: Gear) -> void:
 	template = resource
-	stats = resource.base_stats
-	effects = resource.effects
-	modifiers = resource.modifiers
+	stats = resource.base_stats.duplicate(true)
+	
+	modifiers = []
+	for m in resource.modifiers:
+		modifiers.append(m.duplicate(true))
+	
+	effects = []
+	for e in resource.effects:
+		effects.append(e.duplicate(true))
+
+	extra_modifiers = []
+	extra_effects = []
 
 func get_base_stats() -> Dictionary:
 	return template.base_stats
@@ -33,3 +42,28 @@ func get_all_effects() -> Array[Effect]:
 	mods.append_array(extra_effects)
 	
 	return mods
+
+func to_dict() -> Dictionary:
+	var mods: Array[String] = []
+	
+	for mod: StatModifier in modifiers:
+		mods.append(mod.id)
+	
+	return {
+		"resource": self.template.id,
+		"modifiers": mods
+	}
+	
+static func from_dict(dict: Dictionary) -> GearInstance:
+	var res := ItemsRegistry.get_item(dict.get("resource"))
+	var inst := GearInstance.new(res)
+	
+	var mods: Array[String] = dict.get("modifiers")
+	
+	for id: String in mods:
+		var mod: StatModifier = StatModifierRegistry.get_modifier(id)
+		
+		if mod:
+			inst.modifiers.append(mod)
+	
+	return inst

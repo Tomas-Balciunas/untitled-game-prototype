@@ -10,14 +10,14 @@ func _init(data: Dictionary) -> void:
 
 func run(_manager: Node) -> void:
 	var target := PartyManager.members[0]
-	var attacker = CharacterResource.new()
+	var attacker := CharacterResource.new()
 	attacker.name = "Poison Dart"
-	var poison = PoisonOnHit.new()
+	var poison := PoisonOnHit.new()
 	poison.duration_turns = 3
 	
 	
 	
-	var act = AttackAction.new()
+	var act := AttackAction.new()
 	act.defender = target
 	act.attacker = CharacterInstance.new(attacker)
 	act.base_value = damage

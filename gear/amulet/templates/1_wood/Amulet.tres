@@ -19,6 +19,7 @@ base_stats = {
 }
 tier = "WOOD"
 is_random = true
-name = "Wood Amulet"
+id = "wood_amulet_01"
+name = "Crude Amulet"
 type = 6
 metadata/_custom_type_script = "uid://dnxjp78vsivnq"

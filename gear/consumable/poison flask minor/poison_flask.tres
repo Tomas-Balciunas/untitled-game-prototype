@@ -7,9 +7,8 @@
 [resource]
 script = ExtResource("3_gubeo")
 effects = Array[ExtResource("1_8bmms")]([ExtResource("2_i6p5x")])
-targeting_type = 0
 id = "basic_poison_pot_0"
 name = "Poison Flask"
-type = 6
+type = 7
 description = "huh"
 metadata/_custom_type_script = "uid://q28sbqe2d2mq"

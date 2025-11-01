@@ -18,13 +18,13 @@ func _ready() -> void:
 	front_positions = get_centered_positions(MAX_SLOTS, FRONT_ROW_Z)
 	back_positions  = get_centered_positions(MAX_SLOTS, BACK_ROW_Z)
 	
-func _on_enemy_died(dead: CharacterInstance):
+func _on_enemy_died(dead: CharacterInstance) -> void:
 	remove_slot_for(dead)
 	
 func get_enemy_instances(resources: Array[CharacterResource]) -> Array[CharacterInstance]:
 	var enemies: Array[CharacterInstance] = []
 	for r in resources:
-		var e = CharacterInstance.new(r)
+		var e := CharacterInstance.new(r)
 		enemies.append(e)
 	
 	return enemies
@@ -44,10 +44,10 @@ func place_all_enemies(enemies: Array[CharacterInstance]) -> void:
 		else:
 			push_error("Too many enemies!")
 
-	var front_start = int((MAX_SLOTS - front_enemies.size()) * 0.5)
+	var front_start := int((MAX_SLOTS - front_enemies.size()) * 0.5)
 	for i in range(front_enemies.size()):
-		var slot = SlotScene.instantiate() as FormationSlot
-		var idx = front_start + i
+		var slot := SlotScene.instantiate() as FormationSlot
+		var idx := front_start + i
 		slot.position = front_positions[idx]
 		add_child(slot)
 		slot.bind(front_enemies[i])
@@ -55,10 +55,10 @@ func place_all_enemies(enemies: Array[CharacterInstance]) -> void:
 		front_slots[idx] = slot
 		
 
-	var back_start = int((MAX_SLOTS - back_enemies.size()) * 0.5)
+	var back_start := int((MAX_SLOTS - back_enemies.size()) * 0.5)
 	for j in range(back_enemies.size()):
-		var slot = SlotScene.instantiate() as FormationSlot
-		var idx = back_start + j
+		var slot := SlotScene.instantiate() as FormationSlot
+		var idx := back_start + j
 		slot.position = back_positions[idx]
 		add_child(slot)
 		slot.bind(back_enemies[j])
@@ -70,7 +70,7 @@ func place_all_enemies(enemies: Array[CharacterInstance]) -> void:
 
 func remove_slot_for(enemy: CharacterInstance) -> void:
 	for i in range(MAX_SLOTS):
-		var slot = front_slots[i]
+		var slot: FormationSlot = front_slots[i]
 		if slot and slot.character_instance == enemy:
 			slot.queue_free()
 			front_slots[i] = null
@@ -78,7 +78,7 @@ func remove_slot_for(enemy: CharacterInstance) -> void:
 			return
 
 	for j in range(MAX_SLOTS):
-		var slot = back_slots[j]
+		var slot := back_slots[j]
 		if slot and slot.character_instance == enemy:
 			slot.queue_free()
 			back_slots[j] = null

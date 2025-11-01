@@ -1,7 +1,8 @@
-[gd_scene load_steps=18 format=3 uid="uid://c8n1llsvvhonb"]
+[gd_scene load_steps=19 format=3 uid="uid://c8n1llsvvhonb"]
 
 [ext_resource type="MeshLibrary" uid="uid://uso6cfmk5r51" path="res://tileset white.tres" id="1_mdjaj"]
 [ext_resource type="Script" uid="uid://7pao6hs651jh" path="res://scripts/EnemyController.gd" id="2_g1pjd"]
+[ext_resource type="Script" uid="uid://qwci85k0novh" path="res://scripts/ChestManager.gd" id="2_uvgea"]
 [ext_resource type="Script" uid="uid://kf1ly5o4evhs" path="res://scripts/SpawnId.gd" id="3_w2sle"]
 [ext_resource type="Script" uid="uid://bwn4gpkaijqsg" path="res://scripts/CharacterResource.gd" id="6_bgo3i"]
 [ext_resource type="Script" uid="uid://dbfiub7761eey" path="res://scripts/triggerables/MapTransitionTriggerable.gd" id="7_lk5gk"]
@@ -44,6 +45,7 @@ data = {
 metadata/_editor_floor_ = Vector3(0, 0, 0)
 
 [node name="Chests" type="Node" parent="."]
+script = ExtResource("2_uvgea")
 
 [node name="ChestBasic" parent="Chests" instance=ExtResource("9_lk5gk")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.7453785, 0.5260688, -7.930229)

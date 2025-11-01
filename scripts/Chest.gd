@@ -3,6 +3,7 @@ extends Node
 class_name Chest
 
 var locked: bool = false
+var trapped: bool = false
 var items: Array[Item] = []
 
 func remove_item(_item: ItemInstance) -> void:

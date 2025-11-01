@@ -12,6 +12,9 @@ var items: Array[ItemInstance] = []
 var chest: Chest
 var selected_item: ItemInstance = null
 
+func _ready() -> void:
+	InteractableBus.interactable_area_left.connect(on_interactable_area_left)
+
 func init(_chest: Chest) -> void:
 	chest = _chest
 	
@@ -72,3 +75,7 @@ func remove_item_from_chest(item: ItemInstance) -> void:
 
 func _on_close_pressed() -> void:
 	queue_free()
+
+func on_interactable_area_left(interactable: Interactable) -> void:
+	if interactable is ChestInteractable:
+		queue_free()

@@ -33,7 +33,7 @@ extends Node
 
 var character: CharacterInstance
 #TODO: fix this garbage holy shit
-func bind_character(chara: CharacterInstance):
+func bind_character(chara: CharacterInstance) -> void:
 	character = chara
 	_setup_attribute_buttons()
 	_update_attribute_labels()

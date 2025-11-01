@@ -1,9 +1,10 @@
 [gd_resource type="Resource" script_class="StatModifier" load_steps=2 format=3 uid="uid://xrdswjnhmfp2"]
 
-[ext_resource type="Script" uid="uid://cyhrh3l20i5dm" path="res://stat/StatModifier.gd" id="1_22exe"]
+[ext_resource type="Script" uid="uid://cyhrh3l20i5dm" path="res://stat/StatModifier.gd" id="1_lk750"]
 
 [resource]
-script = ExtResource("1_22exe")
+script = ExtResource("1_lk750")
+id = "basic_flat_attack"
 name = "Attack"
 description = "Increases attack"
 value = 5.0

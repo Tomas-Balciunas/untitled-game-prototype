@@ -13,8 +13,8 @@ var _last_anim: String = ""
 var _last_pos: Vector3
 
 func _process(_delta: float) -> void:
-	var pos = global_transform.origin
-	var move_vec = pos - _last_pos
+	var pos := global_transform.origin
+	var move_vec := pos - _last_pos
 	move_vec.y = 0.0
 	if move_vec.length() > 0.0001:
 		update_animation_by_move_world(move_vec, get_viewport().get_camera_3d())
@@ -42,28 +42,28 @@ func _set_blend(vec: Vector2) -> void:
 	if debug:
 		print("blend ->", vec)
 
-func play_idle():
+func play_idle() -> void:
 	if animation_tree:
 		_set_blend(Vector2.ZERO)
 		return
 
-func play_dead():
+func play_dead() -> void:
 	if animation_player.has_animation("dead"):
 		animation_player.play("dead")
 
-func play_run():
+func play_run() -> void:
 	_set_blend(Vector2(0, -1))
 	return
 
-func play_run_back():
+func play_run_back() -> void:
 	_set_blend(Vector2(0, 1))
 	return
 
-func play_run_left():
+func play_run_left() -> void:
 	_set_blend(Vector2(-1, 0))
 	return
 
-func play_run_right():
+func play_run_right() -> void:
 	_set_blend(Vector2(1, 0))
 	return
 
@@ -76,7 +76,7 @@ func play_attack() -> void:
 		if animation_tree:
 			animation_tree.active = true
 
-func play_damaged():
+func play_damaged() -> void:
 	if animation_player.has_animation("damaged"):
 		if animation_tree:
 			animation_tree.active = false
@@ -85,11 +85,11 @@ func play_damaged():
 		if animation_tree:
 			animation_tree.active = true
 
-func _on_damaged(_a, _b):
+func _on_damaged(_a, _b) -> void:
 	play_damaged()
 	
 
-func _on_anim_finish():
+func _on_anim_finish() -> void:
 	if animation_tree:
 			animation_tree.active = true
 
@@ -100,31 +100,31 @@ func update_animation_by_move_world(move_dir: Vector3, cam: Camera3D = null) -> 
 		return
 
 	move_dir.y = 0.0
-	var speed = move_dir.length()
+	var speed := move_dir.length()
 	if speed < 0.002:
 		if _last_anim != "idle":
 			play_idle()
 			_last_anim = "idle"
 		return
 
-	var mvn = move_dir.normalized()
+	var mvn := move_dir.normalized()
 
-	var view_dir = (cam.global_transform.origin - global_transform.origin)
+	var view_dir := (cam.global_transform.origin - global_transform.origin)
 	view_dir.y = 0.0
 	if view_dir.length() == 0:
 		view_dir = Vector3(0,0,-1)
 	else:
 		view_dir = view_dir.normalized()
 
-	var cam_right = cam.global_transform.basis.x
+	var cam_right := cam.global_transform.basis.x
 	cam_right.y = 0.0
 	cam_right = cam_right.normalized()
 
-	var fd = mvn.dot(view_dir)
-	var rd = mvn.dot(cam_right)
+	var fd := mvn.dot(view_dir)
+	var rd := mvn.dot(cam_right)
 
 	if animation_tree:
-		var blend = Vector2(rd, fd)
+		var blend := Vector2(rd, fd)
 		if animation_tree:
 			animation_tree.active = true
 		_set_blend(blend)

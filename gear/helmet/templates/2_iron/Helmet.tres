@@ -19,6 +19,7 @@ base_stats = {
 }
 tier = "IRON"
 is_random = true
+id = "iron_helmet_01"
 name = "Iron Helmet"
 type = 2
 metadata/_custom_type_script = "uid://dnxjp78vsivnq"

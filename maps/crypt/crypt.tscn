@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://rmcp18hibovm"]
+[gd_scene load_steps=4 format=3 uid="uid://rmcp18hibovm"]
 
 [ext_resource type="MeshLibrary" uid="uid://uso6cfmk5r51" path="res://tileset white.tres" id="1_2mejb"]
 [ext_resource type="PackedScene" uid="uid://cxxgmoys7ineo" path="res://scenes/ChestBasic.tscn" id="2_d8so3"]
+[ext_resource type="Script" uid="uid://qwci85k0novh" path="res://scripts/ChestManager.gd" id="2_k72gb"]
 
 [node name="Crypt" type="GridMap"]
 mesh_library = ExtResource("1_2mejb")
@@ -12,6 +13,7 @@ data = {
 }
 
 [node name="Chests" type="Node" parent="."]
+script = ExtResource("2_k72gb")
 
 [node name="ChestBasic" parent="Chests" instance=ExtResource("2_d8so3")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.401259, 0.5260688, 0.06977081)

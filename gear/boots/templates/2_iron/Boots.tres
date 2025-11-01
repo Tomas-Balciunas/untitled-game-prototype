@@ -19,6 +19,7 @@ base_stats = {
 }
 tier = "IRON"
 is_random = true
+id = "iron_boots_01"
 name = "Iron Boots"
 type = 3
 metadata/_custom_type_script = "uid://dnxjp78vsivnq"

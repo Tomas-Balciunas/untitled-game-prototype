@@ -1,9 +1,10 @@
 [gd_resource type="Resource" script_class="StatModifier" load_steps=2 format=3 uid="uid://bww60nna6ps8c"]
 
-[ext_resource type="Script" uid="uid://cyhrh3l20i5dm" path="res://stat/StatModifier.gd" id="1_v8i84"]
+[ext_resource type="Script" uid="uid://cyhrh3l20i5dm" path="res://stat/StatModifier.gd" id="1_s18au"]
 
 [resource]
-script = ExtResource("1_v8i84")
+script = ExtResource("1_s18au")
+id = "basic_flat_mana"
 name = "Mana"
 description = "Increases mana"
 stat = 2

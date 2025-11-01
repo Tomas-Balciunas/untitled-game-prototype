@@ -10,5 +10,5 @@ func listened_triggers() -> Array:
 func can_process(event: TriggerEvent) -> bool:
 	return event.actor == owner and event.ctx is HealingContext
 
-func on_trigger(event: TriggerEvent):
+func on_trigger(event: TriggerEvent) -> void:
 	event.ctx.final_value += event.ctx.final_value * modifier

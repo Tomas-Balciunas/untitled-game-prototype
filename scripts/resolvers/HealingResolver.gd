@@ -11,14 +11,14 @@ func apply_heal(action: HealingAction) -> HealingContext:
 	)
 
 func _apply_core(source: CharacterInstance, target: CharacterInstance, base: float, options: Dictionary = {}) -> HealingContext:
-	var ctx = HealingContext.new()
+	var ctx := HealingContext.new()
 	ctx.source    = source
 	ctx.target    = target
 	ctx.base_value  = base
 	ctx.final_value = base
 	ctx.options = options
 	
-	var event = TriggerEvent.new()
+	var event := TriggerEvent.new()
 	event.actor = ctx.source
 	event.ctx = ctx
 	event.trigger = EffectTriggers.ON_HEAL

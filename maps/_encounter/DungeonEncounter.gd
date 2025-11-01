@@ -12,7 +12,7 @@ var visual: CharacterBody3D
 var origin: Vector3
 var rng := RandomNumberGenerator.new()
 
-func _ready():
+func _ready() -> void:
 	assert(encounter_data)
 	assert(enemy_scene)
 	EncounterBus.encounter_ended.connect(_on_encounter_ended)
@@ -30,28 +30,28 @@ func _ready():
 	origin = global_transform.origin
 	#_start_patrol()
 	
-func _start_patrol():
+func _start_patrol() -> void:
 	_patrol_step()
 
 func _patrol_step() -> void:
-	var dir = Vector3(rng.randf_range(-1,1), 0, rng.randf_range(-1,1))
+	var dir := Vector3(rng.randf_range(-1,1), 0, rng.randf_range(-1,1))
 	if dir.length() == 0:
 		dir = Vector3(0,0,1)
 	dir = dir.normalized()
-	var dist = rng.randf_range(0.5, move_radius)
-	var target = origin + dir * dist
+	var dist := rng.randf_range(0.5, move_radius)
+	var target := origin + dir * dist
 
-	var t = create_tween()
+	var t := create_tween()
 	t.tween_property(self, "global_transform:origin", target, step_time)\
 		.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
 
 	t.finished.connect(Callable(self, "_on_step_finished"))
 
-func _on_step_finished():
-	var idle = rng.randf_range(idle_time_min, idle_time_max)
+func _on_step_finished() -> void:
+	var idle := rng.randf_range(idle_time_min, idle_time_max)
 	await get_tree().create_timer(idle).timeout
 	_start_patrol()
 
-func _on_encounter_ended(_res, data):
+func _on_encounter_ended(_res, data) -> void:
 	if data.id == encounter_data.id:
 		self.queue_free()

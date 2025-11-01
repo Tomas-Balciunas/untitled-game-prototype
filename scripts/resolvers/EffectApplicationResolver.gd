@@ -12,14 +12,14 @@ func apply_effect(action: EffectApplicationAction) -> EffectApplicationContext:
 	)
 
 func _apply_core(source: CharacterInstance, target: CharacterInstance, effect: Effect, callable, actively_cast: bool) -> EffectApplicationContext:
-	var ctx = EffectApplicationContext.new()
+	var ctx := EffectApplicationContext.new()
 	ctx.source    = source
 	ctx.target    = target
 	ctx.effect  = effect
 	ctx.callable = callable
 	ctx.actively_cast = actively_cast
 	
-	var event = TriggerEvent.new()
+	var event := TriggerEvent.new()
 	event.actor = ctx.source
 	event.ctx = ctx
 	event.trigger = EffectTriggers.ON_BEFORE_APPLY_EFFECT

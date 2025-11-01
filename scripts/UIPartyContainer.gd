@@ -2,7 +2,7 @@ extends Panel
 
 @onready var party: PartyManager
 var character_menu: CharacterMenu = null
-@onready var formation = [
+@onready var formation := [
 	[
 		$PanelContainer/PartyContainer/FrontRow/PartyMemberSlot1/PartyMember,
 		$PanelContainer/PartyContainer/FrontRow/PartyMemberSlot2/PartyMember,
@@ -18,7 +18,7 @@ var character_menu: CharacterMenu = null
 const UIPartyMemberScene = preload("res://scenes/UIPartyMemberSlot.tscn")
 const CharacterMenuScene = preload("res://scenes/ui/character/CharacterMenu.tscn")
 
-func _ready():
+func _ready() -> void:
 	SaveManager.connect("party_reloaded", Callable(self, "_on_party_reloaded"))
 	PartyManager.connect("member_added", Callable(self, "_on_member_added"))
 	#PartyManager._load_default()
@@ -27,7 +27,7 @@ func _ready():
 	get_tree().root.add_child.call_deferred(character_menu)
 	_on_party_reloaded()
 
-func _on_party_reloaded():
+func _on_party_reloaded() -> void:
 	for row in formation:
 		for slot in row:
 			slot.hide_info()
@@ -38,7 +38,7 @@ func _on_party_reloaded():
 			if member:
 				_on_member_added(member, row_index, slot_index)
 
-func _on_member_added(character: CharacterInstance, row_index: int, slot_index: int):
+func _on_member_added(character: CharacterInstance, row_index: int, slot_index: int) -> void:
 	var character_ui = formation[row_index][slot_index]
 	character_ui.bind(character)
 	
@@ -55,23 +55,23 @@ func _on_member_added(character: CharacterInstance, row_index: int, slot_index: 
 			#child.queue_free()
 			#break
 
-func disable_targeting():
+func disable_targeting() -> void:
 	for row in formation:
 		for slot in row:
 			slot.disable_slot_targeting()
 
-func enable_targeting():
+func enable_targeting() -> void:
 	for row in formation:
 		for slot in row:
 			slot.enable_slot_targeting()
 
-func disable_party_ui():
+func disable_party_ui() -> void:
 	self.visible = false
 	
-func enable_party_ui():
+func enable_party_ui() -> void:
 	self.visible = true
 
-func highlight_member(character: CharacterInstance):
+func highlight_member(character: CharacterInstance) -> void:
 	for row in formation:
 		for slot in row:
 			if slot.character_instance == character:
@@ -79,11 +79,11 @@ func highlight_member(character: CharacterInstance):
 			else:
 				slot.unhighlight()
 
-func clear_highlights():
+func clear_highlights() -> void:
 	for row in formation:
 		for slot in row:
 			slot.unhighlight()
 
-func _on_open_character_menu_requested(character_instance: CharacterInstance):
+func _on_open_character_menu_requested(character_instance: CharacterInstance) -> void:
 	character_menu.bind(character_instance)
 	character_menu.show()

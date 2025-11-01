@@ -25,3 +25,8 @@ func item_type_to_string(item_type: Item.ItemType) -> String:
 		Item.ItemType.QUEST: "Quest Item"
 	}
 	return names.get(item_type, "Unknown")
+
+func to_dict() -> Dictionary:
+	push_error("generic item dict should never get called")
+	
+	return {}

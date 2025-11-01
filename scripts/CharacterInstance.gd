@@ -64,9 +64,7 @@ func _init(res: CharacterResource) -> void:
 			continue
 			
 		if item is ConsumableItem:
-			var cons := ConsumableInstance.new()
-			cons.template = item
-			cons.effects = item.effects
+			var cons := ConsumableInstance.new(item)
 			inventory.add_item(cons)
 			
 			continue
@@ -77,9 +75,9 @@ func _init(res: CharacterResource) -> void:
 	
 	damage_type = res.default_damage_type
 	
-	job = res.job
-	gender = res.gender
-	race = res.race
+	job = res.job.duplicate(true)
+	gender = res.gender.duplicate(true)
+	race = res.race.duplicate(true)
 	
 	for skill in res.default_skills:
 		if learnt_skills.has(skill):
@@ -93,13 +91,13 @@ func _init(res: CharacterResource) -> void:
 			learnt_skills.append(skill)
 	
 	for effect in res.default_effects:
-		var inst = effect.duplicate()
+		var inst := effect.duplicate()
 		inst.on_apply(self)
 		effects.append(inst)
 
 	if res.job:
 		for effect in res.job.effects:
-			var inst = effect.duplicate()
+			var inst := effect.duplicate()
 			inst.on_apply(self)
 			effects.append(inst)
 	
@@ -114,15 +112,12 @@ func set_current_health(new_health: int) -> void:
 		emit_signal("damaged", old - stats.current_health, self)
 	elif new > old:
 		stats.current_health = new
-		print("%s was healed for %s" % [resource.name, stats.current_health - old])
 		emit_signal("healed", stats.current_health - old)
 	emit_signal("health_changed", old, stats.current_health)
 	if new == 0 and old > 0:
 		stats.current_health = new
 		is_dead = true
-		print("%s is dead" % resource.name)
 		emit_signal("died", self)
-	print("%s HP %s/%s" % [resource.name, stats.current_health, stats.get_final_stat(Stats.HEALTH)])
 	
 func set_current_mana(new_mana: int) -> void:
 	var old := stats.current_mana
@@ -135,7 +130,6 @@ func set_current_mana(new_mana: int) -> void:
 		stats.current_mana = new
 		emit_signal("mana_restored", stats.current_mana - old, self)
 	emit_signal("mana_changed", old, stats.current_mana)
-	print("%s MP %s/%s" % [resource.name, stats.current_mana, stats.get_final_stat(Stats.HEALTH)])
 
 func prepare_for_battle() -> void:
 	for e: Effect in effects:
@@ -274,11 +268,14 @@ func to_dict() -> Dictionary:
 	var equip_dict := {}
 	for slot in equipment.keys():
 		var item: GearInstance = equipment[slot]
-		equip_dict[slot] = item.template.id if item else null
+		if item:
+			equip_dict[slot] = item.to_dict()
+		else:
+			equip_dict[slot] = null
 		
 	var inventory_arr := []
 	for slot: ItemInstance in inventory.slots:
-		inventory_arr.append(slot.template.id)
+		inventory_arr.append(slot.to_dict())
 		
 	var effect_arr := []
 	for effect in effects:
@@ -353,7 +350,7 @@ static func from_dict(data: Dictionary) -> CharacterInstance:
 	inst.unspent_attribute_points = data.get("unspent_points", 0)
 
 	if data.has("level_up_attributes"):
-		var a = data["level_up_attributes"]
+		var a: Dictionary = data["level_up_attributes"]
 		inst.level_up_attributes.str = a.get("str")
 		inst.level_up_attributes.iq  = a.get("iq")
 		inst.level_up_attributes.pie = a.get("pie")
@@ -363,7 +360,7 @@ static func from_dict(data: Dictionary) -> CharacterInstance:
 		inst.level_up_attributes.luk = a.get("luk")
 		
 	if data.has("attributes"):
-		var a = data["attributes"]
+		var a: Dictionary = data["attributes"]
 		inst.attributes.str = a.get("str", inst.attributes.str)
 		inst.attributes.iq  = a.get("iq", inst.attributes.iq)
 		inst.attributes.pie = a.get("pie", inst.attributes.pie)
@@ -373,7 +370,7 @@ static func from_dict(data: Dictionary) -> CharacterInstance:
 		inst.attributes.luk = a.get("luk", inst.attributes.luk)
 	
 	if data.has("starting_attributes"):
-		var a = data["starting_attributes"]
+		var a: Dictionary = data["starting_attributes"]
 		inst.starting_attributes.str = a.get("str", inst.starting_attributes.str)
 		inst.starting_attributes.iq  = a.get("iq", inst.starting_attributes.iq)
 		inst.starting_attributes.pie = a.get("pie", inst.starting_attributes.pie)
@@ -387,25 +384,25 @@ static func from_dict(data: Dictionary) -> CharacterInstance:
 
 	if data.has("inventory"):
 		inst.inventory.slots = []
-		for id: String in data["inventory"]:
+		for item_data: Dictionary in data["inventory"]:
+			var id: String = item_data.get("resource")
 			var item_res := ItemsRegistry.get_item(id)
 			
 			if not item_res:
 				push_error("Item not found! %s" % id)
+				continue
 			
 			if item_res is Gear:
-				var gear := GearInstance.new(item_res)
+				var gear := GearInstance.from_dict(item_data)
 				inst.inventory.add_item(gear)
 			
 			if item_res is ConsumableItem:
-				var cons := ConsumableInstance.new()
-				cons.template = item_res
-				cons.effects = item_res.effects
+				var cons := ConsumableInstance.from_dict(item_data)
 				inst.inventory.add_item(cons)
 				
 	if data.has("effects"):
 		inst.effects = []
-		for effect_id in data["effects"]:
+		for effect_id: String in data["effects"]:
 			var effect := EffectRegistry.get_effect(effect_id)
 			if not effect:
 				push_error("Effect not found: %s" % effect_id)
@@ -413,12 +410,11 @@ static func from_dict(data: Dictionary) -> CharacterInstance:
 
 	if data.has("equipment"):
 		for slot in data["equipment"].keys():
-			var item_id = data["equipment"][slot]
-			if item_id != null:
-				var gear_res = ItemsRegistry.get_item(item_id)
-				if gear_res and gear_res is Gear:
-					var gear = GearInstance.new(gear_res)
-					inst.equip_item(gear)
+			var item_dict = data["equipment"][slot]
+			if item_dict != null:
+				var gear_inst := GearInstance.from_dict(item_dict)
+				if gear_inst and gear_inst is GearInstance:
+					inst.equip_item(gear_inst)
 					
 	inst.stats.recalculate_stats()
 	return inst

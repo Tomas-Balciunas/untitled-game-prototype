@@ -1,10 +1,10 @@
 extends Node3D
 class_name FormationBase
 
-var front_row_z
-var back_row_z
-var slot_spacing_x
-var max_slots
+var front_row_z: float
+var back_row_z: float
+var slot_spacing_x: int
+var max_slots: int
 
 
 
@@ -16,7 +16,7 @@ var back_positions  := []
 
 func remove_slot_for(enemy: CharacterInstance) -> void:
 	for i in range(max_slots):
-		var slot = front_slots[i]
+		var slot: FormationSlot = front_slots[i]
 		if slot and slot.character_instance == enemy:
 			slot.queue_free()
 			front_slots[i] = null
@@ -24,7 +24,7 @@ func remove_slot_for(enemy: CharacterInstance) -> void:
 			return
 
 	for j in range(max_slots):
-		var slot = back_slots[j]
+		var slot: FormationSlot = back_slots[j]
 		if slot and slot.character_instance == enemy:
 			slot.queue_free()
 			back_slots[j] = null
@@ -32,19 +32,19 @@ func remove_slot_for(enemy: CharacterInstance) -> void:
 			
 func get_slot_for(enemy: CharacterInstance) -> FormationSlot:
 	for i in range(max_slots):
-		var slot = front_slots[i]
+		var slot: FormationSlot = front_slots[i]
 		if slot and slot.character_instance == enemy:
 			return slot
 
 	for j in range(max_slots):
-		var slot = back_slots[j]
+		var slot: FormationSlot = back_slots[j]
 		if slot and slot.character_instance == enemy:
 			return slot
 			
 	return null
 
 func _promote_from_back_to_front(index: int) -> void:
-	var back = back_slots[index]
+	var back: FormationSlot = back_slots[index]
 	if back and front_slots[index] == null:
 		back_slots[index]  = null
 		front_slots[index] = back
@@ -62,9 +62,9 @@ func get_centered_positions(count: int, z: float) -> Array:
 	var positions := []
 	if count <= 0:
 		return positions
-	var total_width = (count - 1) * slot_spacing_x
+	var total_width := (count - 1) * slot_spacing_x
 	for i in range(count):
-		var x = -total_width * 0.5 + i * slot_spacing_x
+		var x := -total_width * 0.5 + i * slot_spacing_x
 		positions.append(Vector3(x, 0, z))
 		
 	return positions
@@ -91,7 +91,7 @@ func get_blast_enemies(target: CharacterInstance) -> Array[CharacterInstance]:
 
 func get_row_enemies(target: CharacterInstance) -> Array[FormationSlot]:
 	for i in range(max_slots):
-		var slot = front_slots[i]
+		var slot: FormationSlot = front_slots[i]
 		if slot and slot.character_instance == target:
 			return front_slots
 	return back_slots
@@ -138,7 +138,7 @@ func get_adjacent_in_column(row: Array[FormationSlot], index: int, target: Forma
 	return slots_to_character_instances(adjacent)
 	
 func array_unique(arr1: Array[CharacterInstance], arr2: Array[CharacterInstance]) -> Array[CharacterInstance]:
-	var unique = arr1
+	var unique := arr1
 	
 	for item in arr2:
 		if arr1.has(item):

@@ -63,7 +63,7 @@ func _ready() -> void:
 	
 	jobs = JobRegistry.get_all()
 	for j: Job in jobs:
-		var btn = Button.new()
+		var btn := Button.new()
 		btn.focus_mode = Control.FOCUS_NONE
 		btn.text = JobRegistry.type_to_string(j.name)
 		btn.pressed.connect(_on_job_selected.bind(j))
@@ -72,7 +72,7 @@ func _ready() -> void:
 	
 	races = RaceRegistry.get_all()
 	for r: Race in races:
-		var btn = Button.new()
+		var btn := Button.new()
 		btn.focus_mode = Control.FOCUS_NONE
 		btn.text = RaceRegistry.type_to_string(r.name)
 		btn.pressed.connect(_on_race_selected.bind(r))
@@ -81,7 +81,7 @@ func _ready() -> void:
 	
 	genders = GenderRegistry.get_all()
 	for g: Gender in genders:
-		var btn = Button.new()
+		var btn := Button.new()
 		btn.focus_mode = Control.FOCUS_NONE
 		btn.text = GenderRegistry.type_to_string(g.name)
 		btn.pressed.connect(_on_gender_selected.bind(g))
@@ -145,7 +145,7 @@ func _on_attribute_changed(attr_name: String, delta: int) -> void:
 	_update_attribute_labels()
 	update_points()
 	
-func whatever(delta: int, attr: int):
+func whatever(delta: int, attr: int) -> int:
 	if delta > 0 and points <= 0:
 		return attr
 	if delta < 0 and attr <= 0:
@@ -186,8 +186,8 @@ func _on_gender_selected(g: Gender) -> void:
 	_update_attribute_labels()
 	
 
-func update_attributes():
-	var attr = Attributes.new()
+func update_attributes() -> void:
+	var attr := Attributes.new()
 	if chosen_gender:
 		attr.add(chosen_gender.attributes)
 	
@@ -203,14 +203,14 @@ func update_attributes():
 	display_attributes = attr
 
 func _on_create_pressed() -> void:
-	var res = MC
+	var res := MC
 	res.name = "Test"
 	res.job = chosen_job
 	res.gender = chosen_gender
 	res.race = chosen_race
 	res.attributes = Attributes.new()
 	res.is_main = true
-	var inst = PartyManager.add_member(res)
+	var inst := PartyManager.add_member(res)
 	
 	if !inst:
 		push_error("something went horribly wrong - created character instance is null, check party size?")
@@ -222,5 +222,5 @@ func _on_create_pressed() -> void:
 	await get_tree().change_scene_to_file("res://scenes/main.tscn")
 	
 
-func update_points():
+func update_points() -> void:
 	points_display.text = "Points left: %s" % points

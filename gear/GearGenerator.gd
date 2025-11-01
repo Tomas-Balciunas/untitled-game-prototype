@@ -60,13 +60,11 @@ func generate() -> Array[Item]:
 		
 		if type == Item.ItemType.WEAPON:
 			var weapon := item
-			weapon.type = type
 			for k in range(weapon.max_modifiers):
 				weapon.modifiers.append(BasicFlatModifierList.get_random_modifier())
 			item = weapon
 		else:
 			var gear := item
-			gear.type = type
 			for k in range(gear.max_modifiers):
 				gear.modifiers.append(BasicFlatModifierList.get_random_modifier())
 			

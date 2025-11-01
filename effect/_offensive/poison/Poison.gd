@@ -48,7 +48,7 @@ func on_trigger(event: TriggerEvent) -> void:
 		if owner == null:
 			push_error("PoisonEffect: Owner is null during on_turn_end tick.")
 			return
-		var tick = AttackAction.new()
+		var tick := AttackAction.new()
 		tick.attacker = _source if _source != null else owner
 		tick.defender = owner
 		tick.type = DamageTypes.Type.POISON

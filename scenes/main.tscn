@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://cphcmsugjsscn"]
+[gd_scene load_steps=12 format=3 uid="uid://cphcmsugjsscn"]
 
 [ext_resource type="Script" uid="uid://bsq341p3oxk46" path="res://scenes/GameState.gd" id="1_o6xl0"]
 [ext_resource type="Script" uid="uid://x2dulqp2hx2s" path="res://scenes/dungeon/Dungeon.gd" id="2_o6xl0"]
@@ -11,7 +11,6 @@
 [ext_resource type="Script" uid="uid://dh87dr7v6jk6m" path="res://scripts/RestManager.gd" id="9_choun"]
 [ext_resource type="PackedScene" uid="uid://c1geh2y2biany" path="res://scenes/battle_text_lines.tscn" id="10_choun"]
 [ext_resource type="Script" uid="uid://bseoj2gpvrk32" path="res://scenes/ui/notification/NotificationManager.gd" id="10_ya4ey"]
-[ext_resource type="Script" uid="uid://qwci85k0novh" path="res://scripts/ChestManager.gd" id="11_eb6dy"]
 
 [node name="Main" type="Node3D"]
 script = ExtResource("1_o6xl0")
@@ -223,8 +222,5 @@ script = ExtResource("9_choun")
 
 [node name="NotificationManager" type="Node" parent="Managers"]
 script = ExtResource("10_ya4ey")
-
-[node name="ChestManager" type="Node" parent="Managers"]
-script = ExtResource("11_eb6dy")
 
 [node name="Player" parent="." instance=ExtResource("2_sugp2")]

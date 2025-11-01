@@ -30,7 +30,7 @@ func apply_skill(skill: SkillAction) -> DamageContext:
 	)
 
 func _apply_core(source: CharacterInstance, target: CharacterInstance, damage_type: DamageTypes.Type, base: float, extra_effects: Array[Effect], actively_cast: bool, options: Dictionary = {}) -> DamageContext:
-	var ctx = DamageContext.new()
+	var ctx := DamageContext.new()
 	ctx.source   		= source
 	ctx.target    		= target
 	ctx.type        	= damage_type
@@ -40,7 +40,7 @@ func _apply_core(source: CharacterInstance, target: CharacterInstance, damage_ty
 	ctx.options 		= options
 	ctx.actively_cast 	= actively_cast
 	
-	var event = TriggerEvent.new()
+	var event := TriggerEvent.new()
 	event.actor = ctx.source
 	event.ctx = ctx
 	event.trigger = EffectTriggers.ON_HIT
@@ -54,11 +54,11 @@ func _apply_core(source: CharacterInstance, target: CharacterInstance, damage_ty
 	event.trigger = EffectTriggers.ON_BEFORE_RECEIVE_DAMAGE
 	EffectRunner.process_trigger(event)
 	
-	var defense_ignore = 0
+	var defense_ignore := 0
 	if ctx.has_meta("ignore_defense_percent"):
 		defense_ignore = ctx.get_meta("ignore_defense_percent")
 	
-	var calculator = DamageCalculator.new(ctx, defense_ignore)
+	var calculator := DamageCalculator.new(ctx, defense_ignore)
 	ctx.final_value = max(calculator.get_final_damage(), 0)
 	
 	BattleEventBus.before_receive_damage.emit(ctx)
@@ -80,7 +80,7 @@ func _apply_core(source: CharacterInstance, target: CharacterInstance, damage_ty
 	
 	if event.ctx.has_meta("counterattack"):
 		var counter_target = ctx.get_meta("counterattack")
-		var revenge = AttackAction.new()
+		var revenge := AttackAction.new()
 		revenge.attacker = ctx.target
 		revenge.defender = counter_target
 		revenge.type = ctx.target.damage_type

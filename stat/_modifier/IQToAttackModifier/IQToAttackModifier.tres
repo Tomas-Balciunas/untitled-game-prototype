@@ -4,9 +4,8 @@
 
 [resource]
 script = ExtResource("1_l0f7c")
+id = "iq_to_attack"
 name = "bruh"
-attribute = "attack"
-type = 0
-value = 0.0
+value = 0.5
 priority = 100
 metadata/_custom_type_script = "uid://de73g66jg5hwp"
