@@ -59,6 +59,7 @@ func on_character_selected(character: CharacterInstance) -> void:
 func remove_item_from_chest(item: ItemInstance) -> void:
 	chest.remove_item(item)
 	items.erase(item)
+	ChestBus.chest_state_changed.emit(chest)
 	
 	for child in v_box_container.get_children():
 		if child.get_item_instance() == item:

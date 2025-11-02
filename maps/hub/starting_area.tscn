@@ -1,10 +1,14 @@
-[gd_scene load_steps=19 format=3 uid="uid://c8n1llsvvhonb"]
+[gd_scene load_steps=24 format=3 uid="uid://c8n1llsvvhonb"]
 
 [ext_resource type="MeshLibrary" uid="uid://uso6cfmk5r51" path="res://tileset white.tres" id="1_mdjaj"]
 [ext_resource type="Script" uid="uid://7pao6hs651jh" path="res://scripts/EnemyController.gd" id="2_g1pjd"]
 [ext_resource type="Script" uid="uid://qwci85k0novh" path="res://scripts/ChestManager.gd" id="2_uvgea"]
 [ext_resource type="Script" uid="uid://kf1ly5o4evhs" path="res://scripts/SpawnId.gd" id="3_w2sle"]
+[ext_resource type="Script" uid="uid://b06vmgrh4qa8i" path="res://gear/Item.gd" id="4_0wmue"]
+[ext_resource type="Script" uid="uid://djh7svb2aijp2" path="res://scripts/Chest.gd" id="5_ktguo"]
+[ext_resource type="Resource" uid="uid://bytf4k3v782d2" path="res://gear/weapon/templates/2_iron/Axe.tres" id="5_s27v5"]
 [ext_resource type="Script" uid="uid://bwn4gpkaijqsg" path="res://scripts/CharacterResource.gd" id="6_bgo3i"]
+[ext_resource type="Resource" uid="uid://dxgrsck30ncu7" path="res://gear/weapon/templates/1_wood/Axe.tres" id="6_g2q70"]
 [ext_resource type="Script" uid="uid://dbfiub7761eey" path="res://scripts/triggerables/MapTransitionTriggerable.gd" id="7_lk5gk"]
 [ext_resource type="PackedScene" uid="uid://rmcp18hibovm" path="res://maps/crypt/crypt.tscn" id="7_uvgea"]
 [ext_resource type="Script" uid="uid://i6llluly1w8" path="res://scripts/MapData.gd" id="8_uo6qj"]
@@ -12,6 +16,12 @@
 [ext_resource type="PackedScene" uid="uid://cxxgmoys7ineo" path="res://scenes/ChestBasic.tscn" id="9_lk5gk"]
 [ext_resource type="PackedScene" uid="uid://bg5f2e2nphlkl" path="res://scripts/interactables/Interactable.tscn" id="10_lk5gk"]
 [ext_resource type="Script" uid="uid://b656vk4s4jm03" path="res://scripts/triggerables/EventTriggerable.gd" id="11_bgo3i"]
+
+[sub_resource type="Resource" id="Resource_s27v5"]
+script = ExtResource("5_ktguo")
+id = "starting_area_chest_02"
+items = Array[ExtResource("4_0wmue")]([ExtResource("5_s27v5"), ExtResource("6_g2q70")])
+metadata/_custom_type_script = "uid://djh7svb2aijp2"
 
 [sub_resource type="Resource" id="Resource_0wmue"]
 script = ExtResource("8_uo6qj")
@@ -49,6 +59,15 @@ script = ExtResource("2_uvgea")
 
 [node name="ChestBasic" parent="Chests" instance=ExtResource("9_lk5gk")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.7453785, 0.5260688, -7.930229)
+id = "starting_area_chest_01"
+random = true
+quantity = 3
+
+[node name="ChestBasic2" parent="Chests" instance=ExtResource("9_lk5gk")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.0930414, 0.5260688, -7.930229)
+id = "starting_area_chest_02"
+quantity = 3
+chest = SubResource("Resource_s27v5")
 
 [node name="Enemies" type="Node" parent="."]
 script = ExtResource("2_g1pjd")

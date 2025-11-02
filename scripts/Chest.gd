@@ -1,10 +1,18 @@
-extends Node
-
+extends Resource
 class_name Chest
 
-var locked: bool = false
-var trapped: bool = false
-var items: Array[Item] = []
+@export var id: String
+@export var locked: bool = false:
+	set(value):
+		trapped = value
+		ChestBus.chest_state_changed.emit(self)
+		
+@export var trapped: bool = false:
+	set(value):
+		trapped = value
+		ChestBus.chest_state_changed.emit(self)
+		
+@export var items: Array[Item] = []
 
 func remove_item(_item: ItemInstance) -> void:
 	for item in items:

@@ -10,7 +10,7 @@ func _ready() -> void:
 
 func on_open_chest_requested(c: Chest) -> void:
 	chest = c
-	if chest.locked:
+	if chest.trapped:
 		var inst := CHEST_OPEN_SELECT_SCENE.instantiate()
 		inst.chest_opener_chosen.connect(on_chest_opener_chosen, CONNECT_ONE_SHOT)
 		get_tree().get_root().get_node("Main").add_child(inst)
@@ -52,7 +52,7 @@ func on_chest_opener_chosen(character: CharacterInstance) -> void:
 	
 
 	await EventManager.process_event(event)
-	chest.locked = false
+	chest.trapped = false
 	open_chest()
 	
 

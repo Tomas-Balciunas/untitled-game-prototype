@@ -21,6 +21,6 @@ base_stats = {
 tier = "WOOD"
 is_random = true
 max_modifiers = 1
-id = "wood_axe_01"
+id = "wood_sword_01"
 name = "Crude Sword"
 metadata/_custom_type_script = "uid://dshxh47nef2ua"

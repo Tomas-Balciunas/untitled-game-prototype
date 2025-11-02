@@ -12,6 +12,7 @@ var cleared_encounters: Dictionary = {}
 var transitions := {}
 var available_enemies: Array[CharacterResource] = []
 var available_tiers: Array = []
+var chest_state: Dictionary = {}
 
 func hydrate_from_resource(map_data: Dictionary) -> void:
 	map_id = map_data.id
@@ -30,6 +31,7 @@ func hydrate_from_load(load_data: Dictionary) -> void:
 		player_position = str_to_var("Vector2i" + dungeon["player_position"])
 		player_facing = dungeon["player_facing"]
 		cleared_encounters = dungeon["cleared_encounters"]
+		chest_state = dungeon["chest_state"]
 
 func update_player_position(pos: Vector2i, facing: Vector3) -> void:
 	player_previous_position = player_position
@@ -86,7 +88,8 @@ func to_dict() -> Dictionary:
 		"player_position": player_position,
 		"player_facing": player_facing,
 		"cleared_encounters": cleared_encounters,
-		"encounters": encounters
+		"encounters": encounters,
+		"chest_state": chest_state
 	}
 	
 	return dungeon_data
@@ -97,4 +100,5 @@ func from_dict(data: Dictionary) -> void:
 	player_facing = dungeon["player_facing"]
 	cleared_encounters = dungeon["cleared_encounters"]
 	encounters = dungeon["encounters"]
+	chest_state = dungeon["chest_state"]
 	LoadBus.loaded.emit(dungeon["id"])
