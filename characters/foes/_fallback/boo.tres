@@ -22,7 +22,7 @@ base_stats = {
 "ATTACK": 5.0,
 "DEFENSE": 5.0,
 "DIVINE_POWER": 5.0,
-"HEALTH": 8.0,
+"HEALTH": 28.0,
 "MAGIC_DEFENSE": 5.0,
 "MAGIC_POWER": 5.0,
 "MANA": 5.0,

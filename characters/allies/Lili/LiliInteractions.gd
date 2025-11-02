@@ -4,7 +4,7 @@ class_name LiliInteractions
 
 const FATAL_HIT = "fatal_hit"
 
-func _init():
+func _init() -> void:
 	interactions = {
 		MENU_TALK: {
 			"random_01": {

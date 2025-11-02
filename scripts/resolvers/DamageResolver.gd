@@ -14,7 +14,7 @@ func apply_attack(action: AttackAction) -> DamageContext:
 	)
 
 func apply_skill(skill: SkillAction) -> DamageContext:
-	var calculated_damage = skill.attacker.stats.attack
+	var calculated_damage := skill.attacker.stats.get_final_stat(Stats.ATTACK)
 	# apply skill modifier to attacker's att power
 	if skill.modifier != 0.0:
 		calculated_damage += calculated_damage * skill.modifier
@@ -84,7 +84,7 @@ func _apply_core(source: CharacterInstance, target: CharacterInstance, damage_ty
 		revenge.attacker = ctx.target
 		revenge.defender = counter_target
 		revenge.type = ctx.target.damage_type
-		revenge.base_value = ctx.target.stats.attack
+		revenge.base_value = ctx.target.stats.get_final_stat(Stats.ATTACK)
 		revenge.actively_cast = false #important, setting it to false would not trigger counterattack chain
 		BattleContext.manager.action_queue.append(revenge)
 		BattleTextLines.print_line("%s counterattacks!" % revenge.attacker.resource.name)

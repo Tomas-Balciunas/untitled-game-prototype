@@ -33,8 +33,8 @@ func show_for_character(c: CharacterInstance) -> void:
 
 func _ready() -> void:
 	hide()
-	for attr in attr_buttons.keys():
-		attr_buttons[attr].pressed.connect(func():
+	for attr: String in attr_buttons.keys():
+		attr_buttons[attr].pressed.connect(func() -> void:
 			if character.increase_attribute(attr):
 				update_ui()
 		)
@@ -53,5 +53,5 @@ func update_ui() -> void:
 	attr_labels["SPD"].text = "SPD: %d" % character.attributes.spd
 	attr_labels["LUK"].text = "LUK: %d" % character.attributes.luk
 	
-	for button in attr_buttons.values():
+	for button: Button in attr_buttons.values():
 		button.disabled = character.unspent_attribute_points == 0

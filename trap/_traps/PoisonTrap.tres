@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="PoisonTrap" load_steps=2 format=3 uid="uid://8ufc6fbnjad8"]
+
+[ext_resource type="Script" uid="uid://1mrlwj4lmc8w" path="res://trap/_traps/poison_trap.gd" id="1_d77gg"]
+
+[resource]
+script = ExtResource("1_d77gg")
+id = "poison_trap_01"
+name = "Poison Trap"
+damage = 8
+metadata/_custom_type_script = "uid://1mrlwj4lmc8w"

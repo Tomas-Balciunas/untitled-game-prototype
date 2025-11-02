@@ -28,19 +28,26 @@ func on_chest_opener_chosen(character: CharacterInstance) -> void:
 				]
 			}
 		]
+		
+	var trap: Trap
 	
-	if randf() > 0.5:
+	if chest.trap:
+		trap = chest.trap
+	else:
+		trap = TrapRegistry.get_random_trap()	
+	
+	if randf() > 0:
 		event.append({
 			"type": "text",
 			"text": [
-				"Oops! Poison dart!",
+				"Oops! %s" % trap.name,
 			]
 		})
 		
 		event.append({
 			"type": "trap",
-			"id": "poison_dart",
-			"damage": 10
+			"trap": trap,
+			"target": character
 		})
 	else:
 		event.append({
@@ -52,7 +59,7 @@ func on_chest_opener_chosen(character: CharacterInstance) -> void:
 	
 
 	await EventManager.process_event(event)
-	chest.trapped = false
+	chest.set_trapped(false)
 	open_chest()
 	
 

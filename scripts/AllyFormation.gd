@@ -6,6 +6,7 @@ const FRONT_ROW_Z    := -8.0
 const BACK_ROW_Z     := -10.0
 const SLOT_SPACING_X := 2
 const MAX_SLOTS      := 3
+const PLAYER = preload("uid://ed1wo7vfltsb")
 
 const SlotScene = preload("res://scenes/FormationSlot.tscn")
 
@@ -42,6 +43,12 @@ func place_all_allies() -> void:
 		var inst: CharacterInstance = front_allies[i]
 		if inst:
 			var slot := SlotScene.instantiate() as FormationSlot
+			if inst.is_main:
+				var camera := PLAYER.instantiate()
+				slot.add_child(camera)
+				camera.transform.origin = Vector3(0, 0.2, 0)
+				camera.rotation_degrees.y = 180
+				
 			var idx := front_start + i
 			slot.position = front_positions[idx]
 			add_child(slot)

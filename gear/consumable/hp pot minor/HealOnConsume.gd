@@ -10,7 +10,7 @@ func can_process(_event: TriggerEvent) -> bool:
 	return true
 
 func on_trigger(event: TriggerEvent) -> void:
-	var action = HealingAction.new()
+	var action := HealingAction.new()
 	action.base_value = heal_amount
 	action.provider = event.ctx.source
 	action.receiver = event.ctx.target

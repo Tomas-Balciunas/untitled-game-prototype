@@ -89,7 +89,7 @@ func _on_talk_pressed() -> void:
 	if not interaction:
 		return
 	
-	var menu_interaction = interaction.get_dialogue("menu_talk", "random_01")
+	var menu_interaction: Dictionary = interaction.get_dialogue("menu_talk", "random_01")
 	ConversationBus.request_conversation.emit(character_instance.resource.name, menu_interaction["text"])
 
 

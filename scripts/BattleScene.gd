@@ -22,10 +22,10 @@ func initiate(arena: PackedScene, enemies: Array[CharacterResource], data: Encou
 	load_arena(arena)
 	var enemy_instances := load_enemies(enemies)
 	ally_grid.place_all_allies()
-	var player := get_tree().get_root().get_node("Main/Player")
-	player.global_position = Vector3(1000, 0.3, 992)
-	player.rotation_degrees.y = 180
-	player.rotation_degrees.x = -10
+	#var player := get_tree().get_root().get_node("Main/Player")
+	#player.global_position = Vector3(1000, 0.3, 992)
+	#player.rotation_degrees.y = 180
+	#player.rotation_degrees.x = -10
 	BattleContext.fill_context(battle_manager, enemy_grid, data)
 	
 	battle_manager.begin(enemy_instances)

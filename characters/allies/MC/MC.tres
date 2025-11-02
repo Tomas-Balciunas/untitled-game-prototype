@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="CharacterResource" load_steps=12 format=3 uid="uid://dvky7cvffgf22"]
+[gd_resource type="Resource" script_class="CharacterResource" load_steps=13 format=3 uid="uid://dvky7cvffgf22"]
 
 [ext_resource type="Resource" uid="uid://bm8voqn41431y" path="res://characters/_attribute/_Unknown.tres" id="1_w0qqt"]
 [ext_resource type="Script" uid="uid://cbelvg2fndssu" path="res://scripts/BattleEvent.gd" id="2_2usx5"]
@@ -7,6 +7,7 @@
 [ext_resource type="Script" uid="uid://b06vmgrh4qa8i" path="res://gear/Item.gd" id="4_jti2u"]
 [ext_resource type="Script" uid="uid://dq4acpkde276p" path="res://skills/Skill.gd" id="5_uxndi"]
 [ext_resource type="Resource" uid="uid://c5qyqcmwx0qfy" path="res://scripts/experience/ExperienceManager.tres" id="6_l36pt"]
+[ext_resource type="Resource" uid="uid://oxl57auu6ibc" path="res://skills/_offensive/stun_strike.tres" id="7_lkn2v"]
 [ext_resource type="Resource" uid="uid://ccd45ithmlluj" path="res://characters/_gender/_Unknown.tres" id="7_up1d2"]
 [ext_resource type="Resource" uid="uid://cs2tci0dc3vvo" path="res://characters/_class/_Unknown.tres" id="8_xghbj"]
 [ext_resource type="Resource" uid="uid://lcgngc3c13fc" path="res://characters/_race/_Unknown.tres" id="9_ghhp2"]
@@ -16,6 +17,7 @@
 script = ExtResource("10_fb0jw")
 id = "mc"
 character_body = ExtResource("3_2usx5")
+default_skills = Array[ExtResource("5_uxndi")]([ExtResource("7_lkn2v")])
 base_stats = {
 "ATTACK": 10.0,
 "DEFENSE": 10.0,

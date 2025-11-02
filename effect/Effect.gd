@@ -17,6 +17,7 @@ enum EffectCategory {
 @export var description: String = "Unnamed Effect"
 @export var category: EffectCategory = EffectCategory.OTHER
 @export var duration_turns: int = -1
+@export var single_trigger: bool = false
 
 var _stackable := false
 var _is_registered := false
@@ -25,7 +26,7 @@ var owner: CharacterInstance = null
 var _is_runtime_instance := false
 var _should_append := true
 
-func set_source(_source: CharacterInstance):
+func set_source(_source: CharacterInstance) -> void:
 	pass
 	
 func listened_triggers() -> Array:
@@ -33,6 +34,9 @@ func listened_triggers() -> Array:
 	
 func can_process(_event: TriggerEvent) -> bool:
 	return false
+	
+func on_trigger(_event: TriggerEvent) -> void:
+	pass
 
 func _get_name() -> String:
 	return name

@@ -18,8 +18,8 @@ func _ready() -> void:
 
 func load_map(map_id: String, load_data = null) -> void:
 	#TODO: safety
-	var map_data = MapManager.get_map_data(map_id)
-	var map_scene = MapManager.get_map(map_id)
+	var map_data := MapManager.get_map_data(map_id)
+	var map_scene := MapManager.get_map(map_id)
 	
 	_kill_map()
 	

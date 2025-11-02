@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="ManaDrainTrap" load_steps=2 format=3 uid="uid://bfpykmjyjvbli"]
+
+[ext_resource type="Script" uid="uid://bkcniw6n332nt" path="res://trap/_traps/mana_drain_trap.gd" id="1_rho02"]
+
+[resource]
+script = ExtResource("1_rho02")
+id = "mana_drain_trap"
+name = "Mana Drain Trap"
+metadata/_custom_type_script = "uid://bkcniw6n332nt"

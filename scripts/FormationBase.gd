@@ -112,7 +112,7 @@ func get_adjacent_enemies(target: CharacterInstance) -> Array[CharacterInstance]
 	return [target]
 	
 func get_mass_enemies() -> Array[CharacterInstance]:
-	var mass: Array[FormationSlot] = (front_slots + back_slots).filter(func(slot): return slot != null)
+	var mass: Array[FormationSlot] = (front_slots + back_slots).filter(func(slot: FormationSlot) -> bool: return slot != null)
 		
 	return slots_to_character_instances(mass)
 	

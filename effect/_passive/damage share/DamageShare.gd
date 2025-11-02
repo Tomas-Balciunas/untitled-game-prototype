@@ -13,9 +13,9 @@ func can_process(event: TriggerEvent) -> bool:
 	return event.ctx.target != owner and not owner.is_dead
 
 func on_trigger(event: TriggerEvent) -> void:
-	var damaged = event.ctx.target
-	var transfer = ceil(event.ctx.final_value * share_percent)
-	var final = floor(event.ctx.final_value - transfer)
+	var damaged := event.ctx.target
+	var transfer := ceili(event.ctx.final_value * share_percent)
+	var final := floori(event.ctx.final_value - transfer)
 	event.ctx.final_value = final
 	owner.set_current_health(owner.stats.current_health - transfer)
 	BattleTextLines.print_line(

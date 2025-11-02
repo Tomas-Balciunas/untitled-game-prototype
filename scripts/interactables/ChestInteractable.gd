@@ -36,7 +36,7 @@ func build_items(_map_data: Dictionary) -> Array[Item]:
 func build_chest(map_data: Dictionary) -> void:
 	var inst := Chest.new()
 	inst.id = id
-	inst.trapped = randf() > 0.5
+	inst.trapped = randf() > 0
 	inst.items = build_items(map_data)
 
 	

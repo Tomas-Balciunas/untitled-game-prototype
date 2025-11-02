@@ -42,8 +42,7 @@ var action_queue: Array[AttackAction] = []
 
 func begin(_enemies: Array[CharacterInstance]) -> void:
 	BattleEventBus.event_concluded.connect(Callable(self, "_on_event_concluded"))
-	TargetingManager.configure_for_battle(camera)
-	TargetingManager.connect("target_clicked", Callable(self, "_on_target_selected"))
+	BattleBus.target_selected.connect(_on_target_selected)
 	
 	
 	var party_members := PartyManager.members
@@ -113,8 +112,13 @@ func _on_turn_start() -> void:
 	var event := TriggerEvent.new()
 	event.trigger = EffectTriggers.ON_TURN_START
 	event.actor = current_battler
+	event.ctx = ActionContext.new()
 	EffectRunner.process_trigger(event)
 	disable_all_targeting()
+	
+	if event.ctx.skip_turn:
+		current_state = BattleState.TURN_END
+		return
 		
 	if is_party_member:
 		current_state = BattleState.PLAYER_TURN
@@ -159,11 +163,9 @@ func _on_player_action_selected(action: String, options: Array) -> void:
 			enable_all_targeting()
 			return
 
-func _on_target_selected(target_slot) -> void:
+func _on_target_selected(target: CharacterInstance) -> void:
 	disable_all_targeting()
-	_pending_target = target_slot.character_instance
-	if target_slot is FormationSlot:
-		target_slot.unhover()
+	_pending_target = target
 	_resolve_player_action()
 
 func _resolve_player_action() -> void:
@@ -171,13 +173,13 @@ func _resolve_player_action() -> void:
 	current_state = BattleState.TURN_END
 
 func _perform_player_action(action: String, target: CharacterInstance) -> void:
-	var attacker_slot = get_slot(current_battler)
-	var target_slot = get_slot(target)
+	var attacker_slot := get_slot(current_battler)
+	var target_slot := get_slot(target)
 	
 	match action:
 		"attack":
-			var targeting = current_battler.equipment["weapon"].template.targeting if current_battler.equipment["weapon"] else TargetingManager.TargetType.SINGLE
-			var _targets = get_applicable_targets(target, targeting)
+			var targeting: TargetingManager.TargetType = current_battler.equipment["weapon"].template.targeting if current_battler.equipment["weapon"] else TargetingManager.TargetType.SINGLE
+			var _targets := get_applicable_targets(target, targeting)
 			
 			current_state = BattleState.ANIMATING
 			await attacker_slot.perform_attack_toward_target(target_slot)
@@ -185,9 +187,7 @@ func _perform_player_action(action: String, target: CharacterInstance) -> void:
 			for t in _targets:
 				if not t:
 					continue
-				if t is FormationSlot:
-					t = t.character_instance
-				var atk = AttackAction.new()
+				var atk := AttackAction.new()
 				atk.attacker = current_battler
 				atk.defender   = t
 				atk.base_value = current_battler.stats.get_final_stat(Stats.ATTACK)
@@ -195,8 +195,8 @@ func _perform_player_action(action: String, target: CharacterInstance) -> void:
 				atk.actively_cast = true
 				await DamageResolver.apply_attack(atk)
 		"skill":
-			var targeting = _pending_options[0].targeting_type
-			var _targets = get_applicable_targets(target, targeting)
+			var targeting: TargetingManager.TargetType = _pending_options[0].targeting_type
+			var _targets := get_applicable_targets(target, targeting)
 			var mp_cost = _pending_options[0].mp_cost
 			for e in current_battler.effects:
 				if e.has_method("modify_mp_cost"):
@@ -212,11 +212,9 @@ func _perform_player_action(action: String, target: CharacterInstance) -> void:
 			for t in _targets:
 				if not t:
 					continue
-				if t is FormationSlot:
-					t = t.character_instance
 					
 				if _pending_options[0] is HealingSkill:
-					var skill = HealingAction.new()
+					var skill := HealingAction.new()
 					skill.provider = current_battler
 					skill.receiver = t
 					skill.base_value = _pending_options[0].healing_amount
@@ -224,7 +222,7 @@ func _perform_player_action(action: String, target: CharacterInstance) -> void:
 					skill.actively_cast = true
 					HealingResolver.apply_heal(skill)
 				elif _pending_options[0] is Skill:
-					var skill = SkillAction.new()
+					var skill := SkillAction.new()
 					skill.attacker   = current_battler
 					skill.defender     = t
 					skill.skill = _pending_options[0]
@@ -237,7 +235,7 @@ func _perform_player_action(action: String, target: CharacterInstance) -> void:
 			
 		"item":
 			var targeting = _pending_options[0].template.targeting_type
-			var _targets = get_applicable_targets(target, targeting)
+			var _targets := get_applicable_targets(target, targeting)
 			
 			current_state = BattleState.ANIMATING
 			await attacker_slot.perform_attack_toward_target(target_slot)
@@ -245,9 +243,8 @@ func _perform_player_action(action: String, target: CharacterInstance) -> void:
 			for t in _targets:
 				if not t:
 					continue
-				if t is FormationSlot:
-					t = t.character_instance
-				var cons = ConsumableAction.new()
+				
+				var cons := ConsumableAction.new()
 				cons.consumable = _pending_options[0]
 				cons.source = current_battler
 				cons.target = t
@@ -269,8 +266,8 @@ func _process_enemy_turn() -> void:
 
 	var target = valid_targets.pick_random()
 	current_state = BattleState.ANIMATING
-	var attacker_slot = get_slot(current_battler)
-	var target_slot = get_slot(target)
+	var attacker_slot := get_slot(current_battler)
+	var target_slot := get_slot(target)
 	
 	var atk := AttackAction.new()
 	atk.attacker = current_battler
@@ -343,18 +340,18 @@ func _corpse_janny() -> void:
 	_to_cleanup.clear()
 
 func disable_all_targeting() -> void:
-	TargetingManager.disable_targeting()
 	party_panel.disable_targeting()
+	BattleContext.enemy_targeting_enabled = false
 
 func enable_all_targeting() -> void:
-	TargetingManager.enable_targeting()
 	party_panel.enable_targeting()
+	BattleContext.enemy_targeting_enabled = true
 
 func enable_enemy_targeting() -> void:
-	TargetingManager.enable_targeting()
+	BattleContext.enemy_targeting_enabled = true
 
 func disable_enemy_targeting() -> void:
-	TargetingManager.disable_targeting()
+	BattleContext.enemy_targeting_enabled = false
 
 func enable_ally_targeting() -> void:
 	party_panel.enable_targeting()
@@ -399,17 +396,18 @@ func process_queue() -> void:
 	# TODO need to consider clean up and end checks
 	while action_queue.size() > 0:
 		var a = action_queue[0]
-		var target = get_slot(a.defender)
+		var target := get_slot(a.defender)
 		var attacker: FormationSlot = get_slot(a.attacker)
 		await attacker.perform_attack_toward_target(target)
 		await DamageResolver.apply_attack(a)
 		await attacker.position_back()
 		action_queue.pop_front()
 		
-func get_slot(chara: CharacterInstance):
+func get_slot(chara: CharacterInstance) -> FormationSlot:
 	if enemies.has(chara):
 		return enemy_grid.get_slot_for(chara)
 	if party.has(chara):
 		return ally_grid.get_slot_for(chara)
 	
 	push_error("Orphaned character! - %s" % chara.resource.name)
+	return null

@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="StunOnHitEffect" load_steps=2 format=3 uid="uid://c11jeml384knq"]
+
+[ext_resource type="Script" uid="uid://b6gdidwiq1hyo" path="res://effect/_offensive/stun/stun_on_hit.gd" id="1_ceij5"]
+
+[resource]
+script = ExtResource("1_ceij5")
+id = "stun_on_hit"
+name = "Stun on hit"
+description = "Stuns the target on hit"
+category = 4
+duration_turns = 2
+metadata/_custom_type_script = "uid://b6gdidwiq1hyo"

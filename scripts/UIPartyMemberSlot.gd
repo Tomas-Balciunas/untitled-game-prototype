@@ -46,7 +46,7 @@ func _on_gui_input(event: InputEvent) -> void:
 				return
 				
 			print("targeted ", character_instance.resource.name)
-			TargetingManager.emit_signal("target_clicked", self)
+			BattleBus.target_selected.emit(character_instance)
 		else:
 			if not BattleContext.in_battle:
 				if not character_instance:

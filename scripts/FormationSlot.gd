@@ -2,12 +2,20 @@ extends Node3D
 
 class_name FormationSlot
 
+@onready var targeting_area: Area3D = $Area3D
+
 var character_instance: CharacterInstance
 var sprite_instance: Sprite3D
 var body_instance: CharacterBody
 var fallback: CharacterResource = load("res://characters/foes/_fallback/boo.tres")
 var home_global: Vector3
 var animation_player: AnimationPlayer
+
+func _ready() -> void:
+	if targeting_area:
+		targeting_area.mouse_entered.connect(_on_mouse_entered)
+		targeting_area.mouse_exited.connect(_on_mouse_exited)
+		targeting_area.input_event.connect(_on_input_event)
 
 func bind(character: CharacterInstance) -> void:
 	character_instance = character
@@ -97,3 +105,20 @@ func capture_home() -> void:
 
 func on_ded() -> void:
 	await body_instance.play_dead()
+
+func _on_mouse_entered() -> void:
+	if not character_instance:
+		return
+	hover()
+
+func _on_mouse_exited() -> void:
+	if not character_instance:
+		return
+	unhover()
+
+func _on_input_event(_camera, event, _position, _normal, _shape_idx) -> void:
+	if !BattleContext.enemy_targeting_enabled:
+		return
+		
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
+		BattleBus.target_selected.emit(character_instance)

@@ -22,10 +22,10 @@ func enter_rest_area() -> void:
 	rest_area.global_position = Vector3(100, 0, 100)
 	rest_area.name = "RestArea"
 	
-	var entry_spot = rest_area.get_node("EntrySpot")
+	var entry_spot: Marker3D = rest_area.get_node("EntrySpot")
 	player.global_transform = entry_spot.global_transform
 
-	var spots = rest_area.get_node("PartySpots").get_children()
+	var spots: Array[Marker3D] = rest_area.get_node("PartySpots").get_children()
 	var members: Array[CharacterInstance] = PartyManager.members.duplicate()
 	
 	spots.shuffle()

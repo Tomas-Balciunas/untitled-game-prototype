@@ -17,8 +17,8 @@ func add_member(res: CharacterResource) -> CharacterInstance:
 	
 	if position.size() > 0:
 		members.append(inst)
-		var row_i = position[0]
-		var slot_i = position[1]
+		var row_i: int = position[0]
+		var slot_i: int = position[1]
 		emit_signal("member_added", inst, row_i, slot_i)
 		print("Character added to party: %s" % inst.resource.name)
 		
@@ -45,7 +45,7 @@ func get_column_allies(current: CharacterInstance) -> Array[CharacterInstance]:
 				var allies: Array[CharacterInstance] = []
 				allies.append(current)
 				var other_row_i := 1 - row_i
-				var other = formation[other_row_i][slot_i]
+				var other: CharacterInstance = formation[other_row_i][slot_i]
 				
 				if other != null:
 					allies.append(other)
@@ -63,7 +63,7 @@ func get_row_allies(current: CharacterInstance) -> Array[CharacterInstance]:
 				continue
 			if formation[row_i][slot_i] == current:
 				var row: Array[CharacterInstance] = []
-				for slot in formation[row_i]:
+				for slot: CharacterInstance in formation[row_i]:
 					if slot != null:
 						row.append(slot)
 						
@@ -102,7 +102,7 @@ func get_adjacent_allies(current: CharacterInstance) -> Array[CharacterInstance]
 					allies.append(formation[row_i][slot_i + 1])
 					
 				var other_row_i := 1 - row_i
-				var column_ally = formation[other_row_i][slot_i]
+				var column_ally: CharacterInstance = formation[other_row_i][slot_i]
 				
 				if column_ally != null and not allies.has(column_ally):
 					allies.append(column_ally)
@@ -128,7 +128,7 @@ func get_mass_allies() -> Array[CharacterInstance]:
 	#emit_signal("member_removed", character)
 
 func to_dict() -> Dictionary:
-	var members_data = []
+	var members_data := []
 	for member in members:
 		members_data.append(member.to_dict())
 	return {"party": members_data}
@@ -139,11 +139,11 @@ func from_dict(data: Dictionary) -> void:
 
 	if not data.has("party"): return
 
-	for char_data in data["party"]:
-		var inst = CharacterInstance.from_dict(char_data)
+	for char_data: Dictionary in data["party"]:
+		var inst := CharacterInstance.from_dict(char_data)
 		if inst:
 			members.append(inst)
-			var position = add_member_to_formation(inst)
+			var position := add_member_to_formation(inst)
 			if position.size() > 0:
 				print("Character added to party: %s" % inst.resource.name)
 			else:

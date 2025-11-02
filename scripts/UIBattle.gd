@@ -49,11 +49,11 @@ func _on_attack_button_pressed() -> void:
 func _on_flee_button_pressed() -> void:
 	emit_signal("action_selected", "flee", [])
 
-func _on_skill_selected(skill) -> void:
+func _on_skill_selected(skill: Skill) -> void:
 	emit_signal("action_selected", "skill", [skill])
 	skill_popup.visible = false
 
-func _on_item_selected(item) -> void:
+func _on_item_selected(item: ConsumableItem) -> void:
 	emit_signal("action_selected", "item", [item])
 	skill_popup.hide()
 
@@ -77,7 +77,7 @@ func _highlight_button(button: Button) -> void:
 
 func _reset_all_button_highlights() -> void:
 	var buttons := [attack_button, defend_button, flee_button, skill_button, item_button]
-	for b in buttons:
+	for b: Button in buttons:
 		b.add_theme_color_override("font_color", Color.WHITE)
 
 func _on_skill_button_pressed() -> void:
@@ -114,8 +114,8 @@ func _populate_skill_list() -> void:
 	for s in current_battler.learnt_skills:
 		skills.append(s)
 	
-	for skill in skills:
-		var mp_cost = skill.mp_cost
+	for skill: Skill in skills:
+		var mp_cost := skill.mp_cost
 		
 		for e in current_battler.effects:
 			if e.has_method("modify_mp_cost"):

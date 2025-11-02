@@ -10,7 +10,7 @@ func _on_request_dialogue(speaker: String, lines: Array) -> void:
 	ConversationBus.conversation_finished.emit()
 
 func _play_lines(speaker: String, lines: Array) -> void:
-	for line in lines:
+	for line: String in lines:
 		textbox.show_line(speaker, line)
 		await textbox.finished_line
 

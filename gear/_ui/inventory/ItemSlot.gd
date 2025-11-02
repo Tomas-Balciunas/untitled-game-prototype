@@ -10,7 +10,7 @@ signal item_selected(item: ItemInstance)
 
 var item: ItemInstance = null
 
-func bind(item_instance: ItemInstance):
+func bind(item_instance: ItemInstance) -> void:
 	item = item_instance
 	item_name.text = item.get_item_name()
 

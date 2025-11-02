@@ -8,6 +8,7 @@ const TRAVEL_TIME := 0.3
 @onready var back_ray := $BackRay
 @onready var left_ray := $LeftRay
 @onready var right_ray := $RightRay
+@onready var camera_3d: Camera3D = $Camera3D
 
 var can_move: bool = true
 var tween : Tween

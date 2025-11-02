@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="ManaDrainEffect" load_steps=2 format=3 uid="uid://deaco07gaj3g2"]
+
+[ext_resource type="Script" uid="uid://c7sgcxgykkrno" path="res://effect/_offensive/mana_drain/mana_drain_effect.gd" id="1_38n0h"]
+
+[resource]
+script = ExtResource("1_38n0h")
+id = "mana_drain_01"
+name = "Mana Drain"
+description = "Drain a portion of mana from the target"
+single_trigger = true
+metadata/_custom_type_script = "uid://c7sgcxgykkrno"

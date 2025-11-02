@@ -22,7 +22,6 @@ MapManager="*res://scripts/MapManager.gd"
 CharacterRegistry="*res://scripts/CharacterRegistry.gd"
 PartyManager="*res://scripts/PartyManager.gd"
 TileFactory="*res://__legacy/TileFactory.gd"
-TargetingManager="*res://scripts/TargetingManager.gd"
 ConsumableResolver="*res://scripts/resolvers/ConsumableResolver.gd"
 DamageResolver="*res://scripts/resolvers/DamageResolver.gd"
 HealingResolver="*res://scripts/resolvers/HealingResolver.gd"
@@ -50,6 +49,9 @@ ChestBus="*res://scripts/bus/ChestBus.gd"
 InteractableBus="*res://scripts/bus/InteractableBus.gd"
 MapBus="*res://scripts/bus/MapBus.gd"
 StatModifierRegistry="*res://stat/StatModifierRegistry.gd"
+TrapRegistry="*res://trap/TrapRegistry.gd"
+BattleBus="*res://scripts/bus/BattleBus.gd"
+TargetingManager="*res://scripts/TargetingManager.gd"
 
 [debug]
 

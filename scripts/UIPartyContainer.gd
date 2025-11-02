@@ -28,18 +28,18 @@ func _ready() -> void:
 	_on_party_reloaded()
 
 func _on_party_reloaded() -> void:
-	for row in formation:
-		for slot in row:
+	for row: Array in formation:
+		for slot: PartyMemberSlot in row:
 			slot.hide_info()
 
 	for row_index in range(PartyManager.formation.size()):
 		for slot_index in range(PartyManager.formation[row_index].size()):
-			var member = PartyManager.formation[row_index][slot_index]
+			var member: CharacterInstance = PartyManager.formation[row_index][slot_index]
 			if member:
 				_on_member_added(member, row_index, slot_index)
 
 func _on_member_added(character: CharacterInstance, row_index: int, slot_index: int) -> void:
-	var character_ui = formation[row_index][slot_index]
+	var character_ui: PartyMemberSlot = formation[row_index][slot_index]
 	character_ui.bind(character)
 	
 	character.connect("health_changed", Callable(character_ui, "_on_health_changed"))
@@ -56,13 +56,13 @@ func _on_member_added(character: CharacterInstance, row_index: int, slot_index: 
 			#break
 
 func disable_targeting() -> void:
-	for row in formation:
-		for slot in row:
+	for row: Array in formation:
+		for slot: PartyMemberSlot in row:
 			slot.disable_slot_targeting()
 
 func enable_targeting() -> void:
-	for row in formation:
-		for slot in row:
+	for row: Array in formation:
+		for slot: PartyMemberSlot in row:
 			slot.enable_slot_targeting()
 
 func disable_party_ui() -> void:
@@ -72,16 +72,16 @@ func enable_party_ui() -> void:
 	self.visible = true
 
 func highlight_member(character: CharacterInstance) -> void:
-	for row in formation:
-		for slot in row:
+	for row: Array in formation:
+		for slot: PartyMemberSlot in row:
 			if slot.character_instance == character:
 				slot.highlight()
 			else:
 				slot.unhighlight()
 
 func clear_highlights() -> void:
-	for row in formation:
-		for slot in row:
+	for row: Array in formation:
+		for slot: PartyMemberSlot in row:
 			slot.unhighlight()
 
 func _on_open_character_menu_requested(character_instance: CharacterInstance) -> void:

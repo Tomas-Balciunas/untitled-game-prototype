@@ -15,7 +15,7 @@ func on_trigger(event: TriggerEvent) -> void:
 	poison.damage_per_turn = damage_per_turn
 	poison._source = event.ctx.source
 	poison._is_instance = true
-	var app = EffectApplicationAction.new()
+	var app := EffectApplicationAction.new()
 	app.source = event.ctx.source
 	app.target = event.ctx.target
 	app.effect = poison
