@@ -38,7 +38,7 @@ var _pending_action: String = ""
 var _pending_options: Array = []
 var _pending_target: CharacterInstance = null
 var current_battler: CharacterInstance = null
-var action_queue: Array[AttackAction] = []
+var action_queue: Array[DamageContext] = []
 
 func begin(_enemies: Array[CharacterInstance]) -> void:
 	BattleEventBus.event_concluded.connect(Callable(self, "_on_event_concluded"))
@@ -132,6 +132,7 @@ func _on_turn_end() -> void:
 	var event := TriggerEvent.new()
 	event.trigger = EffectTriggers.ON_TURN_END
 	event.actor = current_battler
+	event.ctx = ActionContext.new()
 	EffectRunner.process_trigger(event)
 	current_battler = null
 	party_panel.clear_highlights()
@@ -187,13 +188,14 @@ func _perform_player_action(action: String, target: CharacterInstance) -> void:
 			for t in _targets:
 				if not t:
 					continue
-				var atk := AttackAction.new()
-				atk.attacker = current_battler
-				atk.defender   = t
-				atk.base_value = current_battler.stats.get_final_stat(Stats.ATTACK)
-				atk.type = current_battler.damage_type
-				atk.actively_cast = true
-				await DamageResolver.apply_attack(atk)
+				var dmg := DamageContext.new()
+				dmg.source = current_battler
+				dmg.target   = t
+				dmg.base_value = current_battler.stats.get_final_stat(Stats.ATTACK)
+				dmg.final_value = current_battler.stats.get_final_stat(Stats.ATTACK)
+				dmg.type = current_battler.damage_type
+				dmg.actively_cast = true
+				var _ctx := await DamageResolver.new().execute(dmg)
 		"skill":
 			var targeting: TargetingManager.TargetType = _pending_options[0].targeting_type
 			var _targets := get_applicable_targets(target, targeting)
@@ -213,25 +215,12 @@ func _perform_player_action(action: String, target: CharacterInstance) -> void:
 				if not t:
 					continue
 					
-				if _pending_options[0] is HealingSkill:
-					var skill := HealingAction.new()
-					skill.provider = current_battler
-					skill.receiver = t
-					skill.base_value = _pending_options[0].healing_amount
-					skill.effects = _pending_options[0].effects
-					skill.actively_cast = true
-					HealingResolver.apply_heal(skill)
-				elif _pending_options[0] is Skill:
-					var skill := SkillAction.new()
-					skill.attacker   = current_battler
-					skill.defender     = t
-					skill.skill = _pending_options[0]
-					skill.effects = _pending_options[0].effects
-					skill.modifier = _pending_options[0].modifier
-					skill.actively_cast = true
-					DamageResolver.apply_skill(skill)
-				else:
-					print("Unknown skill!")
+				var ctx := SkillContext.new()
+				ctx.skill = _pending_options[0]
+				ctx.actively_cast = true
+				ctx.source = current_battler
+				ctx.target = t
+				var _ctx = SkillResolver.new().execute(ctx)
 			
 		"item":
 			var targeting = _pending_options[0].template.targeting_type
@@ -244,12 +233,13 @@ func _perform_player_action(action: String, target: CharacterInstance) -> void:
 				if not t:
 					continue
 				
-				var cons := ConsumableAction.new()
+				var cons := ConsumableContext.new()
 				cons.consumable = _pending_options[0]
 				cons.source = current_battler
 				cons.target = t
+				cons.temporary_effects = _pending_options[0].get_all_effects()
 				cons.actively_cast = true
-				ConsumableResolver.apply_consumable(cons)
+				var _ctx := ConsumableResolver.new().execute(cons)
 				
 	await attacker_slot.position_back()
 	await process_queue()
@@ -269,15 +259,16 @@ func _process_enemy_turn() -> void:
 	var attacker_slot := get_slot(current_battler)
 	var target_slot := get_slot(target)
 	
-	var atk := AttackAction.new()
-	atk.attacker = current_battler
-	atk.defender   = target
+	var atk := DamageContext.new()
+	atk.source = current_battler
+	atk.target   = target
 	atk.base_value = current_battler.stats.get_final_stat(Stats.ATTACK)
+	atk.final_value = current_battler.stats.get_final_stat(Stats.ATTACK)
 	atk.actively_cast = true
 
 	await attacker_slot.perform_attack_toward_target(target_slot)
 	
-	await DamageResolver.apply_attack(atk)
+	var _ctx = await DamageResolver.new().execute(atk)
 	
 	await attacker_slot.position_back()
 	await process_queue()
@@ -395,11 +386,11 @@ func _on_event_concluded() -> void:
 func process_queue() -> void:
 	# TODO need to consider clean up and end checks
 	while action_queue.size() > 0:
-		var a = action_queue[0]
+		var a: ActionContext = action_queue[0]
 		var target := get_slot(a.defender)
 		var attacker: FormationSlot = get_slot(a.attacker)
 		await attacker.perform_attack_toward_target(target)
-		await DamageResolver.apply_attack(a)
+		await DamageResolver.new().execute(a)
 		await attacker.position_back()
 		action_queue.pop_front()
 		

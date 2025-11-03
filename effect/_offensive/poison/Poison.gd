@@ -48,17 +48,17 @@ func on_trigger(event: TriggerEvent) -> void:
 		if owner == null:
 			push_error("PoisonEffect: Owner is null during on_turn_end tick.")
 			return
-		var tick := AttackAction.new()
-		tick.attacker = _source if _source != null else owner
-		tick.defender = owner
+		var tick := DamageContext.new()
+		tick.source = _source
+		tick.target = owner
 		tick.type = DamageTypes.Type.POISON
 		tick.base_value = damage_per_turn * stacks
+		tick.final_value = damage_per_turn * stacks
 		tick.options = tick.options.duplicate() if tick.options else {}
-		tick.options["dot"] = true
-		DamageResolver.apply_attack(tick)
+		DamageResolver.new().execute(tick)
 
 		_remaining -= 1
-		print("Poison tick: %s takes %d from %s — remaining %d" % [owner.resource.name, damage_per_turn, tick.attacker.resource.name, _remaining])
+		print("Poison tick: %s takes %d from %s — remaining %d" % [owner.resource.name, damage_per_turn, tick.source.resource.name, _remaining])
 
 		if _remaining <= 0:
 			if owner:

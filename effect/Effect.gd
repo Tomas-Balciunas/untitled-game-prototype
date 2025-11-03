@@ -75,3 +75,6 @@ func _is_stackable() -> bool:
 
 func should_append() -> bool:
 	return _should_append
+
+func remove_self() -> void:
+	owner.remove_effect(self)

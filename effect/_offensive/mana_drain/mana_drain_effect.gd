@@ -29,5 +29,3 @@ func on_trigger(event: TriggerEvent) -> void:
 		"%s drains %s mana from %s!" %
 		[event.ctx.source.resource.name, current_mana - new_mana, event.ctx.target.resource.name]
 	)
-	
-	owner.remove_effect(self)

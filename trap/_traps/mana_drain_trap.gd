@@ -9,10 +9,10 @@ func trigger(target: CharacterInstance) -> void:
 	drain.amount = amount
 	drain.single_trigger = true
 	
-	var act := EffectApplicationAction.new()
+	var act := EffectApplicationContext.new()
 	act.actively_cast = true
 	act.effect = drain
 	act.source = get_source()
 	act.target = target
 	
-	EffectApplicationResolver.apply_effect(act)
+	EffectApplicationResolver.new().execute(act)

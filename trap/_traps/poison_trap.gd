@@ -10,11 +10,12 @@ func trigger(target: CharacterInstance) -> void:
 	poison.duration_turns = duration
 	poison.damage_per_turn = damage_per_turn
 	
-	var act := AttackAction.new()
-	act.defender = target
-	act.attacker = get_source()
+	var act := DamageContext.new()
+	act.target = target
+	act.source = get_source()
 	act.base_value = damage if damage else 0
+	act.final_value = damage if damage else 0
 	act.actively_cast = true
-	act.effects.append(poison)
+	act.temporary_effects.append(poison)
 	
-	DamageResolver.apply_attack(act)
+	DamageResolver.new().execute(act)

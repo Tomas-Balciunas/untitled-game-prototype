@@ -11,12 +11,14 @@ func _init(item: ConsumableItem) -> void:
 		effects.append(e.duplicate(true))
 
 func use_item(user: CharacterInstance, item: ConsumableInstance) -> void:
-	var action := ConsumableAction.new()
-	action.source = user
-	action.target = user
-	action.consumable = item
-	action.actively_cast = true
-	ConsumableResolver.apply_consumable(action)
+	var ctx := ConsumableContext.new()
+	ctx.source = user
+	ctx.target = user
+	ctx.consumable = item
+	ctx.actively_cast = true
+	ctx.temporary_effects = effects
+	
+	ConsumableResolver.new().execute(ctx)
 	user.inventory.remove_item(item)
 
 func get_all_effects() -> Array[Effect]:

@@ -1,23 +1,14 @@
-extends Node
+extends EffectResolver
 
-signal healing_resolved(ctx: HealingContext)
+class_name HealingResolver
 
-func apply_heal(action: HealingAction) -> HealingContext:
-	return _apply_core(
-		action.provider,
-		action.receiver,
-		action.base_value,
-		action.options,
-	)
-
-func _apply_core(source: CharacterInstance, target: CharacterInstance, base: float, options: Dictionary = {}) -> HealingContext:
-	var ctx := HealingContext.new()
-	ctx.source    = source
-	ctx.target    = target
-	ctx.base_value  = base
-	ctx.final_value = base
-	ctx.options = options
+func execute(_ctx: ActionContext) -> HealingContext:
+	var ctx := _ctx as HealingContext
 	
+	if ctx == null:
+		push_error("HealingResolver received invalid context")
+		return ctx
+		
 	var event := TriggerEvent.new()
 	event.actor = ctx.source
 	event.ctx = ctx
@@ -28,9 +19,8 @@ func _apply_core(source: CharacterInstance, target: CharacterInstance, base: flo
 	event.trigger = EffectTriggers.ON_RECEIVE_HEAL
 	EffectRunner.process_trigger(event)
 
-	target.set_current_health(target.stats.current_health + ctx.final_value)
+	event.ctx.target.set_current_health(event.ctx.target.stats.current_health + event.ctx.final_value)
 
-	BattleTextLines.print_line("%s healed %s for %d" % [ctx.source.resource.name, ctx.target.resource.name, ctx.final_value])
-	emit_signal("healing_resolved", ctx)
+	BattleTextLines.print_line("%s healed %s for %d" % [event.actor.resource.name, event.ctx.target.resource.name, ctx.final_value])
 
 	return ctx

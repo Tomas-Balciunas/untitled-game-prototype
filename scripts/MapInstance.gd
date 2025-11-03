@@ -42,6 +42,7 @@ func update_player_position(pos: Vector2i, facing: Vector3) -> void:
 		var event: TriggerEvent = TriggerEvent.new()
 		event.trigger = EffectTriggers.ON_TURN_END
 		event.actor = c
+		event.ctx = ActionContext.new()
 		EffectRunner.process_trigger(event)
 		
 func add_encounter(data: EncounterData) -> void:

@@ -1,12 +1,14 @@
-extends Node
+extends EffectResolver
 
-func apply_consumable(action: ConsumableAction) -> void:
-	var ctx := ConsumableContext.new()
-	ctx.source = action.source
-	ctx.target = action.target
-	ctx.consumable = action.consumable
-	ctx.actively_cast = action.actively_cast
+class_name ConsumableResolver
 
+func execute(_ctx: ActionContext) -> ConsumableContext:
+	var ctx := _ctx as ConsumableContext
+	
+	if ctx == null:
+		push_error("ConsumableResolver received invalid context")
+		return ctx
+	
 	for trig: String in [
 		EffectTriggers.ON_BEFORE_USE_CONSUMABLE,
 		EffectTriggers.ON_USE_CONSUMABLE,
@@ -15,6 +17,7 @@ func apply_consumable(action: ConsumableAction) -> void:
 		var ev := TriggerEvent.new()
 		ev.actor = ctx.source
 		ev.ctx = ctx
-		ev.tags = ctx.consumable.get_all_effects()
 		ev.trigger = trig
 		EffectRunner.process_trigger(ev)
+
+	return ctx

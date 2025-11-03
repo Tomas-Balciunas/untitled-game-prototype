@@ -1,23 +1,14 @@
-extends Node
+extends EffectResolver
 
-#signal healing_resolved(ctx: HealingContext)
+class_name EffectApplicationResolver
 
-func apply_effect(action: EffectApplicationAction) -> EffectApplicationContext:
-	return _apply_core(
-		action.source,
-		action.target,
-		action.effect,
-		action.callable,
-		action.actively_cast
-	)
 
-func _apply_core(source: CharacterInstance, target: CharacterInstance, effect: Effect, callable, actively_cast: bool) -> EffectApplicationContext:
-	var ctx := EffectApplicationContext.new()
-	ctx.source    = source
-	ctx.target    = target
-	ctx.effect  = effect
-	ctx.callable = callable
-	ctx.actively_cast = actively_cast
+func execute(_ctx: ActionContext) -> EffectApplicationContext:
+	var ctx := _ctx as EffectApplicationContext
+	
+	if ctx == null:
+		push_error("EffectApplicationResolver received invalid context")
+		return ctx
 	
 	var event := TriggerEvent.new()
 	event.actor = ctx.source

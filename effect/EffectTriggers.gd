@@ -22,3 +22,7 @@ const ON_EXPIRE := "on_expire"
 const ON_BEFORE_USE_CONSUMABLE = "on_before_use_consumable"
 const ON_USE_CONSUMABLE = "on_use_consumable"
 const ON_POST_USE_CONSUMABLE = "on_post_use_consumable"
+
+const ON_BEFORE_SKILL_USE = "on_before_skill_use"
+const ON_SKILL_USE = "on_skill_use"
+const ON_POST_SKILL_USE = "on_post_skill_use"

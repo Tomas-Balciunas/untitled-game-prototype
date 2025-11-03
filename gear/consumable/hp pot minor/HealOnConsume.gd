@@ -10,12 +10,12 @@ func can_process(_event: TriggerEvent) -> bool:
 	return true
 
 func on_trigger(event: TriggerEvent) -> void:
-	var action := HealingAction.new()
+	var action := HealingContext.new()
 	action.base_value = heal_amount
 	action.provider = event.ctx.source
 	action.receiver = event.ctx.target
 	
-	HealingResolver.apply_heal(action)
+	HealingResolver.new().execute(action)
 
 func get_description() -> String:
 	return "Heals for %s" % heal_amount

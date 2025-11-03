@@ -1,51 +1,19 @@
-extends Node
+extends EffectResolver
 
-signal damage_resolved(ctx: DamageContext)
+class_name DamageResolver
 
-func apply_attack(action: AttackAction) -> DamageContext:
-	return await _apply_core(
-		action.attacker,
-		action.defender,
-		action.type,
-		action.base_value,
-		action.effects,
-		action.actively_cast,
-		action.options
-	)
 
-func apply_skill(skill: SkillAction) -> DamageContext:
-	var calculated_damage := skill.attacker.stats.get_final_stat(Stats.ATTACK)
-	# apply skill modifier to attacker's att power
-	if skill.modifier != 0.0:
-		calculated_damage += calculated_damage * skill.modifier
+func execute(_ctx: ActionContext) -> DamageContext:
+	var ctx := _ctx as DamageContext
 	
-	return await _apply_core(
-		skill.attacker, 				# char inst
-		skill.defender, 				# char inst
-		skill.skill.damage_type,		# dmg element, overrides attacker's element
-		calculated_damage,			# attacker's power * skill modifier
-		skill.effects,				# additional skill effects
-		skill.actively_cast,
-		skill.options
-	)
-
-func _apply_core(source: CharacterInstance, target: CharacterInstance, damage_type: DamageTypes.Type, base: float, extra_effects: Array[Effect], actively_cast: bool, options: Dictionary = {}) -> DamageContext:
-	var ctx := DamageContext.new()
-	ctx.source   		= source
-	ctx.target    		= target
-	ctx.type        	= damage_type
-	ctx.base_value  	= base
-	ctx.final_value 	= base
-	ctx.tags        	= extra_effects
-	ctx.options 		= options
-	ctx.actively_cast 	= actively_cast
+	if ctx == null:
+		push_error("DamageResolver received invalid context")
+		return ctx
 	
 	var event := TriggerEvent.new()
 	event.actor = ctx.source
 	event.ctx = ctx
 	event.trigger = EffectTriggers.ON_HIT
-	if ctx.tags:
-		event.tags = ctx.tags
 	
 	# attacker’s effects
 	EffectRunner.process_trigger(event)
@@ -67,8 +35,9 @@ func _apply_core(source: CharacterInstance, target: CharacterInstance, damage_ty
 	EffectRunner.process_trigger(event)
 	
 	BattleTextLines.print_line("%s dealt %f %s damage to %s" % [ctx.source.resource.name, ctx.final_value, DamageTypes.to_str(ctx.type), ctx.target.resource.name])
-	target.set_current_health(target.stats.current_health - ctx.final_value)
-	if target.is_dead:
+	event.ctx.target.set_current_health(event.ctx.target.stats.current_health - event.ctx.final_value)
+	
+	if event.ctx.target.is_dead:
 		event.trigger = EffectTriggers.ON_DEATH
 		EffectRunner.process_trigger(event)
 		return ctx
@@ -76,15 +45,14 @@ func _apply_core(source: CharacterInstance, target: CharacterInstance, damage_ty
 	event.trigger = EffectTriggers.ON_DAMAGE_APPLIED
 	EffectRunner.process_trigger(event)
 	
-	emit_signal("damage_resolved", ctx)
-	
 	if event.ctx.has_meta("counterattack"):
-		var counter_target = ctx.get_meta("counterattack")
-		var revenge := AttackAction.new()
-		revenge.attacker = ctx.target
-		revenge.defender = counter_target
+		var counter_target: CharacterInstance = ctx.get_meta("counterattack")
+		var revenge := DamageContext.new()
+		revenge.source = event.ctx.target
+		revenge.target = counter_target
 		revenge.type = ctx.target.damage_type
 		revenge.base_value = ctx.target.stats.get_final_stat(Stats.ATTACK)
+		revenge.final_value = ctx.target.stats.get_final_stat(Stats.ATTACK)
 		revenge.actively_cast = false #important, setting it to false would not trigger counterattack chain
 		BattleContext.manager.action_queue.append(revenge)
 		BattleTextLines.print_line("%s counterattacks!" % revenge.attacker.resource.name)
