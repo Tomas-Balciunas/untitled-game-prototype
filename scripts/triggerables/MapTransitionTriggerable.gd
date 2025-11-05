@@ -3,7 +3,7 @@ class_name MapTransitionTrigger
 
 @export var map_data: MapData
 
-func _fire(_data: Dictionary):
+func _fire(_data: Dictionary) -> void:
 	if not map_data:
 		push_error("No transition data found!")
 		return

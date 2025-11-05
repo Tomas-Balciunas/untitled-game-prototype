@@ -1,6 +1,6 @@
 extends Node
 
-signal member_added(character, row_i, slot_i)
+signal member_added(character: CharacterInstance, row_i: int, slot_i: int)
 #signal member_removed(character)
 
 

@@ -78,14 +78,14 @@ func recalculate_stats(should_fill_hp: bool = false, should_fill_mp: bool = fals
 		if slot == null:
 			continue
 		if slot is GearInstance:
-			var base_stats: Dictionary = slot.stats
+			var _base_stats: Dictionary = slot.stats
 			
-			for stat: String in base_stats.keys():
+			for stat: String in _base_stats.keys():
 				if !STATS.has(stat):
 					push_error("Stat %s doesn't exist!" % stat)
 					continue
 					
-				derived_stats[stat] += base_stats[stat]
+				derived_stats[stat] += _base_stats[stat]
 		else:
 			push_error("Non gear item is equipped: %s" % slot.get_item_name())
 #
@@ -132,16 +132,16 @@ func fill_mp() -> void:
 	current_mana = final_stats[MANA]
 	
 func get_attribute_contribution(stat: String, c: CharacterInstance) -> float:
-	var modifiers: Dictionary = c.job.get_stat_attribute_modifiers(stat)
+	var mods: Dictionary = c.job.get_stat_attribute_modifiers(stat)
 	
 	if modifiers.is_empty():
 		return 0.0
 	
-	var calculated_value: float
+	var calculated_value: float = 0.0
 	
-	for attr: String in modifiers.keys():
+	for attr: String in mods.keys():
 		var attribute_value := c.attributes.get_attribute_by_enum(attr)
-		var mult: float = modifiers[attr]
+		var mult: float = mods[attr]
 		
 		calculated_value += attribute_value * mult
 		

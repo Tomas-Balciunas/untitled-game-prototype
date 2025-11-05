@@ -3,7 +3,7 @@ extends Panel
 class_name PartyMemberSlot
 
 #signal target_clicked(target)
-signal open_character_menu_requested(character_instance)
+signal open_character_menu_requested(character_instance: CharacterInstance)
 
 var character_instance: CharacterInstance
 var targeting_enabled := false

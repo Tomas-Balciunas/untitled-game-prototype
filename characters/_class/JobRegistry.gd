@@ -12,7 +12,7 @@ static func get_all() -> Array[Job]:
 	return jobs
 
 static func type_to_string(value: int) -> String:
-	for key in Job.Name.keys():
+	for key: String in Job.Name.keys():
 		if Job.Name[key] == value:	
 			return key.capitalize()
 	return "Unknown"

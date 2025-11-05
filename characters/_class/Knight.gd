@@ -2,6 +2,15 @@ extends Job
 
 class_name KnightClass
 
+func _init() -> void:
+	level_skills = {
+		2: load("uid://cneghh04ud4gg"),
+	}
+	
+	level_effects = {
+		3: load("uid://badgfln40mudj")
+	}
+
 var stat_attribute_modifiers: Dictionary = {
 	Stats.ATTACK: {
 		Attributes.STR: 0.5,

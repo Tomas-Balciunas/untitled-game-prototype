@@ -2,6 +2,12 @@ extends Job
 
 class_name FighterClass
 
+func _init() -> void:
+	level_skills = {
+		2: load("uid://cneghh04ud4gg"),
+		5: load("uid://d2u72es2eig6a")
+	}
+
 var stat_attribute_modifiers: Dictionary = {
 	Stats.ATTACK: {
 		Attributes.STR: 1.0,

@@ -6,13 +6,8 @@
 [resource]
 script = ExtResource("2_c4285")
 healing_amount = 10
+id = "row_heal"
 name = "row heal"
-description = ""
 mp_cost = 10
-sp_cost = 0
-modifier = 0.0
-effects = Array[ExtResource("1_b30u2")]([])
-damage_type = 0
 targeting_type = 3
-bounce_instances = 0
 metadata/_custom_type_script = "uid://c8rbj8kuxcoqs"

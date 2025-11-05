@@ -116,7 +116,7 @@ func _on_mouse_exited() -> void:
 		return
 	unhover()
 
-func _on_input_event(_camera, event, _position, _normal, _shape_idx) -> void:
+func _on_input_event(_camera: Camera3D, event: InputEvent, _position: Vector3, _normal: Vector3, _shape_idx: int) -> void:
 	if !BattleContext.enemy_targeting_enabled:
 		return
 		

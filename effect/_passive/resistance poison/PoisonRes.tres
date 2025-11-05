@@ -4,10 +4,8 @@
 
 [resource]
 script = ExtResource("1_wunrv")
-resistance = 0.2
+resistance = 0.5
 id = "poison_resistance_00"
 name = "Poison Resistance"
-description = "Unnamed Effect"
 category = 0
-duration_turns = -1
 metadata/_custom_type_script = "uid://e6kqxurcakcn"

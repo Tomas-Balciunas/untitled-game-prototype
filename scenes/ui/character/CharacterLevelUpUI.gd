@@ -97,8 +97,8 @@ func _on_attribute_changed(attr_name: String, delta: int) -> void:
 	update_points()
 	character.stats.recalculate_stats()
 	
-func whatever(delta: int, attr: int):
-	var points = character.unspent_attribute_points
+func whatever(delta: int, attr: int) -> int:
+	var points := character.unspent_attribute_points
 	if delta > 0 and points <= 0:
 		return attr
 	if delta < 0 and attr <= 0:
@@ -117,5 +117,5 @@ func _update_attribute_labels() -> void:
 	spd_attr.text = str(character.attributes.spd)
 	luk_attr.text = str(character.attributes.luk)
 
-func update_points():
+func update_points() -> void:
 	points_display.text = "Points left: %s" % character.unspent_attribute_points

@@ -5,7 +5,7 @@ extends HBoxContainer
 
 var hiree: CharacterResource = null
 
-func bind(character: CharacterResource):
+func bind(character: CharacterResource) -> void:
 	name_label.text = character.name
 	hiree = character
 	for member in PartyManager.members:

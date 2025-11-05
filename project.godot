@@ -48,6 +48,7 @@ StatModifierRegistry="*res://stat/StatModifierRegistry.gd"
 TrapRegistry="*res://trap/TrapRegistry.gd"
 BattleBus="*res://scripts/bus/BattleBus.gd"
 TargetingManager="*res://scripts/TargetingManager.gd"
+SkillRegistry="*res://skills/SkillRegistry.gd"
 
 [debug]
 

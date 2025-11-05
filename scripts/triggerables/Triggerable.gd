@@ -6,10 +6,10 @@ signal triggered(data: Dictionary)
 @export var trigger_once: bool = true
 var _triggered := false
 
-func _ready():
+func _ready() -> void:
 	connect("body_entered", Callable(self, "_on_body_entered"))
 
-func _on_body_entered(body: Node):
+func _on_body_entered(body: Node) -> void:
 	if not body.is_in_group("player"):
 		return
 	
@@ -19,5 +19,5 @@ func _on_body_entered(body: Node):
 	_triggered = true
 	_fire({"body": body})
 
-func _fire(data: Dictionary):
+func _fire(data: Dictionary) -> void:
 	emit_signal("triggered", data)

@@ -52,6 +52,6 @@ func _on_step_finished() -> void:
 	await get_tree().create_timer(idle).timeout
 	_start_patrol()
 
-func _on_encounter_ended(_res, data) -> void:
+func _on_encounter_ended(_res: String, data: EncounterData) -> void:
 	if data.id == encounter_data.id:
 		self.queue_free()

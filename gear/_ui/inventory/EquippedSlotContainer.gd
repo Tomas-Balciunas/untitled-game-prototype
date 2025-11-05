@@ -18,8 +18,8 @@ func bind_equipped(character_instance: CharacterInstance, parent_ui: InventoryUI
 	"ring": ring,
 	"amulet": amulet
 }
-	for slot in character_instance.equipment.keys():
-		var eq_slot = equipment[slot]
+	for slot: String in character_instance.equipment.keys():
+		var eq_slot: PanelContainer = equipment[slot]
 		eq_slot.bind(character_instance.equipment[slot])
 		
 		if not eq_slot.item_hovered.is_connected(parent_ui.item_info_panel.show_item_info):

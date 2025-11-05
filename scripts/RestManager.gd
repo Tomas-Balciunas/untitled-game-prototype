@@ -1,6 +1,5 @@
 extends Node
 
-var to_level_up: Array[CharacterInstance] = []
 var _last_position: Vector2i
 var _last_facing: Vector3
 
@@ -25,7 +24,7 @@ func enter_rest_area() -> void:
 	var entry_spot: Marker3D = rest_area.get_node("EntrySpot")
 	player.global_transform = entry_spot.global_transform
 
-	var spots: Array[Marker3D] = rest_area.get_node("PartySpots").get_children()
+	var spots: Array = rest_area.get_node("PartySpots").get_children()
 	var members: Array[CharacterInstance] = PartyManager.members.duplicate()
 	
 	spots.shuffle()

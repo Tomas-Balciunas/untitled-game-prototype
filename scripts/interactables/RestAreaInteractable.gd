@@ -1,6 +1,6 @@
 extends Interactable
 
-func _interact():
+func _interact() -> void:
 	if GameState.is_busy():
 		return
 		

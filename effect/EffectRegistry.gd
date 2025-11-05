@@ -16,6 +16,10 @@ func _register_all() -> void:
 		"res://effect/_passive/resistance poison/PoisonRes.tres",
 		"res://gear/consumable/hp pot minor/heal_on_consume_effect.tres",
 		"res://gear/consumable/poison flask minor/poison_on_consume_effect.tres",
+		"res://effect/_offensive/mana_drain/ManaDrainEffect.tres",
+		"res://effect/_offensive/stun/StunOnHitEffect.tres"
+		
+		
 	]
 	
 	for path: String in res_paths:

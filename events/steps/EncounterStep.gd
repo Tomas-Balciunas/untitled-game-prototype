@@ -10,7 +10,7 @@ func _init(data: Dictionary) -> void:
 
 func run(_manager: Node) -> void:
 	var enemy_instances: Array[CharacterResource] = []
-	for e in enemies:
+	for e: String in enemies:
 		enemy_instances.append(CharacterRegistry.get_character(e))
 	
 	var data := EncounterData.new()

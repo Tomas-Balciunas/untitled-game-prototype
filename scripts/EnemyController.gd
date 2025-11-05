@@ -19,8 +19,8 @@ func populate_enemy_spawn_points() -> void:
 		if point.spawn_id == "":
 			push_error("% map doesnt have a spawn id in marker!" % MapInstance.map_id)
 			
-		var encounter_data
-		var saved_encounter = MapInstance.get_encounter(point.spawn_id)
+		var encounter_data: EncounterData
+		var saved_encounter := MapInstance.get_encounter(point.spawn_id)
 		
 		if !saved_encounter:
 			encounter_data = build_encounter(point.spawn_id)

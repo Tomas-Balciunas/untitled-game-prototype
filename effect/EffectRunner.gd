@@ -1,6 +1,5 @@
 extends Node
 
-var debug := true
 
 func process_trigger(event: TriggerEvent) -> void:
 	var effects_to_run := []
@@ -8,7 +7,7 @@ func process_trigger(event: TriggerEvent) -> void:
 	if event.ctx.temporary_effects:
 		for e in event.ctx.temporary_effects:
 			e.owner = event.actor
-			if not _passes_scope(e, event, true):
+			if not _passes_scope(e, event):
 				continue
 			effects_to_run.append({ "effect": e, "owner": event.actor })
 	
@@ -30,22 +29,16 @@ func process_trigger(event: TriggerEvent) -> void:
 
 	for entry: Dictionary in effects_to_run:
 		var e: Effect = entry.effect
-		var owner_for_entry = entry.owner if "owner" in entry else null
-
-		var prev_actor = event.actor
-		event.actor = owner_for_entry
+		
+		if event.ctx.stop_processing:
+			print("[EffectProcessor] processing stopped by", e.name)
+			return
 
 		e.on_trigger(event)
 		
 		if e.single_trigger:
 			e.remove_self()
-			
-		event.actor = prev_actor
 
-		if event.ctx != null and event.ctx.has_method("has_meta") and event.ctx.has_meta("stop_processing"):
-			if event.ctx.get_meta("stop_processing"):
-				if debug: print("[EffectProcessor] processing stopped by", e.name)
-				return
 
 func _sort_effects(a, b) -> int:
 	var ea: Effect = a.effect
@@ -54,7 +47,7 @@ func _sort_effects(a, b) -> int:
 	var pb := int(eb.get_meta("priority")) if eb.has_meta("priority") else 0
 	return -1 if pa > pb else (1 if pa < pb else 0)
 
-static func _passes_scope(effect: Effect, event: TriggerEvent, _is_template = false) -> bool:
+static func _passes_scope(effect: Effect, event: TriggerEvent) -> bool:
 	if event.trigger not in effect.listened_triggers():
 		return false
 

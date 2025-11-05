@@ -6,13 +6,8 @@
 [resource]
 script = ExtResource("2_uoovt")
 healing_amount = 10
+id = "single_heal"
 name = "single heal"
 description = "Minor healing"
 mp_cost = 5
-sp_cost = 0
-modifier = 0.0
-effects = Array[ExtResource("1_f8q35")]([])
-damage_type = 0
-targeting_type = 0
-bounce_instances = 0
 metadata/_custom_type_script = "uid://c8rbj8kuxcoqs"

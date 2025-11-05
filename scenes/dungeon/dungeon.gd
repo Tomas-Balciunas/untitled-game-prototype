@@ -16,7 +16,7 @@ func _ready() -> void:
 	transition_rect.modulate.a = 0.0
 	load_map("beginning_area_01")
 
-func load_map(map_id: String, load_data = null) -> void:
+func load_map(map_id: String, load_data: Dictionary = {}) -> void:
 	#TODO: safety
 	var map_data := MapManager.get_map_data(map_id)
 	var map_scene := MapManager.get_map(map_id)
@@ -27,7 +27,7 @@ func load_map(map_id: String, load_data = null) -> void:
 		print("Dungeon: Loading new map")
 		MapInstance.hydrate_from_resource(map_data)
 		
-	if load_data:
+	if !load_data.is_empty():
 		MapInstance.hydrate_from_load(load_data)
 
 	current_map_scene = map_scene.instantiate()

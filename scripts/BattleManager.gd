@@ -26,7 +26,7 @@ enum BattleState {
 	LOSE
 }
 
-var current_state = BattleState.IDLE
+var current_state := BattleState.IDLE
 
 var party: Array[CharacterInstance] = []
 var enemies: Array[CharacterInstance] = []
@@ -52,13 +52,13 @@ func begin(_enemies: Array[CharacterInstance]) -> void:
 		_register_battler(b)
 		b.prepare_for_battle()
 		for e: BattleEvent in b.resource.battle_events:
-			var inst = e.duplicate(true)
+			var inst := e.duplicate(true)
 			inst.prepare(b)
 			b.battle_events.append(inst)
 	
 	current_state = BattleState.CHECK_END
 
-func _process(_delta) -> void:
+func _process(_delta: float) -> void:
 	# cleanup has potential to fuck up battle state if states arent managed carefully
 	# due to forced CHECK_END
 	if _to_cleanup.size() > 0 and current_state != BattleState.ANIMATING:
@@ -92,9 +92,9 @@ func _process(_delta) -> void:
 
 func _process_turn_queue() -> void:
 	if turn_queue.is_empty():
-		var alive_battlers = battlers.filter(func(b): return not b.is_dead)
+		var alive_battlers := battlers.filter(func(b: CharacterInstance) -> bool: return not b.is_dead)
 		
-		alive_battlers.sort_custom(func(a, b):
+		alive_battlers.sort_custom(func(a, b) -> bool:
 			return a.stats.get_final_stat(Stats.SPEED) > b.stats.get_final_stat(Stats.SPEED)
 		)
 
@@ -199,7 +199,7 @@ func _perform_player_action(action: String, target: CharacterInstance) -> void:
 		"skill":
 			var targeting: TargetingManager.TargetType = _pending_options[0].targeting_type
 			var _targets := get_applicable_targets(target, targeting)
-			var mp_cost = _pending_options[0].mp_cost
+			var mp_cost: int = _pending_options[0].mp_cost
 			for e in current_battler.effects:
 				if e.has_method("modify_mp_cost"):
 					mp_cost = e.modify_mp_cost(mp_cost)
@@ -220,7 +220,7 @@ func _perform_player_action(action: String, target: CharacterInstance) -> void:
 				ctx.actively_cast = true
 				ctx.source = current_battler
 				ctx.target = t
-				var _ctx = SkillResolver.new().execute(ctx)
+				var _ctx := SkillResolver.new().execute(ctx)
 			
 		"item":
 			var targeting = _pending_options[0].template.targeting_type
@@ -249,12 +249,12 @@ func _process_enemy_turn() -> void:
 		current_state = BattleState.CHECK_END
 		return
 
-	var valid_targets = party.filter(func(p: CharacterInstance): return p.is_dead == false)
+	var valid_targets := party.filter(func(p: CharacterInstance) -> bool: return p.is_dead == false)
 	if valid_targets.is_empty():
 		current_state = BattleState.CHECK_END
 		return
 
-	var target = valid_targets.pick_random()
+	var target: CharacterInstance = valid_targets.pick_random()
 	current_state = BattleState.ANIMATING
 	var attacker_slot := get_slot(current_battler)
 	var target_slot := get_slot(target)
@@ -268,7 +268,7 @@ func _process_enemy_turn() -> void:
 
 	await attacker_slot.perform_attack_toward_target(target_slot)
 	
-	var _ctx = await DamageResolver.new().execute(atk)
+	var _ctx := await DamageResolver.new().execute(atk)
 	
 	await attacker_slot.position_back()
 	await process_queue()
@@ -288,7 +288,7 @@ func _handle_flee() -> void:
 		print("Failed to flee!")
 
 func _check_end_conditions() -> void:
-	if party.all(func(p: CharacterInstance): return p.is_dead):
+	if party.all(func(p: CharacterInstance) -> bool: return p.is_dead):
 		current_state = BattleState.LOSE
 	elif enemies.is_empty():
 		current_state = BattleState.WIN
@@ -387,8 +387,8 @@ func process_queue() -> void:
 	# TODO need to consider clean up and end checks
 	while action_queue.size() > 0:
 		var a: ActionContext = action_queue[0]
-		var target := get_slot(a.defender)
-		var attacker: FormationSlot = get_slot(a.attacker)
+		var target := get_slot(a.target)
+		var attacker: FormationSlot = get_slot(a.source)
 		await attacker.perform_attack_toward_target(target)
 		await DamageResolver.new().execute(a)
 		await attacker.position_back()

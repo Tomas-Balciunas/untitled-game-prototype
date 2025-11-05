@@ -7,12 +7,12 @@ const BATTLE_EVENT = "battle_event"
 
 var interactions: Dictionary = {}
 
-func get_dialogue(_topic: String, _id: String):
+func get_dialogue(_topic: String, _id: String) -> Dictionary:
 	var topic: Dictionary = interactions.get(_topic, {})
 	return topic.get(_id, {})
 
-func get_topic(_topic: String):
+func get_topic(_topic: String) -> Dictionary:
 	return interactions.get(_topic, {})
 	
-func get_available_topics():
-	pass
+func get_available_topics() -> Dictionary:
+	return {}

@@ -1,3 +1,3 @@
 extends Node
 
-signal loaded(id)
+signal loaded(id: String)

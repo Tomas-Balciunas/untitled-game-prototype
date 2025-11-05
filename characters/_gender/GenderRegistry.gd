@@ -12,13 +12,13 @@ static func get_all() -> Array[Gender]:
 	return genders
 
 static func type_to_string(value: int) -> String:
-	for key in Gender.Name.keys():
+	for key: String in Gender.Name.keys():
 		if Gender.Name[key] == value:	
 			return key.capitalize()
 			
 	return "Unknown"
 
-static func get_by_name(value: String):
+static func get_by_name(value: String) -> Resource:
 	for file in DirAccess.get_files_at("res://characters/_gender/"):
 		if file.ends_with(".tres") and file.begins_with(value):
 			var res: Gender = load("res://characters/_gender/" + file)

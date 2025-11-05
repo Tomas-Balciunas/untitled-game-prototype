@@ -54,7 +54,7 @@ func add_encounter(data: EncounterData) -> void:
 	
 	encounters[map_id][data.id] = {
 		"id": data.id,
-		"enemies": data.enemies.map(func(e): return e.id),
+		"enemies": data.enemies.map(func(e: CharacterResource) -> String: return e.id),
 		"arena": data.arena,
 		"xp": data.experience_reward
 	}

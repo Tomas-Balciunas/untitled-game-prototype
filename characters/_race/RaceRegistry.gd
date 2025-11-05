@@ -11,12 +11,12 @@ static func get_all() -> Array[Race]:
 	return races
 
 static func type_to_string(value: int) -> String:
-	for key in Race.Name.keys():
+	for key: String in Race.Name.keys():
 		if Race.Name[key] == value:	
 			return key.capitalize()
 	return "Unknown"
 	
-static func get_by_name(value: String):
+static func get_by_name(value: String) -> Resource:
 	for file in DirAccess.get_files_at("res://characters/_race/"):
 		if file.ends_with(".tres") and file.begins_with(value):
 			var res: Race = load("res://characters/_race/" + file)

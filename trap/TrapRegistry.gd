@@ -31,7 +31,7 @@ func _register_all() -> void:
 
 func register_trap(trap: Trap) -> void:
 	if trap.id in traps:
-		push_warning("Duplicate mod id: %s" % trap.id)
+		push_warning("Duplicate trap id: %s" % trap.id)
 		
 	traps[trap.id] = trap
 
@@ -39,7 +39,7 @@ func get_trap(id: String) -> Trap:
 	if traps.has(id):
 		return traps[id]
 		
-	push_error("Modifier not found by %s" % id)
+	push_error("Trap not found by %s" % id)
 	return null
 
 func get_random_trap() -> Trap:

@@ -2,8 +2,8 @@ extends RefCounted
 
 class_name CharacterInstance
 
-signal health_changed(old_health, new_health)
-signal mana_changed(old_mana, new_mana)
+signal health_changed(old_health: int, new_health: int)
+signal mana_changed(old_mana: int, new_mana: int)
 signal damaged(amount: int, source: CharacterInstance)
 signal healed(amount: int)
 signal mana_consumed(amount: int, source: CharacterInstance)
@@ -108,14 +108,14 @@ func set_current_health(new_health: int) -> void:
 	var new: float = clamp(new_health, 0, stats.get_final_stat(Stats.HEALTH))
 	
 	if new < old:
-		stats.current_health = new
+		stats.current_health = int(new)
 		emit_signal("damaged", old - stats.current_health, self)
 	elif new > old:
-		stats.current_health = new
+		stats.current_health = int(new)
 		emit_signal("healed", stats.current_health - old)
 	emit_signal("health_changed", old, stats.current_health)
 	if new == 0 and old > 0:
-		stats.current_health = new
+		stats.current_health = int(new)
 		is_dead = true
 		emit_signal("died", self)
 	
@@ -124,10 +124,10 @@ func set_current_mana(new_mana: int) -> void:
 	var new: float = clamp(new_mana, 0, stats.get_final_stat(Stats.MANA))
 	
 	if new < old:
-		stats.current_mana = new
+		stats.current_mana = int(new)
 		emit_signal("mana_consumed", old - stats.current_mana, self)
 	elif new > old:
-		stats.current_mana = new
+		stats.current_mana = int(new)
 		emit_signal("mana_restored", stats.current_mana - old, self)
 	emit_signal("mana_changed", old, stats.current_mana)
 
@@ -266,12 +266,10 @@ func get_slot_name_for_item(item: GearInstance) -> String:
 
 func to_dict() -> Dictionary:
 	var equip_dict := {}
-	for slot in equipment.keys():
+	for slot: String in equipment.keys():
 		var item: GearInstance = equipment[slot]
 		if item:
 			equip_dict[slot] = item.to_dict()
-		else:
-			equip_dict[slot] = null
 		
 	var inventory_arr := []
 	for slot: ItemInstance in inventory.slots:
@@ -280,12 +278,19 @@ func to_dict() -> Dictionary:
 	var effect_arr := []
 	for effect in effects:
 		var is_gear_effect := false
-		for key in gear_effects.keys():
-			for gear_effect in gear_effects[key]:
+		for key: String in gear_effects.keys():
+			for gear_effect: Effect in gear_effects[key]:
 				if effect == gear_effect:
 					is_gear_effect = true
 		if not is_gear_effect:
 			effect_arr.append(effect.id)
+			
+	var skills_arr := []
+	for skill: Skill in learnt_skills:
+		if !skill.id:
+			push_error("Skill %s has no id!" % skill.name)
+			continue
+		skills_arr.append(skill.id)
 
 	return {
 		"id": resource.id,
@@ -327,7 +332,8 @@ func to_dict() -> Dictionary:
 		},
 		"equipment": equip_dict,
 		"inventory": inventory_arr,
-		"effects": effect_arr
+		"effects": effect_arr,
+		"skills": skills_arr
 	}
 
 
@@ -406,11 +412,21 @@ static func from_dict(data: Dictionary) -> CharacterInstance:
 			var effect := EffectRegistry.get_effect(effect_id)
 			if not effect:
 				push_error("Effect not found: %s" % effect_id)
+				continue
 			inst.apply_effect(effect)
+			
+	if data.has("skills"):
+		inst.learnt_skills = []
+		for skill_id: String in data["skills"]:
+			var skill := SkillRegistry.get_skill(skill_id)
+			if not skill:
+				push_error("Skill not found: %s" % skill_id)
+				continue
+			inst.learnt_skills.append(skill)
 
 	if data.has("equipment"):
-		for slot in data["equipment"].keys():
-			var item_dict = data["equipment"][slot]
+		for slot: String in data["equipment"].keys():
+			var item_dict: Dictionary = data["equipment"][slot]
 			if item_dict != null:
 				var gear_inst := GearInstance.from_dict(item_dict)
 				if gear_inst and gear_inst is GearInstance:

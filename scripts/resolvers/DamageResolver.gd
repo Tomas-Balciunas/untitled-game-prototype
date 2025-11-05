@@ -55,5 +55,5 @@ func execute(_ctx: ActionContext) -> DamageContext:
 		revenge.final_value = ctx.target.stats.get_final_stat(Stats.ATTACK)
 		revenge.actively_cast = false #important, setting it to false would not trigger counterattack chain
 		BattleContext.manager.action_queue.append(revenge)
-		BattleTextLines.print_line("%s counterattacks!" % revenge.attacker.resource.name)
+		BattleTextLines.print_line("%s counterattacks!" % revenge.source.resource.name)
 	return ctx

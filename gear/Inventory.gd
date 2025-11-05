@@ -28,7 +28,7 @@ func get_all_items() -> Array[ItemInstance]:
 	return slots.duplicate()
 
 func find_by_type(type: int) -> Array[ItemInstance]:
-	return slots.filter(func(i): return i.type == type)
+	return slots.filter(func(i: ItemInstance) -> bool: return i.type == type)
 
 func has_free_slot() -> bool:
 	return max_slots > len(slots)
