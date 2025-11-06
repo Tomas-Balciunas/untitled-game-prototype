@@ -8,7 +8,8 @@ func _init() -> void:
 	}
 	
 	level_effects = {
-		3: load("uid://badgfln40mudj")
+		3: load("uid://badgfln40mudj"),
+		4: load("uid://bbhp3nyjhsykk")
 	}
 
 var stat_attribute_modifiers: Dictionary = {

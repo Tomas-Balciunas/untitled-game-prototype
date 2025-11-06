@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="CharacterResource" load_steps=11 format=3 uid="uid://dk7pc5rr0xhbs"]
+[gd_resource type="Resource" script_class="CharacterResource" load_steps=12 format=3 uid="uid://dk7pc5rr0xhbs"]
 
 [ext_resource type="Script" uid="uid://blqk30gl013xc" path="res://characters/_attribute/Attributes.gd" id="1_klpoy"]
 [ext_resource type="PackedScene" uid="uid://cn1t1ijg24ek1" path="res://characters/allies/Lili/LiliBody2.tscn" id="3_8awbe"]
@@ -6,6 +6,7 @@
 [ext_resource type="Script" uid="uid://cgllfcpvodqsg" path="res://scripts/experience/ExperienceManager.gd" id="4_g8tir"]
 [ext_resource type="Resource" uid="uid://pchf07nevgay" path="res://characters/_gender/Female.tres" id="6_8awbe"]
 [ext_resource type="Resource" uid="uid://cdu3c36ji1mmg" path="res://characters/_class/Knight.tres" id="7_8dd4x"]
+[ext_resource type="Script" uid="uid://bp0biy0knxw2o" path="res://effect/Effect.gd" id="7_klpoy"]
 [ext_resource type="Resource" uid="uid://eiwm6khdbjki" path="res://characters/_race/Human.tres" id="8_3lheu"]
 [ext_resource type="Script" uid="uid://bwn4gpkaijqsg" path="res://scripts/CharacterResource.gd" id="9_0ou40"]
 

@@ -1,9 +1,7 @@
-[gd_resource type="Resource" script_class="KnightClass" load_steps=6 format=3 uid="uid://cdu3c36ji1mmg"]
+[gd_resource type="Resource" script_class="KnightClass" load_steps=4 format=3 uid="uid://cdu3c36ji1mmg"]
 
-[ext_resource type="Script" uid="uid://bp0biy0knxw2o" path="res://effect/Effect.gd" id="1_ht54m"]
 [ext_resource type="Script" uid="uid://blqk30gl013xc" path="res://characters/_attribute/Attributes.gd" id="1_v728n"]
 [ext_resource type="Script" uid="uid://6gf11w4qa7j8" path="res://characters/_class/Knight.gd" id="2_ht54m"]
-[ext_resource type="Script" uid="uid://dq4acpkde276p" path="res://skills/Skill.gd" id="3_rhq7f"]
 
 [sub_resource type="Resource" id="Resource_v728n"]
 script = ExtResource("1_v728n")
@@ -20,6 +18,8 @@ metadata/_custom_type_script = "uid://blqk30gl013xc"
 script = ExtResource("2_ht54m")
 name = 1
 attributes = SubResource("Resource_v728n")
+skills = null
+effects = null
 stat_level_growth = {
 "ATTACK": 2.0,
 "DEFENSE": 5.0,

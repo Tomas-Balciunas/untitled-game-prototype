@@ -220,6 +220,7 @@ func _perform_player_action(action: String, target: CharacterInstance) -> void:
 				ctx.actively_cast = true
 				ctx.source = current_battler
 				ctx.target = t
+				ctx.temporary_effects = _pending_options[0].effects
 				var _ctx := SkillResolver.new().execute(ctx)
 			
 		"item":

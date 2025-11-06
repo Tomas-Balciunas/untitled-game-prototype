@@ -9,16 +9,14 @@ func execute(_ctx: ActionContext) -> DamageContext:
 	if ctx == null:
 		push_error("DamageResolver received invalid context")
 		return ctx
-	
+	#TODO: refactor trigger flow
 	var event := TriggerEvent.new()
 	event.actor = ctx.source
 	event.ctx = ctx
-	event.trigger = EffectTriggers.ON_HIT
 	
-	# attacker’s effects
+	event.trigger = EffectTriggers.ON_HIT
 	EffectRunner.process_trigger(event)
 	
-	# defender’s effects
 	event.trigger = EffectTriggers.ON_BEFORE_RECEIVE_DAMAGE
 	EffectRunner.process_trigger(event)
 	

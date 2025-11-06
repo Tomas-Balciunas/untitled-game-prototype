@@ -1,0 +1,7 @@
+[gd_resource type="Resource" script_class="DamageAccumulatorAttack" load_steps=2 format=3 uid="uid://bbhp3nyjhsykk"]
+
+[ext_resource type="Script" uid="uid://3qroj7d7d0tj" path="res://effect/_passive/damage_accumulator_attack.gd" id="1_lwfba"]
+
+[resource]
+script = ExtResource("1_lwfba")
+metadata/_custom_type_script = "uid://3qroj7d7d0tj"
