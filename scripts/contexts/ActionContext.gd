@@ -8,3 +8,4 @@ var options: Dictionary = {}
 var actively_cast: bool = false
 var skip_turn: bool = false
 var stop_processing: bool = false
+var root_trigger: Effect = null

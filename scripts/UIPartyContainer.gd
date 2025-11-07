@@ -42,7 +42,6 @@ func _on_member_added(character: CharacterInstance, row_index: int, slot_index: 
 	var character_ui: PartyMemberSlot = formation[row_index][slot_index]
 	character_ui.bind(character)
 	
-	character.connect("health_changed", Callable(character_ui, "_on_health_changed"))
 	character.connect("mana_changed", Callable(character_ui, "_on_mana_changed"))
 	if character_ui.is_connected("open_character_menu_requested", Callable(self, "_on_open_character_menu_requested")):
 		character_ui.disconnect("open_character_menu_requested", Callable(self, "_on_open_character_menu_requested"))

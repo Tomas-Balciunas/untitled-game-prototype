@@ -1,10 +1,10 @@
-extends Label
+extends Node
 
-func set_notification(notif: String) -> void:
+func set_notification(notif: String, duration: float = 3.0) -> void:
 	self.text = notif
-	set_kill()
+	set_kill(duration)
 
-func set_kill(duration: float = 3.0) -> void:
+func set_kill(duration: float) -> void:
 	var timer: Timer = Timer.new()
 	timer.one_shot = true
 	timer.autostart = true

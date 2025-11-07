@@ -3,6 +3,7 @@ extends Node3D
 class_name FormationSlot
 
 @onready var targeting_area: Area3D = $Area3D
+@onready var number_display: FormationSlotNumbers = $NumberDisplay
 
 var character_instance: CharacterInstance
 var sprite_instance: Sprite3D
@@ -19,7 +20,8 @@ func _ready() -> void:
 
 func bind(character: CharacterInstance) -> void:
 	character_instance = character
-	character_instance.damaged.connect(Callable(self, "_on_damaged"))
+	CharacterBus.character_damaged.connect(_on_damaged)
+	CharacterBus.character_healed.connect(_on_healed)
 	
 	for child in get_children():
 		if child is StaticBody3D:
@@ -47,10 +49,10 @@ func getName() -> String:
 	return character_instance.resource.name
 
 func hover() -> void:
-	sprite_instance.modulate = Color(1.0, 0.6, 0.6)
+	Input.set_default_cursor_shape(Input.CursorShape.CURSOR_POINTING_HAND)
 
 func unhover() -> void:
-	sprite_instance.modulate = Color(1.0, 1.0, 1.0)
+	Input.set_default_cursor_shape(Input.CursorShape.CURSOR_ARROW)
 
 func clear() -> void:
 	character_instance = null
@@ -58,8 +60,14 @@ func clear() -> void:
 	#$Portrait.texture = null
 	$NameLabel.text = ""
 
-func _on_damaged(_damage: int, _char: CharacterInstance) -> void:
-	body_instance.play_damaged()
+func _on_damaged(who: CharacterInstance, amt: int) -> void:
+	if character_instance == who:
+		body_instance.play_damaged()
+		number_display.display_damage(amt)
+
+func _on_healed(who: CharacterInstance, amt: int) -> void:
+	if character_instance == who:
+		number_display.display_heal(amt)
 
 func _on_anim_finish(_e) -> void:
 	body_instance.play_idle()
@@ -75,6 +83,7 @@ func perform_attack_toward_target(target: FormationSlot) -> void:
 	var attack_offset := to_target.normalized() * 1.0
 	var stop_position_local := target_pos_local - attack_offset
 
+	body_instance.play_run()
 	tween.tween_property(self, "position", stop_position_local, 0.5).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
 	await tween.finished
 

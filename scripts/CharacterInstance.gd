@@ -2,10 +2,7 @@ extends RefCounted
 
 class_name CharacterInstance
 
-signal health_changed(old_health: int, new_health: int)
 signal mana_changed(old_mana: int, new_mana: int)
-signal damaged(amount: int, source: CharacterInstance)
-signal healed(amount: int)
 signal mana_consumed(amount: int, source: CharacterInstance)
 signal mana_restored(amount: int, source: CharacterInstance)
 signal died(ded: CharacterInstance)
@@ -109,11 +106,13 @@ func set_current_health(new_health: int) -> void:
 	
 	if new < old:
 		stats.current_health = int(new)
-		emit_signal("damaged", old - stats.current_health, self)
+		CharacterBus.character_damaged.emit(self, old - stats.current_health)
 	elif new > old:
 		stats.current_health = int(new)
-		emit_signal("healed", stats.current_health - old)
-	emit_signal("health_changed", old, stats.current_health)
+		CharacterBus.character_healed.emit(self, stats.current_health - old)
+	
+	CharacterBus.health_changed.emit(self, old, stats.current_health)
+	
 	if new == 0 and old > 0:
 		stats.current_health = int(new)
 		is_dead = true

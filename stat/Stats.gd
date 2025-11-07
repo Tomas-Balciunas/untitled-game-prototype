@@ -121,7 +121,7 @@ func recalculate_stats(should_fill_hp: bool = false, should_fill_mp: bool = fals
 	if should_fill_mp:
 		fill_mp()
 		
-	c.emit_signal("health_changed", current_health, current_health)
+	CharacterBus.health_changed.emit(_owner, current_health, current_health)
 	c.emit_signal("mana_changed", current_mana, current_mana)
 
 

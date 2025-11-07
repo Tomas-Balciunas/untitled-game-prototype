@@ -35,13 +35,14 @@ func execute(_ctx: ActionContext) -> DamageContext:
 	BattleTextLines.print_line("%s dealt %f %s damage to %s" % [ctx.source.resource.name, ctx.final_value, DamageTypes.to_str(ctx.type), ctx.target.resource.name])
 	event.ctx.target.set_current_health(event.ctx.target.stats.current_health - event.ctx.final_value)
 	
+	
+	event.trigger = EffectTriggers.ON_DAMAGE_APPLIED
+	EffectRunner.process_trigger(event)
+	
 	if event.ctx.target.is_dead:
 		event.trigger = EffectTriggers.ON_DEATH
 		EffectRunner.process_trigger(event)
 		return ctx
-	
-	event.trigger = EffectTriggers.ON_DAMAGE_APPLIED
-	EffectRunner.process_trigger(event)
 	
 	if event.ctx.has_meta("counterattack"):
 		var counter_target: CharacterInstance = ctx.get_meta("counterattack")

@@ -23,12 +23,12 @@ func remove_slot_for(enemy: CharacterInstance) -> void:
 			_promote_from_back_to_front(i)
 			return
 
-	for j in range(max_slots):
-		var slot: FormationSlot = back_slots[j]
-		if slot and slot.character_instance == enemy:
-			slot.queue_free()
-			back_slots[j] = null
-			return
+	#for j in range(max_slots):
+		#var slot: FormationSlot = back_slots[j]
+		#if slot and slot.character_instance == enemy:
+			#slot.queue_free()
+			#back_slots[j] = null
+			#return
 			
 func get_slot_for(enemy: CharacterInstance) -> FormationSlot:
 	for i in range(max_slots):
@@ -89,12 +89,13 @@ func get_blast_enemies(target: CharacterInstance) -> Array[CharacterInstance]:
 	push_error("Blast Targeting: Target not found!")
 	return [target]
 
-func get_row_enemies(target: CharacterInstance) -> Array[FormationSlot]:
-	for i in range(max_slots):
-		var slot: FormationSlot = front_slots[i]
-		if slot and slot.character_instance == target:
-			return front_slots
-	return back_slots
+func get_row_enemies(_target: CharacterInstance) -> Array[CharacterInstance]:
+	return slots_to_character_instances(front_slots)
+	#for i in range(max_slots):
+		#var slot: FormationSlot = front_slots[i]
+		#if slot and slot.character_instance == target:
+			#return front_slots
+	#return back_slots
 	
 func get_adjacent_enemies(target: CharacterInstance) -> Array[CharacterInstance]:
 	for i in range(max_slots):
@@ -150,6 +151,7 @@ func array_unique(arr1: Array[CharacterInstance], arr2: Array[CharacterInstance]
 func slots_to_character_instances(slots: Array[FormationSlot]) -> Array[CharacterInstance]:
 	var result: Array[CharacterInstance] = []
 	for slot in slots:
-		result.append(slot.character_instance)
+		if slot:
+			result.append(slot.character_instance)
 
 	return result

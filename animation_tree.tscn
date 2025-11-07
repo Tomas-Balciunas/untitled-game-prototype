@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://devi0t0dlig2p"]
+
+[ext_resource type="AnimationNodeBlendSpace2D" uid="uid://dk5i7da8lypmu" path="res://characters/allies/Lili/blend2danims.tres" id="1_cebsc"]
+
+[node name="AnimationTree" type="AnimationTree"]
+tree_root = ExtResource("1_cebsc")
+anim_player = NodePath("../AnimationPlayer")
+parameters/blend_position = Vector2(-0.001724124, -0.00440526)
