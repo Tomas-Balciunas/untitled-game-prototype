@@ -134,7 +134,7 @@ func fill_mp() -> void:
 func get_attribute_contribution(stat: String, c: CharacterInstance) -> float:
 	var mods: Dictionary = c.job.get_stat_attribute_modifiers(stat)
 	
-	if modifiers.is_empty():
+	if mods.is_empty():
 		return 0.0
 	
 	var calculated_value: float = 0.0

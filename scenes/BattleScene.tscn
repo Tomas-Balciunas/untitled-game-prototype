@@ -1,7 +1,7 @@
 [gd_scene load_steps=6 format=3 uid="uid://kreplysm57gi"]
 
 [ext_resource type="Script" uid="uid://c3w3lgndriikd" path="res://scripts/BattleScene.gd" id="1_28s16"]
-[ext_resource type="Script" uid="uid://w5crfr45qebk" path="res://scripts/EnemyGrid.gd" id="2_ftvu5"]
+[ext_resource type="Script" uid="uid://w5crfr45qebk" path="res://scripts/EnemyFormation.gd" id="2_ftvu5"]
 [ext_resource type="PackedScene" uid="uid://calltc1gumdi2" path="res://scenes/UIBattle.tscn" id="3_0yex5"]
 [ext_resource type="Script" uid="uid://4pqalqx03wf1" path="res://scripts/AllyFormation.gd" id="3_ftvu5"]
 [ext_resource type="Script" uid="uid://djga0vllljxhw" path="res://scripts/BattleManager.gd" id="5_ftvu5"]

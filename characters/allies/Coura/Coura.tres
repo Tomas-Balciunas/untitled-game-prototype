@@ -1,7 +1,7 @@
 [gd_resource type="Resource" script_class="CharacterResource" load_steps=12 format=3 uid="uid://dk7pc5rr0xhbs"]
 
 [ext_resource type="Script" uid="uid://blqk30gl013xc" path="res://characters/_attribute/Attributes.gd" id="1_klpoy"]
-[ext_resource type="PackedScene" uid="uid://cn1t1ijg24ek1" path="res://characters/allies/Lili/LiliBody2.tscn" id="3_8awbe"]
+[ext_resource type="PackedScene" uid="uid://dqjihmjf45spx" path="res://characters/allies/Coura/_body/Coura.tscn" id="2_klpoy"]
 [ext_resource type="Script" uid="uid://dq4acpkde276p" path="res://skills/Skill.gd" id="3_ma71o"]
 [ext_resource type="Script" uid="uid://cgllfcpvodqsg" path="res://scripts/experience/ExperienceManager.gd" id="4_g8tir"]
 [ext_resource type="Resource" uid="uid://pchf07nevgay" path="res://characters/_gender/Female.tres" id="6_8awbe"]
@@ -32,7 +32,7 @@ job = ExtResource("7_8dd4x")
 gender = ExtResource("6_8awbe")
 attributes = SubResource("Resource_ci8co")
 id = "a_coura_1"
-character_body = ExtResource("3_8awbe")
+character_body = ExtResource("2_klpoy")
 name = "Coura"
 experience = 400
 slot_width = null

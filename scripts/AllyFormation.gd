@@ -19,6 +19,11 @@ func _ready() -> void:
 	back_slots.resize(MAX_SLOTS)
 	front_positions = get_centered_positions(MAX_SLOTS, FRONT_ROW_Z)
 	back_positions  = get_centered_positions(MAX_SLOTS, BACK_ROW_Z)
+	
+	if MAX_SLOTS % 2 != 0:
+		var mid_index := int(MAX_SLOTS / 2)
+		front_positions[mid_index].z += 0.3
+		back_positions[mid_index].z += 0.3
 
 func place_all_allies() -> void:
 	clear_slots()
@@ -43,19 +48,20 @@ func place_all_allies() -> void:
 		var inst: CharacterInstance = front_allies[i]
 		if inst:
 			var slot := SlotScene.instantiate() as FormationSlot
-			if inst.is_main:
-				var camera := PLAYER.instantiate()
-				slot.add_child(camera)
-				camera.transform.origin = Vector3(0, 0.2, 0)
-				camera.rotation_degrees.y = 180
-				
+			add_child(slot)
 			var idx := front_start + i
 			slot.position = front_positions[idx]
-			add_child(slot)
 			slot.bind(front_allies[i])
 			slot.capture_home() 
 			front_slots[idx] = slot
-		
+			
+			if inst.is_main:
+				var camera := PLAYER.instantiate()
+				slot.add_child(camera)
+				camera.transform = Transform3D()
+				camera.transform.origin = Vector3(0, 0.2, 0)
+				camera.rotation_degrees.y = 180
+				
 
 	var back_start := int((MAX_SLOTS - back_allies.size()) * 0.5)
 	for j in range(back_allies.size()):

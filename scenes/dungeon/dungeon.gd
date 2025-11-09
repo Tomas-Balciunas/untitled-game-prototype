@@ -16,11 +16,11 @@ func _ready() -> void:
 	transition_rect.modulate.a = 0.0
 	load_map("beginning_area_01")
 
-func load_map(map_id: String, load_data: Dictionary = {}) -> void:
+func load_map(map_id: String = "", load_data: Dictionary = {}) -> void:
 	#TODO: safety
 	var map_data := MapManager.get_map_data(map_id)
 	var map_scene := MapManager.get_map(map_id)
-	
+
 	_kill_map()
 	
 	if MapInstance.map_id != map_id or not MapInstance.map_id:

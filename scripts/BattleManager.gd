@@ -199,6 +199,10 @@ func _perform_player_action(action: String, target: CharacterInstance) -> void:
 		"skill":
 			var targeting: TargetingManager.TargetType = _pending_options[0].targeting_type
 			var _targets := get_applicable_targets(target, targeting)
+			
+			current_state = BattleState.ANIMATING
+			await attacker_slot.perform_attack_toward_target(target_slot)
+			
 			var mp_cost: int = _pending_options[0].mp_cost
 			for e in current_battler.effects:
 				if e.has_method("modify_mp_cost"):
@@ -207,9 +211,6 @@ func _perform_player_action(action: String, target: CharacterInstance) -> void:
 				return
 				
 			current_battler.set_current_mana(current_battler.stats.current_mana - mp_cost)
-			
-			current_state = BattleState.ANIMATING
-			attacker_slot.perform_attack_toward_target(target_slot)
 			
 			for t in _targets:
 				if not t:
@@ -221,7 +222,7 @@ func _perform_player_action(action: String, target: CharacterInstance) -> void:
 				ctx.source = current_battler
 				ctx.target = t
 				ctx.temporary_effects = _pending_options[0].effects
-				var _ctx := SkillResolver.new().execute(ctx)
+				var _ctx := await SkillResolver.new().execute(ctx)
 			
 		"item":
 			var targeting = _pending_options[0].template.targeting_type

@@ -36,14 +36,13 @@ func enter_rest_area() -> void:
 		if chara.is_main:
 			continue
 			
-		var rest_character := chara.resource.character_body.instantiate()
+		var rest_character := chara.get_body()
 		var interactable: Interactable = interactable_scene.instantiate()
 		
-		rest_character.global_transform = spots[i].global_transform
+		interactable.add_child(rest_character)
 		interactable.global_transform = spots[i].global_transform
 		
 		rest_area.add_child(interactable)
-		rest_area.add_child(rest_character)
 		
 		interactable.set_character(chara)
 		rest_character.collision.disabled = true

@@ -10,6 +10,8 @@ signal died(ded: CharacterInstance)
 var is_dead: bool = false
 var is_main: bool = false
 
+var body = null
+
 var level: int = 1
 var current_experience: int = 0
 var unspent_attribute_points: int = 0
@@ -42,6 +44,10 @@ var equipment := {
 
 func _init(res: CharacterResource) -> void:
 	resource = res
+	
+	if resource.character_body:
+		body = resource.character_body
+	
 	level_up_attributes = Attributes.new()
 	starting_attributes = Attributes.new()
 	stats = Stats.new(res.base_stats)
@@ -107,6 +113,12 @@ func set_current_health(new_health: int) -> void:
 	if new < old:
 		stats.current_health = int(new)
 		CharacterBus.character_damaged.emit(self, old - stats.current_health)
+		var ints := resource.get_interactions()
+		if ints:
+			var text: String = ints.get_chatter("damaged")
+			if text:
+				CharacterBus.chat.emit(self, text)
+			
 	elif new > old:
 		stats.current_health = int(new)
 		CharacterBus.character_healed.emit(self, stats.current_health - old)
@@ -117,6 +129,15 @@ func set_current_health(new_health: int) -> void:
 		stats.current_health = int(new)
 		is_dead = true
 		emit_signal("died", self)
+		
+func get_body() -> CharacterBody:
+	if !body:
+		push_warning("Missing body for %s" % resource.name)
+		return null
+	
+	var inst := body.instantiate() as CharacterBody
+	inst.body_owner = self
+	return inst
 	
 func set_current_mana(new_mana: int) -> void:
 	var old := stats.current_mana

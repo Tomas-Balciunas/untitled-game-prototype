@@ -3,10 +3,8 @@ extends Node3D
 class_name FormationSlot
 
 @onready var targeting_area: Area3D = $Area3D
-@onready var number_display: FormationSlotNumbers = $NumberDisplay
 
 var character_instance: CharacterInstance
-var sprite_instance: Sprite3D
 var body_instance: CharacterBody
 var fallback: CharacterResource = load("res://characters/foes/_fallback/boo.tres")
 var home_global: Vector3
@@ -20,30 +18,22 @@ func _ready() -> void:
 
 func bind(character: CharacterInstance) -> void:
 	character_instance = character
-	CharacterBus.character_damaged.connect(_on_damaged)
-	CharacterBus.character_healed.connect(_on_healed)
 	
 	for child in get_children():
-		if child is StaticBody3D:
+		if child is CharacterBody3D:
 			child.queue_free()
 
-	var body_scene := character.resource.character_body
+	var body_scene := character.get_body()
 	
 	if not body_scene:
-		body_scene = fallback.character_body
-		print("Body is missing for character: %s id: %s. Defaulting to fallback enemy", [getName(), character_instance.resource.id])
+		push_error("Body scene missing for character: %s id: %s. Defaulting to fallback enemy", [getName(), character_instance.resource.id])
+		return
 
-	body_instance = body_scene.instantiate()
-	sprite_instance = body_instance.get_node("Sprite") as Sprite3D
+	body_instance = body_scene
 	animation_player = body_instance.get_node("AnimationPlayer") as AnimationPlayer
 	animation_player.animation_finished.connect(_on_anim_finish)
 	self.add_child(body_instance)
 
-	if not sprite_instance:
-		print("Sprite is missing for character: %s id: %s", [getName(), character_instance.resource.id])
-	
-	#if character.resource.portrait:
-		#$Portrait.texture = character.resource.portrait
 
 func getName() -> String:
 	return character_instance.resource.name
@@ -60,14 +50,6 @@ func clear() -> void:
 	#$Portrait.texture = null
 	$NameLabel.text = ""
 
-func _on_damaged(who: CharacterInstance, amt: int) -> void:
-	if character_instance == who:
-		body_instance.play_damaged()
-		number_display.display_damage(amt)
-
-func _on_healed(who: CharacterInstance, amt: int) -> void:
-	if character_instance == who:
-		number_display.display_heal(amt)
 
 func _on_anim_finish(_e) -> void:
 	body_instance.play_idle()

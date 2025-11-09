@@ -23,24 +23,25 @@ func remove_slot_for(enemy: CharacterInstance) -> void:
 			_promote_from_back_to_front(i)
 			return
 
-	#for j in range(max_slots):
-		#var slot: FormationSlot = back_slots[j]
-		#if slot and slot.character_instance == enemy:
-			#slot.queue_free()
-			#back_slots[j] = null
-			#return
+	for j in range(max_slots):
+		var slot: FormationSlot = back_slots[j]
+		if slot and slot.character_instance == enemy:
+			slot.queue_free()
+			back_slots[j] = null
+			return
 			
-func get_slot_for(enemy: CharacterInstance) -> FormationSlot:
+func get_slot_for(who: CharacterInstance) -> FormationSlot:
 	for i in range(max_slots):
 		var slot: FormationSlot = front_slots[i]
-		if slot and slot.character_instance == enemy:
+		if slot and slot.character_instance == who:
 			return slot
 
 	for j in range(max_slots):
 		var slot: FormationSlot = back_slots[j]
-		if slot and slot.character_instance == enemy:
+		if slot and slot.character_instance == who:
 			return slot
 			
+	push_error("critical, slot not found for %s" % who.resource.name)
 	return null
 
 func _promote_from_back_to_front(index: int) -> void:

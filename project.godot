@@ -66,6 +66,10 @@ window/size/viewport_height=800
 version_control/plugin_name="GitPlugin"
 version_control/autoload_on_startup=true
 
+[editor_plugins]
+
+enabled=PackedStringArray()
+
 [global_group]
 
 player=""

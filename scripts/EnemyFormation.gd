@@ -33,7 +33,7 @@ func place_all_enemies(enemies: Array[CharacterInstance]) -> void:
 	clear_slots()
 
 	var front_enemies := []
-	var back_enemies  := []
+	#var back_enemies  := []
 	for e in enemies:
 		#if e.resource.prefers_front_row and front_enemies.size() < MAX_SLOTS:
 			#front_enemies.append(e)
@@ -74,7 +74,7 @@ func remove_slot_for(enemy: CharacterInstance) -> void:
 		if slot and slot.character_instance == enemy:
 			slot.queue_free()
 			front_slots[i] = null
-			_promote_from_back_to_front(i)
+			#_promote_from_back_to_front(i)
 			return
 
 	#for j in range(MAX_SLOTS):

@@ -5,7 +5,7 @@
 [ext_resource type="Script" uid="uid://bwn4gpkaijqsg" path="res://scripts/CharacterResource.gd" id="1_s17id"]
 [ext_resource type="Script" uid="uid://dq4acpkde276p" path="res://skills/Skill.gd" id="1_yod8j"]
 [ext_resource type="Script" uid="uid://cbelvg2fndssu" path="res://scripts/BattleEvent.gd" id="2_4twd5"]
-[ext_resource type="PackedScene" uid="uid://x2byk67usor7" path="res://characters/allies/Skelly/SkellyBody.tscn" id="3_g0fbc"]
+[ext_resource type="PackedScene" uid="uid://cvja2deox1khy" path="res://characters/allies/Skelly/_body/Skelly.tscn" id="3_bv0l2"]
 [ext_resource type="Resource" uid="uid://eiwm6khdbjki" path="res://characters/_race/Human.tres" id="4_l3iqv"]
 [ext_resource type="Resource" uid="uid://b40pmjuvgrvn4" path="res://characters/_gender/Male.tres" id="4_p4kuy"]
 [ext_resource type="Script" uid="uid://b06vmgrh4qa8i" path="res://gear/Item.gd" id="4_yu6ia"]
@@ -31,7 +31,7 @@ job = ExtResource("16_tyjbr")
 gender = ExtResource("4_p4kuy")
 attributes = SubResource("Resource_rhf32")
 id = "a_skelly_1"
-character_body = ExtResource("3_g0fbc")
+character_body = ExtResource("3_bv0l2")
 name = "Skelly"
 default_effects = Array[ExtResource("1_l3iqv")]([ExtResource("5_g0fbc")])
 default_damage_type = 1

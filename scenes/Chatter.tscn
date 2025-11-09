@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://og1hkm7bn07c"]
+
+[ext_resource type="Script" uid="uid://bu4c7tuljbohh" path="res://scenes/chatter.gd" id="1_k85r8"]
+
+[node name="SmallChatter" type="Node3D"]
+script = ExtResource("1_k85r8")

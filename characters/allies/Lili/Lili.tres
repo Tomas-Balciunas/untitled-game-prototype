@@ -6,8 +6,8 @@
 [ext_resource type="Script" uid="uid://cbelvg2fndssu" path="res://scripts/BattleEvent.gd" id="2_715sk"]
 [ext_resource type="Resource" uid="uid://eiwm6khdbjki" path="res://characters/_race/Human.tres" id="2_gmj68"]
 [ext_resource type="Resource" uid="uid://c4v8018wjpyyf" path="res://effect/_passive/healing/HealBoost.tres" id="3_1ui0v"]
-[ext_resource type="PackedScene" uid="uid://cn1t1ijg24ek1" path="res://characters/allies/Lili/LiliBody2.tscn" id="3_715sk"]
 [ext_resource type="Resource" uid="uid://pchf07nevgay" path="res://characters/_gender/Female.tres" id="3_abpod"]
+[ext_resource type="PackedScene" uid="uid://dr6mixlbl8nmf" path="res://characters/allies/Lili/_body/Lili.tscn" id="3_tttne"]
 [ext_resource type="Resource" uid="uid://dt2wtnoyod5yd" path="res://effect/_passive/mp_cost/MpCostReduction.tres" id="4_23xqr"]
 [ext_resource type="Script" uid="uid://b06vmgrh4qa8i" path="res://gear/Item.gd" id="6_7lkq3"]
 [ext_resource type="Resource" uid="uid://cm3vin4wtxpjv" path="res://effect/_passive/counterattack/Counterattack.tres" id="7_715sk"]
@@ -35,7 +35,7 @@ job = ExtResource("8_23xqr")
 gender = ExtResource("3_abpod")
 attributes = SubResource("Resource_n7wih")
 id = "a_lili_1"
-character_body = ExtResource("3_715sk")
+character_body = ExtResource("3_tttne")
 name = "Lili"
 default_effects = Array[ExtResource("1_7ajkr")]([ExtResource("3_1ui0v"), ExtResource("4_23xqr"), ExtResource("7_715sk")])
 default_items = Array[ExtResource("6_7lkq3")]([ExtResource("7_n60ku")])

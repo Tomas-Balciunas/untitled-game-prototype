@@ -6,6 +6,10 @@ const MENU_TALK = "menu_talk"
 const BATTLE_EVENT = "battle_event"
 
 var interactions: Dictionary = {}
+var chatter: Dictionary = {}
+
+func get_chatter(_topic: String) -> String:
+	return chatter.get(_topic, null)
 
 func get_dialogue(_topic: String, _id: String) -> Dictionary:
 	var topic: Dictionary = interactions.get(_topic, {})

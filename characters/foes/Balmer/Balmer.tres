@@ -3,8 +3,8 @@
 [ext_resource type="Script" uid="uid://bwn4gpkaijqsg" path="res://scripts/CharacterResource.gd" id="1_l56jw"]
 [ext_resource type="Resource" uid="uid://bm8voqn41431y" path="res://characters/_attribute/_Unknown.tres" id="1_uy2ep"]
 [ext_resource type="Script" uid="uid://cbelvg2fndssu" path="res://scripts/BattleEvent.gd" id="2_2p1x5"]
+[ext_resource type="PackedScene" uid="uid://brmuxif8auto4" path="res://characters/foes/Balmer/_body/Balmet.tscn" id="3_2p1x5"]
 [ext_resource type="Script" uid="uid://bp0biy0knxw2o" path="res://effect/Effect.gd" id="3_qj1j7"]
-[ext_resource type="PackedScene" uid="uid://cna1wrn8q5hye" path="res://characters/foes/Balmer/EnemyBody.tscn" id="4_0q48i"]
 [ext_resource type="Script" uid="uid://b06vmgrh4qa8i" path="res://gear/Item.gd" id="4_qj1j7"]
 [ext_resource type="Script" uid="uid://dq4acpkde276p" path="res://skills/Skill.gd" id="4_ta3bf"]
 [ext_resource type="Resource" uid="uid://ccd45ithmlluj" path="res://characters/_gender/_Unknown.tres" id="5_2p1x5"]
@@ -15,7 +15,7 @@
 [resource]
 script = ExtResource("1_l56jw")
 id = "e_enemy_002"
-character_body = ExtResource("4_0q48i")
+character_body = ExtResource("3_2p1x5")
 name = "Balmer"
 experience = 150
 base_stats = {

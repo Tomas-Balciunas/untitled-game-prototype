@@ -1,0 +1,7 @@
+[gd_resource type="Resource" script_class="SkeltalInteractions" load_steps=2 format=3 uid="uid://d0teo8fy4hnlf"]
+
+[ext_resource type="Script" uid="uid://b35mmlbu6r7ix" path="res://characters/foes/Skeltal/skeltal_interactions.gd" id="1_3nutj"]
+
+[resource]
+script = ExtResource("1_3nutj")
+metadata/_custom_type_script = "uid://b35mmlbu6r7ix"

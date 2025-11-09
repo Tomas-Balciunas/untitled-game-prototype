@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://ctgdiwinrooew"]
+
+[sub_resource type="MeshLibrary" id="MeshLibrary_d6mff"]
+
+[node name="Test" type="GridMap"]
+mesh_library = SubResource("MeshLibrary_d6mff")
+cell_center_y = false
