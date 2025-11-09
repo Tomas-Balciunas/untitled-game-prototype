@@ -4,4 +4,5 @@
 
 [node name="ChatterLine3d" type="Label3D"]
 billboard = 2
+text = "test"
 script = ExtResource("1_gbjpa")

@@ -10,7 +10,7 @@ signal died(ded: CharacterInstance)
 var is_dead: bool = false
 var is_main: bool = false
 
-var body = null
+var body: PackedScene = null
 
 var level: int = 1
 var current_experience: int = 0
@@ -31,6 +31,7 @@ var gender: Gender
 var race: Race
 var inventory: Inventory
 var battle_events: Array[BattleEvent]
+var interactions: CharacterInteraction
 
 var equipment := {
 	"weapon": null,
@@ -47,6 +48,9 @@ func _init(res: CharacterResource) -> void:
 	
 	if resource.character_body:
 		body = resource.character_body
+		
+	if resource.interactions:
+		interactions = resource.interactions
 	
 	level_up_attributes = Attributes.new()
 	starting_attributes = Attributes.new()
@@ -106,18 +110,18 @@ func _init(res: CharacterResource) -> void:
 	
 	stats.recalculate_stats(true, true)
 
-func set_current_health(new_health: int) -> void:
+func set_current_health(new_health: int, ctx: ActionContext = null) -> void:
 	var old := stats.current_health
 	var new: float = clamp(new_health, 0, stats.get_final_stat(Stats.HEALTH))
 	
 	if new < old:
 		stats.current_health = int(new)
 		CharacterBus.character_damaged.emit(self, old - stats.current_health)
-		var ints := resource.get_interactions()
-		if ints:
-			var text: String = ints.get_chatter("damaged")
-			if text:
-				CharacterBus.chat.emit(self, text)
+		ChatEventBus.chat_event.emit(ChatterManager.DAMAGED, {
+			"amount": old - stats.current_health,
+			"ctx": ctx,
+			"target": self
+		})
 			
 	elif new > old:
 		stats.current_health = int(new)

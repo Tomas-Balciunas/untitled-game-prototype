@@ -1,8 +1,9 @@
-[gd_scene load_steps=14 format=3 uid="uid://o2er7ci6l504"]
+[gd_scene load_steps=15 format=3 uid="uid://o2er7ci6l504"]
 
 [ext_resource type="Script" uid="uid://dr1sxm5h6jdqr" path="res://scenes/CharacterBody.gd" id="1_iglqt"]
 [ext_resource type="Texture2D" uid="uid://derbgmwdiip8f" path="res://characters/foes/Balmer/219247-6cdde8c35dac084c38e70faab7ba7f2a.png" id="2_y3csi"]
 [ext_resource type="PackedScene" uid="uid://cvlg8i4oihok1" path="res://scenes/number_display.tscn" id="3_d5n0v"]
+[ext_resource type="PackedScene" uid="uid://og1hkm7bn07c" path="res://scenes/Chatter.tscn" id="4_cfoa8"]
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_8j8tm"]
 
@@ -198,3 +199,6 @@ libraries = {
 
 [node name="NumberDisplay" parent="." instance=ExtResource("3_d5n0v")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+
+[node name="SmallChatter" parent="." instance=ExtResource("4_cfoa8")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.104792714, 0.85998, 0)

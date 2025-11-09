@@ -50,6 +50,8 @@ BattleBus="*res://scripts/bus/BattleBus.gd"
 TargetingManager="*res://scripts/TargetingManager.gd"
 SkillRegistry="*res://skills/SkillRegistry.gd"
 CharacterBus="*res://scripts/bus/CharacterBus.gd"
+ChatterManager="*res://scripts/ChatterManager.gd"
+ChatEventBus="*res://scripts/bus/ChatEventBus.gd"
 
 [debug]
 

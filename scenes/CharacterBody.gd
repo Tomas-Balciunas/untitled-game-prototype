@@ -13,7 +13,7 @@ func _ready() -> void:
 	play_idle()
 	CharacterBus.character_damaged.connect(_on_damaged)
 	CharacterBus.character_healed.connect(_on_healed)
-	CharacterBus.chat.connect(_on_chat)
+	ChatEventBus.chat.connect(_on_chat)
 	
 func _on_damaged(c: CharacterInstance, amt: int) -> void:
 	if body_owner and c == body_owner:

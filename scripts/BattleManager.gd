@@ -183,6 +183,10 @@ func _perform_player_action(action: String, target: CharacterInstance) -> void:
 			var _targets := get_applicable_targets(target, targeting)
 			
 			current_state = BattleState.ANIMATING
+			ChatEventBus.chat_event.emit(ChatterManager.ATTACKING, {
+				"source": current_battler,
+				"target": _targets
+			})
 			await attacker_slot.perform_attack_toward_target(target_slot)
 			
 			for t in _targets:
@@ -267,7 +271,11 @@ func _process_enemy_turn() -> void:
 	atk.base_value = current_battler.stats.get_final_stat(Stats.ATTACK)
 	atk.final_value = current_battler.stats.get_final_stat(Stats.ATTACK)
 	atk.actively_cast = true
-
+	
+	ChatEventBus.chat_event.emit(ChatterManager.ATTACKING, {
+				"source": current_battler,
+				"target": [target]
+			})
 	await attacker_slot.perform_attack_toward_target(target_slot)
 	
 	var _ctx := await DamageResolver.new().execute(atk)

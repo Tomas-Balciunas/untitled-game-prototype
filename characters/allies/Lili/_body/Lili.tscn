@@ -1,8 +1,9 @@
-[gd_scene load_steps=14 format=3 uid="uid://dr6mixlbl8nmf"]
+[gd_scene load_steps=15 format=3 uid="uid://dr6mixlbl8nmf"]
 
 [ext_resource type="Script" uid="uid://dr1sxm5h6jdqr" path="res://scenes/CharacterBody.gd" id="1_0ic1u"]
 [ext_resource type="Texture2D" uid="uid://dpwe7gs3aqgtl" path="res://test sprites 2.png" id="2_ubr2d"]
 [ext_resource type="PackedScene" uid="uid://cvlg8i4oihok1" path="res://scenes/number_display.tscn" id="3_27ohe"]
+[ext_resource type="PackedScene" uid="uid://og1hkm7bn07c" path="res://scenes/Chatter.tscn" id="4_0kl74"]
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_8j8tm"]
 
@@ -197,3 +198,6 @@ libraries = {
 
 [node name="NumberDisplay" parent="." instance=ExtResource("3_27ohe")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+
+[node name="SmallChatter" parent="." instance=ExtResource("4_0kl74")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.22530663, 1.4875308, 0)
