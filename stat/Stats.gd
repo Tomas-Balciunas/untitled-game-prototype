@@ -36,6 +36,7 @@ var final_stats: Dictionary = {}
 var current_stats: Dictionary = {}
 
 @export var modifiers: Array[StatModifier] = []
+var temporary_modifiers: Array[StatModifier] = []
 
 func _init(base: Dictionary) -> void:
 	for s: String in STATS.keys():
@@ -54,9 +55,16 @@ func _init(base: Dictionary) -> void:
 func add_modifier(m: StatModifier) -> void:
 	modifiers.append(m)
 
+func add_temporary_modifier(m: StatModifier) -> void:
+	temporary_modifiers.append(m)
+	recalculate_stats()
 
 func remove_modifier(m: StatModifier) -> void:
 	modifiers.erase(m)
+	
+func remove_temporary_modifier(m: StatModifier) -> void:
+	temporary_modifiers.erase(m)
+	recalculate_stats()
 
 
 func recalculate_stats(should_fill_hp: bool = false, should_fill_mp: bool = false) -> void:
@@ -96,7 +104,7 @@ func recalculate_stats(should_fill_hp: bool = false, should_fill_mp: bool = fals
 		flat_bonus[s] = 0.0
 		pct_bonus[s] = 0.0
 	
-	for mod in modifiers:
+	for mod in modifiers + temporary_modifiers:
 		var val := mod.compute_value(c)
 		if mod.type == StatModifier.Type.ADDITIVE:
 			flat_bonus[stat_enum_to_string(mod.stat)] += val

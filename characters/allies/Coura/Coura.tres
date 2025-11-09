@@ -1,9 +1,11 @@
-[gd_resource type="Resource" script_class="CharacterResource" load_steps=12 format=3 uid="uid://dk7pc5rr0xhbs"]
+[gd_resource type="Resource" script_class="CharacterResource" load_steps=14 format=3 uid="uid://dk7pc5rr0xhbs"]
 
 [ext_resource type="Script" uid="uid://blqk30gl013xc" path="res://characters/_attribute/Attributes.gd" id="1_klpoy"]
 [ext_resource type="PackedScene" uid="uid://dqjihmjf45spx" path="res://characters/allies/Coura/_body/Coura.tscn" id="2_klpoy"]
 [ext_resource type="Script" uid="uid://dq4acpkde276p" path="res://skills/Skill.gd" id="3_ma71o"]
+[ext_resource type="Resource" uid="uid://drqy6f6xdgohu" path="res://skills/_offensive/confusion.tres" id="4_8awbe"]
 [ext_resource type="Script" uid="uid://cgllfcpvodqsg" path="res://scripts/experience/ExperienceManager.gd" id="4_g8tir"]
+[ext_resource type="Resource" uid="uid://dwkrtdgmmacpv" path="res://skills/_offensive/row_attack_buff.tres" id="5_8dd4x"]
 [ext_resource type="Resource" uid="uid://pchf07nevgay" path="res://characters/_gender/Female.tres" id="6_8awbe"]
 [ext_resource type="Resource" uid="uid://cdu3c36ji1mmg" path="res://characters/_class/Knight.tres" id="7_8dd4x"]
 [ext_resource type="Script" uid="uid://bp0biy0knxw2o" path="res://effect/Effect.gd" id="7_klpoy"]
@@ -37,6 +39,7 @@ name = "Coura"
 experience = 400
 slot_width = null
 prefers_front_row = false
+default_skills = Array[ExtResource("3_ma71o")]([ExtResource("4_8awbe"), ExtResource("5_8dd4x")])
 default_effects = null
 default_damage_type = null
 default_items = null

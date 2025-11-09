@@ -1,11 +1,8 @@
 extends Effect
 
-class_name StunEffect
+class_name ConfusionEffect
 
 var turns_lasted: int = 0
-
-func _init() -> void:
-	category = EffectCategory.CONTROL
 
 func listened_triggers() -> Array:
 	return [EffectTriggers.ON_TURN_START, EffectTriggers.ON_TURN_END]
@@ -17,7 +14,7 @@ func on_apply(new_owner: CharacterInstance) -> void:
 	_is_runtime_instance = true
 	owner = new_owner
 			
-	BattleTextLines.print_line("%s is stunned!" % owner.resource.name)
+	BattleTextLines.print_line("%s is confused!" % owner.resource.name)
 	_register_if_needed()
 
 func on_expire(_owner: CharacterInstance) -> void:
@@ -26,13 +23,14 @@ func on_expire(_owner: CharacterInstance) -> void:
 	
 func on_trigger(event: TriggerEvent) -> void:
 	if event.trigger == EffectTriggers.ON_TURN_START:
-		event.ctx.skip_turn = true
+		event.ctx.force_action = true
+		event.ctx.target = BattleContext.manager.battlers.pick_random()
 	
 	if event.trigger == EffectTriggers.ON_TURN_END:
 		var r: float = randf()
 		var v: float = float(turns_lasted) / 10
 		if r <= v:
-			BattleTextLines.print_line("%s has recovered from stun!" % owner.resource.name)
+			BattleTextLines.print_line("%s has recovered from confusion!" % owner.resource.name)
 			owner.remove_effect(self)
 			
 			return

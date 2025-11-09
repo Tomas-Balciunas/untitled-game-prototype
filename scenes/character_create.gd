@@ -219,7 +219,7 @@ func _on_create_pressed() -> void:
 	inst.fill_attributes()
 	inst.stats.recalculate_stats()
 	
-	await get_tree().change_scene_to_file("res://scenes/main.tscn")
+	get_tree().change_scene_to_file("res://scenes/main.tscn")
 	
 
 func update_points() -> void:

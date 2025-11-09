@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="ConfusionEffect" load_steps=2 format=3 uid="uid://bqt23mfnx3n6x"]
+
+[ext_resource type="Script" uid="uid://c14wkygnwlhtg" path="res://effect/_offensive/Confusion.gd" id="1_8g8op"]
+
+[resource]
+script = ExtResource("1_8g8op")
+id = "confusion"
+name = "Confusion"
+description = "Attacks randomly"
+category = 2
+metadata/_custom_type_script = "uid://c14wkygnwlhtg"

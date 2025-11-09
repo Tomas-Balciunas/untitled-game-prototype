@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="CastSkill" load_steps=4 format=3 uid="uid://dwkrtdgmmacpv"]
+
+[ext_resource type="Resource" uid="uid://b3w534sl3rht7" path="res://effect/_offensive/AttackBuff.tres" id="1_2s4wi"]
+[ext_resource type="Script" uid="uid://bp0biy0knxw2o" path="res://effect/Effect.gd" id="1_djrkh"]
+[ext_resource type="Script" uid="uid://dyfab3mccm3i2" path="res://skills/CastSkill.gd" id="2_2s4wi"]
+
+[resource]
+script = ExtResource("2_2s4wi")
+effect = ExtResource("1_2s4wi")
+id = "row_attack_buff"
+name = "Row AttackBuff"
+description = "more attack"
+mp_cost = 2
+targeting_type = 3
+metadata/_custom_type_script = "uid://dyfab3mccm3i2"

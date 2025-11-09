@@ -14,13 +14,13 @@ func process_trigger(event: TriggerEvent) -> void:
 	if BattleContext.in_battle:
 		var battlers := BattleContext.manager.battlers
 		for b in battlers:
-			for e in b.effects:
+			for e in b.get_all_effects():
 				if not _passes_scope(e, event):
 					continue
 				effects_to_run.append({ "effect": e, "owner": b })
 	else:
 		for p in PartyManager.members:
-			for e in p.effects:
+			for e in p.get_all_effects():
 				if not _passes_scope(e, event):
 					continue
 				effects_to_run.append({ "effect": e, "owner": p })
@@ -40,7 +40,7 @@ func process_trigger(event: TriggerEvent) -> void:
 			e.remove_self()
 
 
-func _sort_effects(a, b) -> int:
+func _sort_effects(a: Dictionary, b: Dictionary) -> int:
 	var ea: Effect = a.effect
 	var eb: Effect = b.effect
 	var pa := int(ea.get_meta("priority")) if ea.has_meta("priority") else 0

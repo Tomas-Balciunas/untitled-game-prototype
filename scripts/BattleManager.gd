@@ -10,8 +10,8 @@ const TURN_THRESHOLD = 1000
 
 @onready var camera: Camera3D = get_viewport().get_camera_3d()
 @onready var party_panel := get_tree().get_root().get_node("Main/PartyPanel")
-@onready var enemy_grid = null
-@onready var ally_grid = null
+@onready var enemy_grid: EnemyFormation = null
+@onready var ally_grid: AllyFormation = null
 
 enum BattleState {
 	IDLE,
@@ -63,7 +63,6 @@ func _process(_delta: float) -> void:
 	# due to forced CHECK_END
 	if _to_cleanup.size() > 0 and current_state != BattleState.ANIMATING:
 		_corpse_janny()
-		current_state = BattleState.CHECK_END
 		return
 		
 	if BattleContext.event_running:
@@ -86,15 +85,15 @@ func _process(_delta: float) -> void:
 		BattleState.CHECK_END:
 			_check_end_conditions()
 		BattleState.WIN:
-			_handle_win()
+			_handle_end("win")
 		BattleState.LOSE:
-			_handle_lose()
+			_handle_end("lose")
 
 func _process_turn_queue() -> void:
 	if turn_queue.is_empty():
 		var alive_battlers := battlers.filter(func(b: CharacterInstance) -> bool: return not b.is_dead)
 		
-		alive_battlers.sort_custom(func(a, b) -> bool:
+		alive_battlers.sort_custom(func(a: CharacterInstance, b: CharacterInstance) -> bool:
 			return a.stats.get_final_stat(Stats.SPEED) > b.stats.get_final_stat(Stats.SPEED)
 		)
 
@@ -116,17 +115,13 @@ func _on_turn_start() -> void:
 	EffectRunner.process_trigger(event)
 	disable_all_targeting()
 	
-	if event.ctx.skip_turn:
-		current_state = BattleState.TURN_END
-		return
-		
 	if is_party_member:
 		current_state = BattleState.PLAYER_TURN
 		party_panel.highlight_member(current_battler)
+		_on_player_turn(event) ## handle cases like checking for hard CC
 	else:
 		current_state = BattleState.ENEMY_TURN
-	
-	print("Player turn for:", current_battler.resource.name)
+		_process_enemy_turn(event)
 
 func _on_turn_end() -> void:
 	var event := TriggerEvent.new()
@@ -137,6 +132,21 @@ func _on_turn_end() -> void:
 	current_battler = null
 	party_panel.clear_highlights()
 	current_state = BattleState.CHECK_END
+	
+func _on_player_turn(event: TriggerEvent) -> void:
+	if event.ctx.skip_turn:
+		current_state = BattleState.TURN_END
+		return
+	
+	if event.ctx.force_action:
+		if !event.ctx.target:
+			push_error("Forced action for %s did not have a target" % current_battler.resource.name)
+			current_state = BattleState.TURN_END
+			return
+			
+		await _perform_player_action("attack", event.ctx.target)
+		current_state = BattleState.TURN_END
+		return
 		
 func _on_player_action_selected(action: String, options: Array) -> void:
 	if current_state != BattleState.PLAYER_TURN:
@@ -151,7 +161,7 @@ func _on_player_action_selected(action: String, options: Array) -> void:
 			current_state = BattleState.TURN_END
 			return
 		"flee":
-			_handle_flee()
+			_handle_end("flee")
 			current_state = BattleState.TURN_END
 			return
 		"attack":
@@ -226,10 +236,10 @@ func _perform_player_action(action: String, target: CharacterInstance) -> void:
 				ctx.source = current_battler
 				ctx.target = t
 				ctx.temporary_effects = _pending_options[0].effects
-				var _ctx := await SkillResolver.new().execute(ctx)
+				var _ctx := SkillResolver.new().execute(ctx)
 			
 		"item":
-			var targeting = _pending_options[0].template.targeting_type
+			var targeting: TargetingManager.TargetType = _pending_options[0].template.targeting_type
 			var _targets := get_applicable_targets(target, targeting)
 			
 			current_state = BattleState.ANIMATING
@@ -250,17 +260,33 @@ func _perform_player_action(action: String, target: CharacterInstance) -> void:
 	await attacker_slot.position_back()
 	await process_queue()
 
-func _process_enemy_turn() -> void:
+func _process_enemy_turn(event: TriggerEvent = null) -> void:
 	if current_battler == null:
 		current_state = BattleState.CHECK_END
 		return
-
-	var valid_targets := party.filter(func(p: CharacterInstance) -> bool: return p.is_dead == false)
-	if valid_targets.is_empty():
-		current_state = BattleState.CHECK_END
+		
+	if event and event.ctx.skip_turn:
+		current_state = BattleState.TURN_END
 		return
+	
+	var target: CharacterInstance = null
+	
+	if event and event.ctx.force_action:
+		if !event.ctx.target:
+			push_error("Forced action for %s did not have a target" % current_battler.resource.name)
+			current_state = BattleState.TURN_END
+			return
+			
+		target = event.ctx.target
 
-	var target: CharacterInstance = valid_targets.pick_random()
+	if !target:
+		var valid_targets := party.filter(func(p: CharacterInstance) -> bool: return p.is_dead == false)
+		if valid_targets.is_empty():
+			current_state = BattleState.CHECK_END
+			return
+
+		target = valid_targets.pick_random()
+	
 	current_state = BattleState.ANIMATING
 	var attacker_slot := get_slot(current_battler)
 	var target_slot := get_slot(target)
@@ -288,15 +314,6 @@ func _process_enemy_turn() -> void:
 func _handle_defend() -> void:
 	print(current_battler.resource.name, " is defending!")
 
-func _handle_flee() -> void:
-	var success := randf() < 1
-	if success:
-		print("Party flees successfully!")
-		EncounterBus.encounter_ended.emit("flee", BattleContext.encounter_data)
-		current_state = BattleState.IDLE
-	else:
-		print("Failed to flee!")
-
 func _check_end_conditions() -> void:
 	if party.all(func(p: CharacterInstance) -> bool: return p.is_dead):
 		current_state = BattleState.LOSE
@@ -305,15 +322,34 @@ func _check_end_conditions() -> void:
 	else:
 		current_state = BattleState.PROCESS_TURNS
 
+func _handle_end(result: String) -> void:
+	for member: CharacterInstance in party:
+		member.cleanup_after_battle()
+	
+	match result:
+		"win":
+			_handle_win()
+		"lose":
+			_handle_lose()
+		"flee":
+			_handle_flee()
+
 func _handle_win() -> void:
-	print("Victory! Handle rewards here.")
 	EncounterBus.encounter_ended.emit("win", BattleContext.encounter_data)
 	current_state = BattleState.IDLE
 
 func _handle_lose() -> void:
-	print("Defeat! Handle game over here.")
 	EncounterBus.encounter_ended.emit("lose", BattleContext.encounter_data)
 	current_state = BattleState.IDLE
+	
+func _handle_flee() -> void:
+	var success := randf() < 0.5
+	if success:
+		print("Party flees successfully!")
+		EncounterBus.encounter_ended.emit("flee", BattleContext.encounter_data)
+		current_state = BattleState.IDLE
+	else:
+		print("Failed to flee!")
 	
 func _register_battler(battler: CharacterInstance) -> void:
 	battlers.append(battler)

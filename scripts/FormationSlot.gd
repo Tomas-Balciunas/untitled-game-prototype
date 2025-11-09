@@ -51,7 +51,7 @@ func clear() -> void:
 	$NameLabel.text = ""
 
 
-func _on_anim_finish(_e) -> void:
+func _on_anim_finish(_e: StringName) -> void:
 	body_instance.play_idle()
 
 func perform_attack_toward_target(target: FormationSlot) -> void:
@@ -95,7 +95,7 @@ func capture_home() -> void:
 	home_global = global_position
 
 func on_ded() -> void:
-	await body_instance.play_dead()
+	body_instance.play_dead()
 
 func _on_mouse_entered() -> void:
 	if not character_instance:

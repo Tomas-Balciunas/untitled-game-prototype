@@ -1,6 +1,6 @@
 extends Node
 
-var party_panel
+var party_panel: Node
 var current_event: Array = []
 var event_step: int = 0
 

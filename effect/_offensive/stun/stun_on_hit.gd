@@ -13,7 +13,7 @@ func on_trigger(event: TriggerEvent) -> void:
 	stun.duration_turns = 1
 	
 	var act := EffectApplicationContext.new()
-	act.actively_cast = true
+	act.actively_cast = event.ctx.actively_cast
 	act.source = event.actor
 	act.target = event.ctx.target
 	act.effect = stun

@@ -5,7 +5,7 @@ const EffectLabel = preload("res://scenes/ui/character/EffectLabel.tscn")
 
 func bind_character(character: CharacterInstance) -> void:
 	clear_effects()
-	for effect in character.effects:
+	for effect in character.get_all_effects():
 		add_effect(effect)
 
 func clear_effects() -> void:

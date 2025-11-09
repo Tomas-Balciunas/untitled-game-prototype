@@ -21,6 +21,9 @@ var status_effects: Array = []
 var turn_meter: int = 0
 var learnt_skills: Array[Skill] = []
 var effects: Array[Effect] = []
+var buff_effects: Array[Effect] = []
+var debuff_effects: Array[Effect] = []
+var control_effects: Array[Effect] = []
 var gear_effects: Dictionary = {}
 var damage_type: DamageTypes.Type
 var attributes: Attributes
@@ -160,8 +163,12 @@ func prepare_for_battle() -> void:
 		e.prepare_for_battle(self)
 
 func cleanup_after_battle() -> void:
-	for e in effects:
-		e.cleanup_after_battle()
+	for e in get_all_effects():
+		if e.is_battle_only:
+			remove_effect(e)
+	
+	stats.temporary_modifiers = []
+	stats.recalculate_stats()
 
 func apply_effect(effect: Effect, source: CharacterInstance = null) -> Effect:
 	if effect._is_runtime_instance:
@@ -177,25 +184,30 @@ func apply_effect(effect: Effect, source: CharacterInstance = null) -> Effect:
 	if not effect.should_append():
 		return inst
 	
-	effects.append(inst)
+	if effect.category == effect.EffectCategory.BUFF:
+		buff_effects.append(effect)
+	if effect.category == effect.EffectCategory.DEBUFF:
+		debuff_effects.append(effect)
+	if effect.category == effect.EffectCategory.CONTROL:
+		control_effects.append(effect)
+	else:
+		effects.append(inst)
 	
 	return inst
 		
 func remove_effect(effect: Effect) -> void:
-	if effects.has(effect):
-		effects.erase(effect)
-		if effect.has_method("on_expire"):
+	for list in [effects, buff_effects, debuff_effects, control_effects]:
+		if list.has(effect):
 			effect.on_expire(self)
+			list.erase(effect)
 		
-func process_effects(trigger: String, ctx: ActionContext = null) -> void:
-	for effect: Effect in effects.duplicate():
-		if effect.has_method("on_trigger"):
-			var event := TriggerEvent.new()
-			event.actor = self
-			event.trigger = trigger
-			event.ctx = ctx
-			effect.on_trigger(event)
-		
+func get_all_effects() -> Array[Effect]:
+	var whole_effects := effects.duplicate()
+	whole_effects.append_array(buff_effects)
+	whole_effects.append_array(debuff_effects)
+	whole_effects.append_array(control_effects)
+	
+	return whole_effects
 
 func fill_attributes() -> void:
 	attributes = Attributes.new()

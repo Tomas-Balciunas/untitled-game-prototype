@@ -7,6 +7,9 @@ var _remaining: int = 0
 var _source: CharacterInstance = null
 var _should_refresh_duration := true
 
+func _init() -> void:
+	category = EffectCategory.DEBUFF
+
 func _is_stackable() -> bool:
 	return true
 
@@ -34,9 +37,6 @@ func on_apply(new_owner: CharacterInstance) -> void:
 	BattleTextLines.print_line("Poison applied to %s for %d turns" % [owner.resource.name, duration_turns])
 	_register_if_needed()
 
-func on_expire(_owner: CharacterInstance) -> void:
-	_unregister()
-	owner = null
 
 func listened_triggers() -> Array:
 	return [EffectTriggers.ON_TURN_END]

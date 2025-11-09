@@ -9,6 +9,10 @@ var _is_connected: bool = false
 var _owner: CharacterInstance = null
 
 func prepare(_own: CharacterInstance) -> void:
+	if !_owner:
+		return
+	if !_is_connected:
+		return
 	pass #connect to battle event bus so we can listen to signals emitted by battle manager
 
 func run() -> void:

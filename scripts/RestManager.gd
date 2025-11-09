@@ -16,7 +16,7 @@ func enter_rest_area() -> void:
 	dungeon.visible = false
 	dungeon.process_mode = Node.PROCESS_MODE_DISABLED
 	
-	var rest_area = load("res://maps/_rest/crypt/RestArea01.tscn").instantiate()
+	var rest_area: Node = load("res://maps/_rest/crypt/RestArea01.tscn").instantiate()
 	get_tree().get_root().get_node("Main").add_child(rest_area)
 	rest_area.global_position = Vector3(100, 0, 100)
 	rest_area.name = "RestArea"

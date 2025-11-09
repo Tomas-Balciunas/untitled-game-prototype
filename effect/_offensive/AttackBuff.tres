@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="AttackBuff" load_steps=2 format=3 uid="uid://b3w534sl3rht7"]
+
+[ext_resource type="Script" uid="uid://bq6ql8p3x0ob1" path="res://effect/_passive/attack_buff.gd" id="1_sow8y"]
+
+[resource]
+script = ExtResource("1_sow8y")
+id = "attack_buff"
+name = "Attack+"
+description = "Increases attack power"
+duration_turns = 2
+is_battle_only = true
+metadata/_custom_type_script = "uid://bq6ql8p3x0ob1"

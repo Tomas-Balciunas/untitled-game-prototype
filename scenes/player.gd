@@ -1,6 +1,6 @@
 extends CharacterBody3D
 
-signal player_moved(data)
+signal player_moved(data: Dictionary)
 
 const TRAVEL_TIME := 0.3
 
