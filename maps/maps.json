@@ -1,16 +1,26 @@
 {
 	"beginning_area_01": {	
 		"id": "beginning_area_01",
+		"random": "true",
 		"name": "Beginning Area",
 		"starting_position": "(0, 0)",
 		"available_enemies": ["0000", "e_enemy_002", "e_enemy_001"],
 		"gear_tiers": ["WOOD"]
 	},
-	"crypt_00": {	
+	"crypt_00": {
 		"id": "crypt_00",
+		"random": "true",
 		"name": "Crypt",
 		"starting_position": "(0, 0)",
 		"available_enemies": ["0000", "e_enemy_002", "e_enemy_001"],
 		"gear_tiers": ["WOOD", "IRON"]
-	}
+	},
+	"beginning_area_02": {	
+		"id": "beginning_area_02",
+		"random": "true",
+		"name": "Beginning Area",
+		"starting_position": "(0, -1.5)",
+		"available_enemies": ["0000", "e_enemy_002", "e_enemy_001"],
+		"gear_tiers": ["WOOD"]
+	},
 }

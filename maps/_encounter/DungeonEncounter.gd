@@ -1,16 +1,23 @@
-extends Node3D
+extends CharacterBody3D
+
+const SPEED = 3.0
 
 @export var encounter_data: EncounterData
 @export var enemy_scene: PackedScene
 @onready var encounter_area: BattleTrigger = $EncounterArea
-@export var move_radius := 3.0
-@export var step_time := 1.5
-@export var idle_time_min := 0.5
-@export var idle_time_max := 2.0
+@onready var navigation_agent_3d: NavigationAgent3D = $NavigationAgent3D
 
 var visual: CharacterBody3D
 var origin: Vector3
 var rng := RandomNumberGenerator.new()
+
+func _physics_process(_delta: float) -> void:
+	var current_location := global_transform.origin
+	var next_location := navigation_agent_3d.get_next_path_position()
+	var new_velocity := (next_location - current_location).normalized() * SPEED
+	
+	velocity = new_velocity
+	move_and_slide()
 
 func _ready() -> void:
 	assert(encounter_data)
@@ -28,30 +35,19 @@ func _ready() -> void:
 	add_child(visual)
 	
 	origin = global_transform.origin
-	#_start_patrol()
 	
-func _start_patrol() -> void:
-	_patrol_step()
-
-func _patrol_step() -> void:
-	var dir := Vector3(rng.randf_range(-1,1), 0, rng.randf_range(-1,1))
-	if dir.length() == 0:
-		dir = Vector3(0,0,1)
-	dir = dir.normalized()
-	var dist := rng.randf_range(0.5, move_radius)
-	var target := origin + dir * dist
-
-	var t := create_tween()
-	t.tween_property(self, "global_transform:origin", target, step_time)\
-		.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
-
-	t.finished.connect(Callable(self, "_on_step_finished"))
-
-func _on_step_finished() -> void:
-	var idle := rng.randf_range(idle_time_min, idle_time_max)
-	await get_tree().create_timer(idle).timeout
-	_start_patrol()
+	
+func update_target_location(target_location: Vector3) -> void:
+	navigation_agent_3d.target_position = target_location
 
 func _on_encounter_ended(_res: String, data: EncounterData) -> void:
 	if data.id == encounter_data.id:
 		self.queue_free()
+
+
+func _on_detection_body_entered(body: Node3D) -> void:
+	if not body.is_in_group("player"):
+		return
+		
+	var player = get_tree().get_root().get_node("Main/Player")
+	update_target_location(player.global_transform.origin)

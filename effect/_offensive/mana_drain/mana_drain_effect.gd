@@ -16,9 +16,6 @@ func on_apply(new_owner: CharacterInstance) -> void:
 
 	_register_if_needed()
 
-func on_expire(_owner: CharacterInstance) -> void:
-	_unregister()
-	owner = null
 
 func on_trigger(event: TriggerEvent) -> void:
 	var current_mana := event.ctx.target.stats.current_mana

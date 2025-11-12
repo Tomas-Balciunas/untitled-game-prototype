@@ -6,6 +6,10 @@ class_name EnemyController
 @export var min_group_size := 2
 @export var max_group_size := 5
 
+#func _physics_process(delta: float) -> void:
+	#var player = get_tree().get_root().get_node("Main/Player")
+	#get_tree().call_group("overworld_enemy", "update_target_location", player.global_transform.origin)
+
 func populate_enemy_spawn_points() -> void:
 	if MapInstance.available_enemies.is_empty():
 		push_error("Map instance has no available enemies!")

@@ -198,7 +198,7 @@ func apply_effect(effect: Effect, source: CharacterInstance = null) -> Effect:
 func remove_effect(effect: Effect) -> void:
 	for list in [effects, buff_effects, debuff_effects, control_effects]:
 		if list.has(effect):
-			effect.on_expire(self)
+			effect.on_expire()
 			list.erase(effect)
 		
 func get_all_effects() -> Array[Effect]:

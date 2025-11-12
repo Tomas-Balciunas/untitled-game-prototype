@@ -1,0 +1,37 @@
+[gd_scene load_steps=5 format=3 uid="uid://bx8jewu2yxunq"]
+
+[ext_resource type="MeshLibrary" uid="uid://uso6cfmk5r51" path="res://tileset white.tres" id="1_vbrp5"]
+[ext_resource type="Script" uid="uid://qwci85k0novh" path="res://scripts/ChestManager.gd" id="2_31cuy"]
+[ext_resource type="Script" uid="uid://7pao6hs651jh" path="res://scripts/EnemyController.gd" id="9_gbhr8"]
+
+[sub_resource type="Environment" id="Environment_kjsaj"]
+background_energy_multiplier = 0.28
+ambient_light_energy = 1.14
+fog_enabled = true
+fog_light_color = Color(0.501114, 0.536127, 0.591149, 1)
+fog_light_energy = 0.85
+fog_density = 0.0283
+fog_sky_affect = 0.0
+
+[node name="Blueprint" type="GridMap"]
+mesh_library = ExtResource("1_vbrp5")
+cell_size = Vector3(1, 1, 1)
+cell_center_y = false
+metadata/_editor_floor_ = Vector3(0, 0, 0)
+
+[node name="Chests" type="Node" parent="."]
+script = ExtResource("2_31cuy")
+
+[node name="Enemies" type="Node" parent="."]
+script = ExtResource("9_gbhr8")
+
+[node name="Transitions" type="Node" parent="."]
+
+[node name="Rest" type="Node" parent="."]
+
+[node name="Interactable" type="Node" parent="."]
+
+[node name="Events" type="Node" parent="."]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_kjsaj")

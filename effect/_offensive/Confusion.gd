@@ -17,9 +17,6 @@ func on_apply(new_owner: CharacterInstance) -> void:
 	BattleTextLines.print_line("%s is confused!" % owner.resource.name)
 	_register_if_needed()
 
-func on_expire(_owner: CharacterInstance) -> void:
-	_unregister()
-	owner = null
 	
 func on_trigger(event: TriggerEvent) -> void:
 	if event.trigger == EffectTriggers.ON_TURN_START:

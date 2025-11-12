@@ -16,10 +16,12 @@ shape = SubResource("BoxShape3D_p0vlq")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, -0.303)
 current = true
 fov = 93.0034
+far = 285.41
 
 [node name="OmniLight3D" type="OmniLight3D" parent="Camera3D"]
 transform = Transform3D(1, 0, 0, 0, 0.0297301, 0, 0, 0, 1, 0, 0, 0.312911)
 light_color = Color(0.585928, 0.568995, 0.564924, 1)
+light_indirect_energy = 2.826
 omni_range = 6.66321
 
 [node name="FrontRay" type="RayCast3D" parent="."]

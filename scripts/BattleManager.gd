@@ -60,9 +60,10 @@ func begin(_enemies: Array[CharacterInstance]) -> void:
 
 func _process(_delta: float) -> void:
 	# cleanup has potential to fuck up battle state if states arent managed carefully
-	# due to forced CHECK_END
 	if _to_cleanup.size() > 0 and current_state != BattleState.ANIMATING:
+		# TODO consider processing on death effects here
 		_corpse_janny()
+		
 		return
 		
 	if BattleContext.event_running:
