@@ -1,20 +1,30 @@
 extends CharacterBody3D
 
-const SPEED = 3.0
+enum TargetType { PATROL, PLAYER }
+
+@onready var navigation_agent_3d: NavigationAgent3D = $NavigationAgent3D
+@onready var player: CharacterBody3D = get_tree().get_root().get_node("Main/Player")
+@onready var chase_timer: Timer = $ChaseTimer
 
 @export var encounter_data: EncounterData
 @export var enemy_scene: PackedScene
-@onready var encounter_area: BattleTrigger = $EncounterArea
-@onready var navigation_agent_3d: NavigationAgent3D = $NavigationAgent3D
+@export var speed := 2.0
+@export var chase_duration := 2
 
 var visual: CharacterBody3D
 var origin: Vector3
-var rng := RandomNumberGenerator.new()
+
+var current_target_type := TargetType.PATROL
+var player_detected: bool = false
+
 
 func _physics_process(_delta: float) -> void:
+	if player_detected and current_target_type == TargetType.PLAYER:
+		update_target_location(player.global_transform.origin)
+	
 	var current_location := global_transform.origin
 	var next_location := navigation_agent_3d.get_next_path_position()
-	var new_velocity := (next_location - current_location).normalized() * SPEED
+	var new_velocity := (next_location - current_location).normalized() * speed
 	
 	velocity = new_velocity
 	move_and_slide()
@@ -23,6 +33,7 @@ func _ready() -> void:
 	assert(encounter_data)
 	assert(enemy_scene)
 	EncounterBus.encounter_ended.connect(_on_encounter_ended)
+	navigation_agent_3d.target_reached.connect(_on_target_reached)
 	
 	MapInstance.add_encounter(encounter_data)
 	
@@ -30,7 +41,6 @@ func _ready() -> void:
 		queue_free()
 		return
 	
-	encounter_area.encounter = encounter_data
 	visual = enemy_scene.instantiate()
 	add_child(visual)
 	
@@ -40,6 +50,7 @@ func _ready() -> void:
 func update_target_location(target_location: Vector3) -> void:
 	navigation_agent_3d.target_position = target_location
 
+
 func _on_encounter_ended(_res: String, data: EncounterData) -> void:
 	if data.id == encounter_data.id:
 		self.queue_free()
@@ -48,6 +59,34 @@ func _on_encounter_ended(_res: String, data: EncounterData) -> void:
 func _on_detection_body_entered(body: Node3D) -> void:
 	if not body.is_in_group("player"):
 		return
+	
+	chase_timer.stop()
+	player_detected = true
+	current_target_type = TargetType.PLAYER
+
+
+func _on_detection_body_exited(body: Node3D) -> void:
+	if not body.is_in_group("player"):
+		return
+	
+	chase_timer.start(chase_duration)
+
+
+func _on_target_reached() -> void:
+	if not player_detected:
+		return
 		
-	var player = get_tree().get_root().get_node("Main/Player")
-	update_target_location(player.global_transform.origin)
+	if not current_target_type == TargetType.PLAYER:
+		return
+	
+	if player and global_position.distance_to(player.global_position) > 1.0:
+		return
+		
+	EncounterBus.encounter_started.emit(encounter_data)
+
+
+func _on_chase_timer_timeout() -> void:
+	chase_timer.stop()
+	player_detected = false
+	current_target_type = TargetType.PATROL
+	update_target_location(origin)

@@ -48,9 +48,6 @@ func load_map(map_id: String = "", load_data: Dictionary = {}) -> void:
 
 func _on_encounter_started(_data: EncounterData) -> void:
 	call_deferred("_deactivate_dungeon")
-	#if current_map_scene:
-		#current_map_scene.queue_free()
-		#current_map_scene = null
 		
 func _deactivate_dungeon() -> void:
 	self.visible = false
@@ -79,8 +76,6 @@ func _on_encounter_ended(result: String, _data: EncounterData) -> void:
 	var player_position: Vector2i = MapInstance.player_previous_position
 	var player_facing: Vector3 = MapInstance.player_facing
 	player.set_grid_pos(player_position, player_facing, TILE_SIZE)
-
-	#load_map(MapInstance.map_id)
 
 func _kill_map() -> void:
 	if current_map_scene:
