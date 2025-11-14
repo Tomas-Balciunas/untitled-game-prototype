@@ -19,7 +19,9 @@ func execute(_ctx: ActionContext) -> EffectApplicationContext:
 	
 	event.trigger = EffectTriggers.ON_BEFORE_RECEIVE_EFFECT
 	EffectRunner.process_trigger(event)
+	
 	ctx.target.apply_effect(ctx.effect, event.actor)
+	
 	event.trigger = EffectTriggers.ON_APPLY_EFFECT
 	EffectRunner.process_trigger(event)
 

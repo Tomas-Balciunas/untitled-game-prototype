@@ -5,11 +5,16 @@ class_name PartyMemberSlot
 #signal target_clicked(target)
 signal open_character_menu_requested(character_instance: CharacterInstance)
 
+@onready var number_display: UISlotNumbers = $NumberDisplay
+@onready var animation_player: AnimationPlayer = $AnimationPlayer
+
 var character_instance: CharacterInstance
 var targeting_enabled := false
 
 func _ready() -> void:
 	CharacterBus.health_changed.connect(_on_health_changed)
+	CharacterBus.character_damaged.connect(_on_damaged)
+	CharacterBus.character_healed.connect(_on_healed)
 	hide_info()
 
 func bind(character: CharacterInstance) -> void:
@@ -23,6 +28,19 @@ func bind(character: CharacterInstance) -> void:
 	$MarginContainer/GridContainer/LabelValueContainer/Values/MPContainer/MaxMP.text = str(character.stats.get_final_stat(Stats.MANA))
 	
 	show_info()
+	
+func _on_damaged(c: CharacterInstance, amt: int) -> void:
+	if character_instance and c == character_instance:
+		play_damaged()
+		number_display.display_damage(amt)
+	
+func _on_healed(c: CharacterInstance, amt: int) -> void:
+	if character_instance and c == character_instance:
+		number_display.display_heal(amt)
+
+func play_damaged() -> void:
+	if animation_player.has_animation("damaged"):
+		animation_player.play("damaged")
 
 func show_info() -> void:
 	$MarginContainer.visible = true

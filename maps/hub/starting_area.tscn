@@ -11,7 +11,7 @@
 [ext_resource type="Resource" uid="uid://dxgrsck30ncu7" path="res://gear/weapon/templates/1_wood/Axe.tres" id="6_g2q70"]
 [ext_resource type="Script" uid="uid://dbfiub7761eey" path="res://scripts/triggerables/MapTransitionTriggerable.gd" id="7_lk5gk"]
 [ext_resource type="PackedScene" uid="uid://dphnv8sgmui72" path="res://maps/crypt/crypt.tscn" id="7_uvgea"]
-[ext_resource type="Resource" uid="uid://bfpykmjyjvbli" path="res://trap/_traps/ManaDrainTrap.tres" id="8_g2q70"]
+[ext_resource type="Resource" uid="uid://8ufc6fbnjad8" path="res://trap/_traps/PoisonTrap.tres" id="8_g2q70"]
 [ext_resource type="Script" uid="uid://i6llluly1w8" path="res://scripts/MapData.gd" id="8_uo6qj"]
 [ext_resource type="Script" uid="uid://8n2g1of6dlbp" path="res://scripts/interactables/RestAreaInteractable.gd" id="9_kjsaj"]
 [ext_resource type="PackedScene" uid="uid://cxxgmoys7ineo" path="res://scenes/ChestBasic.tscn" id="9_lk5gk"]

@@ -1,7 +1,7 @@
 [gd_scene load_steps=13 format=3 uid="uid://bbixalnsv3np6"]
 
 [ext_resource type="Script" uid="uid://dr1sxm5h6jdqr" path="res://scenes/CharacterBody.gd" id="1_y8q8x"]
-[ext_resource type="PackedScene" uid="uid://cvlg8i4oihok1" path="res://scenes/number_display.tscn" id="2_cms24"]
+[ext_resource type="PackedScene" uid="uid://cvlg8i4oihok1" path="res://scenes/number_display_3d.tscn" id="2_cms24"]
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_8j8tm"]
 

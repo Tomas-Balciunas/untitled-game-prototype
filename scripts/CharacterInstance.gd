@@ -186,9 +186,9 @@ func apply_effect(effect: Effect, source: CharacterInstance = null) -> Effect:
 	
 	if effect.category == effect.EffectCategory.BUFF:
 		buff_effects.append(effect)
-	if effect.category == effect.EffectCategory.DEBUFF:
+	elif effect.category == effect.EffectCategory.DEBUFF:
 		debuff_effects.append(effect)
-	if effect.category == effect.EffectCategory.CONTROL:
+	elif effect.category == effect.EffectCategory.CONTROL:
 		control_effects.append(effect)
 	else:
 		effects.append(inst)

@@ -26,13 +26,13 @@ func on_apply(new_owner: CharacterInstance) -> void:
 	owner = new_owner
 	_remaining = duration_turns
 	# TODO tidy this up
-	for effect in owner.effects:
-		if effect is PoisonEffect:
-			_should_append = false
-			effect.stacks += 1
-			
-			if _should_refresh_duration:
-				effect._remaining = duration_turns
+	#for effect in owner.effects:
+		#if effect is PoisonEffect:
+			#_should_append = false
+			#effect.stacks += 1
+			#
+			#if _should_refresh_duration:
+				#effect._remaining = duration_turns
 			
 	BattleTextLines.print_line("Poison applied to %s for %d turns" % [owner.resource.name, duration_turns])
 	_register_if_needed()

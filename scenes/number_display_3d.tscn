@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://cvlg8i4oihok1"]
+
+[ext_resource type="Script" uid="uid://t3gojpck1c3k" path="res://scripts/FormationSlotNumbers.gd" id="1_irfkd"]
+
+[node name="NumberDisplay" type="Node3D"]
+script = ExtResource("1_irfkd")

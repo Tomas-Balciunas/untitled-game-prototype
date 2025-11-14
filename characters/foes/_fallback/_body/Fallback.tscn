@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://dr1sxm5h6jdqr" path="res://scenes/CharacterBody.gd" id="1_2mlou"]
 [ext_resource type="Texture2D" uid="uid://hyelqwalee3g" path="res://characters/foes/Skeltal/219169-f863df69f4ba01ca40a9ae2d1d3b0209.png" id="2_afkie"]
-[ext_resource type="PackedScene" uid="uid://cvlg8i4oihok1" path="res://scenes/number_display.tscn" id="3_mkxmg"]
+[ext_resource type="PackedScene" uid="uid://cvlg8i4oihok1" path="res://scenes/number_display_3d.tscn" id="3_mkxmg"]
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_8j8tm"]
 

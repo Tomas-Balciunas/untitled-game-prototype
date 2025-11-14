@@ -4,6 +4,7 @@
 
 [resource]
 script = ExtResource("1_d77gg")
+duration = 6
 id = "poison_trap_01"
 name = "Poison Trap"
 damage = 8
