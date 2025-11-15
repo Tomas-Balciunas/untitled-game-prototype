@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=3 uid="uid://c8n1llsvvhonb"]
+[gd_scene load_steps=29 format=3 uid="uid://c8n1llsvvhonb"]
 
 [ext_resource type="MeshLibrary" uid="uid://uso6cfmk5r51" path="res://tileset white.tres" id="1_mdjaj"]
 [ext_resource type="Script" uid="uid://7pao6hs651jh" path="res://scripts/EnemyController.gd" id="2_g1pjd"]
@@ -17,6 +17,9 @@
 [ext_resource type="PackedScene" uid="uid://cxxgmoys7ineo" path="res://scenes/ChestBasic.tscn" id="9_lk5gk"]
 [ext_resource type="PackedScene" uid="uid://bg5f2e2nphlkl" path="res://scripts/interactables/Interactable.tscn" id="10_lk5gk"]
 [ext_resource type="Script" uid="uid://b656vk4s4jm03" path="res://scripts/triggerables/EventTriggerable.gd" id="11_bgo3i"]
+[ext_resource type="PackedScene" uid="uid://c8fyl6fq4crr0" path="res://maps/_encounter/OverworldEnemy.tscn" id="18_bko6l"]
+[ext_resource type="Resource" uid="uid://d34tlmbjgrfkv" path="res://maps/_encounter/starting area/basic_test_2.tres" id="19_4x3pf"]
+[ext_resource type="PackedScene" uid="uid://brmuxif8auto4" path="res://characters/foes/Balmer/_body/Balmet.tscn" id="20_hag8j"]
 
 [sub_resource type="NavigationMesh" id="NavigationMesh_g2q70"]
 vertices = PackedVector3Array(-2.5, 0.02, -1.25, -2, 0.02, -1.5, -3, 0.02, -6.75, -6, 0.02, -6.75, -2.5, 0.02, 6.25, -18.25, 0.02, -8.25, -18.25, 0.02, 6.25, -6.25, 0.02, -8.25, -1, 0.02, -8.25, -2.5, 0.02, -8.25, -2.5, 0.02, -7, -0.75, 0.02, -7, 1.25, 0.02, -6.75, 0.5, 0.02, -1.25, 2.5, 0.02, -1.5, 1, 0.02, -7.25, -0.25, 0.02, -1.25, -0.25, 0.02, 2.5, 0.5, 0.02, 2.5, 2.5, 0.02, -6.75)
@@ -144,3 +147,11 @@ spawn_id = "spawn_03"
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.447188, 0, -5.7185793)
 script = ExtResource("3_w2sle")
 spawn_id = "spawn_04"
+
+[node name="EnemiesCustom" type="Node" parent="."]
+
+[node name="Enemy" parent="EnemiesCustom" instance=ExtResource("18_bko6l")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15, 0, -3)
+encounter_data = ExtResource("19_4x3pf")
+enemy_scene = ExtResource("20_hag8j")
+speed = 5.0

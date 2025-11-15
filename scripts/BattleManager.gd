@@ -48,7 +48,7 @@ func begin(_enemies: Array[CharacterInstance]) -> void:
 	var party_members := PartyManager.members
 	
 	for b: CharacterInstance in party_members + _enemies:
-		b.turn_meter = 0
+		b.action_value = 10000 / (100 + b.stats.get_final_stat(Stats.SPEED))
 		_register_battler(b)
 		b.prepare_for_battle()
 		for e: BattleEvent in b.resource.battle_events:
@@ -91,18 +91,23 @@ func _process(_delta: float) -> void:
 			_handle_end("lose")
 
 func _process_turn_queue() -> void:
-	if turn_queue.is_empty():
-		var alive_battlers := battlers.filter(func(b: CharacterInstance) -> bool: return not b.is_dead)
+	var alive_battlers := battlers.filter(func(b: CharacterInstance) -> bool: return not b.is_dead)
 		
-		alive_battlers.sort_custom(func(a: CharacterInstance, b: CharacterInstance) -> bool:
-			return a.stats.get_final_stat(Stats.SPEED) > b.stats.get_final_stat(Stats.SPEED)
-		)
+	alive_battlers.sort_custom(func(a: CharacterInstance, b: CharacterInstance) -> bool:
+		return a.action_value < b.action_value
+	)
 
-		turn_queue = alive_battlers.duplicate()
-
-	if not turn_queue.is_empty():
-		current_battler = turn_queue.pop_front()
-		current_state = BattleState.TURN_START
+	turn_queue = alive_battlers.duplicate()
+	
+	if turn_queue.is_empty():
+		current_state = BattleState.CHECK_END
+		return
+	
+	current_battler = turn_queue.pop_front()
+	current_state = BattleState.TURN_START
+	
+	
+	BattleBus.queue_processed.emit(turn_queue)
 
 func _on_turn_start() -> void:
 	var is_party_member := current_battler in party
@@ -130,6 +135,7 @@ func _on_turn_end() -> void:
 	event.actor = current_battler
 	event.ctx = ActionContext.new()
 	EffectRunner.process_trigger(event)
+	current_battler.action_value += 1000 / (100 + current_battler.stats.get_final_stat(Stats.SPEED))
 	current_battler = null
 	party_panel.clear_highlights()
 	current_state = BattleState.CHECK_END

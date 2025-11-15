@@ -22,6 +22,23 @@ var current_battler: CharacterInstance = null
 @onready var item_info_panel := $Item/ItemInfoPanel
 @onready var item_info_name_label := $Item/ItemInfoPanel/ItemName
 @onready var item_info_description_label := $Item/ItemInfoPanel/ItemDescription
+@onready var v_box_container_2: VBoxContainer = $VBoxContainer2
+
+func _ready() -> void:
+	BattleBus.queue_processed.connect(_on_test)
+
+func _on_test(queue) -> void:
+	for child in v_box_container_2.get_children():
+		child.queue_free()
+	var index = 1
+	var label2 = Label.new()
+	label2.text = "Current. %s" % BattleContext.manager.current_battler.resource.name if current_battler else ""
+	v_box_container_2.add_child(label2)
+	for c: CharacterInstance in queue:
+		var label = Label.new()
+		label.text = "%s. %s - action val.: %s" % [index if index > 1 else "Next", c.resource.name, c.action_value]
+		index += 1
+		v_box_container_2.add_child(label)
 
 func _on_battler_change(battler: CharacterInstance, is_party_member: bool) -> void:
 	if is_party_member:
@@ -35,8 +52,8 @@ func _on_turn_started(is_party_member: bool) -> void:
 		skill_popup.visible = false
 		item_popup.visible = false
 		highlight_action("attack")
-	else:
-		hide()
+	#else:
+		#hide()
 
 func _on_defend_button_pressed() -> void:
 	emit_signal("action_selected", "defend", [])

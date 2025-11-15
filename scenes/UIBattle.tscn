@@ -87,7 +87,7 @@ mouse_filter = 2
 
 [node name="SkillInfoPanel" type="VBoxContainer" parent="Skill"]
 visible = false
-layout_mode = 2
+layout_mode = 0
 anchor_left = -1.2
 anchor_top = -2.48
 anchor_right = 1.067
@@ -158,6 +158,12 @@ mouse_filter = 0
 
 [node name="ItemDescription" type="Label" parent="Item/ItemInfoPanel"]
 layout_mode = 2
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="."]
+layout_mode = 0
+offset_top = -424.0
+offset_right = 40.0
+offset_bottom = -384.0
 
 [connection signal="pressed" from="VBoxContainer/AttackButton" to="." method="_on_attack_button_pressed"]
 [connection signal="toggled" from="VBoxContainer/AttackButton" to="." method="_on_attack_button_toggled"]

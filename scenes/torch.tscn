@@ -1,0 +1,22 @@
+[gd_scene load_steps=3 format=3 uid="uid://m4b7vqdoqd60"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_5w7kb"]
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_pa17o"]
+
+[node name="Node3D" type="Node3D"]
+
+[node name="Torch" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.1, 0, 0, 0, 0.4330127, -0.05, 0, 0.25, 0.08660254, 0, 1, 0)
+mesh = SubResource("CapsuleMesh_5w7kb")
+
+[node name="Flare" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.19999999, 0, 0, 0, 0.07627467, -0.097199544, 0, 0.0440372, 0.16835454, 0, 1.4116353, 0.22584307)
+mesh = SubResource("CylinderMesh_pa17o")
+
+[node name="OmniLight3D" type="OmniLight3D" parent="Flare"]
+transform = Transform3D(5.0000005, 0, 0, 0, 11.354037, 4.7683716e-07, 0, 0, 5.1440573, 0, 3.2891474, 0.12972999)
+light_color = Color(0.9999997, 0.6965294, 0.29710537, 1)
+light_energy = 0.678
+omni_range = 20.0
+omni_attenuation = 1.5

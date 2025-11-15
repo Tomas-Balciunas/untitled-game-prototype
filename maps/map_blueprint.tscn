@@ -13,25 +13,29 @@ fog_light_energy = 0.85
 fog_density = 0.0283
 fog_sky_affect = 0.0
 
-[node name="Blueprint" type="GridMap"]
+[node name="NavigationRegion3D" type="NavigationRegion3D"]
+
+[node name="Blueprint" type="GridMap" parent="."]
 mesh_library = ExtResource("1_vbrp5")
 cell_size = Vector3(1, 1, 1)
 cell_center_y = false
 metadata/_editor_floor_ = Vector3(0, 0, 0)
 
-[node name="Chests" type="Node" parent="."]
+[node name="Chests" type="Node" parent="Blueprint"]
 script = ExtResource("2_31cuy")
+
+[node name="Transitions" type="Node" parent="Blueprint"]
+
+[node name="Rest" type="Node" parent="Blueprint"]
+
+[node name="Interactable" type="Node" parent="Blueprint"]
+
+[node name="Events" type="Node" parent="Blueprint"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="Blueprint"]
+environment = SubResource("Environment_kjsaj")
+
+[node name="EnemiesCustom" type="Node" parent="."]
 
 [node name="Enemies" type="Node" parent="."]
 script = ExtResource("9_gbhr8")
-
-[node name="Transitions" type="Node" parent="."]
-
-[node name="Rest" type="Node" parent="."]
-
-[node name="Interactable" type="Node" parent="."]
-
-[node name="Events" type="Node" parent="."]
-
-[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
-environment = SubResource("Environment_kjsaj")

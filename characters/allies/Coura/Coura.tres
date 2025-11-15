@@ -52,7 +52,7 @@ base_stats = {
 &"MAGIC_POWER": 5.0,
 &"MANA": 10.0,
 &"RESISTANCE": 10.0,
-&"SPEED": 5.0
+&"SPEED": 15.0
 }
 stat_level_growth = {
 "ATTACK": 0.0,

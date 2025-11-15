@@ -18,7 +18,7 @@ var unspent_attribute_points: int = 0
 var resource: CharacterResource
 var stats: Stats
 var status_effects: Array = []
-var turn_meter: int = 0
+var action_value: float = 0
 var learnt_skills: Array[Skill] = []
 var effects: Array[Effect] = []
 var buff_effects: Array[Effect] = []
