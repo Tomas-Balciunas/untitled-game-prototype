@@ -1,7 +1,7 @@
 [gd_scene load_steps=15 format=3 uid="uid://dqivkvbyr6ra"]
 
 [ext_resource type="Script" uid="uid://dr1sxm5h6jdqr" path="res://scenes/CharacterBody.gd" id="1_ppl5w"]
-[ext_resource type="Texture2D" uid="uid://s1qkhqu6sw15" path="res://characters/allies/Skelly/219198-14902c93fb8b1a10b23c1f10f7dc6334.png" id="2_flh20"]
+[ext_resource type="Texture2D" uid="uid://i63ktx555svy" path="res://characters/foes/Skeltal/_body/6979b672-301b-43dc-bcd8-88825ad75f9d.png" id="2_jg5hc"]
 [ext_resource type="PackedScene" uid="uid://cvlg8i4oihok1" path="res://scenes/number_display_3d.tscn" id="3_vcoio"]
 [ext_resource type="PackedScene" uid="uid://og1hkm7bn07c" path="res://scenes/Chatter.tscn" id="4_jg5hc"]
 
@@ -12,22 +12,10 @@ length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite:frame")
+tracks/0/path = NodePath("Sprite:modulate")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [57]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("Sprite:modulate")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
@@ -38,18 +26,6 @@ tracks/1/keys = {
 resource_name = "attack"
 length = 0.5
 step = 0.0333
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.133333, 0.266667, 0.4),
-"transitions": PackedFloat32Array(1, 1, 1, 1),
-"update": 1,
-"values": [90, 80, 92, 91]
-}
 
 [sub_resource type="Animation" id="Animation_ygenq"]
 resource_name = "damaged"
@@ -79,87 +55,27 @@ tracks/1/keys = PackedFloat32Array(0.028117277, 1, -0.05, -0.05, 0, 0.055663507,
 resource_name = "idle"
 length = 0.7
 loop_mode = 1
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0.1, 0.266667, 0.433333, 0.6),
-"transitions": PackedFloat32Array(1, 1, 1, 1),
-"update": 1,
-"values": [57, 58, 59, 58]
-}
 
 [sub_resource type="Animation" id="Animation_gy4ce"]
 resource_name = "run_up"
 length = 0.7
 loop_mode = 1
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0.1, 0.266667, 0.433333, 0.6),
-"transitions": PackedFloat32Array(1, 1, 1, 1),
-"update": 1,
-"values": [42, 43, 44, 43]
-}
 
 [sub_resource type="Animation" id="Animation_tuj5j"]
 resource_name = "new_animation"
 length = 0.7
 loop_mode = 1
 step = 0.0333
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0.1, 0.266667, 0.433333, 0.6),
-"transitions": PackedFloat32Array(1, 1, 1, 1),
-"update": 1,
-"values": [6, 7, 8, 7]
-}
 
 [sub_resource type="Animation" id="Animation_cp8t1"]
 resource_name = "run_left"
 length = 0.7
 loop_mode = 1
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0.1, 0.266667, 0.433333, 0.6),
-"transitions": PackedFloat32Array(1, 1, 1, 1),
-"update": 1,
-"values": [18, 19, 20, 19]
-}
 
 [sub_resource type="Animation" id="Animation_omddt"]
 resource_name = "run_right"
 length = 0.7
 loop_mode = 1
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0.1, 0.266667, 0.433333, 0.6),
-"transitions": PackedFloat32Array(1, 1, 1, 1),
-"update": 1,
-"values": [30, 31, 32, 31]
-}
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_2w84f"]
 _data = {
@@ -183,13 +99,11 @@ shape = SubResource("CylinderShape3D_8j8tm")
 disabled = true
 
 [node name="Sprite" type="Sprite3D" parent="."]
-transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 1, 0)
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0.73, 0)
+pixel_size = 0.0006
 billboard = 2
 texture_filter = 0
-texture = ExtResource("2_flh20")
-hframes = 12
-vframes = 8
-frame = 57
+texture = ExtResource("2_jg5hc")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 deterministic = true

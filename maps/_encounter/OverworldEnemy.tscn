@@ -25,6 +25,9 @@ shape = SubResource("CylinderShape3D_4v8qg")
 shape = SubResource("CapsuleShape3D_0p10e")
 disabled = true
 
+[node name="IdleTimer" type="Timer" parent="."]
+
 [connection signal="body_entered" from="Detection" to="." method="_on_detection_body_entered"]
 [connection signal="body_exited" from="Detection" to="." method="_on_detection_body_exited"]
 [connection signal="timeout" from="ChaseTimer" to="." method="_on_chase_timer_timeout"]
+[connection signal="timeout" from="IdleTimer" to="." method="_on_idle_timer_timeout"]

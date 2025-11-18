@@ -12,8 +12,9 @@ func can_process(_event: TriggerEvent) -> bool:
 func on_trigger(event: TriggerEvent) -> void:
 	var action := HealingContext.new()
 	action.base_value = heal_amount
-	action.provider = event.ctx.source
-	action.receiver = event.ctx.target
+	action.final_value = heal_amount
+	action.source = event.ctx.source
+	action.target = event.ctx.target
 	
 	HealingResolver.new().execute(action)
 

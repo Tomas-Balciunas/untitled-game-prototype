@@ -34,7 +34,7 @@ func on_trigger(_event: TriggerEvent) -> void:
 		var adjacent := BattleContext.manager.get_applicable_targets(tgt, TargetingManager.TargetType.ADJACENT)
 		
 		BattleTextLines.print_line("Lash activated!")
-		
+		var resolver := DamageResolver.new()
 		for t: CharacterInstance in adjacent:
 			var lash_ctx := DamageContext.new()
 			lash_ctx.base_value = accumulator
@@ -42,7 +42,7 @@ func on_trigger(_event: TriggerEvent) -> void:
 			lash_ctx.actively_cast = false
 			lash_ctx.source = owner
 			lash_ctx.target = t
-			DamageResolver.new().execute(lash_ctx)
+			resolver.execute(lash_ctx)
 		
 		accumulator = 0
 		

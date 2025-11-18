@@ -9,6 +9,8 @@ enum States {
 	EVENT
 }
 
+var gold: int = 1000
+
 var current_state: States = States.IDLE
 
 func is_busy() -> bool:

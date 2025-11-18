@@ -2,6 +2,8 @@ extends Node
 
 
 func process_trigger(event: TriggerEvent) -> void:
+	var start := Time.get_ticks_usec()
+
 	var effects_to_run := []
 	
 	if event.ctx.temporary_effects:
@@ -38,14 +40,13 @@ func process_trigger(event: TriggerEvent) -> void:
 		
 		if e.single_trigger:
 			e.remove_self()
-
+	var elapsed_usec := Time.get_ticks_usec() - start
+	print("Took %dus (%.3f ms)" % [elapsed_usec, elapsed_usec / 1000.0])
 
 func _sort_effects(a: Dictionary, b: Dictionary) -> int:
 	var ea: Effect = a.effect
 	var eb: Effect = b.effect
-	var pa := int(ea.get_meta("priority")) if ea.has_meta("priority") else 0
-	var pb := int(eb.get_meta("priority")) if eb.has_meta("priority") else 0
-	return -1 if pa > pb else (1 if pa < pb else 0)
+	return ea.priority > eb.priority
 
 static func _passes_scope(effect: Effect, event: TriggerEvent) -> bool:
 	if event.trigger not in effect.listened_triggers():

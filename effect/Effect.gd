@@ -15,6 +15,7 @@ enum EffectCategory {
 @export var category: EffectCategory = EffectCategory.PASSIVE
 @export var duration_turns: int = -1
 @export var single_trigger: bool = false
+@export var priority: int = 200
 
 @export var _stackable := false
 var _is_registered := false

@@ -35,7 +35,7 @@ var turn_queue: Array[CharacterInstance] = []
 var enemy_slots: Array[Node] = []
 var _to_cleanup: Array[CharacterInstance] = []
 var _pending_action: String = ""
-var _pending_options: Array = []
+var _pending_entity: Variant = null
 var _pending_target: CharacterInstance = null
 var current_battler: CharacterInstance = null
 var action_queue: Array[DamageContext] = []
@@ -43,7 +43,7 @@ var action_queue: Array[DamageContext] = []
 func begin(_enemies: Array[CharacterInstance]) -> void:
 	BattleEventBus.event_concluded.connect(Callable(self, "_on_event_concluded"))
 	BattleBus.target_selected.connect(_on_target_selected)
-	
+	BattleBus.action_selected.connect(_on_player_action_selected)
 	
 	var party_members := PartyManager.members
 	
@@ -155,29 +155,29 @@ func _on_player_turn(event: TriggerEvent) -> void:
 		current_state = BattleState.TURN_END
 		return
 		
-func _on_player_action_selected(action: String, options: Array) -> void:
+func _on_player_action_selected(action: String, entity: Variant) -> void:
 	if current_state != BattleState.PLAYER_TURN:
 		return
 		
 	_pending_action = action
-	_pending_options = options
+	_pending_entity = entity
 	
 	match action:
-		"defend":
+		BattleBus.DEFEND:
 			_handle_defend()
 			current_state = BattleState.TURN_END
 			return
-		"flee":
-			_handle_end("flee")
+		BattleBus.FLEE:
+			_handle_end(BattleBus.FLEE)
 			current_state = BattleState.TURN_END
 			return
-		"attack":
+		BattleBus.ATTACK:
 			enable_all_targeting()
 			return
-		"skill":
+		BattleBus.SKILL:
 			enable_all_targeting()
 			return
-		"item":
+		BattleBus.ITEM:
 			enable_all_targeting()
 			return
 
@@ -195,7 +195,7 @@ func _perform_player_action(action: String, target: CharacterInstance) -> void:
 	var target_slot := get_slot(target)
 	
 	match action:
-		"attack":
+		BattleBus.ATTACK:
 			var targeting: TargetingManager.TargetType = current_battler.equipment["weapon"].template.targeting if current_battler.equipment["weapon"] else TargetingManager.TargetType.SINGLE
 			var _targets := get_applicable_targets(target, targeting)
 			
@@ -217,14 +217,20 @@ func _perform_player_action(action: String, target: CharacterInstance) -> void:
 				dmg.type = current_battler.damage_type
 				dmg.actively_cast = true
 				var _ctx := await DamageResolver.new().execute(dmg)
-		"skill":
-			var targeting: TargetingManager.TargetType = _pending_options[0].targeting_type
+		BattleBus.SKILL:
+			if _pending_entity is not Skill:
+				push_error("Selected skill action entity is not skill!")
+				return
+				
+			var skill := _pending_entity as Skill
+				
+			var targeting: TargetingManager.TargetType = skill.targeting_type
 			var _targets := get_applicable_targets(target, targeting)
 			
 			current_state = BattleState.ANIMATING
 			await attacker_slot.perform_attack_toward_target(target_slot)
 			
-			var mp_cost: int = _pending_options[0].mp_cost
+			var mp_cost: int = skill.mp_cost
 			for e in current_battler.effects:
 				if e.has_method("modify_mp_cost"):
 					mp_cost = e.modify_mp_cost(mp_cost)
@@ -238,15 +244,21 @@ func _perform_player_action(action: String, target: CharacterInstance) -> void:
 					continue
 					
 				var ctx := SkillContext.new()
-				ctx.skill = _pending_options[0]
+				ctx.skill = skill
 				ctx.actively_cast = true
 				ctx.source = current_battler
 				ctx.target = t
-				ctx.temporary_effects = _pending_options[0].effects
+				ctx.temporary_effects = skill.effects
 				var _ctx := SkillResolver.new().execute(ctx)
 			
-		"item":
-			var targeting: TargetingManager.TargetType = _pending_options[0].template.targeting_type
+		BattleBus.ITEM:
+			if _pending_entity is not ConsumableInstance:
+				push_error("Selected item action entity is not item!")
+				return
+				
+			var item := _pending_entity as ConsumableInstance
+			
+			var targeting: TargetingManager.TargetType = item.template.targeting_type
 			var _targets := get_applicable_targets(target, targeting)
 			
 			current_state = BattleState.ANIMATING
@@ -257,10 +269,10 @@ func _perform_player_action(action: String, target: CharacterInstance) -> void:
 					continue
 				
 				var cons := ConsumableContext.new()
-				cons.consumable = _pending_options[0]
+				cons.consumable = item
 				cons.source = current_battler
 				cons.target = t
-				cons.temporary_effects = _pending_options[0].get_all_effects()
+				cons.temporary_effects = item.get_all_effects()
 				cons.actively_cast = true
 				var _ctx := ConsumableResolver.new().execute(cons)
 				

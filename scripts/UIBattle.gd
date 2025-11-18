@@ -1,6 +1,5 @@
 extends Control
 
-signal action_selected(action: String, options: Array)
 
 var current_battler: CharacterInstance = null
 
@@ -32,7 +31,7 @@ func _on_test(queue) -> void:
 		child.queue_free()
 	var index = 1
 	var label2 = Label.new()
-	label2.text = "Current. %s" % BattleContext.manager.current_battler.resource.name if current_battler else ""
+	label2.text = "Current. %s av: %s" % [BattleContext.manager.current_battler.resource.name if current_battler else "", BattleContext.manager.current_battler.action_value if current_battler else ""]
 	v_box_container_2.add_child(label2)
 	for c: CharacterInstance in queue:
 		var label = Label.new()
@@ -56,22 +55,22 @@ func _on_turn_started(is_party_member: bool) -> void:
 		#hide()
 
 func _on_defend_button_pressed() -> void:
-	emit_signal("action_selected", "defend", [])
+	BattleBus.action_selected.emit(BattleBus.DEFEND, null)
 
 func _on_attack_button_pressed() -> void:
-	emit_signal("action_selected", "attack", [])
+	BattleBus.action_selected.emit(BattleBus.ATTACK, null)
 	skill_popup.visible = false
 	item_popup.visible = false
 
 func _on_flee_button_pressed() -> void:
-	emit_signal("action_selected", "flee", [])
+	BattleBus.action_selected.emit(BattleBus.FLEE, null)
 
 func _on_skill_selected(skill: Skill) -> void:
-	emit_signal("action_selected", "skill", [skill])
+	BattleBus.action_selected.emit(BattleBus.SKILL, skill)
 	skill_popup.visible = false
 
-func _on_item_selected(item: ConsumableItem) -> void:
-	emit_signal("action_selected", "item", [item])
+func _on_item_selected(item: ConsumableInstance) -> void:
+	BattleBus.action_selected.emit(BattleBus.ITEM, item)
 	skill_popup.hide()
 
 func highlight_action(action: String) -> void:
