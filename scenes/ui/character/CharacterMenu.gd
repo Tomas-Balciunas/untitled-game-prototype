@@ -84,13 +84,10 @@ func _on_close_pressed() -> void:
 
 
 func _on_talk_pressed() -> void:
-	var interaction := character_instance.resource.get_interactions()
+	var menu_interaction := character_instance.resource.interactions.get_conversation("")
 	
-	if not interaction:
-		return
-	
-	var menu_interaction: Dictionary = interaction.get_dialogue("menu_talk", "random_01")
-	ConversationBus.request_conversation.emit(character_instance.resource.name, menu_interaction["text"])
+	if menu_interaction:
+		ConversationBus.request_conversation.emit(character_instance.resource.name, menu_interaction)
 
 
 func _on_level_up_pressed() -> void:

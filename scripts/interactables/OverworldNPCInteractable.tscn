@@ -1,0 +1,12 @@
+[gd_scene load_steps=3 format=3 uid="uid://bywxd2vdl2sug"]
+
+[ext_resource type="Script" uid="uid://b48kqadk7heta" path="res://scripts/interactables/overworld_npc_interactable.gd" id="1_28vnr"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_ao5h4"]
+
+[node name="OverworldNpcInteractable" type="Area3D"]
+script = ExtResource("1_28vnr")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.78823966, 0)
+shape = SubResource("CylinderShape3D_ao5h4")

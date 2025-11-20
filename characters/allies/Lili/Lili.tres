@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="CharacterResource" load_steps=17 format=3 uid="uid://dh8kad7brt53b"]
+[gd_resource type="Resource" script_class="CharacterResource" load_steps=18 format=3 uid="uid://dh8kad7brt53b"]
 
 [ext_resource type="Script" uid="uid://bp0biy0knxw2o" path="res://effect/Effect.gd" id="1_7ajkr"]
 [ext_resource type="Script" uid="uid://blqk30gl013xc" path="res://characters/_attribute/Attributes.gd" id="1_lgdsj"]
@@ -8,6 +8,7 @@
 [ext_resource type="Resource" uid="uid://pchf07nevgay" path="res://characters/_gender/Female.tres" id="3_abpod"]
 [ext_resource type="PackedScene" uid="uid://dr6mixlbl8nmf" path="res://characters/allies/Lili/_body/Lili.tscn" id="3_tttne"]
 [ext_resource type="Resource" uid="uid://dt2wtnoyod5yd" path="res://effect/_passive/mp_cost/MpCostReduction.tres" id="4_23xqr"]
+[ext_resource type="Resource" uid="uid://by14sh5h8t7hf" path="res://characters/allies/Lili/lili_controller.tres" id="4_tttne"]
 [ext_resource type="Script" uid="uid://b06vmgrh4qa8i" path="res://gear/Item.gd" id="6_7lkq3"]
 [ext_resource type="Resource" uid="uid://cm3vin4wtxpjv" path="res://effect/_passive/counterattack/Counterattack.tres" id="7_715sk"]
 [ext_resource type="Resource" uid="uid://cyq5e4qjfhb80" path="res://gear/consumable/hp pot minor/hp_pot.tres" id="7_n60ku"]
@@ -33,9 +34,6 @@ race = ExtResource("2_gmj68")
 job = ExtResource("8_23xqr")
 gender = ExtResource("3_abpod")
 attributes = SubResource("Resource_n7wih")
-id = "a_lili_1"
-character_body = ExtResource("3_tttne")
-name = "Lili"
 default_effects = Array[ExtResource("1_7ajkr")]([ExtResource("4_23xqr"), ExtResource("7_715sk")])
 default_items = Array[ExtResource("6_7lkq3")]([ExtResource("7_n60ku")])
 base_stats = {
@@ -60,5 +58,8 @@ stat_level_growth = {
 &"RESISTANCE": 1.0,
 &"SPEED": 0.2
 }
+name = "Lili"
+character_body = ExtResource("3_tttne")
 interactions = ExtResource("10_pwtr7")
+controller = ExtResource("4_tttne")
 metadata/_custom_type_script = "uid://bwn4gpkaijqsg"

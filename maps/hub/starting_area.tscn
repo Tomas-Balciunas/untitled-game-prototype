@@ -1,4 +1,4 @@
-[gd_scene load_steps=29 format=3 uid="uid://c8n1llsvvhonb"]
+[gd_scene load_steps=33 format=3 uid="uid://c8n1llsvvhonb"]
 
 [ext_resource type="MeshLibrary" uid="uid://uso6cfmk5r51" path="res://tileset white.tres" id="1_mdjaj"]
 [ext_resource type="Script" uid="uid://7pao6hs651jh" path="res://scripts/EnemyController.gd" id="2_g1pjd"]
@@ -17,8 +17,12 @@
 [ext_resource type="PackedScene" uid="uid://cxxgmoys7ineo" path="res://scenes/ChestBasic.tscn" id="9_lk5gk"]
 [ext_resource type="PackedScene" uid="uid://bg5f2e2nphlkl" path="res://scripts/interactables/Interactable.tscn" id="10_lk5gk"]
 [ext_resource type="Script" uid="uid://b656vk4s4jm03" path="res://scripts/triggerables/EventTriggerable.gd" id="11_bgo3i"]
+[ext_resource type="Script" uid="uid://bep2fyftkjcsr" path="res://characters/npc_controller.gd" id="16_q33ho"]
+[ext_resource type="PackedScene" uid="uid://sln6ve4lf8c2" path="res://characters/OverworldNPC.tscn" id="17_p4hwn"]
 [ext_resource type="PackedScene" uid="uid://c8fyl6fq4crr0" path="res://maps/_encounter/OverworldEnemy.tscn" id="18_bko6l"]
+[ext_resource type="Script" uid="uid://crya7r5lwmvqh" path="res://characters/overworld_npc.gd" id="18_y3577"]
 [ext_resource type="Resource" uid="uid://d34tlmbjgrfkv" path="res://maps/_encounter/starting area/basic_test_2.tres" id="19_4x3pf"]
+[ext_resource type="Resource" uid="uid://dh8kad7brt53b" path="res://characters/allies/Lili/Lili.tres" id="19_l6obu"]
 [ext_resource type="PackedScene" uid="uid://brmuxif8auto4" path="res://characters/foes/Balmer/_body/Balmet.tscn" id="20_hag8j"]
 
 [sub_resource type="NavigationMesh" id="NavigationMesh_g2q70"]
@@ -124,6 +128,18 @@ shape = SubResource("BoxShape3D_bgo3i")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="StartingArea"]
 environment = SubResource("Environment_kjsaj")
+
+[node name="NPC" type="Node" parent="StartingArea"]
+script = ExtResource("16_q33ho")
+
+[node name="Lili" parent="StartingArea/NPC" instance=ExtResource("17_p4hwn")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, -2)
+script = ExtResource("18_y3577")
+character = ExtResource("19_l6obu")
+
+[node name="TestNPC" parent="StartingArea/NPC" instance=ExtResource("17_p4hwn")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, -2)
+script = ExtResource("18_y3577")
 
 [node name="Enemies" type="Node" parent="."]
 script = ExtResource("2_g1pjd")
