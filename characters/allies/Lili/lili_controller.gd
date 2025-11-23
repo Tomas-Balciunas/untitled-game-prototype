@@ -3,6 +3,4 @@ extends InteractionController
 class_name LiliController
 
 func _init() -> void:
-	pending = [
-		LiliInteractions.FIRST_ENCOUNTER
-		]
+	pass

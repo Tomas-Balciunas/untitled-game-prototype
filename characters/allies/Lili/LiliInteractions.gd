@@ -16,72 +16,71 @@ var menu := [
 	},
 ]
 
-#var conversations := {
-	#FIRST_ENCOUNTER: ["Greetings dungeon delver", "My name is Lili", "Pleasure to meet you"]
-#}
 
-var conversations := [
+var interactions := [
 	{
 		ID: FIRST_ENCOUNTER,
-		"priority": 500,
-		"event": [
+		PRIORITY: 500,
+		EVENT: [
 			{
-				"type": "text",
-				"text": ["Greetings dungeon delver", "My name is Lili", "Pleasure to meet you"]
+				TYPE: TEXT,
+				TEXT: ["Greetings dungeon delver", "My name is Lili", "Pleasure to meet you"]
 			}
 		],
-		"conditions": [FIRST_ENCOUNTER],
-		"on_completed": "first_encounter_continued"
+		CONDITIONS: [
+			{
+				TYPE: SELF,
+				STATE: AVAILABLE,
+				CONTAINS: true,
+				TAGS: [FIRST_ENCOUNTER]
+			},
+		],
+		ON_COMPLETED: {
+			MARK_COMPLETED: [FIRST_ENCOUNTER],
+			MARK_AVAILABLE: [FIRST_ENCOUNTER_SECOND]
+		}
 	},
 	{
-		"id": FIRST_ENCOUNTER_SECOND,
-		"priority": 500,
-		"event": [{
-			"type": "text",
-			"text": ["My party's left me..", "Perhaps I could join you?"]
+		ID: FIRST_ENCOUNTER_SECOND,
+		PRIORITY: 500,
+		EVENT: [{
+			TYPE: TEXT,
+			TEXT: ["My party's left me..", "Perhaps I could join you?"]
 		}],
-		"conditions": [
+		CONDITIONS: [
 			{
 				TYPE: SELF,
 				STATE: AVAILABLE,
 				CONTAINS: true,
 				TAGS: [FIRST_ENCOUNTER_SECOND]
 			},
+		],
+		ON_COMPLETED: {
+			MARK_COMPLETED: [FIRST_ENCOUNTER_SECOND]
+		}
+	},
+	
+	
+	# ----- DEFAULT -----
+	{
+		PRIORITY: 1,
+		PERSISTENT: true,
+		EVENT: [
 			{
-				TYPE: CHARACTER,
-				ID: "character_id",
-				STATE: COMPLETED,
-				CONTAINS: false,
-				TAGS: [FIRST_ENCOUNTER_SECOND]
+				TYPE: TEXT,
+				TEXT: ["Oh!"]
+			},
+			{
+				TYPE: TEXT,
+				TEXT: ["What's up?"]
+			},
+			{
+				TYPE: TEXT,
+				TEXT: ["Hey"]
 			}
-		]
-	},
-	{
-		"priority": 10,
-		"event": [{
-			"type": "text",
-			"text": ["Hey"]
-		}],
-	},
-	{
-		"priority": 10,
-		"event": [{
-			"type": "text",
-			"text": ["What's up?"]
-		}],
-	},
-	{
-		"priority": 10,
-		"event": [{
-			"type": "text",
-			"text": ["Oh!"]
-		}],
+		],
 	}
 ]
-
-var events := {
-	
-}
 
 var battle_events := {
 	
@@ -98,26 +97,28 @@ var chatter := {
 	}
 }
 
+
+func _get_default_tags() -> Array:
+	return [FIRST_ENCOUNTER]
+
+
 func get_chatter(topic: String) -> String:
 	if chatter.has(topic):
 		return chatter.topic
 	
 	return ""
-	
-func get_conversation(_id: String = "") -> Array:
-	return conversations
-	
-func get_event(_id: String) -> Array:
-	if events.has(_id):
-		return events[_id]
-	
-	return []
-	
+
+
+func get_interactions() -> Array:
+	return interactions
+
+
 func get_battle_event(_id: String) -> Array:
 	if battle_events.has(_id):
 		return battle_events[_id]
 	
 	return []
+
 
 func get_damaged_line(key: String, _amt: int, _ctx: DamageContext = null) -> String:
 	var lines: Dictionary = chatter.get(key, {})
@@ -127,6 +128,7 @@ func get_damaged_line(key: String, _amt: int, _ctx: DamageContext = null) -> Str
 		return default.pick_random()
 	
 	return ""
+
 
 func get_attacking_line(key: String, _source: CharacterInstance, _targets: Array) -> String:
 	var lines: Dictionary = chatter.get(key, {})

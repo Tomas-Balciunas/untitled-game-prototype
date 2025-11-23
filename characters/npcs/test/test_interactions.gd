@@ -2,16 +2,18 @@ extends CharacterInteraction
 
 class_name TestNPCInteractions
 
-var conversations := [
+var interactions := [
 	{
-		"priority": 500,
-		"event": [
+		PRIORITY: 500,
+		EVENT: [
 			{
 				"type": "text",
 				"text": ["Oh!", "Hello!"]
 			}
 		],
-		"conditions": [FIRST_ENCOUNTER],
+		CONDITIONS: [{
+			
+		}],
 	},
 	{
 		"priority": 10,
@@ -36,15 +38,9 @@ var conversations := [
 	}
 ]
 
-var events := {
+
+func get_interactions() -> Array:
+	return interactions
 	
-}
-	
-func get_conversation(_id: String = "") -> Array:
-	return conversations
-	
-func get_event(_id: String) -> Array:
-	if events.has(_id):
-		return events[_id]
-	
-	return []
+func get_chatter(_topic: String) -> String:
+	return ""

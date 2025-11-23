@@ -2,27 +2,8 @@ extends CharacterInteraction
 
 class_name SkeltalInteractions
 
-const FATAL_HIT = "fatal_hit"
 
-
-var interactions := {
-	MENU_TALK: {
-		"random_01": {
-			"type": "text",
-			"text": ["test 1", "test 2"]
-		},
-		"random_02": {
-			"type": "text",
-			"text": ["test 3", "test 4"]
-		},
-	},
-	BATTLE_EVENT: {
-		FATAL_HIT: {
-			"type": "text",
-			"text": ["this wont hurt me!"]
-		}
-	},
-}
+var interactions := []
 
 var chatter := {
 	"damaged": {
@@ -33,6 +14,13 @@ var chatter := {
 		"default": ["*angry rattle*", "..."],
 	}
 }
+
+func get_interactions() -> Array:
+	return []
+
+func get_chatter(_topic: String) -> String:
+	return ""
+
 
 func get_damaged_line(key: String, _amt: int, _ctx: DamageContext = null) -> String:
 	var lines: Dictionary = chatter.get(key, {})

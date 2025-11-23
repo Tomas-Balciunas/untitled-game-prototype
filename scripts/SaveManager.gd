@@ -25,7 +25,8 @@ func load_game(slot: int) -> Dictionary:
 func build_game_state() -> Dictionary:
 	return {
 		"party": PartyManager.to_dict(),
-		"dungeon": MapInstance.to_dict()
+		"dungeon": MapInstance.to_dict(),
+		"interaction_state": InteractionTagManager.game_save()
 	}
 
 func apply_game_state(state: Dictionary) -> void:
@@ -34,6 +35,8 @@ func apply_game_state(state: Dictionary) -> void:
 	if state.has("dungeon"):
 		MapInstance.from_dict(state["dungeon"])
 		#Dungeon.load_map(state["dungeon"]["dungeon"]["id"], state["dungeon"])
+	if state.has("interaction_state"):
+		InteractionTagManager.game_load(state["interaction_state"])
 	emit_signal("party_reloaded")
 
 func _unhandled_input(event: InputEvent) -> void:

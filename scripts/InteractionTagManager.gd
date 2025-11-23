@@ -75,4 +75,4 @@ func game_save() -> Dictionary:
 	return interaction_tags
 	
 func game_load(data: Dictionary) -> void:
-	interaction_tags = data["interaction_tags"]
+	interaction_tags = data

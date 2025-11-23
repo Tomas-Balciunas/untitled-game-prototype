@@ -58,8 +58,9 @@ stat_level_growth = {
 &"RESISTANCE": 1.0,
 &"SPEED": 0.2
 }
+id = "a_lili_1a"
 name = "Lili"
 character_body = ExtResource("3_tttne")
 interactions = ExtResource("10_pwtr7")
-controller = ExtResource("4_tttne")
+interaction_controller = ExtResource("4_tttne")
 metadata/_custom_type_script = "uid://bwn4gpkaijqsg"

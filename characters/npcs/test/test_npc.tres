@@ -11,5 +11,5 @@ id = "test_npc_00"
 name = "Test NPC"
 character_body = ExtResource("1_8nvb3")
 interactions = ExtResource("3_g3ssh")
-controller = ExtResource("2_106pm")
+interaction_controller = ExtResource("2_106pm")
 metadata/_custom_type_script = "uid://bvhj0nj366nfo"

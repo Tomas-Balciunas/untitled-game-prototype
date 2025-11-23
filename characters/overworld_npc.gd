@@ -15,6 +15,16 @@ func _ready() -> void:
 		npc_name = character.name
 		npc_body = character.character_body
 		
+		if character.interactions:
+			var default_tags := character.interactions._get_default_tags()
+			
+			if not default_tags.is_empty():
+				for tag: String in default_tags:
+					if InteractionTagManager._has_completed_tag_for(character.id, tag):
+						continue
+					
+					InteractionTagManager._add_available_tag_for(character.id, tag)
+		
 	if not npc_body:
 		push_error("NPC %s doesnt have a body!" % npc_name)
 		return
@@ -40,8 +50,10 @@ func _get_name() -> String:
 func _on_interact_requested() -> void:
 	if not character.interactions:
 		push_error("interactions not found for %s" % character.name)
+		return
 		
 	if not character.interaction_controller:
 		push_error("character interaction controller not found for %s" % character.name)
+		return
 		
 	character.interaction_controller.handle(character)

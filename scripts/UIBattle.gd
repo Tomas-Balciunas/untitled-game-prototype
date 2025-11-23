@@ -24,17 +24,17 @@ var current_battler: CharacterInstance = null
 @onready var v_box_container_2: VBoxContainer = $VBoxContainer2
 
 func _ready() -> void:
-	BattleBus.queue_processed.connect(_on_test)
+	BattleBus.queue_processed.connect(_on_queue_processed)
 
-func _on_test(queue) -> void:
+func _on_queue_processed(queue: Array[CharacterInstance]) -> void:
 	for child in v_box_container_2.get_children():
 		child.queue_free()
-	var index = 1
-	var label2 = Label.new()
+	var index := 1
+	var label2 := Label.new()
 	label2.text = "Current. %s av: %s" % [BattleContext.manager.current_battler.resource.name if current_battler else "", BattleContext.manager.current_battler.action_value if current_battler else ""]
 	v_box_container_2.add_child(label2)
 	for c: CharacterInstance in queue:
-		var label = Label.new()
+		var label := Label.new()
 		label.text = "%s. %s - action val.: %s" % [index if index > 1 else "Next", c.resource.name, c.action_value]
 		index += 1
 		v_box_container_2.add_child(label)

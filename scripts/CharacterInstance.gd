@@ -35,7 +35,7 @@ var race: Race
 var inventory: Inventory
 var battle_events: Array[BattleEvent]
 var interactions: CharacterInteraction
-var controller: InteractionController
+var interaction_controller: InteractionController
 
 var equipment := {
 	"weapon": null,
@@ -56,8 +56,8 @@ func _init(res: CharacterResource) -> void:
 	if resource.interactions:
 		interactions = resource.interactions
 		
-	if resource.controller:
-		controller = resource.controller
+	if resource.interaction_controller:
+		interaction_controller = resource.interaction_controller
 	
 	level_up_attributes = Attributes.new()
 	starting_attributes = Attributes.new()
