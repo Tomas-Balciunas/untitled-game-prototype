@@ -41,7 +41,7 @@ func _on_interact_requested() -> void:
 	if not character.interactions:
 		push_error("interactions not found for %s" % character.name)
 		
-	if not character.controller:
-		push_error("character controller not found for %s" % character.name)
+	if not character.interaction_controller:
+		push_error("character interaction controller not found for %s" % character.name)
 		
-	character.controller.handle(character)
+	character.interaction_controller.handle(character)

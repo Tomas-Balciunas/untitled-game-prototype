@@ -21,3 +21,9 @@ func set_idle() -> void:
 
 func set_event() -> void:
 	current_state = States.EVENT
+
+func game_save() -> int:
+	return gold
+	
+func game_load(data: Dictionary) -> void:
+	gold = data["gold"]

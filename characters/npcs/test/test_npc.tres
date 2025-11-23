@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="BaseCharacterResource" load_steps=5 format=3 uid="uid://bs56ra62hh2us"]
+
+[ext_resource type="PackedScene" uid="uid://25xj5vx8f50i" path="res://characters/npcs/test/TestBody.tscn" id="1_8nvb3"]
+[ext_resource type="Script" uid="uid://bvhj0nj366nfo" path="res://scripts/BaseCharacterResource.gd" id="1_uibdj"]
+[ext_resource type="Resource" uid="uid://b0wtndc76olfd" path="res://characters/npcs/test/test_controller.tres" id="2_106pm"]
+[ext_resource type="Resource" uid="uid://d1wtaoqpmo7mt" path="res://characters/npcs/test/test_interactions.tres" id="3_g3ssh"]
+
+[resource]
+script = ExtResource("1_uibdj")
+id = "test_npc_00"
+name = "Test NPC"
+character_body = ExtResource("1_8nvb3")
+interactions = ExtResource("3_g3ssh")
+controller = ExtResource("2_106pm")
+metadata/_custom_type_script = "uid://bvhj0nj366nfo"

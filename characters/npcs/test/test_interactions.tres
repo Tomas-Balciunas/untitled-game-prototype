@@ -1,0 +1,7 @@
+[gd_resource type="Resource" script_class="TestNPCInteractions" load_steps=2 format=3 uid="uid://d1wtaoqpmo7mt"]
+
+[ext_resource type="Script" uid="uid://cxcmb4arb8mo5" path="res://characters/npcs/test/test_interactions.gd" id="1_rcygt"]
+
+[resource]
+script = ExtResource("1_rcygt")
+metadata/_custom_type_script = "uid://cxcmb4arb8mo5"

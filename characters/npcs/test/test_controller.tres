@@ -1,0 +1,7 @@
+[gd_resource type="Resource" script_class="TestNPCController" load_steps=2 format=3 uid="uid://b0wtndc76olfd"]
+
+[ext_resource type="Script" uid="uid://euqrnh3wjikv" path="res://characters/npcs/test/test_controller.gd" id="1_qf00a"]
+
+[resource]
+script = ExtResource("1_qf00a")
+metadata/_custom_type_script = "uid://euqrnh3wjikv"

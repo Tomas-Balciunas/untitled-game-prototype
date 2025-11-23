@@ -2,6 +2,22 @@ extends Resource
 
 class_name CharacterInteraction
 
+
+## --- System ---
+const ID = "id"
+const TAG = "tag"
+## -- Conditions --
+const CONDITIONS = "conditions"
+const TYPE = "type"
+const STATE = "state"
+const CONTAINS = "contains"
+const TAGS = "tags"
+const SELF = "self"
+const CHARACTER = "character"
+const AVAILABLE = InteractionTagManager.AVAILABLE
+const COMPLETED = InteractionTagManager.COMPLETED
+
+## Content
 const MENU_TALK = "menu_talk"
 const BATTLE_EVENT = "battle_event"
 const FIRST_ENCOUNTER = "first_encounter"

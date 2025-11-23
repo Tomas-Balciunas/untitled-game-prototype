@@ -14,9 +14,6 @@
 
 [resource]
 script = ExtResource("1_l56jw")
-id = "e_enemy_002"
-character_body = ExtResource("3_2p1x5")
-name = "Balmer"
 experience = 150
 base_stats = {
 "ATTACK": 5.0,
@@ -29,4 +26,7 @@ base_stats = {
 "RESISTANCE": 5.0,
 "SPEED": 5.0
 }
+id = "e_enemy_002"
+name = "Balmer"
+character_body = ExtResource("3_2p1x5")
 metadata/_custom_type_script = "uid://bwn4gpkaijqsg"

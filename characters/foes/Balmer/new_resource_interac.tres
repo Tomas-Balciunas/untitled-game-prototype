@@ -1,7 +1,0 @@
-[gd_resource type="Resource" script_class="TestInteractions" load_steps=2 format=3 uid="uid://crmvlqsjtoeqp"]
-
-[ext_resource type="Script" uid="uid://imaxrdu41tdg" path="res://characters/foes/Balmer/test_interaction.gd" id="1_ru0lw"]
-
-[resource]
-script = ExtResource("1_ru0lw")
-metadata/_custom_type_script = "uid://imaxrdu41tdg"

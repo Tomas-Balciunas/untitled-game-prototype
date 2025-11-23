@@ -3,6 +3,8 @@ extends CharacterInteraction
 class_name LiliInteractions
 
 
+const FIRST_ENCOUNTER_SECOND = "first_encounter_continued"
+
 var menu := [
 	{
 		"type": "text",
@@ -20,6 +22,7 @@ var menu := [
 
 var conversations := [
 	{
+		ID: FIRST_ENCOUNTER,
 		"priority": 500,
 		"event": [
 			{
@@ -31,12 +34,27 @@ var conversations := [
 		"on_completed": "first_encounter_continued"
 	},
 	{
+		"id": FIRST_ENCOUNTER_SECOND,
 		"priority": 500,
 		"event": [{
 			"type": "text",
 			"text": ["My party's left me..", "Perhaps I could join you?"]
 		}],
-		"conditions": ["first_encounter_continued"]
+		"conditions": [
+			{
+				TYPE: SELF,
+				STATE: AVAILABLE,
+				CONTAINS: true,
+				TAGS: [FIRST_ENCOUNTER_SECOND]
+			},
+			{
+				TYPE: CHARACTER,
+				ID: "character_id",
+				STATE: COMPLETED,
+				CONTAINS: false,
+				TAGS: [FIRST_ENCOUNTER_SECOND]
+			}
+		]
 	},
 	{
 		"priority": 10,

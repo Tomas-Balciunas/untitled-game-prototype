@@ -7,4 +7,4 @@ class_name BaseCharacterResource
 @export var portrait: Texture
 @export var character_body: PackedScene
 @export var interactions: CharacterInteraction
-@export var controller: InteractionController
+@export var interaction_controller: InteractionController

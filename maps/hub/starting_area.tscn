@@ -1,4 +1,4 @@
-[gd_scene load_steps=33 format=3 uid="uid://c8n1llsvvhonb"]
+[gd_scene load_steps=34 format=3 uid="uid://c8n1llsvvhonb"]
 
 [ext_resource type="MeshLibrary" uid="uid://uso6cfmk5r51" path="res://tileset white.tres" id="1_mdjaj"]
 [ext_resource type="Script" uid="uid://7pao6hs651jh" path="res://scripts/EnemyController.gd" id="2_g1pjd"]
@@ -24,6 +24,7 @@
 [ext_resource type="Resource" uid="uid://d34tlmbjgrfkv" path="res://maps/_encounter/starting area/basic_test_2.tres" id="19_4x3pf"]
 [ext_resource type="Resource" uid="uid://dh8kad7brt53b" path="res://characters/allies/Lili/Lili.tres" id="19_l6obu"]
 [ext_resource type="PackedScene" uid="uid://brmuxif8auto4" path="res://characters/foes/Balmer/_body/Balmet.tscn" id="20_hag8j"]
+[ext_resource type="Resource" uid="uid://bs56ra62hh2us" path="res://characters/npcs/test/test_npc.tres" id="20_rna72"]
 
 [sub_resource type="NavigationMesh" id="NavigationMesh_g2q70"]
 vertices = PackedVector3Array(-3.5, 0.02, -1, -3.75, 0.02, -6.75, -6, 0.02, -6.75, -6.25, 0.02, -8.25, -18.25, 0.02, -8.25, -3.5, 0.02, 6.25, -18.25, 0.02, 6.25, -1, 0.02, -8.25, -2.5, 0.02, -8.25, -2.5, 0.02, -7, -0.75, 0.02, -7, -3.25, 0.02, -1.5, 1.25, 0.02, -6.75, 1, 0.02, -7.25, -0.5, 0.02, -1.5, -0.25, 0.02, 2.5, 0.5, 0.02, 2.5, 0.5, 0.02, -1.25, 2.5, 0.02, -1.5, 2.5, 0.02, -6.75)
@@ -140,6 +141,7 @@ character = ExtResource("19_l6obu")
 [node name="TestNPC" parent="StartingArea/NPC" instance=ExtResource("17_p4hwn")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, -2)
 script = ExtResource("18_y3577")
+character = ExtResource("20_rna72")
 
 [node name="Enemies" type="Node" parent="."]
 script = ExtResource("2_g1pjd")

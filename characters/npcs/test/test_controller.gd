@@ -1,8 +1,8 @@
 extends InteractionController
 
-class_name LiliController
+class_name TestNPCController
 
 func _init() -> void:
 	pending = [
-		LiliInteractions.FIRST_ENCOUNTER
+		TestNPCInteractions.FIRST_ENCOUNTER
 		]
