@@ -43,10 +43,6 @@ var interactions := [
 	{
 		ID: FIRST_ENCOUNTER_SECOND,
 		PRIORITY: 500,
-		EVENT: [{
-			TYPE: TEXT,
-			TEXT: ["My party's left me..", "Perhaps I could join you?"]
-		}],
 		CONDITIONS: [
 			{
 				TYPE: SELF,
@@ -55,8 +51,33 @@ var interactions := [
 				TAGS: [FIRST_ENCOUNTER_SECOND]
 			},
 		],
+		EVENT: [
+			{
+				TYPE: TEXT,
+				TEXT: ["My party's left me..", "Perhaps I could join you?"]
+			},
+			#{
+				#TYPE: "choice",
+				#"choices": [{"id": "allowed_to_join", "btn_text": "yes"}, {"id": "disallowed_to_join", "btn_text": "no"}],
+				#"text": "Allow Lili to join the party?"
+			#},
+			#{
+				#TYPE: TEXT,
+				#TEXT: ["My party's left me..", "Perhaps I could join you?"]
+			#},
+			#{
+				#TYPE: TEXT,
+				#TEXT: ["My party's left me..", "Perhaps I could join you?"]
+			#},
+		],
 		ON_COMPLETED: {
 			MARK_COMPLETED: [FIRST_ENCOUNTER_SECOND]
+		},
+		"callback": {
+			"func": "recruit_lili",
+			CONDITIONS: {
+				"choices": ["allowed_to_join"]
+			}
 		}
 	},
 	

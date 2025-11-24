@@ -10,20 +10,16 @@ var npc_body: PackedScene = null
 
 func _ready() -> void:
 	overworld_npc_interactable.overworld_npc_interact_request.connect(_on_interact_requested)
+	PartyBus.party_member_added.connect(_on_party_member_added)
 	
 	if character:
+		if PartyManager.has_member(character.id):
+			queue_free()
+			return
+		
 		npc_name = character.name
 		npc_body = character.character_body
-		
-		if character.interactions:
-			var default_tags := character.interactions._get_default_tags()
-			
-			if not default_tags.is_empty():
-				for tag: String in default_tags:
-					if InteractionTagManager._has_completed_tag_for(character.id, tag):
-						continue
-					
-					InteractionTagManager._add_available_tag_for(character.id, tag)
+		character._setup_character()
 		
 	if not npc_body:
 		push_error("NPC %s doesnt have a body!" % npc_name)
@@ -57,3 +53,8 @@ func _on_interact_requested() -> void:
 		return
 		
 	character.interaction_controller.handle(character)
+
+func _on_party_member_added(member: CharacterInstance, _row: int, _slot: int) -> void:
+	if character:
+		if character.id == member.resource.id:
+			queue_free()

@@ -18,8 +18,9 @@ func handle(c: BaseCharacterResource) -> void:
 		if not _meets_conditions(c, conversation):
 			continue
 		
-		await EventManager.process_event(conversation["event"])
+		var ctx: EventContext = await EventManager.process_event(conversation["event"])
 		
+		_run_callback(c, conversation, ctx)
 		_run_completion_check(c, conversation)
 		
 		break
@@ -96,6 +97,24 @@ func _sanity_check(c: BaseCharacterResource, conversation: Dictionary) -> void:
 		return
 		
 	_warn(c,conversation, "has no completion parameter and wasn't marked as persistent, consider investigating")
+
+
+func _run_callback(c: BaseCharacterResource, conversation: Dictionary, ctx: EventContext) -> void:
+	if not conversation.has("callback"):
+		return
+		
+	if conversation["callback"].has("conditions"):
+		var choices = conversation["callback"]["conditions"]["choices"]
+		var passes := true
+		for choice in choices:
+			if not ctx.choices.has(choice):
+				passes = false
+		if not passes:
+			return
+		
+	var callback: String = conversation["callback"]["func"]
+	if c.interaction_controller.has_method(callback):
+		c.interaction_controller.call(callback, ctx, c)
 
 
 func _valid_conversation(c: BaseCharacterResource, conversation: Dictionary) -> bool:

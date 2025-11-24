@@ -30,9 +30,6 @@ race = ExtResource("4_l3iqv")
 job = ExtResource("16_tyjbr")
 gender = ExtResource("4_p4kuy")
 attributes = SubResource("Resource_rhf32")
-id = "a_skelly_1"
-character_body = ExtResource("3_bv0l2")
-name = "Skelly"
 default_effects = Array[ExtResource("1_l3iqv")]([ExtResource("5_g0fbc")])
 default_damage_type = 1
 base_stats = {
@@ -46,4 +43,7 @@ base_stats = {
 "RESISTANCE": 10.0,
 "SPEED": 4.0
 }
+id = "a_skelly_1"
+name = "Skelly"
+character_body = ExtResource("3_bv0l2")
 metadata/_custom_type_script = "uid://bwn4gpkaijqsg"

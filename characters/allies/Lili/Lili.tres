@@ -58,7 +58,7 @@ stat_level_growth = {
 &"RESISTANCE": 1.0,
 &"SPEED": 0.2
 }
-id = "a_lili_1a"
+id = "a_lili_1"
 name = "Lili"
 character_body = ExtResource("3_tttne")
 interactions = ExtResource("10_pwtr7")

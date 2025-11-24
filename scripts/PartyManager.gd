@@ -1,15 +1,12 @@
 extends Node
 
-signal member_added(character: CharacterInstance, row_i: int, slot_i: int)
-#signal member_removed(character)
-
-
 var members: Array[CharacterInstance] = []
 
 var formation := [
 	[null, null, null],
 	[null, null, null]
 ]
+
 
 func add_member(res: CharacterResource) -> CharacterInstance:
 	var inst := CharacterInstance.new(res)
@@ -19,7 +16,7 @@ func add_member(res: CharacterResource) -> CharacterInstance:
 		members.append(inst)
 		var row_i: int = position[0]
 		var slot_i: int = position[1]
-		emit_signal("member_added", inst, row_i, slot_i)
+		PartyBus.party_member_added.emit(inst, row_i, slot_i)
 		print("Character added to party: %s" % inst.resource.name)
 		
 		return inst
@@ -27,7 +24,13 @@ func add_member(res: CharacterResource) -> CharacterInstance:
 		push_error("Adding character error: no free slots")
 		
 		return null
-		
+
+func has_member(id: String) -> bool:
+	for m: CharacterInstance in members:
+		if m.resource.id == id:
+			return true
+	
+	return false
 
 func add_member_to_formation(character: CharacterInstance) -> Array:
 	for row_i in range(formation.size()):

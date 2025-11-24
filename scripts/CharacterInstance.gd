@@ -49,6 +49,7 @@ var equipment := {
 
 func _init(res: CharacterResource) -> void:
 	resource = res
+	resource._setup_character()
 	
 	if resource.character_body:
 		body = resource.character_body

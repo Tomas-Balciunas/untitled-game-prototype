@@ -53,6 +53,7 @@ CharacterBus="*res://scripts/bus/CharacterBus.gd"
 ChatterManager="*res://scripts/ChatterManager.gd"
 ChatEventBus="*res://scripts/bus/ChatEventBus.gd"
 InteractionTagManager="*res://scripts/InteractionTagManager.gd"
+PartyBus="*res://scripts/bus/PartyBus.gd"
 
 [debug]
 

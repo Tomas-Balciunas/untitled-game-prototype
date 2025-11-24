@@ -20,8 +20,7 @@ const CharacterMenuScene = preload("res://scenes/ui/character/CharacterMenu.tscn
 
 func _ready() -> void:
 	SaveManager.connect("party_reloaded", Callable(self, "_on_party_reloaded"))
-	PartyManager.connect("member_added", Callable(self, "_on_member_added"))
-	#PartyManager._load_default()
+	PartyBus.party_member_added.connect(_on_member_added)
 	character_menu = CharacterMenuScene.instantiate()
 	character_menu.hide()
 	get_tree().root.add_child.call_deferred(character_menu)

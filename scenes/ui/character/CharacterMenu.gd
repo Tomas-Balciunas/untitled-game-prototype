@@ -84,12 +84,10 @@ func _on_close_pressed() -> void:
 
 
 func _on_talk_pressed() -> void:
-	pass
-	#var menu_interaction := character_instance.resource.interactions.get_conversation("")
-	#
-	#if menu_interaction:
-		#ConversationBus.request_conversation.emit(character_instance.resource.name, menu_interaction)
-
+	var res := character_instance.resource
+	
+	if res.interaction_controller and res.interactions:
+		res.interaction_controller.handle(res)
 
 func _on_level_up_pressed() -> void:
 	level_up_tab.bind_character(character_instance)
