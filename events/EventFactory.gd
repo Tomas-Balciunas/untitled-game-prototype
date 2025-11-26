@@ -9,6 +9,8 @@ static func create_step(data: Dictionary) -> EventStep:
 			return EncounterStep.new(data)
 		"trap":
 			return TrapStep.new(data)
+		"choice":
+			return ChoiceStep.new(data)
 		_:
 			push_error("Unknown event step type: %s" % data["type"])
 			return null

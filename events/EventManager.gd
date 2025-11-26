@@ -5,12 +5,11 @@ const TEXT = "text"
 var party_panel: Node
 var current_event: Array = []
 var event_step: int = 0
-var choices: Array = []
+var choices: Array[String] = []
 
 func process_event(data: Variant) -> EventContext:
 	GameState.set_event()
 	var event: Variant
-	var ctx = EventContext.new()
 	choices = []
 	
 	if data is String:
@@ -51,5 +50,8 @@ func process_event(data: Variant) -> EventContext:
 		EventFlags.mark_event_completed(data)
 		
 	GameState.set_idle()
+	
+	var ctx := EventContext.new()
+	ctx.choices = choices
 	
 	return ctx

@@ -9,6 +9,10 @@ var formation := [
 
 
 func add_member(res: CharacterResource) -> CharacterInstance:
+	if has_member(res.id):
+		push_error("Character %s is already in the party" % res.id)
+		return
+	
 	var inst := CharacterInstance.new(res)
 	var position := add_member_to_formation(inst)
 	
@@ -31,6 +35,11 @@ func has_member(id: String) -> bool:
 			return true
 	
 	return false
+
+
+func is_party_full() -> bool:
+	return len(members) >= 6
+
 
 func add_member_to_formation(character: CharacterInstance) -> Array:
 	for row_i in range(formation.size()):

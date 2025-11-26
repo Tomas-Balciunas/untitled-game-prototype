@@ -3,4 +3,4 @@ extends RefCounted
 class_name EventStep
 
 @abstract
-func run(_manager: Node) -> void
+func run(_manager: EventManager) -> void

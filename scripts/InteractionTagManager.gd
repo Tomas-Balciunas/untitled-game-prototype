@@ -43,7 +43,6 @@ func _remove_available_tag_for(id: String, tag: String) -> void:
 	available_tags.erase(tag)
 
 
-# technically should never be called
 func _remove_completed_tag_for(id: String, tag: String) -> void:
 	if not _has_completed_tag_for(id, tag):
 		push_error("trying to remove non-existent completed tag %s for character %s" % [tag, id])

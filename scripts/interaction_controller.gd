@@ -18,10 +18,17 @@ func handle(c: BaseCharacterResource) -> void:
 		if not _meets_conditions(c, conversation):
 			continue
 		
-		var ctx: EventContext = await EventManager.process_event(conversation["event"])
+		var event: Array = conversation[CharacterInteraction.EVENT]
+		var ctx: EventContext
 		
+		if conversation.has(CharacterInteraction.RANDOM) and conversation[CharacterInteraction.RANDOM]:
+			var random_event: Dictionary = event.pick_random()
+			ctx = await EventManager.process_event([random_event])
+		else:
+			ctx = await EventManager.process_event(event)
+		
+		_run_completion_check(c, conversation, ctx)
 		_run_callback(c, conversation, ctx)
-		_run_completion_check(c, conversation)
 		
 		break
 
@@ -73,23 +80,62 @@ func _check_condition(c: BaseCharacterResource, condition: Dictionary, conversat
 	return true
 
 
-func _run_completion_check(c: BaseCharacterResource, conversation: Dictionary) -> void:
+func _run_completion_check(c: BaseCharacterResource, conversation: Dictionary, ctx: EventContext) -> void:
+	if not conversation.has(CharacterInteraction.ON_COMPLETED):
+		return
+	
 	var on_completed: Dictionary = conversation.get(CharacterInteraction.ON_COMPLETED, {})
 	
-	for action: String in on_completed:
-		match action:
+	for type: String in on_completed:
+		match type:
 			CharacterInteraction.MARK_COMPLETED:
-				var tags: Array = on_completed.get(action, [])
+				var entries: Array = on_completed[type]
 				
-				for tag: String in tags:
+				for entry: Dictionary in entries:
+					var tag: String = entry[CharacterInteraction.ID]
+					
+					if entry.has(CharacterInteraction.CONDITIONS):
+						var conditions: Dictionary = entry[CharacterInteraction.CONDITIONS]
+						
+						for condition: Variant in conditions:
+							if not _valid_completion_condition(c, conversation, conditions, ctx, condition):
+								return
+					
+					_check_recurring(c.id, tag, conversation)
 					InteractionTagManager._mark_tag_completed(c.id, tag)
+					
 			CharacterInteraction.MARK_AVAILABLE:
-				var tags: Array = on_completed.get(action, [])
+				var entries: Array = on_completed[type]
 				
-				for tag: String in tags:
+				for entry: Dictionary in entries:
+					var tag: String = entry[CharacterInteraction.ID]
+					
+					if entry.has(CharacterInteraction.CONDITIONS):
+						var conditions: Dictionary = entry[CharacterInteraction.CONDITIONS]
+						
+						for condition: Variant in conditions:
+							if not _valid_completion_condition(c, conversation, conditions, ctx, condition):
+								return
+					
+					_check_recurring(c.id, tag, conversation)
 					InteractionTagManager._add_available_tag_for(c.id, tag)
 			_:
 				_err(c, conversation, "unsupported completion parameter!")
+
+
+func _valid_completion_condition(c: BaseCharacterResource, conversation: Dictionary, conditions: Dictionary, ctx: EventContext, condition: String) -> bool:
+	match condition:
+		CharacterInteraction.CHOICES:
+			var choices: Array = conditions[condition]
+			
+			for choice: String in choices:
+				if not ctx.choices.has(choice):
+					return false
+		_:
+			_err(c, conversation, "somehow unsupported callback condition made through")
+			return false
+	
+	return true
 
 
 func _sanity_check(c: BaseCharacterResource, conversation: Dictionary) -> void:
@@ -99,23 +145,45 @@ func _sanity_check(c: BaseCharacterResource, conversation: Dictionary) -> void:
 	_warn(c,conversation, "has no completion parameter and wasn't marked as persistent, consider investigating")
 
 
-func _run_callback(c: BaseCharacterResource, conversation: Dictionary, ctx: EventContext) -> void:
-	if not conversation.has("callback"):
-		return
+func _check_recurring(character_id: String, tag: String, conversation: Dictionary) -> void:
+	if conversation.has(CharacterInteraction.RECURRING):
+		var recurring: bool = conversation[CharacterInteraction.RECURRING]
 		
-	if conversation["callback"].has("conditions"):
-		var choices = conversation["callback"]["conditions"]["choices"]
-		var passes := true
-		for choice in choices:
-			if not ctx.choices.has(choice):
-				passes = false
-		if not passes:
-			return
-		
-	var callback: String = conversation["callback"]["func"]
-	if c.interaction_controller.has_method(callback):
-		c.interaction_controller.call(callback, ctx, c)
+		if recurring:
+			if InteractionTagManager._has_completed_tag_for(character_id, tag):
+				InteractionTagManager._remove_completed_tag_for(character_id, tag)
 
+
+func _run_callback(c: BaseCharacterResource, conversation: Dictionary, ctx: EventContext) -> void:
+	if not conversation.has(CharacterInteraction.CALLBACK):
+		return
+	
+	var callback: Dictionary = conversation[CharacterInteraction.CALLBACK]
+	var func_name: String = callback[CharacterInteraction.FUNC]
+	
+	if callback.has(CharacterInteraction.CONDITIONS):
+		var conditions: Dictionary = callback[CharacterInteraction.CONDITIONS]
+		
+		for condition: String in conditions:
+			if not _valid_callback_condition(c, conversation, ctx, conditions, condition):
+				return
+		
+	if c.interaction_controller.has_method(func_name):
+		c.interaction_controller.call(func_name, ctx, c)
+
+func _valid_callback_condition(c: BaseCharacterResource, conversation: Dictionary, ctx: EventContext, conditions: Dictionary, condition: String) -> bool:
+	match condition:
+		CharacterInteraction.CHOICES:
+			var choices: Array = conditions[condition]
+			
+			for choice: String in choices:
+				if not ctx.choices.has(choice):
+					return false
+		_:
+			_err(c, conversation, "somehow unsupported callback condition made through")
+			return false
+	
+	return true
 
 func _valid_conversation(c: BaseCharacterResource, conversation: Dictionary) -> bool:
 	var valid := true
@@ -137,12 +205,30 @@ func _valid_conversation(c: BaseCharacterResource, conversation: Dictionary) -> 
 		_err(c, conversation, "event must be Array of steps")
 		valid = false
 		
+	if conversation.has(CharacterInteraction.RECURRING):
+		if typeof(conversation[CharacterInteraction.RECURRING]) != TYPE_BOOL:
+			_err(c, conversation, "recurring must be bool")
+			valid = false
+		
+	if conversation.has(CharacterInteraction.PERSISTENT):
+		if typeof(conversation[CharacterInteraction.PERSISTENT]) != TYPE_BOOL:
+			_err(c, conversation, "persistent must be bool")
+			valid = false
+		
+	if conversation.has(CharacterInteraction.RANDOM):
+		if typeof(conversation[CharacterInteraction.RANDOM]) != TYPE_BOOL:
+			_err(c, conversation, "random must be bool")
+			valid = false
+		
 	if conversation.has(CharacterInteraction.CONDITIONS):
 		var conditions: Variant = conversation[CharacterInteraction.CONDITIONS]
 		
 		if typeof(conditions) != TYPE_ARRAY:
 			_err(c, conversation, "conditions must be Array of Dictionaries")
 			valid = false
+		elif conditions.is_empty():
+				_err(c, conversation, "conditions are defined but empty")
+				valid = false
 		else:
 			for condition: Variant in conditions:
 				if typeof(condition) != TYPE_DICTIONARY:
@@ -151,6 +237,52 @@ func _valid_conversation(c: BaseCharacterResource, conversation: Dictionary) -> 
 				else:
 					if not _valid_condition(c, condition, conversation):
 						valid = false
+	
+	if conversation.has(CharacterInteraction.CALLBACK):
+		var callback: Variant = conversation[CharacterInteraction.CALLBACK]
+		
+		if typeof(callback) != TYPE_DICTIONARY:
+			_err(c, conversation, "callback entry must be Dictionary")
+			valid = false
+		else:
+			var func_name: Variant = callback.get(CharacterInteraction.FUNC, null)
+			var conditions: Variant = callback.get(CharacterInteraction.CONDITIONS, null)
+			
+			if not func_name:
+				_err(c, conversation, "callback func does not exist")
+				valid = false
+			elif typeof(func_name) != TYPE_STRING:
+				_err(c, conversation, "callback func must be a string")
+				valid = false
+			
+			if conditions != null:
+				if typeof(conditions) != TYPE_DICTIONARY:
+					_err(c, conversation, "callback conditions must be Dictionary")
+					valid = false
+				elif conditions.is_empty():
+					_err(c, conversation, "callback conditions are defined but empty")
+					valid = false
+				else:
+					for condition: Variant in conditions:
+						match condition:
+							CharacterInteraction.CHOICES:
+								var choices: Variant = conditions[condition]
+								
+								if typeof(choices) != TYPE_ARRAY:
+									_err(c, conversation, "callback condition choices must be Array")
+									valid = false
+								elif choices.is_empty():
+									_err(c, conversation, "callback condition choices are defined but empty")
+									valid = false
+								else:
+									for choice: Variant in choices:
+										if typeof(choice) != TYPE_STRING:
+											_err(c, conversation, "callback condition choices entry must be string")
+											valid = false
+							_:
+								_err(c, condition, "unsupported callback condition")
+								valid = false
+					
 	
 	if conversation.has(CharacterInteraction.ON_COMPLETED):
 		if not _valid_on_completed(c, conversation, conversation[CharacterInteraction.ON_COMPLETED]):
@@ -207,14 +339,57 @@ func _valid_on_completed(c: BaseCharacterResource, conversation: Dictionary, on_
 		_err(c, conversation, "on_completed is empty")
 		valid = false
 
-	for action: Variant in on_completed.keys():
-		if typeof(on_completed[action]) != TYPE_ARRAY:
-			_err(c, conversation, "%s tags must be Array" % action)
+	for type: Variant in on_completed.keys():
+		if typeof(on_completed[type]) != TYPE_ARRAY:
+			_err(c, conversation, "%s must be Array" % type)
 			valid = false
 
-		if on_completed[action].is_empty():
-			_err(c, conversation, "%s has no tags" % action)
+		if on_completed[type].is_empty():
+			_err(c, conversation, "%s has no tags" % type)
 			valid = false
+		else:
+			for entry: Variant in on_completed[type]:
+				if typeof(entry) != TYPE_DICTIONARY:
+					_err(c, conversation, "%s entry must be Dictionary" % type)
+					valid = false
+				elif on_completed.is_empty():
+					_err(c, conversation, "on_completed is empty")
+					valid = false
+				else:
+					var id: Variant = entry.get(CharacterInteraction.ID, null)
+					var conditions: Variant = entry.get(CharacterInteraction.CONDITIONS, null)
+					
+					if not id:
+						_err(c, conversation, "on_completed tag id is missing")
+						valid = false
+					
+					if conditions != null:
+						if typeof(conditions) != TYPE_DICTIONARY:
+							_err(c, conversation, "on_completed conditions must be Dictionary")
+							valid = false
+						elif conditions.is_empty():
+							_err(c, conversation, "on_completed conditions are defined but empty")
+							valid = false
+						else:
+							for condition: Variant in conditions:
+									match condition:
+										CharacterInteraction.CHOICES:
+											var choices: Variant = conditions[condition]
+											
+											if typeof(choices) != TYPE_ARRAY:
+												_err(c, conversation, "on_completed condition choices must be Array")
+												valid = false
+											elif choices.is_empty():
+												_err(c, conversation, "on_completed condition choices are defined but empty")
+												valid = false
+											else:
+												for choice: Variant in choices:
+													if typeof(choice) != TYPE_STRING:
+														_err(c, conversation, "on_completed condition choices entry must be string")
+														valid = false
+										_:
+											_err(c, condition, "unsupported callback condition")
+											valid = false
 	
 	return valid
 

@@ -9,5 +9,5 @@ func _init(data: Dictionary) -> void:
 	trap = data.get("trap")
 	target = data.get("target")
 
-func run(_manager: Node) -> void:
+func run(_manager: EventManager) -> void:
 	trap.trigger(target)

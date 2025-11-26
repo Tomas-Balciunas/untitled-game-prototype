@@ -10,8 +10,17 @@ const TAG = "tag"
 const PRIORITY = "priority"
 const EVENT = "event"
 const TYPE = "type"
-const TEXT = EventManager.TEXT
+const TEXT = "text"
+const CHOICE = "choice"
 const PERSISTENT = "persistent"
+const CALLBACK = "callback"
+const FUNC = "func"
+const RANDOM = "random"
+const RECURRING = "recurring"
+
+## --- Events ---
+const CHOICES = "choices"
+const BTN_TEXT = "btn_text"
 
 ## -- Conditions --
 const CONDITIONS = "conditions"
