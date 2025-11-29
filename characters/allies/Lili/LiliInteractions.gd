@@ -10,17 +10,6 @@ const RECRUIT_LILI_AGAIN = "recruit_lili_again"
 const ALLOWED_TO_JOIN = "allowed_to_join"
 const DISALLOWED_TO_JOIN = "disallowed_to_join"
 
-var menu := [
-	{
-		"type": "text",
-		"text": ["test 1", "test 2"]
-	},
-	{
-		"type": "text",
-		"text": ["test 3", "test 4"]
-	},
-]
-
 
 var interactions := [
 	{
