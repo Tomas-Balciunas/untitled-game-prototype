@@ -55,12 +55,12 @@ func place_all_allies() -> void:
 			slot.capture_home() 
 			front_slots[idx] = slot
 			
-			if inst.is_main:
-				var camera := PLAYER.instantiate()
-				slot.add_child(camera)
-				camera.transform = Transform3D()
-				camera.transform.origin = Vector3(0, 0.2, 0)
-				camera.rotation_degrees.y = 180
+			#if inst.is_main:
+				#var camera := PLAYER.instantiate()
+				#slot.add_child(camera)
+				#camera.transform = Transform3D()
+				#camera.transform.origin = Vector3(0, 0.2, 0)
+				#camera.rotation_degrees.y = 180
 				
 
 	var back_start := int((MAX_SLOTS - back_allies.size()) * 0.5)

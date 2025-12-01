@@ -12,8 +12,6 @@ class_name CharacterMenu
 @onready var inventory_container: VBoxContainer = $Menu/InventoryUI/Inventory
 @onready var item_info_panel: VBoxContainer = $Menu/InventoryUI/ItemInfoPanel
 
-@onready var party_panel := get_tree().get_root().get_node("Main/PartyPanel")
-@onready var battle_text_lines := get_tree().get_root().get_node("Main/BattleTextLines")
 @onready var menu := $Menu
 @onready var name_label := $Menu/Name
 
@@ -26,8 +24,6 @@ func bind(character: CharacterInstance) -> void:
 	GameState.current_state = GameState.States.MENU
 		
 	character_instance = character
-	party_panel.disable_party_ui()
-	battle_text_lines.disable_battle_text_lines_ui()
 	$Menu/Name.text = character.resource.name
 	stats_tab.bind_character(character_instance)
 		
@@ -77,8 +73,6 @@ func _on_effects_pressed() -> void:
 
 func _on_close_pressed() -> void:
 	hide()
-	party_panel.enable_party_ui()
-	battle_text_lines.enable_battle_text_lines_ui()
 	inventory_tab.close()
 	GameState.current_state = GameState.States.IDLE
 

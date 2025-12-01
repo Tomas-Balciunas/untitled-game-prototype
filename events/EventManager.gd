@@ -34,7 +34,7 @@ func process_event(data: Variant) -> EventContext:
 		GameState.set_idle()
 		return
 		
-	party_panel = get_tree().get_root().get_node("Main/PartyPanel")
+	party_panel = get_tree().get_root().get_node("Main/UIRoot/OverworldInterface/PartyPanel")
 	party_panel.disable_party_ui()
 	
 	for step_data: Dictionary in event:

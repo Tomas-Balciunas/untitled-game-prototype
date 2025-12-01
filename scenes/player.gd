@@ -87,9 +87,11 @@ func snap_to_grid(tile_size: float = 2.0) -> void:
 
 func _on_encounter_started(_encounter_data: EncounterData) -> void:
 	can_move = false
+	camera_3d.current = false
 	
 func _on_encounter_ended(_result: String, _data: EncounterData) -> void:
 	can_move = true
+	camera_3d.current = true
 	
 func _on_map_transition_started(_id: String) -> void:
 	can_move = false

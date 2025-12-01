@@ -9,7 +9,7 @@ signal enemy_died(dead: CharacterInstance)
 const TURN_THRESHOLD = 1000
 
 @onready var camera: Camera3D = get_viewport().get_camera_3d()
-@onready var party_panel := get_tree().get_root().get_node("Main/PartyPanel")
+@onready var party_panel := get_tree().get_root().get_node("Main/UIRoot/OverworldInterface/PartyPanel")
 @onready var enemy_grid: EnemyFormation = null
 @onready var ally_grid: AllyFormation = null
 

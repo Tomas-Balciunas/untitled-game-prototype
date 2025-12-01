@@ -33,6 +33,13 @@ func bind(character: CharacterInstance) -> void:
 	animation_player = body_instance.get_node("AnimationPlayer") as AnimationPlayer
 	animation_player.animation_finished.connect(_on_anim_finish)
 	self.add_child(body_instance)
+	
+	if character.is_main:
+		targeting_area.queue_free()
+		
+		if body_instance.has_node("Camera3D"):
+			var cam: Camera3D = body_instance.get_node("Camera3D")
+			cam.rotation_degrees.y = 180
 
 
 func getName() -> String:
@@ -68,16 +75,16 @@ func perform_attack_toward_target(target: FormationSlot) -> void:
 	body_instance.play_run()
 
 	if character_instance.is_main:
-		if has_node("Player/Camera3D"):
-			var cam := get_node("Player/Camera3D") as Camera3D
+		if body_instance.has_node("Camera3D"):
+			var cam: Camera3D = body_instance.get_node("Camera3D")
 			var target_pos := target.global_position
 			var dir := (target_pos - cam.global_position).normalized()
-			var desired_yaw := atan2(dir.x, dir.z)
+			var desired_yaw := atan2(dir.x, dir.z) + PI
 			tween.set_parallel()
 			tween.tween_property(cam, "rotation:y", desired_yaw, 0.3)\
 			.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
 
-	tween.tween_property(self, "position", stop_position_local, 0.7)\
+	tween.tween_property(self, "position", stop_position_local, 1)\
 		.set_trans(Tween.TRANS_SINE)\
 		.set_ease(Tween.EASE_IN_OUT)
 	await tween.finished
@@ -100,15 +107,14 @@ func position_back() -> void:
 	var tween_back := create_tween()
 	tween_back.set_parallel()
 	body_instance.play_run_back()
-	tween_back.tween_property(self, "position", home_local, 0.5).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+	tween_back.tween_property(self, "position", home_local, 0.4).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
 	
-	if character_instance.is_main and has_node("Player/Camera3D"):
-		var cam := get_node("Player/Camera3D") as Camera3D
-		
+	if body_instance.has_node("Camera3D"):
+		var cam: Camera3D = body_instance.get_node("Camera3D")
 		tween_back.tween_property(
 			cam,
 			"rotation:y",
-			0,
+			0 + PI,
 			0.3
 		).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
 	

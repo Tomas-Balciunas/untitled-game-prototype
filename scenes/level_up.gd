@@ -1,27 +1,27 @@
-extends CanvasLayer
+extends Panel
 
-@onready var name_label := $Panel/CharacterName
-@onready var level_label := $Panel/LevelLabel
-@onready var points_label := $Panel/PointsLabel
+@onready var name_label := $CharacterName
+@onready var level_label := $LevelLabel
+@onready var points_label := $PointsLabel
 @onready var attr_labels := {
-	"STR": $Panel/AttributesContainer/STR_Row/STR_Label,
-	"IQ": $Panel/AttributesContainer/IQ_Row/IQ_Label,
-	"PIE": $Panel/AttributesContainer/PIE_Row/PIE_Label,
-	"VIT": $Panel/AttributesContainer/VIT_Row/VIT_Label,
-	"DEX": $Panel/AttributesContainer/DEX_Row/DEX_Label,
-	"SPD": $Panel/AttributesContainer/SPD_Row/SPD_Label,
-	"LUK": $Panel/AttributesContainer/LUK_Row/LUK_Label
+	"STR": $AttributesContainer/STR_Row/STR_Label,
+	"IQ": $AttributesContainer/IQ_Row/IQ_Label,
+	"PIE": $AttributesContainer/PIE_Row/PIE_Label,
+	"VIT": $AttributesContainer/VIT_Row/VIT_Label,
+	"DEX": $AttributesContainer/DEX_Row/DEX_Label,
+	"SPD": $AttributesContainer/SPD_Row/SPD_Label,
+	"LUK": $AttributesContainer/LUK_Row/LUK_Label
 }
 @onready var attr_buttons := {
-	"STR": $Panel/AttributesContainer/STR_Row/STR_Button,
-	"IQ": $Panel/AttributesContainer/IQ_Row/IQ_Button,
-	"PIE": $Panel/AttributesContainer/PIE_Row/PIE_Button,
-	"VIT": $Panel/AttributesContainer/VIT_Row/VIT_Button,
-	"DEX": $Panel/AttributesContainer/DEX_Row/DEX_Button,
-	"SPD": $Panel/AttributesContainer/SPD_Row/SPD_Button,
-	"LUK": $Panel/AttributesContainer/LUK_Row/LUK_Button
+	"STR": $AttributesContainer/STR_Row/STR_Button,
+	"IQ": $AttributesContainer/IQ_Row/IQ_Button,
+	"PIE": $AttributesContainer/PIE_Row/PIE_Button,
+	"VIT": $AttributesContainer/VIT_Row/VIT_Button,
+	"DEX": $AttributesContainer/DEX_Row/DEX_Button,
+	"SPD": $AttributesContainer/SPD_Row/SPD_Button,
+	"LUK": $AttributesContainer/LUK_Row/LUK_Button
 }
-@onready var done_button := $Panel/DoneButton
+@onready var done_button := $DoneButton
 
 var character: CharacterInstance
 

@@ -56,6 +56,18 @@ tracks/3/keys = {
 "update": 0,
 "values": [Color(1, 1, 1, 0)]
 }
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Camera3D:position:y")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [1.0]
+}
 
 [sub_resource type="Animation" id="Animation_2behk"]
 resource_name = "attack"
@@ -131,18 +143,6 @@ tracks/0/keys = {
 resource_name = "run_up"
 length = 0.7
 loop_mode = 1
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0.1, 0.266667, 0.433333, 0.6),
-"transitions": PackedFloat32Array(1, 1, 1, 1),
-"update": 1,
-"values": [42, 43, 44, 43]
-}
 
 [sub_resource type="Animation" id="Animation_tuj5j"]
 resource_name = "new_animation"
@@ -152,14 +152,14 @@ step = 0.0333
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite:frame")
+tracks/0/path = NodePath("Camera3D:position:y")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0.1, 0.266667, 0.433333, 0.6),
-"transitions": PackedFloat32Array(1, 1, 1, 1),
-"update": 1,
-"values": [6, 7, 8, 7]
+"times": PackedFloat32Array(0.06666667, 0.14935121, 0.23395969, 0.31856814, 0.40702447, 0.5006263, 0.58908266, 0.68653244),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [1.03, 1.06, 1.03, 1.0, 1.03, 1.06, 1.03, 1.0]
 }
 
 [sub_resource type="Animation" id="Animation_cp8t1"]
@@ -214,6 +214,7 @@ script = ExtResource("1_y8q8x")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 shape = SubResource("CylinderShape3D_8j8tm")
+disabled = true
 
 [node name="Sprite" type="Sprite3D" parent="."]
 transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 1, 0)
@@ -238,3 +239,15 @@ modulate = Color(1, 1, 1, 0)
 position = Vector2(599.37006, 400.00003)
 scale = Vector2(1.2596945, 0.8659793)
 texture = ExtResource("3_16jax")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, -0.303)
+current = true
+fov = 93.0034
+far = 285.41
+
+[node name="OmniLight3D" type="OmniLight3D" parent="Camera3D"]
+transform = Transform3D(1, 0, 0, 0, 0.0297301, 0, 0, 0, 1, 0, 0, 0.312911)
+light_color = Color(0.585928, 0.568995, 0.564924, 1)
+light_indirect_energy = 2.826
+omni_range = 6.66321
