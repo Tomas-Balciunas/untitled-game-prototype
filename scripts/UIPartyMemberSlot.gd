@@ -2,9 +2,6 @@ extends Panel
 
 class_name PartyMemberSlot
 
-#signal target_clicked(target)
-signal open_character_menu_requested(character_instance: CharacterInstance)
-
 @onready var number_display: UISlotNumbers = $NumberDisplay
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
 
@@ -72,7 +69,7 @@ func _on_gui_input(event: InputEvent) -> void:
 				if not character_instance:
 					print("Invalid party member selected")
 					return
-				emit_signal("open_character_menu_requested", character_instance)
+				CharacterBus.display_character_menu.emit(character_instance)
 
 func disable_slot_targeting() -> void:
 	targeting_enabled = false

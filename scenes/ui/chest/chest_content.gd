@@ -1,4 +1,7 @@
-extends Node
+extends Panel
+class_name ChestContentInterface
+
+signal close_chest_content
 
 const CHEST_ITEM_SCENE = preload("uid://b7jqf5efs1v46")
 const CHEST_ITEM_TRANSFER_SELECT = preload("uid://b6obrmkrwcd6e")
@@ -16,6 +19,7 @@ func _ready() -> void:
 	InteractableBus.interactable_area_left.connect(on_interactable_area_left)
 
 func init(_chest: Chest) -> void:
+	_clear()
 	chest = _chest
 	
 	if chest.items.is_empty():
@@ -75,8 +79,16 @@ func remove_item_from_chest(item: ItemInstance) -> void:
 		on_item_selected(items[0])
 
 func _on_close_pressed() -> void:
-	queue_free()
+	close_chest_content.emit()
 
 func on_interactable_area_left(interactable: Interactable) -> void:
 	if interactable is ChestInteractable:
-		queue_free()
+		close_chest_content.emit()
+
+
+func _clear() -> void:
+	for child in v_box_container.get_children():
+		child.queue_free()
+	
+	for child in members_select.get_children():
+		child.queue_free()

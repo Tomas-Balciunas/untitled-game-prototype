@@ -1,7 +1,6 @@
 extends Panel
 
 @onready var party: PartyManager
-var character_menu: CharacterMenu = null
 @onready var formation := [
 	[
 		$PanelContainer/PartyContainer/FrontRow/PartyMemberSlot1/PartyMember,
@@ -16,14 +15,10 @@ var character_menu: CharacterMenu = null
 ] 
 
 const UIPartyMemberScene = preload("res://scenes/UIPartyMemberSlot.tscn")
-const CharacterMenuScene = preload("res://scenes/ui/character/CharacterMenu.tscn")
 
 func _ready() -> void:
 	SaveManager.connect("party_reloaded", Callable(self, "_on_party_reloaded"))
 	PartyBus.party_member_added.connect(_on_member_added)
-	character_menu = CharacterMenuScene.instantiate()
-	character_menu.hide()
-	get_tree().root.add_child.call_deferred(character_menu)
 	_on_party_reloaded()
 
 func _on_party_reloaded() -> void:
@@ -40,11 +35,7 @@ func _on_party_reloaded() -> void:
 func _on_member_added(character: CharacterInstance, row_index: int, slot_index: int) -> void:
 	var character_ui: PartyMemberSlot = formation[row_index][slot_index]
 	character_ui.bind(character)
-	
 	character.connect("mana_changed", Callable(character_ui, "_on_mana_changed"))
-	if character_ui.is_connected("open_character_menu_requested", Callable(self, "_on_open_character_menu_requested")):
-		character_ui.disconnect("open_character_menu_requested", Callable(self, "_on_open_character_menu_requested"))
-	character_ui.connect("open_character_menu_requested", Callable(self, "_on_open_character_menu_requested"))
 
 #func _on_member_removed(character: CharacterInstance):
 	#for child in get_children():
@@ -81,7 +72,3 @@ func clear_highlights() -> void:
 	for row: Array in formation:
 		for slot: PartyMemberSlot in row:
 			slot.unhighlight()
-
-func _on_open_character_menu_requested(character_instance: CharacterInstance) -> void:
-	character_menu.bind(character_instance)
-	character_menu.show()

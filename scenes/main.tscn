@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://cphcmsugjsscn"]
+[gd_scene load_steps=34 format=3 uid="uid://cphcmsugjsscn"]
 
 [ext_resource type="Script" uid="uid://bsq341p3oxk46" path="res://scenes/GameState.gd" id="1_o6xl0"]
 [ext_resource type="Script" uid="uid://x2dulqp2hx2s" path="res://scenes/dungeon/Dungeon.gd" id="2_o6xl0"]
@@ -6,16 +6,36 @@
 [ext_resource type="Script" uid="uid://ciepghup30g3u" path="res://scenes/ui/OverworldInterface.gd" id="4_a8y0u"]
 [ext_resource type="Script" uid="uid://2i0e3ty4vxap" path="res://scenes/ui/InterfaceManager.gd" id="4_trceg"]
 [ext_resource type="PackedScene" uid="uid://b7tdrca1v88rk" path="res://scenes/PartyPanel.tscn" id="5_85g3d"]
+[ext_resource type="Script" uid="uid://df1gmeiyv6avc" path="res://gear/_ui/inventory/InventoryUI.gd" id="5_pm3ni"]
 [ext_resource type="Script" uid="uid://ckmaadhfher4" path="res://scripts/TextboxUI.gd" id="5_tbgi4"]
 [ext_resource type="Script" uid="uid://by1jny1k3myyb" path="res://scripts/ConversationManager.gd" id="5_tipki"]
+[ext_resource type="Script" uid="uid://ilm5qu0yhhaa" path="res://scenes/ui/character/CharacterMenu.gd" id="5_y6deb"]
 [ext_resource type="Script" uid="uid://dfmjvvtvwkjld" path="res://scenes/ui/BattleInterface.gd" id="6_jbj1t"]
-[ext_resource type="PackedScene" uid="uid://brybglg3yhb62" path="res://scenes/ui/character/CharacterMenu.tscn" id="6_muem4"]
+[ext_resource type="Script" uid="uid://b2sfqqh521u6d" path="res://gear/_ui/inventory/EquippedSlotContainer.gd" id="6_y6deb"]
 [ext_resource type="Script" uid="uid://b1m27scdvxtye" path="res://scenes/ui/EventInterface.gd" id="7_muem4"]
+[ext_resource type="Script" uid="uid://c4besodi2o6y8" path="res://gear/_ui/inventory/EquippedItemSlot.gd" id="7_og1vs"]
+[ext_resource type="PackedScene" uid="uid://bh3nykch4838a" path="res://gear/_ui/general/ItemInfoScene.tscn" id="8_2wyq8"]
 [ext_resource type="Script" uid="uid://dpc5d3ykhesm7" path="res://scripts/EncounterManager.gd" id="9_85g3d"]
 [ext_resource type="Script" uid="uid://dh87dr7v6jk6m" path="res://scripts/RestManager.gd" id="9_choun"]
+[ext_resource type="Script" uid="uid://dahxd5g0u3kcy" path="res://scenes/ui/character/CharacterStatsUI.gd" id="9_vxglm"]
+[ext_resource type="Script" uid="uid://buitthkb5usu" path="res://scenes/ui/character/CharacterEffectsUI.gd" id="10_2f3dj"]
 [ext_resource type="Script" uid="uid://bseoj2gpvrk32" path="res://scenes/ui/notification/NotificationManager.gd" id="10_ya4ey"]
 [ext_resource type="Script" uid="uid://c68om5g7ecgbn" path="res://scenes/ui/PartyInterface.gd" id="11_dp3eg"]
 [ext_resource type="Script" uid="uid://mucujpguqn25" path="res://scripts/choice_manager.gd" id="11_eb6dy"]
+[ext_resource type="Script" uid="uid://dmcb1v1d6ac3" path="res://scenes/ui/character/CharacterSkillsUI.gd" id="11_yq6so"]
+[ext_resource type="Script" uid="uid://bfewgc370mbue" path="res://scenes/ui/character/CharacterLevelUpUI.gd" id="12_fv21b"]
+[ext_resource type="Script" uid="uid://dgg2yi0cufr5q" path="res://scenes/ui/chest/chest_open_select.gd" id="14_vxglm"]
+[ext_resource type="Script" uid="uid://khbcx214lfkl" path="res://scenes/ui/chest/ChestInterface.gd" id="14_yq6so"]
+[ext_resource type="Script" uid="uid://rkotit4vkflf" path="res://scenes/ui/chest/chest_content.gd" id="15_2f3dj"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tel4y"]
+bg_color = Color(0.6, 0.6, 0.6, 0.105)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_c7bw8"]
+bg_color = Color(0, 0, 0, 1)
+
+[sub_resource type="Theme" id="Theme_qkpxi"]
+Panel/styles/panel = SubResource("StyleBoxFlat_c7bw8")
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jkv2x"]
 bg_color = Color(0, 0.365644, 0.306951, 1)
@@ -49,18 +69,707 @@ color = Color(0.0694218, 0.00964971, 0.263646, 1)
 script = ExtResource("4_trceg")
 
 [node name="OverworldInterface" type="Control" parent="UIRoot"]
-visible = false
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 script = ExtResource("4_a8y0u")
 
-[node name="CharacterMenu" parent="UIRoot/OverworldInterface" instance=ExtResource("6_muem4")]
+[node name="CharacterMenu" type="Panel" parent="UIRoot/OverworldInterface"]
+unique_name_in_owner = true
+visible = false
 layout_mode = 1
-scale = Vector2(1, 0.67999995)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_bottom = -185.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_tel4y")
+script = ExtResource("5_y6deb")
+
+[node name="Name" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu"]
+layout_mode = 0
+offset_left = 505.0
+offset_top = 26.0
+offset_right = 640.0
+offset_bottom = 67.0
+size_flags_horizontal = 4
+
+[node name="CharacterMenuButtons" type="PanelContainer" parent="UIRoot/OverworldInterface/CharacterMenu"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -316.0
+offset_top = -31.0
+grow_horizontal = 0
+grow_vertical = 0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="UIRoot/OverworldInterface/CharacterMenu/CharacterMenuButtons"]
+layout_mode = 2
+
+[node name="Stats" type="Button" parent="UIRoot/OverworldInterface/CharacterMenu/CharacterMenuButtons/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+text = "Stats"
+
+[node name="Inventory" type="Button" parent="UIRoot/OverworldInterface/CharacterMenu/CharacterMenuButtons/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+text = "Inventory"
+
+[node name="Skills" type="Button" parent="UIRoot/OverworldInterface/CharacterMenu/CharacterMenuButtons/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+text = "Skills"
+
+[node name="Effects" type="Button" parent="UIRoot/OverworldInterface/CharacterMenu/CharacterMenuButtons/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+text = "Effects"
+
+[node name="Talk" type="Button" parent="UIRoot/OverworldInterface/CharacterMenu/CharacterMenuButtons/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+keep_pressed_outside = true
+text = "Talk"
+
+[node name="LevelUp" type="Button" parent="UIRoot/OverworldInterface/CharacterMenu/CharacterMenuButtons/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+focus_mode = 0
+text = "Level Up"
+
+[node name="Close" type="Button" parent="UIRoot/OverworldInterface/CharacterMenu/CharacterMenuButtons/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+text = "X"
+
+[node name="InventoryUI" type="Panel" parent="UIRoot/OverworldInterface/CharacterMenu"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_right = 320.0
+grow_vertical = 2
+theme = SubResource("Theme_qkpxi")
+script = ExtResource("5_pm3ni")
+
+[node name="Inventory" type="VBoxContainer" parent="UIRoot/OverworldInterface/CharacterMenu/InventoryUI"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_right = 320.0
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Equipped" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/InventoryUI/Inventory"]
+layout_mode = 2
+text = "Equipped"
+
+[node name="EquippedList" type="VBoxContainer" parent="UIRoot/OverworldInterface/CharacterMenu/InventoryUI/Inventory"]
+layout_mode = 2
+size_flags_vertical = 3
+script = ExtResource("6_y6deb")
+
+[node name="Weapon" type="PanelContainer" parent="UIRoot/OverworldInterface/CharacterMenu/InventoryUI/Inventory/EquippedList"]
+layout_mode = 2
+size_flags_vertical = 3
+script = ExtResource("7_og1vs")
+
+[node name="Container" type="HBoxContainer" parent="UIRoot/OverworldInterface/CharacterMenu/InventoryUI/Inventory/EquippedList/Weapon"]
+layout_mode = 2
+
+[node name="Key" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/InventoryUI/Inventory/EquippedList/Weapon/Container"]
+layout_mode = 2
+text = "Weapon: "
+
+[node name="Value" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/InventoryUI/Inventory/EquippedList/Weapon/Container"]
+layout_mode = 2
+text = "<empty>"
+
+[node name="Helmet" type="PanelContainer" parent="UIRoot/OverworldInterface/CharacterMenu/InventoryUI/Inventory/EquippedList"]
+layout_mode = 2
+size_flags_vertical = 3
+script = ExtResource("7_og1vs")
+
+[node name="Container" type="HBoxContainer" parent="UIRoot/OverworldInterface/CharacterMenu/InventoryUI/Inventory/EquippedList/Helmet"]
+layout_mode = 2
+
+[node name="Key" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/InventoryUI/Inventory/EquippedList/Helmet/Container"]
+layout_mode = 2
+text = "Helmet: "
+
+[node name="Value" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/InventoryUI/Inventory/EquippedList/Helmet/Container"]
+layout_mode = 2
+text = "<empty>"
+
+[node name="Chest" type="PanelContainer" parent="UIRoot/OverworldInterface/CharacterMenu/InventoryUI/Inventory/EquippedList"]
+layout_mode = 2
+size_flags_vertical = 3
+script = ExtResource("7_og1vs")
+
+[node name="Container" type="HBoxContainer" parent="UIRoot/OverworldInterface/CharacterMenu/InventoryUI/Inventory/EquippedList/Chest"]
+layout_mode = 2
+
+[node name="Key" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/InventoryUI/Inventory/EquippedList/Chest/Container"]
+layout_mode = 2
+text = "Chest: "
+
+[node name="Value" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/InventoryUI/Inventory/EquippedList/Chest/Container"]
+layout_mode = 2
+text = "<empty>"
+
+[node name="Gloves" type="PanelContainer" parent="UIRoot/OverworldInterface/CharacterMenu/InventoryUI/Inventory/EquippedList"]
+layout_mode = 2
+size_flags_vertical = 3
+script = ExtResource("7_og1vs")
+
+[node name="Container" type="HBoxContainer" parent="UIRoot/OverworldInterface/CharacterMenu/InventoryUI/Inventory/EquippedList/Gloves"]
+layout_mode = 2
+
+[node name="Key" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/InventoryUI/Inventory/EquippedList/Gloves/Container"]
+layout_mode = 2
+text = "Gloves: "
+
+[node name="Value" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/InventoryUI/Inventory/EquippedList/Gloves/Container"]
+layout_mode = 2
+text = "<empty>"
+
+[node name="Boots" type="PanelContainer" parent="UIRoot/OverworldInterface/CharacterMenu/InventoryUI/Inventory/EquippedList"]
+layout_mode = 2
+size_flags_vertical = 3
+script = ExtResource("7_og1vs")
+
+[node name="Container" type="HBoxContainer" parent="UIRoot/OverworldInterface/CharacterMenu/InventoryUI/Inventory/EquippedList/Boots"]
+layout_mode = 2
+
+[node name="Key" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/InventoryUI/Inventory/EquippedList/Boots/Container"]
+layout_mode = 2
+text = "Boots: "
+
+[node name="Value" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/InventoryUI/Inventory/EquippedList/Boots/Container"]
+layout_mode = 2
+text = "<empty>"
+
+[node name="Ring" type="PanelContainer" parent="UIRoot/OverworldInterface/CharacterMenu/InventoryUI/Inventory/EquippedList"]
+layout_mode = 2
+size_flags_vertical = 3
+script = ExtResource("7_og1vs")
+
+[node name="Container" type="HBoxContainer" parent="UIRoot/OverworldInterface/CharacterMenu/InventoryUI/Inventory/EquippedList/Ring"]
+layout_mode = 2
+
+[node name="Key" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/InventoryUI/Inventory/EquippedList/Ring/Container"]
+layout_mode = 2
+text = "Ring: "
+
+[node name="Value" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/InventoryUI/Inventory/EquippedList/Ring/Container"]
+layout_mode = 2
+text = "<empty>"
+
+[node name="Amulet" type="PanelContainer" parent="UIRoot/OverworldInterface/CharacterMenu/InventoryUI/Inventory/EquippedList"]
+layout_mode = 2
+size_flags_vertical = 3
+script = ExtResource("7_og1vs")
+
+[node name="Container" type="HBoxContainer" parent="UIRoot/OverworldInterface/CharacterMenu/InventoryUI/Inventory/EquippedList/Amulet"]
+layout_mode = 2
+
+[node name="Key" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/InventoryUI/Inventory/EquippedList/Amulet/Container"]
+layout_mode = 2
+text = "Amulet: "
+
+[node name="Value" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/InventoryUI/Inventory/EquippedList/Amulet/Container"]
+layout_mode = 2
+text = "<empty>"
+
+[node name="Inventory" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/InventoryUI/Inventory"]
+layout_mode = 2
+text = "Inventory"
+
+[node name="InventoryList" type="VBoxContainer" parent="UIRoot/OverworldInterface/CharacterMenu/InventoryUI/Inventory"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+mouse_filter = 2
+
+[node name="ActionButton" type="Button" parent="UIRoot/OverworldInterface/CharacterMenu/InventoryUI/Inventory"]
+layout_mode = 2
+text = "Equip"
+
+[node name="UnequipButton" type="Button" parent="UIRoot/OverworldInterface/CharacterMenu/InventoryUI/Inventory"]
+layout_mode = 2
+text = "Unequip"
+
+[node name="TransferButton" type="Button" parent="UIRoot/OverworldInterface/CharacterMenu/InventoryUI/Inventory"]
+layout_mode = 2
+text = "Transfer"
+
+[node name="ItemInfoPanel" parent="UIRoot/OverworldInterface/CharacterMenu/InventoryUI" instance=ExtResource("8_2wyq8")]
+unique_name_in_owner = true
+layout_mode = 0
+anchors_preset = 0
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 352.0
+offset_top = 128.0
+offset_right = 672.0
+offset_bottom = 384.0
+grow_horizontal = 1
+grow_vertical = 1
+
+[node name="StatsUI" type="PanelContainer" parent="UIRoot/OverworldInterface/CharacterMenu"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_right = 320.0
+grow_vertical = 2
+script = ExtResource("9_vxglm")
+
+[node name="Stats" type="VBoxContainer" parent="UIRoot/OverworldInterface/CharacterMenu/StatsUI"]
+layout_mode = 2
+
+[node name="Exp" type="HBoxContainer" parent="UIRoot/OverworldInterface/CharacterMenu/StatsUI/Stats"]
+layout_mode = 2
+
+[node name="ExpKey" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/StatsUI/Stats/Exp"]
+layout_mode = 2
+text = "Experience: "
+
+[node name="ExpValue" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/StatsUI/Stats/Exp"]
+layout_mode = 2
+
+[node name="HP" type="HBoxContainer" parent="UIRoot/OverworldInterface/CharacterMenu/StatsUI/Stats"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="HpKey" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/StatsUI/Stats/HP"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "HP:"
+
+[node name="HpValue" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/StatsUI/Stats/HP"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="MP" type="HBoxContainer" parent="UIRoot/OverworldInterface/CharacterMenu/StatsUI/Stats"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="MpKey" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/StatsUI/Stats/MP"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "MP:"
+
+[node name="MpValue" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/StatsUI/Stats/MP"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="SP" type="HBoxContainer" parent="UIRoot/OverworldInterface/CharacterMenu/StatsUI/Stats"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="SpKey" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/StatsUI/Stats/SP"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "SP:"
+
+[node name="SpValue" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/StatsUI/Stats/SP"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Attack" type="HBoxContainer" parent="UIRoot/OverworldInterface/CharacterMenu/StatsUI/Stats"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="AttackKey" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/StatsUI/Stats/Attack"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Attack:"
+
+[node name="AttackValue" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/StatsUI/Stats/Attack"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="MagicPower" type="HBoxContainer" parent="UIRoot/OverworldInterface/CharacterMenu/StatsUI/Stats"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="MagicPowerKey" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/StatsUI/Stats/MagicPower"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Magic Power:"
+
+[node name="MagicPowerValue" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/StatsUI/Stats/MagicPower"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="DivinePower" type="HBoxContainer" parent="UIRoot/OverworldInterface/CharacterMenu/StatsUI/Stats"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="DivinePowerKey" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/StatsUI/Stats/DivinePower"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Divine Power:"
+
+[node name="DivinePowerValue" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/StatsUI/Stats/DivinePower"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Speed" type="HBoxContainer" parent="UIRoot/OverworldInterface/CharacterMenu/StatsUI/Stats"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="SpeedKey" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/StatsUI/Stats/Speed"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Speed:"
+
+[node name="SpeedValue" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/StatsUI/Stats/Speed"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Defense" type="HBoxContainer" parent="UIRoot/OverworldInterface/CharacterMenu/StatsUI/Stats"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="DefenseKey" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/StatsUI/Stats/Defense"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Defense:"
+
+[node name="DefenseValue" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/StatsUI/Stats/Defense"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="MagicDefense" type="HBoxContainer" parent="UIRoot/OverworldInterface/CharacterMenu/StatsUI/Stats"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="MagicDefenseKey" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/StatsUI/Stats/MagicDefense"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Magic Defense:"
+
+[node name="MagicDefenseValue" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/StatsUI/Stats/MagicDefense"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Resistance" type="HBoxContainer" parent="UIRoot/OverworldInterface/CharacterMenu/StatsUI/Stats"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ResistanceKey" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/StatsUI/Stats/Resistance"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Resistance:"
+
+[node name="ResistanceValue" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/StatsUI/Stats/Resistance"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="EffectsUI" type="PanelContainer" parent="UIRoot/OverworldInterface/CharacterMenu"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 0.2
+anchor_bottom = 1.0
+offset_right = 64.0
+grow_vertical = 2
+script = ExtResource("10_2f3dj")
+
+[node name="Effects" type="VBoxContainer" parent="UIRoot/OverworldInterface/CharacterMenu/EffectsUI"]
+layout_mode = 2
+
+[node name="SkillsUI" type="PanelContainer" parent="UIRoot/OverworldInterface/CharacterMenu"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_right = 320.0
+grow_vertical = 2
+script = ExtResource("11_yq6so")
+
+[node name="Skills" type="VBoxContainer" parent="UIRoot/OverworldInterface/CharacterMenu/SkillsUI"]
+layout_mode = 2
+
+[node name="LevelUpUI" type="Panel" parent="UIRoot/OverworldInterface/CharacterMenu"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_right = 304.0
+offset_bottom = 264.0
+script = ExtResource("12_fv21b")
+
+[node name="Attributes" type="GridContainer" parent="UIRoot/OverworldInterface/CharacterMenu/LevelUpUI"]
+layout_mode = 0
+offset_left = 8.0
+offset_right = 143.0
+offset_bottom = 241.0
+columns = 2
+
+[node name="Labels" type="VBoxContainer" parent="UIRoot/OverworldInterface/CharacterMenu/LevelUpUI/Attributes"]
+layout_mode = 2
+
+[node name="STR" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/LevelUpUI/Attributes/Labels"]
+layout_mode = 2
+size_flags_vertical = 6
+text = "Strength"
+
+[node name="IQ" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/LevelUpUI/Attributes/Labels"]
+layout_mode = 2
+size_flags_vertical = 6
+text = "Intelligence"
+
+[node name="PIE" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/LevelUpUI/Attributes/Labels"]
+layout_mode = 2
+size_flags_vertical = 6
+text = "Piety"
+
+[node name="VIT" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/LevelUpUI/Attributes/Labels"]
+layout_mode = 2
+size_flags_vertical = 6
+text = "Vitality"
+
+[node name="DEX" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/LevelUpUI/Attributes/Labels"]
+layout_mode = 2
+size_flags_vertical = 6
+text = "Dexterity"
+
+[node name="SPD" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/LevelUpUI/Attributes/Labels"]
+layout_mode = 2
+size_flags_vertical = 6
+text = "Speed"
+
+[node name="LUK" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/LevelUpUI/Attributes/Labels"]
+layout_mode = 2
+size_flags_vertical = 6
+text = "Luck"
+
+[node name="Values" type="VBoxContainer" parent="UIRoot/OverworldInterface/CharacterMenu/LevelUpUI/Attributes"]
+layout_mode = 2
+
+[node name="STR" type="HBoxContainer" parent="UIRoot/OverworldInterface/CharacterMenu/LevelUpUI/Attributes/Values"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Dec" type="Button" parent="UIRoot/OverworldInterface/CharacterMenu/LevelUpUI/Attributes/Values/STR"]
+layout_mode = 2
+text = "-"
+
+[node name="Value" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/LevelUpUI/Attributes/Values/STR"]
+layout_mode = 2
+
+[node name="Inc" type="Button" parent="UIRoot/OverworldInterface/CharacterMenu/LevelUpUI/Attributes/Values/STR"]
+layout_mode = 2
+text = "+"
+
+[node name="IQ" type="HBoxContainer" parent="UIRoot/OverworldInterface/CharacterMenu/LevelUpUI/Attributes/Values"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Dec" type="Button" parent="UIRoot/OverworldInterface/CharacterMenu/LevelUpUI/Attributes/Values/IQ"]
+layout_mode = 2
+text = "-"
+
+[node name="Value" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/LevelUpUI/Attributes/Values/IQ"]
+layout_mode = 2
+
+[node name="Inc" type="Button" parent="UIRoot/OverworldInterface/CharacterMenu/LevelUpUI/Attributes/Values/IQ"]
+layout_mode = 2
+text = "+"
+
+[node name="PIE" type="HBoxContainer" parent="UIRoot/OverworldInterface/CharacterMenu/LevelUpUI/Attributes/Values"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Dec" type="Button" parent="UIRoot/OverworldInterface/CharacterMenu/LevelUpUI/Attributes/Values/PIE"]
+layout_mode = 2
+text = "-"
+
+[node name="Value" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/LevelUpUI/Attributes/Values/PIE"]
+layout_mode = 2
+
+[node name="Inc" type="Button" parent="UIRoot/OverworldInterface/CharacterMenu/LevelUpUI/Attributes/Values/PIE"]
+layout_mode = 2
+text = "+"
+
+[node name="VIT" type="HBoxContainer" parent="UIRoot/OverworldInterface/CharacterMenu/LevelUpUI/Attributes/Values"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Dec" type="Button" parent="UIRoot/OverworldInterface/CharacterMenu/LevelUpUI/Attributes/Values/VIT"]
+layout_mode = 2
+text = "-"
+
+[node name="Value" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/LevelUpUI/Attributes/Values/VIT"]
+layout_mode = 2
+
+[node name="Inc" type="Button" parent="UIRoot/OverworldInterface/CharacterMenu/LevelUpUI/Attributes/Values/VIT"]
+layout_mode = 2
+text = "+"
+
+[node name="DEX" type="HBoxContainer" parent="UIRoot/OverworldInterface/CharacterMenu/LevelUpUI/Attributes/Values"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Dec" type="Button" parent="UIRoot/OverworldInterface/CharacterMenu/LevelUpUI/Attributes/Values/DEX"]
+layout_mode = 2
+text = "-"
+
+[node name="Value" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/LevelUpUI/Attributes/Values/DEX"]
+layout_mode = 2
+
+[node name="Inc" type="Button" parent="UIRoot/OverworldInterface/CharacterMenu/LevelUpUI/Attributes/Values/DEX"]
+layout_mode = 2
+text = "+"
+
+[node name="SPD" type="HBoxContainer" parent="UIRoot/OverworldInterface/CharacterMenu/LevelUpUI/Attributes/Values"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Dec" type="Button" parent="UIRoot/OverworldInterface/CharacterMenu/LevelUpUI/Attributes/Values/SPD"]
+layout_mode = 2
+text = "-"
+
+[node name="Value" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/LevelUpUI/Attributes/Values/SPD"]
+layout_mode = 2
+
+[node name="Inc" type="Button" parent="UIRoot/OverworldInterface/CharacterMenu/LevelUpUI/Attributes/Values/SPD"]
+layout_mode = 2
+text = "+"
+
+[node name="LUK" type="HBoxContainer" parent="UIRoot/OverworldInterface/CharacterMenu/LevelUpUI/Attributes/Values"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Dec" type="Button" parent="UIRoot/OverworldInterface/CharacterMenu/LevelUpUI/Attributes/Values/LUK"]
+layout_mode = 2
+text = "-"
+
+[node name="Value" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/LevelUpUI/Attributes/Values/LUK"]
+layout_mode = 2
+
+[node name="Inc" type="Button" parent="UIRoot/OverworldInterface/CharacterMenu/LevelUpUI/Attributes/Values/LUK"]
+layout_mode = 2
+text = "+"
+
+[node name="Points" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/LevelUpUI"]
+layout_mode = 0
+offset_left = 160.0
+offset_top = 216.0
+offset_right = 295.0
+offset_bottom = 239.0
+
+[node name="Chest" type="Control" parent="UIRoot/OverworldInterface"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 13
+anchor_left = 0.5
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -469.0
+offset_top = 75.0
+offset_right = 464.0
+offset_bottom = -269.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("14_yq6so")
+
+[node name="ChestOpenerChoice" type="Panel" parent="UIRoot/OverworldInterface/Chest"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("14_vxglm")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UIRoot/OverworldInterface/Chest/ChestOpenerChoice"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="ChestContent" type="Panel" parent="UIRoot/OverworldInterface/Chest"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_bottom = -384.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("15_2f3dj")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UIRoot/OverworldInterface/Chest/ChestContent"]
+layout_mode = 1
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_right = 448.0
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="UIRoot/OverworldInterface/Chest/ChestContent"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 24.0
+offset_top = -208.0
+offset_right = 464.0
+offset_bottom = -185.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Close" type="Button" parent="UIRoot/OverworldInterface/Chest/ChestContent"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -32.0
+offset_bottom = 31.0
+grow_horizontal = 0
+text = "X"
+
+[node name="ItemInfoPanel" parent="UIRoot/OverworldInterface/Chest/ChestContent" instance=ExtResource("8_2wyq8")]
+layout_mode = 1
+offset_left = -536.0
+offset_top = -144.0
+offset_right = -216.0
+offset_bottom = 112.0
+
+[node name="MembersSelect" type="HBoxContainer" parent="UIRoot/OverworldInterface/Chest/ChestContent"]
+layout_mode = 0
+offset_left = 576.0
+offset_top = 320.0
+offset_right = 1152.0
+offset_bottom = 416.0
 
 [node name="BattleInterface" type="Control" parent="UIRoot"]
 visible = false
@@ -277,16 +986,21 @@ script = ExtResource("11_eb6dy")
 
 [node name="PartyInterface" type="Control" parent="UIRoot"]
 layout_mode = 3
-anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 0
 script = ExtResource("11_dp3eg")
 
 [node name="PartyPanel" parent="UIRoot/PartyInterface" instance=ExtResource("5_85g3d")]
 layout_mode = 1
-offset_top = 543.36
-offset_bottom = 543.32794
-grow_vertical = 0
+anchors_preset = 10
+anchor_top = 0.0
+anchor_bottom = 0.0
+offset_top = -180.0
+grow_vertical = 1
 
 [node name="Managers" type="Node" parent="."]
 
@@ -310,3 +1024,15 @@ script = ExtResource("9_choun")
 script = ExtResource("10_ya4ey")
 
 [node name="Player" parent="." instance=ExtResource("2_sugp2")]
+
+[connection signal="pressed" from="UIRoot/OverworldInterface/CharacterMenu/CharacterMenuButtons/HBoxContainer/Stats" to="UIRoot/OverworldInterface/CharacterMenu" method="_on_stats_pressed"]
+[connection signal="pressed" from="UIRoot/OverworldInterface/CharacterMenu/CharacterMenuButtons/HBoxContainer/Inventory" to="UIRoot/OverworldInterface/CharacterMenu" method="_on_inventory_pressed"]
+[connection signal="pressed" from="UIRoot/OverworldInterface/CharacterMenu/CharacterMenuButtons/HBoxContainer/Skills" to="UIRoot/OverworldInterface/CharacterMenu" method="_on_skills_pressed"]
+[connection signal="pressed" from="UIRoot/OverworldInterface/CharacterMenu/CharacterMenuButtons/HBoxContainer/Effects" to="UIRoot/OverworldInterface/CharacterMenu" method="_on_effects_pressed"]
+[connection signal="pressed" from="UIRoot/OverworldInterface/CharacterMenu/CharacterMenuButtons/HBoxContainer/Talk" to="UIRoot/OverworldInterface/CharacterMenu" method="_on_talk_pressed"]
+[connection signal="pressed" from="UIRoot/OverworldInterface/CharacterMenu/CharacterMenuButtons/HBoxContainer/LevelUp" to="UIRoot/OverworldInterface/CharacterMenu" method="_on_level_up_pressed"]
+[connection signal="pressed" from="UIRoot/OverworldInterface/CharacterMenu/CharacterMenuButtons/HBoxContainer/Close" to="UIRoot/OverworldInterface/CharacterMenu" method="_on_close_pressed"]
+[connection signal="pressed" from="UIRoot/OverworldInterface/CharacterMenu/InventoryUI/Inventory/ActionButton" to="UIRoot/OverworldInterface/CharacterMenu/InventoryUI" method="_on_action_button_pressed"]
+[connection signal="pressed" from="UIRoot/OverworldInterface/CharacterMenu/InventoryUI/Inventory/UnequipButton" to="UIRoot/OverworldInterface/CharacterMenu/InventoryUI" method="_on_unequip_button_pressed"]
+[connection signal="pressed" from="UIRoot/OverworldInterface/CharacterMenu/InventoryUI/Inventory/TransferButton" to="UIRoot/OverworldInterface/CharacterMenu/InventoryUI" method="_on_transfer_button_pressed"]
+[connection signal="pressed" from="UIRoot/OverworldInterface/Chest/ChestContent/Close" to="UIRoot/OverworldInterface/Chest/ChestContent" method="_on_close_pressed"]

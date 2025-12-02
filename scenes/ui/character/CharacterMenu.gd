@@ -1,19 +1,17 @@
 extends Control
 class_name CharacterMenu
 
-@onready var stats_tab := $Menu/StatsUI
-@onready var inventory_tab := $Menu/InventoryUI
-@onready var effects_tab := $Menu/EffectsUI
-@onready var skills_tab := $Menu/SkillsUI
-@onready var level_up_tab: Panel = $Menu/LevelUpUI
-@onready var level_up_button: Button = $Menu/CharacterMenuButtons/HBoxContainer/LevelUp
+@onready var stats_tab: PanelContainer = %StatsUI
+@onready var inventory_tab: InventoryUI = %InventoryUI
+@onready var effects_tab: PanelContainer = %EffectsUI
+@onready var skills_tab: PanelContainer = %SkillsUI
+@onready var level_up_tab: Panel = %LevelUpUI
+@onready var level_up_button: Button = %LevelUp
 
+@onready var inventory_container: VBoxContainer = %Inventory
+@onready var item_info_panel: VBoxContainer = %ItemInfoPanel
 
-@onready var inventory_container: VBoxContainer = $Menu/InventoryUI/Inventory
-@onready var item_info_panel: VBoxContainer = $Menu/InventoryUI/ItemInfoPanel
-
-@onready var menu := $Menu
-@onready var name_label := $Menu/Name
+@onready var name_label: Label = $Name
 
 var character_instance: CharacterInstance
 
@@ -21,10 +19,8 @@ func bind(character: CharacterInstance) -> void:
 	if BattleContext.in_battle:
 		return
 		
-	GameState.current_state = GameState.States.MENU
-		
 	character_instance = character
-	$Menu/Name.text = character.resource.name
+	name_label.text = character.resource.name
 	stats_tab.bind_character(character_instance)
 		
 	show_tab("stats")
@@ -74,7 +70,6 @@ func _on_effects_pressed() -> void:
 func _on_close_pressed() -> void:
 	hide()
 	inventory_tab.close()
-	GameState.current_state = GameState.States.IDLE
 
 
 func _on_talk_pressed() -> void:
