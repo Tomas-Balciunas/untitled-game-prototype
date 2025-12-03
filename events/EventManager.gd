@@ -33,9 +33,6 @@ func process_event(data: Variant) -> EventContext:
 	if event.is_empty():
 		GameState.set_idle()
 		return
-		
-	party_panel = get_tree().get_root().get_node("Main/UIRoot/PartyInterface/PartyPanel")
-	party_panel.disable_party_ui()
 	
 	for step_data: Dictionary in event:
 		var step := EventFactory.create_step(step_data)
@@ -44,13 +41,11 @@ func process_event(data: Variant) -> EventContext:
 		else:
 			push_error("Error getting event step: %s" % step_data)
 	
-	party_panel.enable_party_ui()
-	
 	if data is String:
 		EventFlags.mark_event_completed(data)
 		
 	GameState.set_idle()
-	
+	ConversationBus.event_concluded.emit()
 	var ctx := EventContext.new()
 	ctx.choices = choices
 	

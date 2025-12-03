@@ -3,13 +3,15 @@ extends Control
 
 var current_battler: CharacterInstance = null
 
-@onready var attack_button := $VBoxContainer/AttackButton
-@onready var defend_button := $VBoxContainer/DefendButton
-@onready var skill_button := $VBoxContainer/SkillButton
-@onready var item_button := $VBoxContainer/ItemButton
-@onready var flee_button := $VBoxContainer/FleeButton
+@onready var attack_button: Button = %AttackButton
+@onready var defend_button: Button = %DefendButton
+@onready var skill_button: Button = %SkillButton
+@onready var item_button: Button = %ItemButton
+@onready var flee_button: Button = %FleeButton
+
 @onready var skill_popup := $Skill
 @onready var skill_list_container := $Skill/ScrollContainer/SkillListContainer
+
 @onready var item_popup := $Item
 @onready var item_list_container := $Item/ScrollContainer/ItemListContainer
 
@@ -21,10 +23,17 @@ var current_battler: CharacterInstance = null
 @onready var item_info_panel := $Item/ItemInfoPanel
 @onready var item_info_name_label := $Item/ItemInfoPanel/ItemName
 @onready var item_info_description_label := $Item/ItemInfoPanel/ItemDescription
+
 @onready var v_box_container_2: VBoxContainer = $VBoxContainer2
 
 func _ready() -> void:
+	BattleBus.battle_start.connect(_on_battle_start)
+	BattleBus.battle_end.connect(_on_battle_end)
+	
 	BattleBus.queue_processed.connect(_on_queue_processed)
+	
+	BattleBus.ally_turn_started.connect(_on_ally_turn_started)
+	BattleBus.turn_ended.connect(_on_turn_ended)
 
 func _on_queue_processed(queue: Array[CharacterInstance]) -> void:
 	for child in v_box_container_2.get_children():
@@ -39,20 +48,28 @@ func _on_queue_processed(queue: Array[CharacterInstance]) -> void:
 		index += 1
 		v_box_container_2.add_child(label)
 
-func _on_battler_change(battler: CharacterInstance, is_party_member: bool) -> void:
-	if is_party_member:
-		current_battler = battler
-		_populate_skill_list()
-		_populate_item_list()
-	
-func _on_turn_started(is_party_member: bool) -> void:
-	if is_party_member:
-		show()
-		skill_popup.visible = false
-		item_popup.visible = false
-		highlight_action("attack")
-	#else:
-		#hide()
+
+func _on_battle_start() -> void:
+	hide()
+
+
+func _on_battle_end() -> void:
+	hide()
+
+
+func _on_ally_turn_started(battler: CharacterInstance) -> void:
+	current_battler = battler
+	_populate_skill_list()
+	_populate_item_list()
+	skill_popup.visible = false
+	item_popup.visible = false
+	highlight_action("attack")
+	show()
+
+
+func _on_turn_ended() -> void:
+	hide()
+
 
 func _on_defend_button_pressed() -> void:
 	BattleBus.action_selected.emit(BattleBus.DEFEND, null)

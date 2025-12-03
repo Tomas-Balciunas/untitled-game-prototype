@@ -12,6 +12,10 @@ func _ready() -> void:
 	CharacterBus.health_changed.connect(_on_health_changed)
 	CharacterBus.character_damaged.connect(_on_damaged)
 	CharacterBus.character_healed.connect(_on_healed)
+	
+	BattleBus.ally_turn_started.connect(highlight)
+	BattleBus.turn_ended.connect(unhighlight)
+	BattleBus.battle_end.connect(unhighlight)
 	hide_info()
 
 func bind(character: CharacterInstance) -> void:
@@ -85,7 +89,10 @@ func _on_mouse_entered() -> void:
 func _on_mouse_exited() -> void:
 	$HoverOverlay.visible = false
 
-func highlight() -> void:
+func highlight(battler: CharacterInstance) -> void:
+	if !character_instance == battler:
+		return
+	
 	var tween := create_tween()
 	tween.tween_property(self, "modulate", Color(0.8, 0.8, 0.4), 0.1).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
 

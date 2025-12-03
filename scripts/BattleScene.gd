@@ -4,16 +4,12 @@ class_name BattleScene
 
 @onready var arena_root := $ArenaRoot
 @onready var enemy_grid := $EnemyFormation
-@onready var battle_ui := $BattleUI
 @onready var battle_manager := $BattleManager
 @onready var ally_grid := $AllyFormation
 
 func _ready() -> void:
 	battle_manager.enemy_grid = enemy_grid
 	battle_manager.ally_grid = ally_grid
-	battle_manager.current_battler_change.connect(battle_ui._on_battler_change)
-	battle_manager.turn_started.connect(battle_ui._on_turn_started)
-	battle_manager.enemy_died.connect(enemy_grid._on_enemy_died)
 
 func initiate(arena: PackedScene, enemies: Array[CharacterResource], data: EncounterData) -> void:
 	load_arena(arena)

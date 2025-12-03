@@ -19,6 +19,6 @@ func run(_manager: EventManager) -> void:
 		
 		if not passes:
 			return
-			
+	
 	ConversationBus.request_conversation.emit(speaker, lines)
 	await ConversationBus.conversation_finished

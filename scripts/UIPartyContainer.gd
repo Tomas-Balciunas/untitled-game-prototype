@@ -59,16 +59,3 @@ func disable_party_ui() -> void:
 	
 func enable_party_ui() -> void:
 	self.visible = true
-
-func highlight_member(character: CharacterInstance) -> void:
-	for row: Array in formation:
-		for slot: PartyMemberSlot in row:
-			if slot.character_instance == character:
-				slot.highlight()
-			else:
-				slot.unhighlight()
-
-func clear_highlights() -> void:
-	for row: Array in formation:
-		for slot: PartyMemberSlot in row:
-			slot.unhighlight()

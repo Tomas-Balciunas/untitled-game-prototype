@@ -2,14 +2,8 @@ extends Node
 
 class_name BattleManager
 
-signal current_battler_change(battler: CharacterInstance, is_party_member: bool)
-signal turn_started(is_party_member: bool)
-signal enemy_died(dead: CharacterInstance)
-
 const TURN_THRESHOLD = 1000
 
-@onready var camera: Camera3D = get_viewport().get_camera_3d()
-@onready var party_panel := get_tree().get_root().get_node("Main/UIRoot/OverworldInterface/PartyPanel")
 @onready var enemy_grid: EnemyFormation = null
 @onready var ally_grid: AllyFormation = null
 
@@ -56,6 +50,7 @@ func begin(_enemies: Array[CharacterInstance]) -> void:
 			inst.prepare(b)
 			b.battle_events.append(inst)
 	
+	BattleBus.battle_start.emit()
 	current_state = BattleState.CHECK_END
 
 func _process(_delta: float) -> void:
@@ -110,9 +105,8 @@ func _process_turn_queue() -> void:
 	BattleBus.queue_processed.emit(turn_queue)
 
 func _on_turn_start() -> void:
-	var is_party_member := current_battler in party
-	emit_signal("turn_started", is_party_member)
-	emit_signal("current_battler_change", current_battler, is_party_member)
+	var is_party_member: bool = current_battler in party
+	BattleBus.turn_started.emit(current_battler, is_party_member)
 
 	var event := TriggerEvent.new()
 	event.trigger = EffectTriggers.ON_TURN_START
@@ -123,24 +117,25 @@ func _on_turn_start() -> void:
 	
 	if is_party_member:
 		current_state = BattleState.PLAYER_TURN
-		party_panel.highlight_member(current_battler)
 		_on_player_turn(event) ## handle cases like checking for hard CC
 	else:
 		current_state = BattleState.ENEMY_TURN
 		_process_enemy_turn(event)
 
 func _on_turn_end() -> void:
+	var is_party_member: bool = current_battler in party
 	var event := TriggerEvent.new()
 	event.trigger = EffectTriggers.ON_TURN_END
 	event.actor = current_battler
 	event.ctx = ActionContext.new()
 	EffectRunner.process_trigger(event)
 	current_battler.action_value += 1000 / (100 + current_battler.stats.get_final_stat(Stats.SPEED))
+	BattleBus.turn_ended.emit()
 	current_battler = null
-	party_panel.clear_highlights()
 	current_state = BattleState.CHECK_END
 	
 func _on_player_turn(event: TriggerEvent) -> void:
+	BattleBus.ally_turn_started.emit(current_battler)
 	if event.ctx.skip_turn:
 		current_state = BattleState.TURN_END
 		return
@@ -354,10 +349,12 @@ func _handle_end(result: String) -> void:
 			_handle_flee()
 
 func _handle_win() -> void:
+	BattleBus.battle_end.emit()
 	EncounterBus.encounter_ended.emit("win", BattleContext.encounter_data)
 	current_state = BattleState.IDLE
 
 func _handle_lose() -> void:
+	BattleBus.battle_end.emit()
 	EncounterBus.encounter_ended.emit("lose", BattleContext.encounter_data)
 	current_state = BattleState.IDLE
 	
@@ -365,6 +362,7 @@ func _handle_flee() -> void:
 	var success := randf() < 0.5
 	if success:
 		print("Party flees successfully!")
+		BattleBus.battle_end.emit()
 		EncounterBus.encounter_ended.emit("flee", BattleContext.encounter_data)
 		current_state = BattleState.IDLE
 	else:
@@ -392,16 +390,16 @@ func _corpse_janny() -> void:
 		turn_queue.erase(dead)
 		#battle_ui.remove_character(dead)
 		
-		emit_signal("enemy_died", dead)
+		BattleBus.enemy_died.emit(dead)
 	_to_cleanup.clear()
 
 func disable_all_targeting() -> void:
-	party_panel.disable_targeting()
 	BattleContext.enemy_targeting_enabled = false
+	BattleContext.ally_targeting_enabled = false
 
 func enable_all_targeting() -> void:
-	party_panel.enable_targeting()
 	BattleContext.enemy_targeting_enabled = true
+	BattleContext.ally_targeting_enabled = true
 
 func enable_enemy_targeting() -> void:
 	BattleContext.enemy_targeting_enabled = true
@@ -410,10 +408,10 @@ func disable_enemy_targeting() -> void:
 	BattleContext.enemy_targeting_enabled = false
 
 func enable_ally_targeting() -> void:
-	party_panel.enable_targeting()
+	BattleContext.ally_targeting_enabled = true
 	
 func disable_ally_targeting() -> void:
-	party_panel.disable_targeting()
+	BattleContext.ally_targeting_enabled = false
 
 func get_applicable_targets(current: CharacterInstance, type: TargetingManager.TargetType) -> Array[CharacterInstance]:
 	match type:

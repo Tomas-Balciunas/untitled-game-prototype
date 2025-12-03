@@ -17,6 +17,7 @@ func _ready() -> void:
 	back_slots.resize(MAX_SLOTS)
 	front_positions = get_centered_positions(MAX_SLOTS, FRONT_ROW_Z)
 	#back_positions  = get_centered_positions(MAX_SLOTS, BACK_ROW_Z)
+	BattleBus.enemy_died.connect(_on_enemy_died)
 	
 func _on_enemy_died(dead: CharacterInstance) -> void:
 	remove_slot_for(dead)

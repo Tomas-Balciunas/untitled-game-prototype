@@ -1,4 +1,4 @@
-[gd_scene load_steps=34 format=3 uid="uid://cphcmsugjsscn"]
+[gd_scene load_steps=35 format=3 uid="uid://cphcmsugjsscn"]
 
 [ext_resource type="Script" uid="uid://bsq341p3oxk46" path="res://scenes/GameState.gd" id="1_o6xl0"]
 [ext_resource type="Script" uid="uid://x2dulqp2hx2s" path="res://scenes/dungeon/Dungeon.gd" id="2_o6xl0"]
@@ -8,7 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://b7tdrca1v88rk" path="res://scenes/PartyPanel.tscn" id="5_85g3d"]
 [ext_resource type="Script" uid="uid://df1gmeiyv6avc" path="res://gear/_ui/inventory/InventoryUI.gd" id="5_pm3ni"]
 [ext_resource type="Script" uid="uid://ckmaadhfher4" path="res://scripts/TextboxUI.gd" id="5_tbgi4"]
-[ext_resource type="Script" uid="uid://by1jny1k3myyb" path="res://scripts/ConversationManager.gd" id="5_tipki"]
+[ext_resource type="Script" uid="uid://by1jny1k3myyb" path="res://scripts/ConversationInterface.gd" id="5_tipki"]
 [ext_resource type="Script" uid="uid://ilm5qu0yhhaa" path="res://scenes/ui/character/CharacterMenu.gd" id="5_y6deb"]
 [ext_resource type="Script" uid="uid://dfmjvvtvwkjld" path="res://scenes/ui/BattleInterface.gd" id="6_jbj1t"]
 [ext_resource type="Script" uid="uid://b2sfqqh521u6d" path="res://gear/_ui/inventory/EquippedSlotContainer.gd" id="6_y6deb"]
@@ -27,6 +27,7 @@
 [ext_resource type="Script" uid="uid://dgg2yi0cufr5q" path="res://scenes/ui/chest/chest_open_select.gd" id="14_vxglm"]
 [ext_resource type="Script" uid="uid://khbcx214lfkl" path="res://scenes/ui/chest/ChestInterface.gd" id="14_yq6so"]
 [ext_resource type="Script" uid="uid://rkotit4vkflf" path="res://scenes/ui/chest/chest_content.gd" id="15_2f3dj"]
+[ext_resource type="Script" uid="uid://b4kodgy0qo0cl" path="res://scripts/UIBattle.gd" id="18_2f3dj"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tel4y"]
 bg_color = Color(0.6, 0.6, 0.6, 0.105)
@@ -69,6 +70,7 @@ color = Color(0.0694218, 0.00964971, 0.263646, 1)
 script = ExtResource("4_trceg")
 
 [node name="OverworldInterface" type="Control" parent="UIRoot"]
+visible = false
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -773,64 +775,78 @@ offset_bottom = 416.0
 
 [node name="BattleInterface" type="Control" parent="UIRoot"]
 visible = false
+z_index = 5
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 script = ExtResource("6_jbj1t")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="UIRoot/BattleInterface"]
+[node name="BattleControls" type="Control" parent="UIRoot/BattleInterface"]
+z_index = 5
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("18_2f3dj")
+
+[node name="Buttons" type="VBoxContainer" parent="UIRoot/BattleInterface/BattleControls"]
 z_index = 5
 layout_mode = 0
 offset_left = 151.0
-offset_top = 512.0
+offset_top = 618.0
 offset_right = 216.0
-offset_bottom = 683.0
+offset_bottom = 789.0
 
-[node name="AttackButton" type="Button" parent="UIRoot/BattleInterface/VBoxContainer"]
+[node name="AttackButton" type="Button" parent="UIRoot/BattleInterface/BattleControls/Buttons"]
+unique_name_in_owner = true
 layout_mode = 2
 focus_mode = 0
 theme_override_styles/focus = SubResource("StyleBoxFlat_jkv2x")
 action_mode = 0
 text = "Attack"
 
-[node name="DefendButton" type="Button" parent="UIRoot/BattleInterface/VBoxContainer"]
+[node name="DefendButton" type="Button" parent="UIRoot/BattleInterface/BattleControls/Buttons"]
+unique_name_in_owner = true
 layout_mode = 2
 focus_mode = 0
 theme_override_styles/hover = SubResource("StyleBoxFlat_jbj1t")
 text = "Defend"
 
-[node name="SkillButton" type="Button" parent="UIRoot/BattleInterface/VBoxContainer"]
+[node name="SkillButton" type="Button" parent="UIRoot/BattleInterface/BattleControls/Buttons"]
+unique_name_in_owner = true
 layout_mode = 2
 focus_mode = 0
 text = "Skill"
 
-[node name="ItemButton" type="Button" parent="UIRoot/BattleInterface/VBoxContainer"]
+[node name="ItemButton" type="Button" parent="UIRoot/BattleInterface/BattleControls/Buttons"]
+unique_name_in_owner = true
 layout_mode = 2
 focus_mode = 0
 theme_override_styles/hover = SubResource("StyleBoxFlat_muem4")
 text = "Item"
 
-[node name="FleeButton" type="Button" parent="UIRoot/BattleInterface/VBoxContainer"]
+[node name="FleeButton" type="Button" parent="UIRoot/BattleInterface/BattleControls/Buttons"]
+unique_name_in_owner = true
 layout_mode = 2
 focus_mode = 0
 text = "Flee"
 
-[node name="Skill" type="Control" parent="UIRoot/BattleInterface"]
+[node name="Skill" type="Control" parent="UIRoot/BattleInterface/BattleControls"]
 visible = false
 layout_mode = 1
 anchor_left = 0.262
 anchor_top = 0.354
 anchor_right = 0.362
 anchor_bottom = 0.577
-offset_left = 8.63995
-offset_top = 0.127991
-offset_right = 0.639984
-offset_bottom = -0.136017
+offset_left = 312.55994
+offset_top = 269.168
+offset_right = 308.55994
+offset_bottom = 268.904
 
-[node name="ScrollContainer" type="ScrollContainer" parent="UIRoot/BattleInterface/Skill"]
+[node name="ScrollContainer" type="ScrollContainer" parent="UIRoot/BattleInterface/BattleControls/Skill"]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = -1.2
@@ -842,11 +858,11 @@ offset_right = -7.0
 offset_bottom = -36.047
 horizontal_scroll_mode = 0
 
-[node name="SkillListContainer" type="VBoxContainer" parent="UIRoot/BattleInterface/Skill/ScrollContainer"]
+[node name="SkillListContainer" type="VBoxContainer" parent="UIRoot/BattleInterface/BattleControls/Skill/ScrollContainer"]
 layout_mode = 2
 mouse_filter = 2
 
-[node name="SkillInfoPanel" type="VBoxContainer" parent="UIRoot/BattleInterface/Skill"]
+[node name="SkillInfoPanel" type="VBoxContainer" parent="UIRoot/BattleInterface/BattleControls/Skill"]
 visible = false
 layout_mode = 0
 anchor_left = -1.2
@@ -860,29 +876,29 @@ offset_bottom = -132.05
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="SkillName" type="Label" parent="UIRoot/BattleInterface/Skill/SkillInfoPanel"]
+[node name="SkillName" type="Label" parent="UIRoot/BattleInterface/BattleControls/Skill/SkillInfoPanel"]
 layout_mode = 2
 mouse_filter = 0
 
-[node name="SkillCost" type="Label" parent="UIRoot/BattleInterface/Skill/SkillInfoPanel"]
+[node name="SkillCost" type="Label" parent="UIRoot/BattleInterface/BattleControls/Skill/SkillInfoPanel"]
 layout_mode = 2
 
-[node name="SkillDescription" type="Label" parent="UIRoot/BattleInterface/Skill/SkillInfoPanel"]
+[node name="SkillDescription" type="Label" parent="UIRoot/BattleInterface/BattleControls/Skill/SkillInfoPanel"]
 layout_mode = 2
 
-[node name="Item" type="Control" parent="UIRoot/BattleInterface"]
+[node name="Item" type="Control" parent="UIRoot/BattleInterface/BattleControls"]
 visible = false
 layout_mode = 1
 anchor_left = 0.231
 anchor_top = 0.406
 anchor_right = 0.325
 anchor_bottom = 0.625
-offset_left = 0.320007
-offset_top = 0.191986
-offset_right = -3.05176e-05
-offset_bottom = 3.0
+offset_left = 268.28003
+offset_top = 308.75198
+offset_right = 267.96
+offset_bottom = 311.56
 
-[node name="ScrollContainer" type="ScrollContainer" parent="UIRoot/BattleInterface/Item"]
+[node name="ScrollContainer" type="ScrollContainer" parent="UIRoot/BattleInterface/BattleControls/Item"]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = -0.858
@@ -895,10 +911,10 @@ offset_right = 1.04
 offset_bottom = -8.07001
 horizontal_scroll_mode = 0
 
-[node name="ItemListContainer" type="VBoxContainer" parent="UIRoot/BattleInterface/Item/ScrollContainer"]
+[node name="ItemListContainer" type="VBoxContainer" parent="UIRoot/BattleInterface/BattleControls/Item/ScrollContainer"]
 layout_mode = 2
 
-[node name="ItemInfoPanel" type="VBoxContainer" parent="UIRoot/BattleInterface/Item"]
+[node name="ItemInfoPanel" type="VBoxContainer" parent="UIRoot/BattleInterface/BattleControls/Item"]
 visible = false
 layout_mode = 1
 anchors_preset = -1
@@ -913,21 +929,20 @@ offset_bottom = -140.05
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="ItemName" type="Label" parent="UIRoot/BattleInterface/Item/ItemInfoPanel"]
+[node name="ItemName" type="Label" parent="UIRoot/BattleInterface/BattleControls/Item/ItemInfoPanel"]
 layout_mode = 2
 mouse_filter = 0
 
-[node name="ItemDescription" type="Label" parent="UIRoot/BattleInterface/Item/ItemInfoPanel"]
+[node name="ItemDescription" type="Label" parent="UIRoot/BattleInterface/BattleControls/Item/ItemInfoPanel"]
 layout_mode = 2
 
-[node name="VBoxContainer2" type="VBoxContainer" parent="UIRoot/BattleInterface"]
+[node name="VBoxContainer2" type="VBoxContainer" parent="UIRoot/BattleInterface/BattleControls"]
 layout_mode = 0
 offset_top = -424.0
 offset_right = 40.0
 offset_bottom = -384.0
 
 [node name="EventInterface" type="Control" parent="UIRoot"]
-visible = false
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -936,11 +951,19 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("7_muem4")
 
-[node name="ConversationManager" type="Node" parent="UIRoot/EventInterface"]
+[node name="ConversationInterface" type="Control" parent="UIRoot/EventInterface"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
 script = ExtResource("5_tipki")
 
-[node name="TextboxUI" type="Control" parent="UIRoot/EventInterface/ConversationManager"]
-layout_mode = 3
+[node name="TextboxUI" type="Control" parent="UIRoot/EventInterface/ConversationInterface"]
+layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -949,7 +972,7 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("5_tbgi4")
 
-[node name="Panel" type="Panel" parent="UIRoot/EventInterface/ConversationManager/TextboxUI"]
+[node name="Panel" type="Panel" parent="UIRoot/EventInterface/ConversationInterface/TextboxUI"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -958,7 +981,7 @@ offset_bottom = 4.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="SpeakerLabel" type="Label" parent="UIRoot/EventInterface/ConversationManager/TextboxUI/Panel"]
+[node name="SpeakerLabel" type="Label" parent="UIRoot/EventInterface/ConversationInterface/TextboxUI/Panel"]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.325
@@ -970,7 +993,7 @@ offset_right = 108.8
 offset_bottom = 7.56
 theme_override_font_sizes/font_size = 20
 
-[node name="TextLabel" type="Label" parent="UIRoot/EventInterface/ConversationManager/TextboxUI/Panel"]
+[node name="TextLabel" type="Label" parent="UIRoot/EventInterface/ConversationInterface/TextboxUI/Panel"]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.32
@@ -981,7 +1004,15 @@ offset_left = -6.10352e-05
 offset_top = 0.255981
 theme_override_font_sizes/font_size = 20
 
-[node name="ChoiceManager" type="Node" parent="UIRoot/EventInterface"]
+[node name="ChoiceInterface" type="Control" parent="UIRoot/EventInterface"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
 script = ExtResource("11_eb6dy")
 
 [node name="PartyInterface" type="Control" parent="UIRoot"]
@@ -1001,6 +1032,7 @@ anchor_top = 0.0
 anchor_bottom = 0.0
 offset_top = -180.0
 grow_vertical = 1
+mouse_filter = 2
 
 [node name="Managers" type="Node" parent="."]
 
@@ -1036,3 +1068,8 @@ script = ExtResource("10_ya4ey")
 [connection signal="pressed" from="UIRoot/OverworldInterface/CharacterMenu/InventoryUI/Inventory/UnequipButton" to="UIRoot/OverworldInterface/CharacterMenu/InventoryUI" method="_on_unequip_button_pressed"]
 [connection signal="pressed" from="UIRoot/OverworldInterface/CharacterMenu/InventoryUI/Inventory/TransferButton" to="UIRoot/OverworldInterface/CharacterMenu/InventoryUI" method="_on_transfer_button_pressed"]
 [connection signal="pressed" from="UIRoot/OverworldInterface/Chest/ChestContent/Close" to="UIRoot/OverworldInterface/Chest/ChestContent" method="_on_close_pressed"]
+[connection signal="pressed" from="UIRoot/BattleInterface/BattleControls/Buttons/AttackButton" to="UIRoot/BattleInterface/BattleControls" method="_on_attack_button_pressed"]
+[connection signal="pressed" from="UIRoot/BattleInterface/BattleControls/Buttons/DefendButton" to="UIRoot/BattleInterface/BattleControls" method="_on_defend_button_pressed"]
+[connection signal="pressed" from="UIRoot/BattleInterface/BattleControls/Buttons/SkillButton" to="UIRoot/BattleInterface/BattleControls" method="_on_skill_button_pressed"]
+[connection signal="pressed" from="UIRoot/BattleInterface/BattleControls/Buttons/ItemButton" to="UIRoot/BattleInterface/BattleControls" method="_on_item_button_pressed"]
+[connection signal="pressed" from="UIRoot/BattleInterface/BattleControls/Buttons/FleeButton" to="UIRoot/BattleInterface/BattleControls" method="_on_flee_button_pressed"]

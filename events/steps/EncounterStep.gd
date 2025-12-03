@@ -19,5 +19,4 @@ func run(_manager: EventManager) -> void:
 	data.enemies = enemy_instances
 	
 	EncounterBus.encounter_started.emit(data)
-	_manager.party_panel.enable_party_ui()
 	await EncounterBus.encounter_ended
