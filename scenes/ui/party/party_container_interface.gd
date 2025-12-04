@@ -12,9 +12,8 @@ extends Panel
 		$PanelContainer/PartyContainer/BackRow/PartyMemberSlot2/PartyMember,
 		$PanelContainer/PartyContainer/BackRow/PartyMemberSlot3/PartyMember
 	]
-] 
+]
 
-const UIPartyMemberScene = preload("res://scenes/UIPartyMemberSlot.tscn")
 
 func _ready() -> void:
 	SaveManager.connect("party_reloaded", Callable(self, "_on_party_reloaded"))

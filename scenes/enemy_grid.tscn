@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://jt5wmc5ciuxy"]
 
-[ext_resource type="Script" uid="uid://w5crfr45qebk" path="res://scripts/EnemyFormation.gd" id="1_lg1mi"]
+[ext_resource type="Script" uid="uid://w5crfr45qebk" path="res://scenes/battle_formation/enemy_formation.gd" id="1_lg1mi"]
 
 [node name="EnemyGrid" type="Control"]
 layout_mode = 3

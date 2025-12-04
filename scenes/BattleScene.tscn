@@ -1,8 +1,8 @@
 [gd_scene load_steps=5 format=3 uid="uid://kreplysm57gi"]
 
 [ext_resource type="Script" uid="uid://c3w3lgndriikd" path="res://scripts/BattleScene.gd" id="1_28s16"]
-[ext_resource type="Script" uid="uid://w5crfr45qebk" path="res://scripts/EnemyFormation.gd" id="2_ftvu5"]
-[ext_resource type="Script" uid="uid://4pqalqx03wf1" path="res://scripts/AllyFormation.gd" id="3_ftvu5"]
+[ext_resource type="Script" uid="uid://w5crfr45qebk" path="res://scenes/battle_formation/enemy_formation.gd" id="2_ftvu5"]
+[ext_resource type="Script" uid="uid://4pqalqx03wf1" path="res://scenes/battle_formation/ally_formation.gd" id="3_ftvu5"]
 [ext_resource type="Script" uid="uid://djga0vllljxhw" path="res://scripts/BattleManager.gd" id="5_ftvu5"]
 
 [node name="BattleScene" type="Node3D"]

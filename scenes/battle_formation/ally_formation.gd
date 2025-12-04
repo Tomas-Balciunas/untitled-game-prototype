@@ -8,7 +8,8 @@ const SLOT_SPACING_X := 2
 const MAX_SLOTS      := 3
 const PLAYER = preload("uid://ed1wo7vfltsb")
 
-const SlotScene = preload("res://scenes/FormationSlot.tscn")
+const FORMATION_SLOT = preload("uid://b1jxfg32brb8x")
+
 
 func _ready() -> void:
 	front_row_z = FRONT_ROW_Z
@@ -47,7 +48,7 @@ func place_all_allies() -> void:
 	for i in range(front_allies.size()):
 		var inst: CharacterInstance = front_allies[i]
 		if inst:
-			var slot := SlotScene.instantiate() as FormationSlot
+			var slot := FORMATION_SLOT.instantiate() as FormationSlot
 			add_child(slot)
 			var idx := front_start + i
 			slot.position = front_positions[idx]
@@ -67,7 +68,7 @@ func place_all_allies() -> void:
 	for j in range(back_allies.size()):
 		var inst: CharacterInstance = back_allies[j]
 		if inst:
-			var slot := SlotScene.instantiate() as FormationSlot
+			var slot := FORMATION_SLOT.instantiate() as FormationSlot
 			var idx := back_start + j
 			slot.position = back_positions[idx]
 			add_child(slot)

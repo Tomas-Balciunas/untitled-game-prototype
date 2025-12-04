@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://dxe21eqylwhoq"]
 
-[ext_resource type="Script" uid="uid://c1wsuldu27cf5" path="res://scenes/ui/choice_ui.gd" id="1_svynd"]
+[ext_resource type="Script" uid="uid://c1wsuldu27cf5" path="res://scenes/ui/event/choice/choice_ui.gd" id="1_svynd"]
 
 [node name="ChoiceUI" type="Panel"]
 anchors_preset = 15

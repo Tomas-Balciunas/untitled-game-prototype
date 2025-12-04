@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://b1jxfg32brb8x"]
 
-[ext_resource type="Script" uid="uid://dymuc6nxf4l2d" path="res://scripts/FormationSlot.gd" id="1_vi5mu"]
+[ext_resource type="Script" uid="uid://dymuc6nxf4l2d" path="res://scenes/battle_formation/formation_slot.gd" id="1_vi5mu"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_vi5mu"]
 size = Vector3(0.6, 2.281, 0.6)

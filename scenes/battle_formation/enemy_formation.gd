@@ -6,7 +6,7 @@ const FRONT_ROW_Z    := -2.0
 const SLOT_SPACING_X := 2
 const MAX_SLOTS      := 5
 
-const SlotScene = preload("res://scenes/FormationSlot.tscn")
+const FORMATION_SLOT = preload("uid://b1jxfg32brb8x")
 
 func _ready() -> void:
 	front_row_z = FRONT_ROW_Z
@@ -47,7 +47,7 @@ func place_all_enemies(enemies: Array[CharacterInstance]) -> void:
 
 	var front_start := int((MAX_SLOTS - front_enemies.size()) * 0.5)
 	for i in range(front_enemies.size()):
-		var slot := SlotScene.instantiate() as FormationSlot
+		var slot := FORMATION_SLOT.instantiate() as FormationSlot
 		var idx := front_start + i
 		slot.position = front_positions[idx]
 		add_child(slot)

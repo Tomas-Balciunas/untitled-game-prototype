@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://bdlg0nlvckuof"]
 
-[ext_resource type="Script" uid="uid://dgbnt15i33rs5" path="res://scenes/character_create.gd" id="1_hps7s"]
+[ext_resource type="Script" uid="uid://dgbnt15i33rs5" path="res://scenes/ui/character_create/character_create.gd" id="1_hps7s"]
 
 [node name="CharacterCreate" type="Panel"]
 anchors_preset = 15

@@ -1,7 +1,7 @@
 [gd_scene load_steps=7 format=3 uid="uid://b6i5a4uv2t1do"]
 
-[ext_resource type="Script" uid="uid://br1f8omrid7gi" path="res://scripts/UIPartyMemberSlot.gd" id="1_c0oo1"]
-[ext_resource type="Script" uid="uid://dc4qvwk756k2c" path="res://scenes/number_display_2d.gd" id="2_7gtfk"]
+[ext_resource type="Script" uid="uid://br1f8omrid7gi" path="res://scenes/ui/party/party_member_slot_interface.gd" id="1_c0oo1"]
+[ext_resource type="Script" uid="uid://dc4qvwk756k2c" path="res://scenes/damage_numbers/2d/number_display_2d.gd" id="2_7gtfk"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_m4dhj"]
 bg_color = Color(0, 0, 0, 1)

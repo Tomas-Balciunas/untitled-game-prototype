@@ -1,8 +1,7 @@
 [gd_scene load_steps=2 format=3 uid="uid://cxmmcwtj68dos"]
 
-[ext_resource type="Script" uid="uid://blmwiamynii6i" path="res://scenes/chatter_line_3d.gd" id="1_gbjpa"]
+[ext_resource type="Script" uid="uid://blmwiamynii6i" path="res://scenes/ui/chatter/3d/chatter_line_3d.gd" id="1_gbjpa"]
 
 [node name="ChatterLine3d" type="Label3D"]
 billboard = 2
-text = "test"
 script = ExtResource("1_gbjpa")
