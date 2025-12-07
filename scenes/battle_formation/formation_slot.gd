@@ -61,7 +61,7 @@ func clear() -> void:
 func _on_anim_finish(_e: StringName) -> void:
 	body_instance.play_idle()
 
-func perform_attack_toward_target(target: FormationSlot) -> void:
+func perform_run_towards_target(target: FormationSlot) -> void:
 	var tween := create_tween()
 
 	var parent_space := get_parent()
@@ -89,8 +89,8 @@ func perform_attack_toward_target(target: FormationSlot) -> void:
 		.set_ease(Tween.EASE_IN_OUT)
 	await tween.finished
 
-	await body_instance.play_attack()
-
+func perform_attack() -> void:
+	body_instance.play_attack()
 
 func position_back() -> void:
 	if animation_player.is_playing() and animation_player.current_animation:

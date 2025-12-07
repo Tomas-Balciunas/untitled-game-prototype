@@ -2,7 +2,7 @@ extends Node
 
 class_name BattleManager
 
-const TURN_THRESHOLD = 1000
+const ATTACK_CONNECTED_TIMEOUT = 1.0
 
 @onready var enemy_grid: EnemyFormation = null
 @onready var ally_grid: AllyFormation = null
@@ -110,7 +110,7 @@ func _on_turn_start() -> void:
 
 	var event := TriggerEvent.new()
 	event.trigger = EffectTriggers.ON_TURN_START
-	event.actor = current_battler
+	event.actor = CharacterSource.new(current_battler)
 	event.ctx = ActionContext.new()
 	EffectRunner.process_trigger(event)
 	disable_all_targeting()
@@ -123,10 +123,9 @@ func _on_turn_start() -> void:
 		_process_enemy_turn(event)
 
 func _on_turn_end() -> void:
-	var is_party_member: bool = current_battler in party
 	var event := TriggerEvent.new()
 	event.trigger = EffectTriggers.ON_TURN_END
-	event.actor = current_battler
+	event.actor = CharacterSource.new(current_battler)
 	event.ctx = ActionContext.new()
 	EffectRunner.process_trigger(event)
 	current_battler.action_value += 1000 / (100 + current_battler.stats.get_final_stat(Stats.SPEED))
@@ -199,13 +198,18 @@ func _perform_player_action(action: String, target: CharacterInstance) -> void:
 				"source": current_battler,
 				"target": _targets
 			})
-			await attacker_slot.perform_attack_toward_target(target_slot)
+			await attacker_slot.perform_run_towards_target(target_slot)
+			attacker_slot.perform_attack()
+			var timed_out: bool = await SignalFailsafe.await_signal_or_timeout(self, BattleBus.attack_connected, ATTACK_CONNECTED_TIMEOUT)
+
+			if timed_out:
+				push_error("Attack connected signal timed out for character: %s, %s " % [current_battler.resource.name, current_battler.resource.id])
 			
 			for t in _targets:
 				if not t:
 					continue
 				var dmg := DamageContext.new()
-				dmg.source = current_battler
+				dmg.source = CharacterSource.new(current_battler)
 				dmg.target   = t
 				dmg.base_value = current_battler.stats.get_final_stat(Stats.ATTACK)
 				dmg.final_value = current_battler.stats.get_final_stat(Stats.ATTACK)
@@ -223,7 +227,13 @@ func _perform_player_action(action: String, target: CharacterInstance) -> void:
 			var _targets := get_applicable_targets(target, targeting)
 			
 			current_state = BattleState.ANIMATING
-			await attacker_slot.perform_attack_toward_target(target_slot)
+			await attacker_slot.perform_run_towards_target(target_slot)
+			attacker_slot.perform_attack()
+			var timed_out: bool = await SignalFailsafe.await_signal_or_timeout(self, BattleBus.attack_connected, ATTACK_CONNECTED_TIMEOUT)
+
+			if timed_out:
+				push_error("Attack connected signal timed out for character: %s, %s " % [current_battler.resource.name, current_battler.resource.id])
+			
 			
 			var mp_cost: int = skill.mp_cost
 			for e in current_battler.effects:
@@ -241,7 +251,7 @@ func _perform_player_action(action: String, target: CharacterInstance) -> void:
 				var ctx := SkillContext.new()
 				ctx.skill = skill
 				ctx.actively_cast = true
-				ctx.source = current_battler
+				ctx.source = SkillSource.new(current_battler, skill)
 				ctx.target = t
 				ctx.temporary_effects = skill.effects
 				var _ctx := SkillResolver.new().execute(ctx)
@@ -257,7 +267,13 @@ func _perform_player_action(action: String, target: CharacterInstance) -> void:
 			var _targets := get_applicable_targets(target, targeting)
 			
 			current_state = BattleState.ANIMATING
-			await attacker_slot.perform_attack_toward_target(target_slot)
+			await attacker_slot.perform_run_towards_target(target_slot)
+			attacker_slot.perform_attack()
+			var timed_out: bool = await SignalFailsafe.await_signal_or_timeout(self, BattleBus.attack_connected, ATTACK_CONNECTED_TIMEOUT)
+
+			if timed_out:
+				push_error("Attack connected signal timed out for character: %s, %s " % [current_battler.resource.name, current_battler.resource.id])
+			
 			
 			for t in _targets:
 				if not t:
@@ -265,7 +281,7 @@ func _perform_player_action(action: String, target: CharacterInstance) -> void:
 				
 				var cons := ConsumableContext.new()
 				cons.consumable = item
-				cons.source = current_battler
+				cons.source = ItemSource.new(current_battler, item)
 				cons.target = t
 				cons.temporary_effects = item.get_all_effects()
 				cons.actively_cast = true
@@ -306,7 +322,7 @@ func _process_enemy_turn(event: TriggerEvent = null) -> void:
 	var target_slot := get_slot(target)
 	
 	var atk := DamageContext.new()
-	atk.source = current_battler
+	atk.source = CharacterSource.new(current_battler)
 	atk.target   = target
 	atk.base_value = current_battler.stats.get_final_stat(Stats.ATTACK)
 	atk.final_value = current_battler.stats.get_final_stat(Stats.ATTACK)
@@ -316,7 +332,14 @@ func _process_enemy_turn(event: TriggerEvent = null) -> void:
 				"source": current_battler,
 				"target": [target]
 			})
-	await attacker_slot.perform_attack_toward_target(target_slot)
+	
+	await attacker_slot.perform_run_towards_target(target_slot)
+	attacker_slot.perform_attack()
+	var timed_out: bool = await SignalFailsafe.await_signal_or_timeout(self, BattleBus.attack_connected, ATTACK_CONNECTED_TIMEOUT)
+
+	if timed_out:
+		push_error("Attack connected signal timed out for character: %s, %s " % [current_battler.resource.name, current_battler.resource.id])
+	
 	
 	var _ctx := await DamageResolver.new().execute(atk)
 	
@@ -337,9 +360,6 @@ func _check_end_conditions() -> void:
 		current_state = BattleState.PROCESS_TURNS
 
 func _handle_end(result: String) -> void:
-	for member: CharacterInstance in party:
-		member.cleanup_after_battle()
-	
 	match result:
 		"win":
 			_handle_win()
@@ -349,11 +369,17 @@ func _handle_end(result: String) -> void:
 			_handle_flee()
 
 func _handle_win() -> void:
+	for member: CharacterInstance in party:
+		member.cleanup_after_battle()
+		
 	BattleBus.battle_end.emit()
 	EncounterBus.encounter_ended.emit("win", BattleContext.encounter_data)
 	current_state = BattleState.IDLE
 
 func _handle_lose() -> void:
+	for member: CharacterInstance in party:
+		member.cleanup_after_battle()
+		
 	BattleBus.battle_end.emit()
 	EncounterBus.encounter_ended.emit("lose", BattleContext.encounter_data)
 	current_state = BattleState.IDLE
@@ -362,6 +388,10 @@ func _handle_flee() -> void:
 	var success := randf() < 0.5
 	if success:
 		print("Party flees successfully!")
+		
+		for member: CharacterInstance in party:
+			member.cleanup_after_battle()
+			
 		BattleBus.battle_end.emit()
 		EncounterBus.encounter_ended.emit("flee", BattleContext.encounter_data)
 		current_state = BattleState.IDLE
@@ -451,8 +481,18 @@ func process_queue() -> void:
 	while action_queue.size() > 0:
 		var a: ActionContext = action_queue[0]
 		var target := get_slot(a.target)
-		var attacker: FormationSlot = get_slot(a.source)
-		await attacker.perform_attack_toward_target(target)
+		var attacker: FormationSlot = get_slot(a.source.character)
+		
+		if !attacker:
+			continue
+		
+		await attacker.perform_run_towards_target(target)
+		attacker.perform_attack()
+		var timed_out: bool = await SignalFailsafe.await_signal_or_timeout(self, BattleBus.attack_connected, ATTACK_CONNECTED_TIMEOUT)
+
+		if timed_out:
+			push_error("Attack connected signal timed out for character: %s, %s " % [current_battler.resource.name, current_battler.resource.id])
+		
 		await DamageResolver.new().execute(a)
 		await attacker.position_back()
 		action_queue.pop_front()

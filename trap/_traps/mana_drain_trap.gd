@@ -12,7 +12,7 @@ func trigger(target: CharacterInstance) -> void:
 	var act := EffectApplicationContext.new()
 	act.actively_cast = true
 	act.effect = drain
-	act.source = get_source()
+	act.source = TrapSource.new(self)
 	act.target = target
 	
 	EffectApplicationResolver.new().execute(act)

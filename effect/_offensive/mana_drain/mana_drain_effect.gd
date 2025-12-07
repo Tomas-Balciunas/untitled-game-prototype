@@ -1,4 +1,4 @@
-extends Effect
+extends PassiveEffect
 
 class_name ManaDrainEffect
 
@@ -9,12 +9,7 @@ func listened_triggers() -> Array:
 	
 func can_process(event: TriggerEvent) -> bool:
 	return owner == event.ctx.target
-	
-func on_apply(new_owner: CharacterInstance) -> void:
-	_is_runtime_instance = true
-	owner = new_owner
 
-	_register_if_needed()
 
 
 func on_trigger(event: TriggerEvent) -> void:

@@ -17,13 +17,9 @@ var current_experience: int = 0
 var unspent_attribute_points: int = 0
 var resource: CharacterResource
 var stats: Stats
-var status_effects: Array = []
 var action_value: float = 0
 var learnt_skills: Array[Skill] = []
 var effects: Array[Effect] = []
-var buff_effects: Array[Effect] = []
-var debuff_effects: Array[Effect] = []
-var control_effects: Array[Effect] = []
 var gear_effects: Dictionary = {}
 var damage_type: DamageTypes.Type
 var attributes: Attributes
@@ -106,15 +102,11 @@ func _init(res: CharacterResource) -> void:
 			learnt_skills.append(skill)
 	
 	for effect in res.default_effects:
-		var inst := effect.duplicate()
-		inst.on_apply(self)
-		effects.append(inst)
+		apply_effect(effect, CharacterSource.new(self))
 
 	if res.job:
 		for effect in res.job.effects:
-			var inst := effect.duplicate()
-			inst.on_apply(self)
-			effects.append(inst)
+			apply_effect(effect, CharacterSource.new(self))
 	
 	stats.recalculate_stats(true, true)
 
@@ -165,54 +157,33 @@ func set_current_mana(new_mana: int) -> void:
 
 func prepare_for_battle() -> void:
 	for e: Effect in effects:
-		e.prepare_for_battle(self)
+		e.prepare_for_battle()
 
 func cleanup_after_battle() -> void:
-	for e in get_all_effects():
+	for e: Effect in effects:
 		if e.is_battle_only:
-			remove_effect(e)
+			e.remove_self()
 	
 	stats.temporary_modifiers = []
 	stats.recalculate_stats()
 
-func apply_effect(effect: Effect, source: CharacterInstance = null) -> Effect:
-	if effect._is_runtime_instance:
-		push_warning("Applying an already-instantiated effect! Did you forget to pass the template?")
-
-	var inst: Effect = effect if effect._is_instance else effect.duplicate(true)
-	
-	if source:
-		inst.set_source(source)
-	
-	inst.on_apply(self)
+func apply_effect(effect: Effect, source: ContextSource) -> Effect:
+	var inst: Effect = effect.duplicate(true)
+	inst.set_owner(self)
+	inst.set_source(source)
+	inst.on_apply()
 	
 	if not effect.should_append():
 		return inst
 	
-	if effect.category == effect.EffectCategory.BUFF:
-		buff_effects.append(effect)
-	elif effect.category == effect.EffectCategory.DEBUFF:
-		debuff_effects.append(effect)
-	elif effect.category == effect.EffectCategory.CONTROL:
-		control_effects.append(effect)
-	else:
-		effects.append(inst)
+	effects.append(inst)
 	
 	return inst
-		
+
 func remove_effect(effect: Effect) -> void:
-	for list in [effects, buff_effects, debuff_effects, control_effects]:
-		if list.has(effect):
-			effect.on_expire()
-			list.erase(effect)
-		
-func get_all_effects() -> Array[Effect]:
-	var whole_effects := effects.duplicate()
-	whole_effects.append_array(buff_effects)
-	whole_effects.append_array(debuff_effects)
-	whole_effects.append_array(control_effects)
-	
-	return whole_effects
+	if effects.has(effect):
+		effects.erase(effect)
+
 
 func fill_attributes() -> void:
 	attributes = Attributes.new()
@@ -262,7 +233,7 @@ func equip_item(item: GearInstance) -> bool:
 	var insts: Array = []
 	
 	for e in item.get_all_effects():
-		var inst := apply_effect(e)
+		var inst := apply_effect(e, ItemSource.new(self, item))
 		insts.append(inst)
 		
 	gear_effects[slot_name] = insts
@@ -317,7 +288,7 @@ func to_dict() -> Dictionary:
 		inventory_arr.append(slot.to_dict())
 		
 	var effect_arr := []
-	for effect in effects:
+	for effect: Effect in effects:
 		var is_gear_effect := false
 		for key: String in gear_effects.keys():
 			for gear_effect: Effect in gear_effects[key]:
@@ -454,7 +425,7 @@ static func from_dict(data: Dictionary) -> CharacterInstance:
 			if not effect:
 				push_error("Effect not found: %s" % effect_id)
 				continue
-			inst.apply_effect(effect)
+			inst.apply_effect(effect, CharacterSource.new(inst))
 			
 	if data.has("skills"):
 		inst.learnt_skills = []

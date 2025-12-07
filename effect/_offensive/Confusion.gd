@@ -1,21 +1,18 @@
-extends Effect
-
+extends DebuffEffect
 class_name ConfusionEffect
 
 var turns_lasted: int = 0
+
 
 func listened_triggers() -> Array:
 	return [EffectTriggers.ON_TURN_START, EffectTriggers.ON_TURN_END]
 	
 func can_process(event: TriggerEvent) -> bool:
-	return owner == event.actor
+	return owner == event.actor.character
 	
-func on_apply(new_owner: CharacterInstance) -> void:
-	_is_runtime_instance = true
-	owner = new_owner
-			
+func on_apply() -> void:
+	is_battle_only = true
 	BattleTextLines.print_line("%s is confused!" % owner.resource.name)
-	_register_if_needed()
 
 	
 func on_trigger(event: TriggerEvent) -> void:

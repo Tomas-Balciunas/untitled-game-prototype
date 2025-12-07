@@ -4,7 +4,7 @@ class_name HealingSkill
 
 @export var healing_amount: int = 0
 
-func build_context(_source: CharacterInstance, _target: CharacterInstance) -> HealingContext:
+func build_context(_source: SkillSource, _target: CharacterInstance) -> HealingContext:
 	var ctx := HealingContext.new()
 	ctx.base_value = healing_amount
 	ctx.final_value = healing_amount

@@ -1,11 +1,13 @@
 extends Node
 
+const EFFECT_LABEL = preload("uid://buyertqp85xfq")
+
 @onready var effects_container := $Effects
-const EffectLabel = preload("res://scenes/ui/character/EffectLabel.tscn")
+
 
 func bind_character(character: CharacterInstance) -> void:
 	clear_effects()
-	for effect in character.get_all_effects():
+	for effect: Effect in character.effects:
 		add_effect(effect)
 
 func clear_effects() -> void:
@@ -13,6 +15,6 @@ func clear_effects() -> void:
 		child.queue_free()
 
 func add_effect(effect: Effect) -> void:
-	var label := EffectLabel.instantiate()
+	var label := EFFECT_LABEL.instantiate()
 	label.text = "%s: %s" % [effect._get_name(), effect.get_description()]
 	effects_container.add_child(label)

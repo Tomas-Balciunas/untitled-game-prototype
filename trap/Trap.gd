@@ -8,8 +8,3 @@ class_name Trap
 
 func trigger(_target: CharacterInstance) -> void:
 	pass
-
-func get_source() -> CharacterInstance:
-	var res := CharacterResource.new()
-	res.name = name
-	return CharacterInstance.new(res)

@@ -1,4 +1,4 @@
-extends Effect
+extends PassiveEffect
 
 class_name AttackBuffOnSkillUse
 
@@ -14,7 +14,7 @@ func listened_triggers() -> Array:
 	return [EffectTriggers.ON_BEFORE_SKILL_USE, EffectTriggers.ON_POST_SKILL_USE]
 	
 func can_process(_event: TriggerEvent) -> bool:
-	return _event.actor == owner
+	return _event.actor.character == owner
 
 func on_trigger(_event: TriggerEvent) -> void:
 	if _event.trigger == EffectTriggers.ON_BEFORE_SKILL_USE:

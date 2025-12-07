@@ -21,6 +21,6 @@ func execute(_ctx: ActionContext) -> HealingContext:
 
 	event.ctx.target.set_current_health(event.ctx.target.stats.current_health + event.ctx.final_value)
 
-	BattleTextLines.print_line("%s healed %s for %d" % [event.actor.resource.name, event.ctx.target.resource.name, ctx.final_value])
+	BattleTextLines.print_line("%s healed %s for %d" % [event.actor.get_source_name(), event.ctx.target.resource.name, ctx.final_value])
 
 	return ctx

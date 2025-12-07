@@ -1,8 +1,11 @@
-extends Effect
+extends PassiveEffect
 
 class_name MpCostReduction
 
 @export var modifier: float = 0.2
+
+func can_process(_event: TriggerEvent) -> bool:
+	return false
 
 func listened_triggers() -> Array:
 	return []

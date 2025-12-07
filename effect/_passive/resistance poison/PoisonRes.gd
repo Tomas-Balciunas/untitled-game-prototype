@@ -1,4 +1,4 @@
-extends Effect
+extends PassiveEffect
 class_name PoisonRes
 
 @export var resistance: float = 0.2

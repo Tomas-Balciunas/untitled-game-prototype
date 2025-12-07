@@ -70,10 +70,4 @@ func exit_rest_area() -> void:
 # TODO: game state managing to prevent transition while player is tweening
 
 func _on_rest_character_interaction_requested(chara: CharacterInstance) -> void:
-	var menu := get_tree().root.get_node("CharacterMenu")
-	
-	if !menu:
-		push_error("Menu not found")
-		
-	menu.bind(chara)
-	menu.show()
+	CharacterBus.display_character_menu.emit(chara)

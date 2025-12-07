@@ -1,4 +1,4 @@
-extends Effect
+extends PassiveEffect
 class_name Counterattack
 
 @export var chance: float = 0.3

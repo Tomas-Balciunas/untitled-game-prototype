@@ -4,42 +4,43 @@ extends Node
 func process_trigger(event: TriggerEvent) -> void:
 	var start := Time.get_ticks_usec()
 
-	var effects_to_run := []
+	var effects_to_run: Array[Effect] = []
 	
 	if event.ctx.temporary_effects:
 		for e in event.ctx.temporary_effects:
-			e.owner = event.actor
+			e.set_owner(event.actor.character)
+			e.set_source(event.actor)
 			if not _passes_scope(e, event):
 				continue
-			effects_to_run.append({ "effect": e, "owner": event.actor })
+			effects_to_run.append(e)
 	
 	if BattleContext.in_battle:
 		var battlers := BattleContext.manager.battlers
 		for b in battlers:
-			for e in b.get_all_effects():
+			for e in b.effects:
 				if not _passes_scope(e, event):
 					continue
-				effects_to_run.append({ "effect": e, "owner": b })
+				effects_to_run.append(e)
 	else:
 		for p in PartyManager.members:
-			for e in p.get_all_effects():
+			for e in p.effects:
 				if not _passes_scope(e, event):
 					continue
-				effects_to_run.append({ "effect": e, "owner": p })
+				effects_to_run.append(e)
 
 	effects_to_run.sort_custom(_sort_effects)
 
-	for entry: Dictionary in effects_to_run:
-		var e: Effect = entry.effect
+	for entry: Effect in effects_to_run:
 		
 		if event.ctx.stop_processing:
-			print("[EffectProcessor] processing stopped by", e.name)
+			print("[EffectProcessor] processing stopped by", entry.name)
 			return
 
-		e.on_trigger(event)
+		entry.on_trigger(event)
 		
-		if e.single_trigger:
-			e.remove_self()
+		if entry.single_trigger:
+			entry.remove_self()
+	
 	var elapsed_usec := Time.get_ticks_usec() - start
 	print("Took %dus (%.3f ms)" % [elapsed_usec, elapsed_usec / 1000.0])
 

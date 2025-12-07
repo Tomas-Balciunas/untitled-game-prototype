@@ -12,7 +12,7 @@ func trigger(target: CharacterInstance) -> void:
 	
 	var act := DamageContext.new()
 	act.target = target
-	act.source = get_source()
+	act.source = TrapSource.new(self)
 	act.base_value = damage if damage else 0
 	act.final_value = damage if damage else 0
 	act.actively_cast = true

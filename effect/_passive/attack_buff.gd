@@ -1,4 +1,4 @@
-extends Effect
+extends BuffEffect
 
 class_name AttackBuff
 
@@ -7,15 +7,8 @@ class_name AttackBuff
 
 var remaining_turns: int
 
-func _init() -> void:
-	is_battle_only = true
-	category = EffectCategory.BUFF
-	
-func on_apply(_owner: CharacterInstance) -> void:
-	_is_runtime_instance = true
-	_register_if_needed()
-	owner = _owner
-	
+
+func on_apply() -> void:
 	if !modifier:
 		var mod := StatModifier.new()
 		mod.name = "Attack++"

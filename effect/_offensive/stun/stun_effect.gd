@@ -1,24 +1,18 @@
-extends Effect
+extends ControlEffect
 
 class_name StunEffect
 
 var turns_lasted: int = 0
 
-func _init() -> void:
-	category = EffectCategory.CONTROL
 
 func listened_triggers() -> Array:
 	return [EffectTriggers.ON_TURN_START, EffectTriggers.ON_TURN_END]
 	
 func can_process(event: TriggerEvent) -> bool:
-	return owner == event.actor
+	return owner == event.actor.character
 	
-func on_apply(new_owner: CharacterInstance) -> void:
-	_is_runtime_instance = true
-	owner = new_owner
-			
+func on_apply() -> void:
 	BattleTextLines.print_line("%s is stunned!" % owner.resource.name)
-	_register_if_needed()
 
 	
 func on_trigger(event: TriggerEvent) -> void:

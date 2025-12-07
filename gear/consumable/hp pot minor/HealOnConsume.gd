@@ -1,4 +1,4 @@
-extends Effect
+extends PassiveEffect
 class_name Heal
 
 @export var heal_amount: int = 20

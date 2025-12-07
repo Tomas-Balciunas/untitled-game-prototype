@@ -1,4 +1,4 @@
-extends Effect
+extends PassiveEffect
 class_name DamageShare
 
 @export var share_percent: float = 0.10

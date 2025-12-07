@@ -1,4 +1,4 @@
-extends Effect
+extends PassiveEffect
 
 class_name DamageAccumulatorAttack
 
@@ -13,7 +13,7 @@ func listened_triggers() -> Array:
 	return [EffectTriggers.ON_DAMAGE_APPLIED]
 	
 func can_process(_event: TriggerEvent) -> bool:
-	return _event.ctx.target == owner or (_event.actor == owner and _event.ctx.target != owner)
+	return _event.ctx.target == owner or (_event.actor.character == owner and _event.ctx.target != owner)
 
 func on_trigger(_event: TriggerEvent) -> void:
 	if _event.ctx.target == owner:
@@ -23,7 +23,7 @@ func on_trigger(_event: TriggerEvent) -> void:
 			BattleTextLines.print_line("Lash will be unleashed!")
 		return
 	
-	if _event.actor == owner and _event.ctx.target != owner:
+	if _event.actor.character == owner and _event.ctx.target != owner:
 		if _event.ctx.actively_cast == false:
 			return
 		
@@ -40,7 +40,7 @@ func on_trigger(_event: TriggerEvent) -> void:
 			lash_ctx.base_value = accumulator
 			lash_ctx.final_value = accumulator
 			lash_ctx.actively_cast = false
-			lash_ctx.source = owner
+			lash_ctx.source = CharacterSource.new(owner)
 			lash_ctx.target = t
 			resolver.execute(lash_ctx)
 		

@@ -1,4 +1,4 @@
-extends Effect
+extends StatusEffect
 class_name PoisonOnConsume
 
 @export var damage_per_turn: int = 10
@@ -13,10 +13,10 @@ func on_trigger(event: TriggerEvent) -> void:
 	var poison: PoisonEffect = PoisonEffect.new()
 	poison.duration_turns = duration_turns
 	poison.damage_per_turn = damage_per_turn
-	poison._source = event.ctx.source
+	poison._source = event.actor
 	poison._is_instance = true
 	var app := EffectApplicationContext.new()
-	app.source = event.ctx.source
+	app.source = event.actor
 	app.target = event.ctx.target
 	app.effect = poison
 	EffectApplicationResolver.new().execute(app)

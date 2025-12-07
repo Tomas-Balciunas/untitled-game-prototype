@@ -12,7 +12,7 @@ func _init(item: ConsumableItem) -> void:
 
 func use_item(user: CharacterInstance, item: ConsumableInstance) -> void:
 	var ctx := ConsumableContext.new()
-	ctx.source = user
+	ctx.source = ItemSource.new(user, item)
 	ctx.target = user
 	ctx.consumable = item
 	ctx.actively_cast = true

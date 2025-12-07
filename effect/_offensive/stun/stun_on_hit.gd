@@ -1,12 +1,11 @@
-extends Effect
-
+extends PassiveEffect
 class_name StunOnHitEffect
 
 func listened_triggers() -> Array:
 	return [EffectTriggers.ON_DAMAGE_APPLIED]
 	
 func can_process(event: TriggerEvent) -> bool:
-	return event.actor == owner and event.ctx.actively_cast
+	return event.actor.character == owner and event.ctx.actively_cast
 
 func on_trigger(event: TriggerEvent) -> void:
 	var stun := StunEffect.new()

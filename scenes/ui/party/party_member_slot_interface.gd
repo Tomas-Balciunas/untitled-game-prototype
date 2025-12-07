@@ -61,7 +61,7 @@ func _on_mana_changed(_old_mana: int, _new_mana: int) -> void:
 
 func _on_gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
-		if BattleContext.in_battle and targeting_enabled:
+		if BattleContext.in_battle and BattleContext.ally_targeting_enabled:
 			if not character_instance:
 				print("Invalid party member selected")
 				return

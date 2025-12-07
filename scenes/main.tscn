@@ -1,4 +1,4 @@
-[gd_scene load_steps=35 format=3 uid="uid://cphcmsugjsscn"]
+[gd_scene load_steps=36 format=3 uid="uid://cphcmsugjsscn"]
 
 [ext_resource type="Script" uid="uid://bsq341p3oxk46" path="res://scenes/GameState.gd" id="1_o6xl0"]
 [ext_resource type="Script" uid="uid://x2dulqp2hx2s" path="res://scenes/dungeon/dungeon.gd" id="2_o6xl0"]
@@ -28,6 +28,7 @@
 [ext_resource type="Script" uid="uid://khbcx214lfkl" path="res://scenes/ui/chest/ChestInterface.gd" id="14_yq6so"]
 [ext_resource type="Script" uid="uid://rkotit4vkflf" path="res://scenes/ui/chest/chest_content.gd" id="15_2f3dj"]
 [ext_resource type="Script" uid="uid://b4kodgy0qo0cl" path="res://scenes/ui/battle/battle_controls/battle_controls_interface.gd" id="18_2f3dj"]
+[ext_resource type="PackedScene" uid="uid://c1geh2y2biany" path="res://scenes/battle_text_lines.tscn" id="25_yq6so"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tel4y"]
 bg_color = Color(0.6, 0.6, 0.6, 0.105)
@@ -70,7 +71,6 @@ color = Color(0.0694218, 0.00964971, 0.263646, 1)
 script = ExtResource("4_trceg")
 
 [node name="OverworldInterface" type="Control" parent="UIRoot"]
-visible = false
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -161,6 +161,7 @@ text = "X"
 
 [node name="InventoryUI" type="Panel" parent="UIRoot/OverworldInterface/CharacterMenu"]
 unique_name_in_owner = true
+visible = false
 layout_mode = 1
 anchors_preset = 9
 anchor_bottom = 1.0
@@ -519,6 +520,7 @@ layout_mode = 2
 
 [node name="LevelUpUI" type="Panel" parent="UIRoot/OverworldInterface/CharacterMenu"]
 unique_name_in_owner = true
+visible = false
 layout_mode = 0
 offset_right = 304.0
 offset_bottom = 264.0
@@ -1033,6 +1035,10 @@ anchor_bottom = 0.0
 offset_top = -180.0
 grow_vertical = 1
 mouse_filter = 2
+
+[node name="BattleTextLines" parent="UIRoot/PartyInterface" instance=ExtResource("25_yq6so")]
+layout_mode = 1
+offset_top = -181.0
 
 [node name="Managers" type="Node" parent="."]
 

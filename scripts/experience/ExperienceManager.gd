@@ -28,7 +28,7 @@ func level_up_character(character: CharacterInstance) -> void:
 		
 		for effect: Effect in [class_effect, character_effect]:
 			if effect:
-				character.apply_effect(effect)
+				character.apply_effect(effect, CharacterSource.new(character))
 				BattleTextLines.print_line("%s has learnt %s!" % [character.resource.name, effect._get_name()])
 
 	character.stats.recalculate_stats()

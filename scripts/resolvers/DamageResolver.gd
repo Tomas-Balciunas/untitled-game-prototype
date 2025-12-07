@@ -32,7 +32,7 @@ func execute(_ctx: ActionContext) -> DamageContext:
 	event.trigger = EffectTriggers.ON_DAMAGE_ABOUT_TO_BE_APPLIED
 	EffectRunner.process_trigger(event)
 	
-	BattleTextLines.print_line("%s dealt %f %s damage to %s" % [ctx.source.resource.name, ctx.final_value, DamageTypes.to_str(ctx.type), ctx.target.resource.name])
+	BattleTextLines.print_line("%s dealt %f %s damage to %s" % [ctx.source.get_source_name(), ctx.final_value, DamageTypes.to_str(ctx.type), ctx.target.resource.name])
 	event.ctx.target.set_current_health(event.ctx.target.stats.current_health - event.ctx.final_value)
 	
 	
@@ -44,15 +44,4 @@ func execute(_ctx: ActionContext) -> DamageContext:
 		EffectRunner.process_trigger(event)
 		return ctx
 	
-	if event.ctx.has_meta("counterattack"):
-		var counter_target: CharacterInstance = ctx.get_meta("counterattack")
-		var revenge := DamageContext.new()
-		revenge.source = event.ctx.target
-		revenge.target = counter_target
-		revenge.type = ctx.target.damage_type
-		revenge.base_value = ctx.target.stats.get_final_stat(Stats.ATTACK)
-		revenge.final_value = ctx.target.stats.get_final_stat(Stats.ATTACK)
-		revenge.actively_cast = false #important, setting it to false would not trigger counterattack chain
-		BattleContext.manager.action_queue.append(revenge)
-		BattleTextLines.print_line("%s counterattacks!" % revenge.source.resource.name)
 	return ctx

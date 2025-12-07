@@ -16,3 +16,4 @@ signal ally_turn_started(ally: CharacterInstance)
 signal turn_started(battler: CharacterInstance, is_party_member: bool)
 signal turn_ended
 signal enemy_died(dead: CharacterInstance)
+signal attack_connected

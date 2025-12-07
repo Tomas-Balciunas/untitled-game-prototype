@@ -1,7 +1,7 @@
 
 class_name ActionContext
 
-var source: CharacterInstance
+var source: ContextSource
 var target: CharacterInstance
 var temporary_effects: Array[Effect] = []
 var options: Dictionary = {}

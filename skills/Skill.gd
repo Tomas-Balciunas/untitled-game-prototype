@@ -18,7 +18,7 @@ func _get_name() -> String:
 func get_description() -> String:
 	return description
 
-func build_context(_source: CharacterInstance, _target: CharacterInstance) -> ActionContext:
+func build_context(_source: SkillSource, _target: CharacterInstance) -> ActionContext:
 	return
 
 func get_resolver() -> EffectResolver:

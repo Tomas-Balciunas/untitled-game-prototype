@@ -58,3 +58,6 @@ func play_damaged() -> void:
 func _on_anim_finish() -> void:
 	if animation_player.has_animation("idle"):
 		animation_player.play("idle")
+
+func _attack_connected() -> void:
+	BattleBus.attack_connected.emit()
