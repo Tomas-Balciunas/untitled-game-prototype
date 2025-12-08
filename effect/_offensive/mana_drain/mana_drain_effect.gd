@@ -13,7 +13,7 @@ func can_process(event: TriggerEvent) -> bool:
 
 
 func on_trigger(event: TriggerEvent) -> void:
-	var current_mana := event.ctx.target.stats.current_mana
+	var current_mana := event.ctx.target.state.current_mana
 	var new_mana := floori(current_mana * (1 - amount))
 	event.ctx.target.set_current_mana(new_mana)
 	

@@ -3,11 +3,12 @@ extends PassiveEffect
 class_name AttackBuffOnSkillUse
 
 var mod: StatModifier
+var active_mod: StatModifier = null
 
 func _init() -> void:
 	mod = StatModifier.new()
 	mod.value = 5
-	mod.stat = Stats.Stat.ATTACK
+	mod.stat = Stats.StatRef.ATTACK
 	mod.type = StatModifier.Type.ADDITIVE
 
 func listened_triggers() -> Array:
@@ -18,9 +19,11 @@ func can_process(_event: TriggerEvent) -> bool:
 
 func on_trigger(_event: TriggerEvent) -> void:
 	if _event.trigger == EffectTriggers.ON_BEFORE_SKILL_USE:
-		_event.actor.stats.add_modifier(mod)
-		_event.actor.stats.recalculate_stats()
+		active_mod = mod.duplicate()
+		_event.actor.character.stats.add_modifier(active_mod)
+		_event.actor.character.stats.recalculate_stats()
 	
 	if _event.trigger == EffectTriggers.ON_POST_SKILL_USE:
-		_event.actor.stats.remove_modifier(mod)
-		_event.actor.stats.recalculate_stats()
+		active_mod = mod.duplicate()
+		_event.actor.character.stats.remove_modifier(active_mod)
+		_event.actor.character.stats.recalculate_stats()

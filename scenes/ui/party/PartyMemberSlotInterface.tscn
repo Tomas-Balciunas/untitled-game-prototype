@@ -11,6 +11,21 @@ border_width_right = 1
 border_width_bottom = 1
 border_color = Color(1, 1, 1, 1)
 
+[sub_resource type="Animation" id="Animation_0bwga"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+
 [sub_resource type="Animation" id="Animation_7gtfk"]
 resource_name = "damaged"
 length = 0.2
@@ -25,21 +40,6 @@ tracks/0/keys = {
 "transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1),
 "update": 0,
 "values": [Vector2(0, 0), Vector2(-3, -3), Vector2(3, 3), Vector2(-3, 3), Vector2(3, -3), Vector2(3, 0), Vector2(0, 0)]
-}
-
-[sub_resource type="Animation" id="Animation_0bwga"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:position")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(0, 0)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_0bwga"]
@@ -107,6 +107,8 @@ columns = 2
 layout_mode = 2
 size_flags_horizontal = 6
 mouse_filter = 2
+theme_override_constants/h_separation = 4
+theme_override_constants/v_separation = 0
 
 [node name="HP" type="Label" parent="MarginContainer/GridContainer/LabelValueContainer/Labels"]
 z_index = 5
@@ -120,11 +122,17 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 12
 text = "MP"
 
+[node name="SP" type="Label" parent="MarginContainer/GridContainer/LabelValueContainer/Labels"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "SP"
+
 [node name="Values" type="GridContainer" parent="MarginContainer/GridContainer/LabelValueContainer"]
 custom_minimum_size = Vector2(90, 0)
 layout_mode = 2
 size_flags_horizontal = 6
 mouse_filter = 2
+theme_override_constants/v_separation = 0
 
 [node name="HPContainer" type="GridContainer" parent="MarginContainer/GridContainer/LabelValueContainer/Values"]
 layout_mode = 2
@@ -175,6 +183,31 @@ z_index = 5
 layout_mode = 2
 theme_override_font_sizes/font_size = 12
 text = "80"
+
+[node name="SPContainer" type="GridContainer" parent="MarginContainer/GridContainer/LabelValueContainer/Values"]
+layout_mode = 2
+size_flags_horizontal = 4
+mouse_filter = 2
+columns = 4
+
+[node name="CurrentSP" type="Label" parent="MarginContainer/GridContainer/LabelValueContainer/Values/SPContainer"]
+z_index = 5
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "9999"
+horizontal_alignment = 2
+
+[node name="Slash" type="Label" parent="MarginContainer/GridContainer/LabelValueContainer/Values/SPContainer"]
+z_index = 5
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "/"
+
+[node name="MaxSP" type="Label" parent="MarginContainer/GridContainer/LabelValueContainer/Values/SPContainer"]
+z_index = 5
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "9999"
 
 [node name="HoverOverlay" type="ColorRect" parent="."]
 visible = false

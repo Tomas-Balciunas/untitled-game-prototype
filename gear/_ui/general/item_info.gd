@@ -17,11 +17,11 @@ func show_item_info(item: ItemInstance) -> void:
 	item_type_label.text = item.item_type_to_string(item.template.type)
 
 	if item is GearInstance:
-		var base_stats: Dictionary = item.get_base_stats()
+		var base_stats: Stats = item.get_base_stats()
 		var stat_lines: Array[String] = []
-		for stat: String in base_stats.keys():
-			if base_stats[stat] != 0:
-				stat_lines.append("%s: %d" % [Stats.stat_to_name(stat), base_stats[stat]])
+		for stat: Stats.StatRef in Stats.StatRef.values():
+			if base_stats.get_stat(stat) != 0:
+				stat_lines.append("%s: %d" % [base_stats.get_stat_name(stat), int(base_stats.get_stat(stat))])
 		stats_label.text = "\n".join(stat_lines)
 		
 		if item.get_all_modifiers().size() > 0:

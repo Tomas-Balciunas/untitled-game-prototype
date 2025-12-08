@@ -1,7 +1,7 @@
 [gd_resource type="Resource" script_class="CharacterResource" load_steps=12 format=3 uid="uid://btr7k6tmwt3qi"]
 
 [ext_resource type="Script" uid="uid://bwn4gpkaijqsg" path="res://scripts/CharacterResource.gd" id="1_04kyn"]
-[ext_resource type="Resource" uid="uid://bm8voqn41431y" path="res://characters/_attribute/_Unknown.tres" id="1_7y0bu"]
+[ext_resource type="Resource" uid="uid://bm8voqn41431y" path="res://stat/_attribute/_Unknown.tres" id="1_7y0bu"]
 [ext_resource type="Script" uid="uid://cbelvg2fndssu" path="res://scripts/BattleEvent.gd" id="2_y8skw"]
 [ext_resource type="PackedScene" uid="uid://cygiaifldp3mm" path="res://characters/foes/_fallback/_body/Fallback.tscn" id="3_d1mbr"]
 [ext_resource type="Script" uid="uid://bp0biy0knxw2o" path="res://effect/Effect.gd" id="3_xdmfg"]

@@ -10,6 +10,6 @@ effect = ExtResource("1_2s4wi")
 id = "row_attack_buff"
 name = "Row AttackBuff"
 description = "more attack"
-mp_cost = 2
+mp_cost = 7
 targeting_type = 3
 metadata/_custom_type_script = "uid://dyfab3mccm3i2"

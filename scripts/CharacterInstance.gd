@@ -3,6 +3,7 @@ extends RefCounted
 class_name CharacterInstance
 
 signal mana_changed(old_mana: int, new_mana: int)
+signal sp_changed(old_sp: int, new_sp: int)
 signal mana_consumed(amount: int, source: CharacterInstance)
 signal mana_restored(amount: int, source: CharacterInstance)
 signal died(ded: CharacterInstance)
@@ -17,6 +18,8 @@ var current_experience: int = 0
 var unspent_attribute_points: int = 0
 var resource: CharacterResource
 var stats: Stats
+var base_stats: Stats
+var state: CharacterState
 var action_value: float = 0
 var learnt_skills: Array[Skill] = []
 var effects: Array[Effect] = []
@@ -57,10 +60,14 @@ func _init(res: CharacterResource) -> void:
 		interaction_controller = resource.interaction_controller
 	
 	level_up_attributes = Attributes.new()
-	starting_attributes = Attributes.new()
-	stats = Stats.new(res.base_stats)
-	stats._owner = self
+	starting_attributes = res.attributes.duplicate(true)
 	fill_attributes()
+	
+	stats = res.base_stats.duplicate(true)
+	base_stats = res.base_stats.duplicate(true)
+	
+	state = CharacterState.new(stats)
+	
 	is_main = res.is_main
 	current_experience = 5000
 	
@@ -108,26 +115,26 @@ func _init(res: CharacterResource) -> void:
 		for effect in res.job.effects:
 			apply_effect(effect, CharacterSource.new(self))
 	
-	stats.recalculate_stats(true, true)
+	StatCalculator.recalculate_all_stats(self)
 
 func set_current_health(new_health: int, ctx: ActionContext = null) -> void:
-	var old := stats.current_health
-	var new: float = clamp(new_health, 0, stats.get_final_stat(Stats.HEALTH))
+	var old: int = state.current_health
+	var new: float = clamp(new_health, 0, stats.health)
 	
 	if new < old:
-		stats.current_health = int(new)
-		CharacterBus.character_damaged.emit(self, old - stats.current_health)
+		state.current_health = int(new)
+		CharacterBus.character_damaged.emit(self, old - state.current_health)
 		ChatEventBus.chat_event.emit(ChatterManager.DAMAGED, {
-			"amount": old - stats.current_health,
+			"amount": old - state.current_health,
 			"ctx": ctx,
 			"target": self
 		})
 			
 	elif new > old:
-		stats.current_health = int(new)
-		CharacterBus.character_healed.emit(self, stats.current_health - old)
+		state.current_health = int(new)
+		CharacterBus.character_healed.emit(self, state.current_health - old)
 	
-	CharacterBus.health_changed.emit(self, old, stats.current_health)
+	CharacterBus.health_changed.emit(self, old, state.current_health)
 	
 	if new == 0 and old > 0:
 		stats.current_health = int(new)
@@ -144,16 +151,26 @@ func get_body() -> CharacterBody:
 	return inst
 	
 func set_current_mana(new_mana: int) -> void:
-	var old := stats.current_mana
-	var new: float = clamp(new_mana, 0, stats.get_final_stat(Stats.MANA))
+	var old: int = state.current_mana
+	var new: float = clamp(new_mana, 0, stats.mana)
 	
 	if new < old:
-		stats.current_mana = int(new)
-		emit_signal("mana_consumed", old - stats.current_mana, self)
+		state.current_mana = int(new)
+		emit_signal("mana_consumed", old - state.current_mana, self)
 	elif new > old:
-		stats.current_mana = int(new)
-		emit_signal("mana_restored", stats.current_mana - old, self)
-	emit_signal("mana_changed", old, stats.current_mana)
+		state.current_mana = int(new)
+		emit_signal("mana_restored", state.current_mana - old, self)
+	emit_signal("mana_changed", old, state.current_mana)
+
+func set_current_sp(new_sp: int) -> void:
+	var old: int = state.current_sp
+	var new: float = clamp(new_sp, 0, stats.sp)
+	
+	if new < old:
+		state.current_sp = int(new)
+	elif new > old:
+		state.current_sp = int(new)
+	emit_signal("sp_changed", old, state.current_sp)
 
 func prepare_for_battle() -> void:
 	for e: Effect in effects:
@@ -308,8 +325,8 @@ func to_dict() -> Dictionary:
 		"id": resource.id,
 		"level": level,
 		"xp": current_experience,
-		"hp": stats.current_health,
-		"mp": stats.current_mana,
+		"hp": state.current_health,
+		"mp": state.current_mana,
 		"race": race.name,
 		"gender": gender.name,
 		"job": job.name,
@@ -397,8 +414,8 @@ static func from_dict(data: Dictionary) -> CharacterInstance:
 		inst.starting_attributes.spd = a.get("spd", inst.starting_attributes.spd)
 		inst.starting_attributes.luk = a.get("luk", inst.starting_attributes.luk)
 
-	inst.stats.current_health = data.get("hp", inst.stats.get_final_stat(Stats.HEALTH))
-	inst.stats.current_mana = data.get("mp", inst.stats.get_final_stat(Stats.MANA))
+	inst.state.current_health = data.get("hp", inst.stats.health)
+	inst.state.current_mana = data.get("mp", inst.stats.mana)
 
 	if data.has("inventory"):
 		inst.inventory.slots = []

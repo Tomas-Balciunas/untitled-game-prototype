@@ -776,7 +776,6 @@ offset_right = 1152.0
 offset_bottom = 416.0
 
 [node name="BattleInterface" type="Control" parent="UIRoot"]
-visible = false
 z_index = 5
 layout_mode = 3
 anchors_preset = 15
@@ -837,7 +836,6 @@ focus_mode = 0
 text = "Flee"
 
 [node name="Skill" type="Control" parent="UIRoot/BattleInterface/BattleControls"]
-visible = false
 layout_mode = 1
 anchor_left = 0.262
 anchor_top = 0.354
@@ -849,19 +847,19 @@ offset_right = 308.55994
 offset_bottom = 268.904
 
 [node name="ScrollContainer" type="ScrollContainer" parent="UIRoot/BattleInterface/BattleControls/Skill"]
+clip_contents = false
 layout_mode = 1
-anchors_preset = -1
-anchor_left = -1.2
-anchor_top = -0.327
-anchor_bottom = 1.357
-offset_left = -7.0
-offset_top = -36.083
-offset_right = -7.0
-offset_bottom = -36.047
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 horizontal_scroll_mode = 0
 
 [node name="SkillListContainer" type="VBoxContainer" parent="UIRoot/BattleInterface/BattleControls/Skill/ScrollContainer"]
 layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
 mouse_filter = 2
 
 [node name="SkillInfoPanel" type="VBoxContainer" parent="UIRoot/BattleInterface/BattleControls/Skill"]

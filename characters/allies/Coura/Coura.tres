@@ -1,8 +1,9 @@
-[gd_resource type="Resource" script_class="CharacterResource" load_steps=14 format=3 uid="uid://dk7pc5rr0xhbs"]
+[gd_resource type="Resource" script_class="CharacterResource" load_steps=15 format=3 uid="uid://dk7pc5rr0xhbs"]
 
-[ext_resource type="Script" uid="uid://blqk30gl013xc" path="res://characters/_attribute/Attributes.gd" id="1_klpoy"]
+[ext_resource type="Script" uid="uid://blqk30gl013xc" path="res://stat/_attribute/attributes.gd" id="1_klpoy"]
 [ext_resource type="PackedScene" uid="uid://dqjihmjf45spx" path="res://characters/allies/Coura/_body/Coura.tscn" id="2_klpoy"]
 [ext_resource type="Script" uid="uid://dq4acpkde276p" path="res://skills/Skill.gd" id="3_ma71o"]
+[ext_resource type="Resource" uid="uid://dt2wtnoyod5yd" path="res://effect/_passive/mp_cost/MpCostReduction.tres" id="4_3lheu"]
 [ext_resource type="Resource" uid="uid://drqy6f6xdgohu" path="res://skills/_offensive/confusion.tres" id="4_8awbe"]
 [ext_resource type="Script" uid="uid://cgllfcpvodqsg" path="res://scripts/experience/ExperienceManager.gd" id="4_g8tir"]
 [ext_resource type="Resource" uid="uid://dwkrtdgmmacpv" path="res://skills/_offensive/row_attack_buff.tres" id="5_8dd4x"]
@@ -33,14 +34,10 @@ race = ExtResource("8_3lheu")
 job = ExtResource("7_8dd4x")
 gender = ExtResource("6_8awbe")
 attributes = SubResource("Resource_ci8co")
-id = "a_coura_1"
-character_body = ExtResource("2_klpoy")
-name = "Coura"
 experience = 400
 slot_width = null
-prefers_front_row = false
 default_skills = Array[ExtResource("3_ma71o")]([ExtResource("4_8awbe"), ExtResource("5_8dd4x")])
-default_effects = null
+default_effects = Array[ExtResource("7_klpoy")]([ExtResource("4_3lheu")])
 default_damage_type = null
 default_items = null
 base_stats = {
@@ -58,7 +55,7 @@ stat_level_growth = {
 "ATTACK": 0.0,
 "DEFENSE": 0.0,
 "DIVINE_POWER": 0.0,
-"HEALTH": 2.0,
+"HEALTH": -10.0,
 "MAGIC_DEFENSE": 0.0,
 "MAGIC_POWER": 0.0,
 "MANA": 0.0,
@@ -67,4 +64,7 @@ stat_level_growth = {
 }
 battle_events = null
 experience_manager = SubResource("Resource_klpoy")
+id = "a_coura_1"
+name = "Coura"
+character_body = ExtResource("2_klpoy")
 metadata/_custom_type_script = "uid://bwn4gpkaijqsg"

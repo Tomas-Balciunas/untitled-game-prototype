@@ -10,5 +10,9 @@ func can_process(_event: TriggerEvent) -> bool:
 func listened_triggers() -> Array:
 	return []
 
-func modify_mp_cost(mp_cost: int) -> int:
-	return round(mp_cost * (1.0 - modifier))
+func _modifies_skill_cost() -> bool:
+	return true
+
+func modify_skill_cost(skill: Skill) -> Skill:
+	skill.final_mp_cost = round(skill.final_mp_cost * (1.0 - modifier))
+	return skill

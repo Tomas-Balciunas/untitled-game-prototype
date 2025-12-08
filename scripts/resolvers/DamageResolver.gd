@@ -33,7 +33,7 @@ func execute(_ctx: ActionContext) -> DamageContext:
 	EffectRunner.process_trigger(event)
 	
 	BattleTextLines.print_line("%s dealt %f %s damage to %s" % [ctx.source.get_source_name(), ctx.final_value, DamageTypes.to_str(ctx.type), ctx.target.resource.name])
-	event.ctx.target.set_current_health(event.ctx.target.stats.current_health - event.ctx.final_value)
+	event.ctx.target.set_current_health(event.ctx.target.state.current_health - event.ctx.final_value)
 	
 	
 	event.trigger = EffectTriggers.ON_DAMAGE_APPLIED

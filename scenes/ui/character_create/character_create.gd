@@ -156,13 +156,13 @@ func whatever(delta: int, attr: int) -> int:
 	return attr
 	
 func _update_attribute_labels() -> void:
-	str_attr.text = str(display_attributes.str)
-	iq_attr.text  = str(display_attributes.iq)
-	pie_attr.text = str(display_attributes.pie)
-	vit_attr.text = str(display_attributes.vit)
-	dex_attr.text = str(display_attributes.dex)
-	spd_attr.text = str(display_attributes.spd)
-	luk_attr.text = str(display_attributes.luk)
+	str_attr.text = str(display_attributes.strength)
+	iq_attr.text  = str(display_attributes.intelligence)
+	pie_attr.text = str(display_attributes.piety)
+	vit_attr.text = str(display_attributes.vitality)
+	dex_attr.text = str(display_attributes.dexterity)
+	spd_attr.text = str(display_attributes.speed)
+	luk_attr.text = str(display_attributes.luck)
 	
 
 func _on_job_selected(j: Job) -> void:
@@ -217,7 +217,7 @@ func _on_create_pressed() -> void:
 	
 	inst.starting_attributes = chosen_attributes
 	inst.fill_attributes()
-	inst.stats.recalculate_stats()
+	StatCalculator.recalculate_all_stats(inst)
 	
 	get_tree().change_scene_to_file("res://scenes/main.tscn")
 	

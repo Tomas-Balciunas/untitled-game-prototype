@@ -23,10 +23,12 @@ func bind(character: CharacterInstance) -> void:
 
 	#$Portrait.texture = character.resource.portrait
 	$MarginContainer/GridContainer/NameContainer/Name.text = character.resource.name
-	$MarginContainer/GridContainer/LabelValueContainer/Values/HPContainer/CurrentHP.text = str(character.stats.current_health)
-	$MarginContainer/GridContainer/LabelValueContainer/Values/HPContainer/MaxHP.text = str(character.stats.get_final_stat(Stats.HEALTH))
-	$MarginContainer/GridContainer/LabelValueContainer/Values/MPContainer/CurrentMP.text = str(character.stats.current_mana)
-	$MarginContainer/GridContainer/LabelValueContainer/Values/MPContainer/MaxMP.text = str(character.stats.get_final_stat(Stats.MANA))
+	$MarginContainer/GridContainer/LabelValueContainer/Values/HPContainer/CurrentHP.text = str(character.state.current_health)
+	$MarginContainer/GridContainer/LabelValueContainer/Values/HPContainer/MaxHP.text = str(character.stats.health)
+	$MarginContainer/GridContainer/LabelValueContainer/Values/MPContainer/CurrentMP.text = str(character.state.current_mana)
+	$MarginContainer/GridContainer/LabelValueContainer/Values/MPContainer/MaxMP.text = str(character.stats.mana)
+	$MarginContainer/GridContainer/LabelValueContainer/Values/SPContainer/CurrentSP.text = str(character.state.current_sp)
+	$MarginContainer/GridContainer/LabelValueContainer/Values/SPContainer/MaxSP.text = str(character.stats.sp)
 	
 	show_info()
 	
@@ -52,12 +54,17 @@ func hide_info() -> void:
 
 func _on_health_changed(who: CharacterInstance, _old_health: int, _new_health: int) -> void:
 	if character_instance == who:
-		$MarginContainer/GridContainer/LabelValueContainer/Values/HPContainer/CurrentHP.text = str(character_instance.stats.current_health)
-		$MarginContainer/GridContainer/LabelValueContainer/Values/HPContainer/MaxHP.text = str(character_instance.stats.get_final_stat(Stats.HEALTH))
+		$MarginContainer/GridContainer/LabelValueContainer/Values/HPContainer/CurrentHP.text = str(character_instance.state.current_health)
+		$MarginContainer/GridContainer/LabelValueContainer/Values/HPContainer/MaxHP.text = str(character_instance.stats.health)
 
 func _on_mana_changed(_old_mana: int, _new_mana: int) -> void:
-	$MarginContainer/GridContainer/LabelValueContainer/Values/MPContainer/CurrentMP.text = str(character_instance.stats.current_mana)
-	$MarginContainer/GridContainer/LabelValueContainer/Values/MPContainer/MaxMP.text = str(character_instance.stats.get_final_stat(Stats.MANA))
+	$MarginContainer/GridContainer/LabelValueContainer/Values/MPContainer/CurrentMP.text = str(character_instance.state.current_mana)
+	$MarginContainer/GridContainer/LabelValueContainer/Values/MPContainer/MaxMP.text = str(character_instance.stats.mana)
+
+func _on_sp_changed(_old_sp: int, _new_sp: int) -> void:
+	$MarginContainer/GridContainer/LabelValueContainer/Values/SPContainer/CurrentSP.text = str(character_instance.state.current_sp)
+	$MarginContainer/GridContainer/LabelValueContainer/Values/SPContainer/MaxSP.text = str(character_instance.stats.sp)
+
 
 func _on_gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:

@@ -1,6 +1,6 @@
-[gd_resource type="Resource" script_class="CharacterResource" load_steps=12 format=3 uid="uid://dvky7cvffgf22"]
+[gd_resource type="Resource" script_class="CharacterResource" load_steps=14 format=3 uid="uid://dvky7cvffgf22"]
 
-[ext_resource type="Resource" uid="uid://bm8voqn41431y" path="res://characters/_attribute/_Unknown.tres" id="1_w0qqt"]
+[ext_resource type="Resource" uid="uid://jj60dk764c5i" path="res://characters/allies/MC/BaseStats.tres" id="1_lkn2v"]
 [ext_resource type="Script" uid="uid://cbelvg2fndssu" path="res://scripts/BattleEvent.gd" id="2_2usx5"]
 [ext_resource type="PackedScene" uid="uid://bbixalnsv3np6" path="res://characters/allies/MC/_body/MC.tscn" id="3_2usx5"]
 [ext_resource type="Script" uid="uid://bp0biy0knxw2o" path="res://effect/Effect.gd" id="4_2usx5"]
@@ -11,20 +11,26 @@
 [ext_resource type="Resource" uid="uid://cs2tci0dc3vvo" path="res://characters/_class/_Unknown.tres" id="8_xghbj"]
 [ext_resource type="Resource" uid="uid://lcgngc3c13fc" path="res://characters/_race/_Unknown.tres" id="9_ghhp2"]
 [ext_resource type="Script" uid="uid://bwn4gpkaijqsg" path="res://scripts/CharacterResource.gd" id="10_fb0jw"]
+[ext_resource type="Script" uid="uid://bqln4xpkkidja" path="res://stat/_stats/stats.gd" id="12_jti2u"]
+
+[sub_resource type="Resource" id="Resource_uxndi"]
+script = ExtResource("12_jti2u")
+attack = 1.0
+health = 5.0
+mana = 1.0
+sp = 1.0
+speed = 0.5
+defense = 2.0
+magic_power = 1.0
+divine_power = 1.0
+magic_defense = 2.0
+resistance = 2.0
+metadata/_custom_type_script = "uid://bqln4xpkkidja"
 
 [resource]
 script = ExtResource("10_fb0jw")
+base_stats = ExtResource("1_lkn2v")
+stat_level_growth = SubResource("Resource_uxndi")
 id = "mc"
 character_body = ExtResource("3_2usx5")
-base_stats = {
-"ATTACK": 10.0,
-"DEFENSE": 10.0,
-"DIVINE_POWER": 10.0,
-"HEALTH": 50.0,
-"MAGIC_DEFENSE": 10.0,
-"MAGIC_POWER": 10.0,
-"MANA": 5.0,
-"RESISTANCE": 10.0,
-"SPEED": 3.0
-}
 metadata/_custom_type_script = "uid://bwn4gpkaijqsg"

@@ -10,5 +10,5 @@ effect = ExtResource("1_a61sf")
 id = "confuse_skill"
 name = "Mind Scramble"
 description = "Confuses target"
-mp_cost = 3
+mp_cost = 5
 metadata/_custom_type_script = "uid://dyfab3mccm3i2"

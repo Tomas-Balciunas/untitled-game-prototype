@@ -11,6 +11,8 @@ class_name Skill
 @export var effects: Array[Effect] = []
 @export var targeting_type: TargetingManager.TargetType = TargetingManager.TargetType.SINGLE
 
+var final_mp_cost: int = 0
+var final_sp_cost: int = 0
 
 func _get_name() -> String:
 	return name
@@ -23,3 +25,14 @@ func build_context(_source: SkillSource, _target: CharacterInstance) -> ActionCo
 
 func get_resolver() -> EffectResolver:
 	return
+
+func can_use(c: CharacterInstance) -> bool:
+	return final_mp_cost <= c.stats.current_mana and final_sp_cost <= c.stats.current_sp
+
+func set_cost(c: CharacterInstance) -> void:
+	final_mp_cost = mp_cost
+	final_sp_cost = sp_cost
+	
+	for e: Effect in c.effects:
+		if e._modifies_skill_cost():
+			e.modify_skill_cost(self)

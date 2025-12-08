@@ -70,32 +70,32 @@ func _setup_attribute_buttons() -> void:
 func _on_attribute_changed(attr_name: String, delta: int) -> void:
 	match attr_name:
 		"STR":
-			character.level_up_attributes.str = whatever(delta, character.level_up_attributes.str)
+			character.level_up_attributes.strength = whatever(delta, character.level_up_attributes.strength)
 		"IQ":
-			character.level_up_attributes.iq = whatever(delta, character.level_up_attributes.iq)
+			character.level_up_attributes.intelligence = whatever(delta, character.level_up_attributes.intelligence)
 		"PIE":
-			character.level_up_attributes.pie = whatever(delta, character.level_up_attributes.pie)
+			character.level_up_attributes.piety = whatever(delta, character.level_up_attributes.piety)
 		"VIT":
-			character.level_up_attributes.vit = whatever(delta, character.level_up_attributes.vit)
+			character.level_up_attributes.vitality = whatever(delta, character.level_up_attributes.vitality)
 		"DEX":
-			character.level_up_attributes.dex = whatever(delta, character.level_up_attributes.dex)
+			character.level_up_attributes.dexterity = whatever(delta, character.level_up_attributes.dexterity)
 		"SPD":
-			character.level_up_attributes.spd = whatever(delta, character.level_up_attributes.spd)
+			character.level_up_attributes.speed = whatever(delta, character.level_up_attributes.speed)
 		"LUK":
-			character.level_up_attributes.luk = whatever(delta, character.level_up_attributes.luk)
+			character.level_up_attributes.luck = whatever(delta, character.level_up_attributes.luck)
 
-	character.level_up_attributes.str = max(character.level_up_attributes.str, 0)
-	character.level_up_attributes.iq = max(character.level_up_attributes.iq, 0)
-	character.level_up_attributes.pie = max(character.level_up_attributes.pie, 0)
-	character.level_up_attributes.vit = max(character.level_up_attributes.vit, 0)
-	character.level_up_attributes.dex = max(character.level_up_attributes.dex, 0)
-	character.level_up_attributes.spd = max(character.level_up_attributes.spd, 0)
-	character.level_up_attributes.luk = max(character.level_up_attributes.luk, 0)
+	character.level_up_attributes.strength = max(character.level_up_attributes.strength, 0)
+	character.level_up_attributes.intelligence = max(character.level_up_attributes.intelligence, 0)
+	character.level_up_attributes.piety = max(character.level_up_attributes.piety, 0)
+	character.level_up_attributes.vitality = max(character.level_up_attributes.vitality, 0)
+	character.level_up_attributes.dexterity = max(character.level_up_attributes.dexterity, 0)
+	character.level_up_attributes.speed = max(character.level_up_attributes.speed, 0)
+	character.level_up_attributes.luck = max(character.level_up_attributes.luck, 0)
 	
 	character.fill_attributes()
 	_update_attribute_labels()
 	update_points()
-	character.stats.recalculate_stats()
+	StatCalculator.recalculate_all_stats(character)
 	
 func whatever(delta: int, attr: int) -> int:
 	var points := character.unspent_attribute_points
@@ -109,13 +109,13 @@ func whatever(delta: int, attr: int) -> int:
 	return attr
 	
 func _update_attribute_labels() -> void:
-	str_attr.text = str(character.attributes.str)
-	iq_attr.text  = str(character.attributes.iq)
-	pie_attr.text = str(character.attributes.pie)
-	vit_attr.text = str(character.attributes.vit)
-	dex_attr.text = str(character.attributes.dex)
-	spd_attr.text = str(character.attributes.spd)
-	luk_attr.text = str(character.attributes.luk)
+	str_attr.text = str(character.attributes.strength)
+	iq_attr.text  = str(character.attributes.intelligence)
+	pie_attr.text = str(character.attributes.piety)
+	vit_attr.text = str(character.attributes.vitality)
+	dex_attr.text = str(character.attributes.dexterity)
+	spd_attr.text = str(character.attributes.speed)
+	luk_attr.text = str(character.attributes.luck)
 
 func update_points() -> void:
 	points_display.text = "Points left: %s" % character.unspent_attribute_points

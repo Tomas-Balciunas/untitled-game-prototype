@@ -28,7 +28,7 @@ func process_trigger(event: TriggerEvent) -> void:
 					continue
 				effects_to_run.append(e)
 
-	effects_to_run.sort_custom(_sort_effects)
+	#effects_to_run.sort_custom(_sort_effects)
 
 	for entry: Effect in effects_to_run:
 		

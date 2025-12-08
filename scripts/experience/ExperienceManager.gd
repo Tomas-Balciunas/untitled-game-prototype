@@ -31,7 +31,7 @@ func level_up_character(character: CharacterInstance) -> void:
 				character.apply_effect(effect, CharacterSource.new(character))
 				BattleTextLines.print_line("%s has learnt %s!" % [character.resource.name, effect._get_name()])
 
-	character.stats.recalculate_stats()
+	StatCalculator.recalculate_all_stats(character)
 
 func grant_experience_to_character(character: CharacterInstance, amount: int) -> void:
 	character.current_experience += amount

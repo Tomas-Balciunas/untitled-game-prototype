@@ -11,6 +11,7 @@ var current_battler: CharacterInstance = null
 
 @onready var skill_popup := $Skill
 @onready var skill_list_container := $Skill/ScrollContainer/SkillListContainer
+const SKILL_ENTRY = preload("uid://by0xll5nd2ejj")
 
 @onready var item_popup := $Item
 @onready var item_list_container := $Item/ScrollContainer/ItemListContainer
@@ -143,28 +144,17 @@ func _populate_skill_list() -> void:
 	for child in skill_list_container.get_children():
 		child.queue_free()
 
-	var skills := []
-	for s in current_battler.learnt_skills:
-		skills.append(s)
 	
-	for skill: Skill in skills:
-		var mp_cost := skill.mp_cost
+	for skill: Skill in current_battler.learnt_skills:
+		var entry: SkillEntryInterface = SKILL_ENTRY.instantiate()
+		skill_list_container.add_child(entry)
 		
-		for e in current_battler.effects:
-			if e.has_method("modify_mp_cost"):
-				mp_cost = e.modify_mp_cost(mp_cost)
-				
-		var btn := Button.new()
-		btn.text = "%s (%d MP)" % [skill["name"], mp_cost]
-		btn.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-		btn.pressed.connect(_on_skill_selected.bind(skill))
-		btn.mouse_entered.connect(_on_skill_hover.bind(skill))
-		btn.mouse_exited.connect(_on_skill_unhover)
+		var modified_skill: Skill = entry.bind(skill, current_battler)
+		entry.pressed.connect(_on_skill_selected.bind(modified_skill))
+		entry.mouse_entered.connect(_on_skill_hover.bind(modified_skill))
+		entry.mouse_exited.connect(_on_skill_unhover)
 		
-		if current_battler.stats.current_mana < mp_cost:
-			btn.disabled = true
-		
-		skill_list_container.add_child(btn)
+
 
 func _on_skill_hover(skill: Skill) -> void:
 	skill_info_panel.visible = true

@@ -42,7 +42,7 @@ func begin(_enemies: Array[CharacterInstance]) -> void:
 	var party_members := PartyManager.members
 	
 	for b: CharacterInstance in party_members + _enemies:
-		b.action_value = 10000 / (100 + b.stats.get_final_stat(Stats.SPEED))
+		b.action_value = 10000 / (100 + b.stats.speed)
 		_register_battler(b)
 		b.prepare_for_battle()
 		for e: BattleEvent in b.resource.battle_events:
@@ -128,7 +128,7 @@ func _on_turn_end() -> void:
 	event.actor = CharacterSource.new(current_battler)
 	event.ctx = ActionContext.new()
 	EffectRunner.process_trigger(event)
-	current_battler.action_value += 1000 / (100 + current_battler.stats.get_final_stat(Stats.SPEED))
+	current_battler.action_value += 1000 / (100 + current_battler.stats.speed)
 	BattleBus.turn_ended.emit()
 	current_battler = null
 	current_state = BattleState.CHECK_END
@@ -211,8 +211,8 @@ func _perform_player_action(action: String, target: CharacterInstance) -> void:
 				var dmg := DamageContext.new()
 				dmg.source = CharacterSource.new(current_battler)
 				dmg.target   = t
-				dmg.base_value = current_battler.stats.get_final_stat(Stats.ATTACK)
-				dmg.final_value = current_battler.stats.get_final_stat(Stats.ATTACK)
+				dmg.base_value = current_battler.stats.attack
+				dmg.final_value = current_battler.stats.attack
 				dmg.type = current_battler.damage_type
 				dmg.actively_cast = true
 				var _ctx := await DamageResolver.new().execute(dmg)
@@ -235,14 +235,8 @@ func _perform_player_action(action: String, target: CharacterInstance) -> void:
 				push_error("Attack connected signal timed out for character: %s, %s " % [current_battler.resource.name, current_battler.resource.id])
 			
 			
-			var mp_cost: int = skill.mp_cost
-			for e in current_battler.effects:
-				if e.has_method("modify_mp_cost"):
-					mp_cost = e.modify_mp_cost(mp_cost)
-			if current_battler.stats.current_mana < mp_cost:
-				return
-				
-			current_battler.set_current_mana(current_battler.stats.current_mana - mp_cost)
+			current_battler.set_current_mana(current_battler.stats.current_mana - skill.final_mp_cost)
+			current_battler.set_current_sp(current_battler.stats.current_sp - skill.final_sp_cost)
 			
 			for t in _targets:
 				if not t:
@@ -324,8 +318,8 @@ func _process_enemy_turn(event: TriggerEvent = null) -> void:
 	var atk := DamageContext.new()
 	atk.source = CharacterSource.new(current_battler)
 	atk.target   = target
-	atk.base_value = current_battler.stats.get_final_stat(Stats.ATTACK)
-	atk.final_value = current_battler.stats.get_final_stat(Stats.ATTACK)
+	atk.base_value = current_battler.stats.attack
+	atk.final_value = current_battler.stats.attack
 	atk.actively_cast = true
 	
 	ChatEventBus.chat_event.emit(ChatterManager.ATTACKING, {

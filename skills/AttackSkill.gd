@@ -9,8 +9,8 @@ class_name AttackSkill
 
 func build_context(_source: SkillSource, _target: CharacterInstance) -> DamageContext:
 	var ctx := DamageContext.new()
-	ctx.base_value = _source.character.stats.get_final_stat(Stats.ATTACK) * modifier
-	ctx.final_value = _source.character.stats.get_final_stat(Stats.ATTACK) * modifier
+	ctx.base_value = _source.character.stats.attack * modifier
+	ctx.final_value = _source.character.stats.attack * modifier
 	ctx.source = _source
 	ctx.target = _target
 	ctx.temporary_effects = effects

@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="Gender" load_steps=4 format=3 uid="uid://b40pmjuvgrvn4"]
 
-[ext_resource type="Script" uid="uid://blqk30gl013xc" path="res://characters/_attribute/Attributes.gd" id="1_5dh1a"]
+[ext_resource type="Script" uid="uid://blqk30gl013xc" path="res://stat/_attribute/attributes.gd" id="1_5dh1a"]
 [ext_resource type="Script" uid="uid://c548a16bd0808" path="res://characters/_gender/Gender.gd" id="1_tr3xe"]
 
 [sub_resource type="Resource" id="Resource_r56lc"]

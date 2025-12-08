@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3 uid="uid://b7tdrca1v88rk"]
 
 [ext_resource type="Script" uid="uid://bk075a76c1hkh" path="res://scenes/ui/party/party_container_interface.gd" id="1_oqee1"]
-[ext_resource type="PackedScene" uid="uid://b6i5a4uv2t1do" path="res://scenes/ui/party/UIPartyMemberSlot.tscn" id="2_gd10f"]
+[ext_resource type="PackedScene" uid="uid://b6i5a4uv2t1do" path="res://scenes/ui/party/PartyMemberSlotInterface.tscn" id="2_gd10f"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tbgi4"]
 bg_color = Color(0, 0, 0, 1)

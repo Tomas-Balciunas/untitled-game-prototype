@@ -72,7 +72,7 @@ func perform_run_towards_target(target: FormationSlot) -> void:
 	var attack_offset := to_target.normalized() * 1.0
 	var stop_position_local := target_pos_local - attack_offset
 
-	body_instance.play_run()
+	body_instance.play_run_back()
 
 	if character_instance.is_main:
 		if body_instance.has_node("Camera3D"):
@@ -106,7 +106,7 @@ func position_back() -> void:
 
 	var tween_back := create_tween()
 	tween_back.set_parallel()
-	body_instance.play_run_back()
+	body_instance.play_run()
 	tween_back.tween_property(self, "position", home_local, 0.4).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
 	
 	if body_instance.has_node("Camera3D"):

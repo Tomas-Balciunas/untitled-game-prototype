@@ -62,3 +62,9 @@ func on_expire() -> void:
 
 func remove_self() -> void:
 	owner.remove_effect(self)
+
+func _modifies_skill_cost() -> bool:
+	return false
+
+func modify_skill_cost(_skill: Skill) -> Skill:
+	return _skill

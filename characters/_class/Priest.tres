@@ -1,7 +1,7 @@
 [gd_resource type="Resource" script_class="PriestClass" load_steps=10 format=3 uid="uid://br55c33pop4ux"]
 
 [ext_resource type="Script" uid="uid://bp0biy0knxw2o" path="res://effect/Effect.gd" id="1_odaop"]
-[ext_resource type="Script" uid="uid://blqk30gl013xc" path="res://characters/_attribute/Attributes.gd" id="1_wubjf"]
+[ext_resource type="Script" uid="uid://blqk30gl013xc" path="res://stat/_attribute/attributes.gd" id="1_wubjf"]
 [ext_resource type="Script" uid="uid://krvcd4i0cl6r" path="res://characters/_class/Priest.gd" id="2_odaop"]
 [ext_resource type="Script" uid="uid://dq4acpkde276p" path="res://skills/Skill.gd" id="3_cd4k3"]
 [ext_resource type="Resource" uid="uid://c4v8018wjpyyf" path="res://effect/_passive/healing/HealBoost.tres" id="3_rx8nc"]

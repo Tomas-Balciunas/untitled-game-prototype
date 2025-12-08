@@ -62,8 +62,8 @@ func exit_rest_area() -> void:
 	dungeon.process_mode = Node.PROCESS_MODE_INHERIT
 	
 	for member in PartyManager.members:
-		member.set_current_health(member.stats.get_final_stat(Stats.HEALTH))
-		member.set_current_mana(member.stats.get_final_stat(Stats.MANA))
+		member.set_current_health(member.stats.health)
+		member.set_current_mana(member.stats.mana)
 		
 	SaveManager.save_game(0)
 

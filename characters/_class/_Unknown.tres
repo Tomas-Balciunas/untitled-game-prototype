@@ -1,7 +1,7 @@
 [gd_resource type="Resource" script_class="Job" load_steps=6 format=3 uid="uid://cs2tci0dc3vvo"]
 
 [ext_resource type="Script" uid="uid://bp0biy0knxw2o" path="res://effect/Effect.gd" id="1_fhtal"]
-[ext_resource type="Script" uid="uid://blqk30gl013xc" path="res://characters/_attribute/Attributes.gd" id="1_flgxd"]
+[ext_resource type="Script" uid="uid://blqk30gl013xc" path="res://stat/_attribute/attributes.gd" id="1_flgxd"]
 [ext_resource type="Script" uid="uid://xepac0r71qt2" path="res://characters/_class/Job.gd" id="2_flgxd"]
 [ext_resource type="Script" uid="uid://dq4acpkde276p" path="res://skills/Skill.gd" id="3_ayw6p"]
 
