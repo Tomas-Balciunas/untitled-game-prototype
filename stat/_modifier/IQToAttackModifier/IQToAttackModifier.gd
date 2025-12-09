@@ -1,7 +1,7 @@
 extends StatModifier
 class_name IQToAttackModifier
 
-func compute_value(character: CharacterInstance) -> float:
+func compute_value(character: CharacterInstance, _ds: float) -> float:
 	return roundf(character.attributes.iq * value)
 
 func get_description() -> String:

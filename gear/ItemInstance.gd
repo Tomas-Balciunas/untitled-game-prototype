@@ -1,16 +1,11 @@
-extends Resource
+@abstract
 class_name ItemInstance
 
-@export var template: Item
+var id: String
+var item_name: String
+var item_description: String
+var type: Item.ItemType
 
-func get_item_id() -> String:
-	return template.id
-
-func get_item_name() -> String:
-	return template.name
-	
-func get_item_description() -> String:
-	return template.description
 
 func item_type_to_string(item_type: Item.ItemType) -> String:
 	var names := {
@@ -26,7 +21,8 @@ func item_type_to_string(item_type: Item.ItemType) -> String:
 	}
 	return names.get(item_type, "Unknown")
 
-func to_dict() -> Dictionary:
-	push_error("generic item dict should never get called")
-	
-	return {}
+@abstract
+func game_save() -> Dictionary
+
+@abstract
+func game_load() -> void

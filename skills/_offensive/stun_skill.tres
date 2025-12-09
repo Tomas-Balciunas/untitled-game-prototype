@@ -11,7 +11,6 @@ metadata/_custom_type_script = "uid://b040h4pefkqu"
 
 [resource]
 script = ExtResource("2_43qm4")
-modifier = 0.5
 id = "stun_bash"
 name = "Stun Bash"
 description = "Stuns target"

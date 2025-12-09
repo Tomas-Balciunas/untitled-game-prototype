@@ -20,10 +20,10 @@ func can_process(_event: TriggerEvent) -> bool:
 func on_trigger(_event: TriggerEvent) -> void:
 	if _event.trigger == EffectTriggers.ON_BEFORE_SKILL_USE:
 		active_mod = mod.duplicate()
-		_event.actor.character.stats.add_modifier(active_mod)
-		_event.actor.character.stats.recalculate_stats()
+		_event.actor.character.state.add_modifier(active_mod)
+		StatCalculator.recalculate_stat(_event.actor.character, active_mod.stat)
 	
 	if _event.trigger == EffectTriggers.ON_POST_SKILL_USE:
-		active_mod = mod.duplicate()
-		_event.actor.character.stats.remove_modifier(active_mod)
-		_event.actor.character.stats.recalculate_stats()
+		if active_mod:
+			_event.actor.character.state.remove_modifier(active_mod)
+			StatCalculator.recalculate_stat(_event.actor.character, active_mod.stat)

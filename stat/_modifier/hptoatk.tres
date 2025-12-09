@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="hptoatk" load_steps=2 format=3 uid="uid://whx7pvedeuto"]
+
+[ext_resource type="Script" uid="uid://j2sy41eo8je4" path="res://stat/_modifier/hp_to_atk.gd" id="1_wct7l"]
+
+[resource]
+script = ExtResource("1_wct7l")
+name = "hp to atk"
+affected_by = Array[int]([1])
+type = 1
+value = 0.5
+applicable_items = Array[int]([1])
+metadata/_custom_type_script = "uid://j2sy41eo8je4"

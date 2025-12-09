@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="PriestClass" load_steps=10 format=3 uid="uid://br55c33pop4ux"]
+[gd_resource type="Resource" script_class="PriestClass" load_steps=11 format=3 uid="uid://br55c33pop4ux"]
 
 [ext_resource type="Script" uid="uid://bp0biy0knxw2o" path="res://effect/Effect.gd" id="1_odaop"]
 [ext_resource type="Script" uid="uid://blqk30gl013xc" path="res://stat/_attribute/attributes.gd" id="1_wubjf"]
@@ -8,14 +8,10 @@
 [ext_resource type="Resource" uid="uid://dgxlt0x8p42nw" path="res://effect/_passive/damage share/DamageShare.tres" id="4_0qdgc"]
 [ext_resource type="Resource" uid="uid://c5xohmycfkr5c" path="res://skills/_defensive/_heal/row heal.tres" id="5_lu6jk"]
 [ext_resource type="Resource" uid="uid://bk1ekpvjscjmg" path="res://skills/_defensive/_heal/single heal.tres" id="6_rx8nc"]
+[ext_resource type="Resource" uid="uid://s8gs3fa65s30" path="res://stat/_stats/DefaultStatGrowth.tres" id="9_0qdgc"]
 
 [sub_resource type="Resource" id="Resource_lyfav"]
 script = ExtResource("1_wubjf")
-str = 1
-iq = 2
-pie = 5
-vit = 1
-luk = 1
 metadata/_custom_type_script = "uid://blqk30gl013xc"
 
 [resource]
@@ -24,15 +20,4 @@ name = 3
 attributes = SubResource("Resource_lyfav")
 skills = Array[ExtResource("3_cd4k3")]([ExtResource("5_lu6jk"), ExtResource("6_rx8nc")])
 effects = Array[ExtResource("1_odaop")]([ExtResource("3_rx8nc"), ExtResource("4_0qdgc")])
-stat_level_growth = {
-"ATTACK": 1.0,
-"DEFENSE": 5.0,
-"DIVINE_POWER": 5.0,
-"HEALTH": 5.0,
-"MAGIC_DEFENSE": 5.0,
-"MAGIC_POWER": 2.0,
-"MANA": 5.0,
-"RESISTANCE": 10.0,
-"SPEED": 0.5
-}
 metadata/_custom_type_script = "uid://krvcd4i0cl6r"

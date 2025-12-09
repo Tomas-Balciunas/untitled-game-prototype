@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="atktohp" load_steps=2 format=3 uid="uid://4nuocqswjl8e"]
+
+[ext_resource type="Script" uid="uid://cgs28laa6h2w4" path="res://stat/_modifier/atk_to_hp.gd" id="1_mifgy"]
+
+[resource]
+script = ExtResource("1_mifgy")
+name = "atk to hp"
+stat = 1
+affected_by = Array[int]([0])
+type = 1
+value = 0.5
+applicable_items = Array[int]([1])
+metadata/_custom_type_script = "uid://cgs28laa6h2w4"

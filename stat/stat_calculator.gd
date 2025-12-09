@@ -9,11 +9,11 @@ static func recalculate_all_stats(c: CharacterInstance, should_fill_hp: bool = f
 
 static func recalculate_stat(c: CharacterInstance, s: Stats.StatRef) -> void:
 	var base_value: float = c.base_stats.get_stat(s)
-	var derived_stats: Stats = Stats.new()
+	var computed_stat: float = base_value + get_attribute_contribution(s, c) + get_level_contribution(s, c)
+	c.computed_stats.set_stat(s, computed_stat)
 	
-	derived_stats.set_stat(s, (base_value + get_attribute_contribution(s, c) + get_level_contribution(s, c)))
-
 	var gear_value: float = 0.0
+	
 	for slot: ItemInstance in c.equipment.values():
 		if slot == null:
 			continue
@@ -22,8 +22,6 @@ static func recalculate_stat(c: CharacterInstance, s: Stats.StatRef) -> void:
 		else:
 			push_error("Non gear item is equipped: %s" % slot.get_item_name())
 	
-	derived_stats.add_stat(s, gear_value)
-	
 	var flat_bonus: float = 0.0
 	var pct_bonus: float = 0.0
 	
@@ -31,15 +29,15 @@ static func recalculate_stat(c: CharacterInstance, s: Stats.StatRef) -> void:
 		if not mod.stat == s:
 			continue
 		
-		var val: float = mod.compute_value(c)
+		var val: float = mod.compute_value(c, computed_stat)
+		
+		## kinda redundant since we get already multiplied value but whatever
 		if mod.type == StatModifier.Type.ADDITIVE:
 			flat_bonus += val
 		elif mod.type == StatModifier.Type.MULTIPLICATIVE:
 			pct_bonus += val
-			
-	var value: float = derived_stats.get_stat(s)
-	var pct: float = value * pct_bonus
-	var final: float = value + flat_bonus + pct
+		
+	var final: float = computed_stat + flat_bonus + pct_bonus + gear_value
 	
 	c.stats.set_stat(s, final)
 
@@ -49,7 +47,7 @@ static func recalculate_stat(c: CharacterInstance, s: Stats.StatRef) -> void:
 	if s == Stats.StatRef.MANA:
 		c.emit_signal("mana_changed", c.state.current_mana, c.state.current_mana)
 
-	
+
 static func get_attribute_contribution(stat: Stats.StatRef, c: CharacterInstance) -> float:
 	var mods: Dictionary = c.job.get_stat_attribute_modifiers(stat)
 	

@@ -10,14 +10,16 @@ enum Type {
 @export var name: String
 @export var description: String
 @export var stat: Stats.StatRef
-@export var affected_by: Array[Stats.StatRef] = []
 @export var type: Type = Type.ADDITIVE
 @export var value: float = 0.0
 @export var priority: int = 0
 @export var applicable_items: Array[Gear.ItemType] = []
 
-func compute_value(_character: CharacterInstance) -> float:
-	return value
+func compute_value(_character: CharacterInstance, _derived_stat: float) -> float:
+	if type == Type.ADDITIVE:
+		return value
+	else:
+		return _derived_stat * value
 
 func get_description() -> String:
 	var suffix: String

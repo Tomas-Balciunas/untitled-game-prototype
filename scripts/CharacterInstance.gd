@@ -18,6 +18,7 @@ var current_experience: int = 0
 var unspent_attribute_points: int = 0
 var resource: CharacterResource
 var stats: Stats
+var computed_stats: Stats
 var base_stats: Stats
 var state: CharacterState
 var action_value: float = 0
@@ -65,6 +66,7 @@ func _init(res: CharacterResource) -> void:
 	
 	stats = res.base_stats.duplicate(true)
 	base_stats = res.base_stats.duplicate(true)
+	computed_stats = base_stats.duplicate(true)
 	
 	state = CharacterState.new(stats)
 	
@@ -256,9 +258,9 @@ func equip_item(item: GearInstance) -> bool:
 	gear_effects[slot_name] = insts
 	
 	for m in item.get_all_modifiers():
-		stats.add_modifier(m)
+		state.add_modifier(m)
 		
-	stats.recalculate_stats()
+	StatCalculator.recalculate_all_stats(self)
 	
 	return true
 
@@ -274,11 +276,11 @@ func unequip_slot(slot_name: String) -> bool:
 	gear_effects.erase(slot_name)
 		
 	for m in item.get_all_modifiers():
-		stats.remove_modifier(m)
+		state.remove_modifier(m)
 	
 	equipment[slot_name] = null
 	inventory.add_item(item)
-	stats.recalculate_stats()
+	StatCalculator.recalculate_all_stats(self)
 	
 	return true
 
@@ -332,33 +334,9 @@ func to_dict() -> Dictionary:
 		"job": job.name,
 		"main": is_main,
 		"unspent_points": unspent_attribute_points,
-		"attributes": {
-			"str": attributes.str,
-			"iq": attributes.iq,
-			"pie": attributes.pie,
-			"vit": attributes.vit,
-			"dex": attributes.dex,
-			"spd": attributes.spd,
-			"luk": attributes.luk
-		},
-		"level_up_attributes": {
-			"str": level_up_attributes.str,
-			"iq": level_up_attributes.iq,
-			"pie": level_up_attributes.pie,
-			"vit": level_up_attributes.vit,
-			"dex": level_up_attributes.dex,
-			"spd": level_up_attributes.spd,
-			"luk": level_up_attributes.luk
-		},
-		"starting_attributes": {
-			"str": starting_attributes.str,
-			"iq": starting_attributes.iq,
-			"pie": starting_attributes.pie,
-			"vit": starting_attributes.vit,
-			"dex": starting_attributes.dex,
-			"spd": starting_attributes.spd,
-			"luk": starting_attributes.luk
-		},
+		"attributes": attributes.game_save(),
+		"level_up_attributes": level_up_attributes.game_save(),
+		"starting_attributes": starting_attributes.game_save(),
 		"equipment": equip_dict,
 		"inventory": inventory_arr,
 		"effects": effect_arr,
@@ -386,33 +364,15 @@ static func from_dict(data: Dictionary) -> CharacterInstance:
 
 	if data.has("level_up_attributes"):
 		var a: Dictionary = data["level_up_attributes"]
-		inst.level_up_attributes.str = a.get("str")
-		inst.level_up_attributes.iq  = a.get("iq")
-		inst.level_up_attributes.pie = a.get("pie")
-		inst.level_up_attributes.vit = a.get("vit")
-		inst.level_up_attributes.dex = a.get("dex")
-		inst.level_up_attributes.spd = a.get("spd")
-		inst.level_up_attributes.luk = a.get("luk")
+		inst.level_up_attributes.game_load(a)
 		
 	if data.has("attributes"):
 		var a: Dictionary = data["attributes"]
-		inst.attributes.str = a.get("str", inst.attributes.str)
-		inst.attributes.iq  = a.get("iq", inst.attributes.iq)
-		inst.attributes.pie = a.get("pie", inst.attributes.pie)
-		inst.attributes.vit = a.get("vit", inst.attributes.vit)
-		inst.attributes.dex = a.get("dex", inst.attributes.dex)
-		inst.attributes.spd = a.get("spd", inst.attributes.spd)
-		inst.attributes.luk = a.get("luk", inst.attributes.luk)
+		inst.attributes.game_load(a)
 	
 	if data.has("starting_attributes"):
 		var a: Dictionary = data["starting_attributes"]
-		inst.starting_attributes.str = a.get("str", inst.starting_attributes.str)
-		inst.starting_attributes.iq  = a.get("iq", inst.starting_attributes.iq)
-		inst.starting_attributes.pie = a.get("pie", inst.starting_attributes.pie)
-		inst.starting_attributes.vit = a.get("vit", inst.starting_attributes.vit)
-		inst.starting_attributes.dex = a.get("dex", inst.starting_attributes.dex)
-		inst.starting_attributes.spd = a.get("spd", inst.starting_attributes.spd)
-		inst.starting_attributes.luk = a.get("luk", inst.starting_attributes.luk)
+		inst.starting_attributes.game_load(a)
 
 	inst.state.current_health = data.get("hp", inst.stats.health)
 	inst.state.current_mana = data.get("mp", inst.stats.mana)
@@ -461,5 +421,5 @@ static func from_dict(data: Dictionary) -> CharacterInstance:
 				if gear_inst and gear_inst is GearInstance:
 					inst.equip_item(gear_inst)
 					
-	inst.stats.recalculate_stats()
+	StatCalculator.recalculate_all_stats(inst)
 	return inst

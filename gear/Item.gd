@@ -20,10 +20,6 @@ enum ItemType {
 @export var description: String
 @export var icon: Texture2D
 
-func instantiate() -> ItemInstance:
-	var inst := ItemInstance.new()
-	inst.template = self
-	return inst
 
 static func item_type_to_string(item_type: Item.ItemType) -> String:
 	var names := {
