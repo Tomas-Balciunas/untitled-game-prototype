@@ -87,7 +87,7 @@ func _on_skill_selected(skill: Skill) -> void:
 	BattleBus.action_selected.emit(BattleBus.SKILL, skill)
 	skill_popup.visible = false
 
-func _on_item_selected(item: ConsumableInstance) -> void:
+func _on_item_selected(item: Consumable) -> void:
 	BattleBus.action_selected.emit(BattleBus.ITEM, item)
 	skill_popup.hide()
 
@@ -130,7 +130,7 @@ func _populate_item_list() -> void:
 
 	var items := current_battler.inventory.get_all_items()
 	for item in items:
-		if not item is ConsumableInstance:
+		if not item is Consumable:
 			continue
 		var btn := Button.new()
 		btn.text = item.get_item_name()
@@ -165,7 +165,7 @@ func _on_skill_hover(skill: Skill) -> void:
 func _on_skill_unhover() -> void:
 	skill_info_panel.visible = false
 	
-func _on_item_hover(item: ConsumableInstance) -> void:
+func _on_item_hover(item: Consumable) -> void:
 	item_info_panel.visible = true
 	item_info_name_label.text = item.get_item_name()
 	item_info_description_label.text = item.get_item_description()

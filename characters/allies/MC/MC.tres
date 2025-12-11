@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="CharacterResource" load_steps=17 format=3 uid="uid://dvky7cvffgf22"]
+[gd_resource type="Resource" script_class="CharacterResource" load_steps=14 format=3 uid="uid://dvky7cvffgf22"]
 
 [ext_resource type="Resource" uid="uid://jj60dk764c5i" path="res://characters/allies/MC/BaseStats.tres" id="1_lkn2v"]
 [ext_resource type="Script" uid="uid://cbelvg2fndssu" path="res://scripts/BattleEvent.gd" id="2_2usx5"]
@@ -7,10 +7,7 @@
 [ext_resource type="Script" uid="uid://b06vmgrh4qa8i" path="res://gear/Item.gd" id="4_jti2u"]
 [ext_resource type="Resource" uid="uid://c5qyqcmwx0qfy" path="res://scripts/experience/ExperienceManager.tres" id="6_l36pt"]
 [ext_resource type="Script" uid="uid://dq4acpkde276p" path="res://skills/Skill.gd" id="6_lkn2v"]
-[ext_resource type="Resource" uid="uid://c7og45phj1jqu" path="res://gear/chest/with_hptoatk.tres" id="6_up1d2"]
 [ext_resource type="Resource" uid="uid://ccd45ithmlluj" path="res://characters/_gender/_Unknown.tres" id="7_up1d2"]
-[ext_resource type="Resource" uid="uid://k7spd1qe1uik" path="res://gear/chest/with_atktohp.tres" id="7_xghbj"]
-[ext_resource type="Resource" uid="uid://bqpyn2o5n3v64" path="res://gear/chest/clean.tres" id="8_ghhp2"]
 [ext_resource type="Resource" uid="uid://cs2tci0dc3vvo" path="res://characters/_class/_Unknown.tres" id="8_xghbj"]
 [ext_resource type="Resource" uid="uid://lcgngc3c13fc" path="res://characters/_race/_Unknown.tres" id="9_ghhp2"]
 [ext_resource type="Script" uid="uid://bwn4gpkaijqsg" path="res://scripts/CharacterResource.gd" id="10_fb0jw"]
@@ -32,7 +29,6 @@ metadata/_custom_type_script = "uid://bqln4xpkkidja"
 
 [resource]
 script = ExtResource("10_fb0jw")
-default_items = Array[ExtResource("4_jti2u")]([ExtResource("6_up1d2"), ExtResource("7_xghbj"), ExtResource("8_ghhp2")])
 base_stats = ExtResource("1_lkn2v")
 stat_level_growth = SubResource("Resource_uxndi")
 id = "mc"

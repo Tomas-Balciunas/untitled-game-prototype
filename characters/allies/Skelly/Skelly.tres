@@ -1,27 +1,22 @@
-[gd_resource type="Resource" script_class="CharacterResource" load_steps=14 format=3 uid="uid://bbddeexd37t5i"]
+[gd_resource type="Resource" script_class="CharacterResource" load_steps=16 format=3 uid="uid://bbddeexd37t5i"]
 
 [ext_resource type="Script" uid="uid://bp0biy0knxw2o" path="res://effect/Effect.gd" id="1_l3iqv"]
 [ext_resource type="Script" uid="uid://blqk30gl013xc" path="res://stat/_attribute/attributes.gd" id="1_ohgca"]
 [ext_resource type="Script" uid="uid://bwn4gpkaijqsg" path="res://scripts/CharacterResource.gd" id="1_s17id"]
 [ext_resource type="Script" uid="uid://dq4acpkde276p" path="res://skills/Skill.gd" id="1_yod8j"]
 [ext_resource type="Script" uid="uid://cbelvg2fndssu" path="res://scripts/BattleEvent.gd" id="2_4twd5"]
+[ext_resource type="Resource" uid="uid://57fo0cycgjne" path="res://stat/_stats/DefaultStats.tres" id="2_jtp86"]
 [ext_resource type="PackedScene" uid="uid://cvja2deox1khy" path="res://characters/allies/Skelly/_body/Skelly.tscn" id="3_bv0l2"]
 [ext_resource type="Resource" uid="uid://eiwm6khdbjki" path="res://characters/_race/Human.tres" id="4_l3iqv"]
 [ext_resource type="Resource" uid="uid://b40pmjuvgrvn4" path="res://characters/_gender/Male.tres" id="4_p4kuy"]
 [ext_resource type="Script" uid="uid://b06vmgrh4qa8i" path="res://gear/Item.gd" id="4_yu6ia"]
 [ext_resource type="Resource" uid="uid://cm3vin4wtxpjv" path="res://effect/_passive/counterattack/Counterattack.tres" id="5_g0fbc"]
 [ext_resource type="Resource" uid="uid://c5qyqcmwx0qfy" path="res://scripts/experience/ExperienceManager.tres" id="14_tyjbr"]
+[ext_resource type="Resource" uid="uid://s8gs3fa65s30" path="res://stat/_stats/DefaultStatGrowth.tres" id="14_ympyx"]
 [ext_resource type="Resource" uid="uid://bswm14k77iahf" path="res://characters/_class/Fighter.tres" id="16_tyjbr"]
 
 [sub_resource type="Resource" id="Resource_rhf32"]
 script = ExtResource("1_ohgca")
-str = 3
-iq = 1
-pie = 1
-vit = 2
-dex = 2
-spd = 1
-luk = 1
 metadata/_custom_type_script = "uid://blqk30gl013xc"
 
 [resource]
@@ -32,17 +27,6 @@ gender = ExtResource("4_p4kuy")
 attributes = SubResource("Resource_rhf32")
 default_effects = Array[ExtResource("1_l3iqv")]([ExtResource("5_g0fbc")])
 default_damage_type = 1
-base_stats = {
-"ATTACK": 10.0,
-"DEFENSE": 10.0,
-"DIVINE_POWER": 5.0,
-"HEALTH": 45.0,
-"MAGIC_DEFENSE": 10.0,
-"MAGIC_POWER": 5.0,
-"MANA": 7.0,
-"RESISTANCE": 10.0,
-"SPEED": 4.0
-}
 id = "a_skelly_1"
 name = "Skelly"
 character_body = ExtResource("3_bv0l2")

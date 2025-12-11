@@ -14,8 +14,6 @@ var extra_modifiers: Array[StatModifier] = []
 var extra_effects: Array[Effect] = []
 
 
-@abstract func _init() -> void
-
 func get_base_stats() -> Stats:
 	return base_stats
 
@@ -24,9 +22,3 @@ func get_all_modifiers() -> Array[StatModifier]:
 
 func get_all_effects() -> Array[Effect]:
 	return base_effects + extra_effects
-
-@abstract
-func game_save() -> Dictionary
-
-@abstract
-func game_load() -> void

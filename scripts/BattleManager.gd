@@ -251,11 +251,11 @@ func _perform_player_action(action: String, target: CharacterInstance) -> void:
 				var _ctx := SkillResolver.new().execute(ctx)
 			
 		BattleBus.ITEM:
-			if _pending_entity is not ConsumableInstance:
+			if _pending_entity is not Consumable:
 				push_error("Selected item action entity is not item!")
 				return
 				
-			var item := _pending_entity as ConsumableInstance
+			var item := _pending_entity as Consumable
 			
 			var targeting: TargetingManager.TargetType = item.template.targeting_type
 			var _targets := get_applicable_targets(target, targeting)

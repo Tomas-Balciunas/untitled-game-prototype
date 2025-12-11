@@ -16,6 +16,7 @@ config/features=PackedStringArray("4.5", "Forward Plus")
 
 [autoload]
 
+GameState="*res://scenes/GameState.gd"
 EffectTriggers="*res://effect/EffectTriggers.gd"
 MapInstance="*res://scripts/MapInstance.gd"
 MapManager="*res://scripts/MapManager.gd"
@@ -28,7 +29,6 @@ EventFlags="*res://events/EventFlags.gd"
 BattleTextLines="*res://scripts/BattleText.gd"
 BattleContext="*res://scripts/BattleContext.gd"
 TransitionManager="*res://scripts/TransitionManager.gd"
-GameState="*res://scenes/GameState.gd"
 EffectRunner="*res://effect/EffectRunner.gd"
 ItemsRegistry="*res://gear/ItemRegistry.gd"
 SaveManager="*res://scripts/SaveManager.gd"

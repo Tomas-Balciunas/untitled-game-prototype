@@ -19,5 +19,5 @@ func on_trigger(event: TriggerEvent) -> void:
 	
 	BattleTextLines.print_line(
 		"%s drains %s mana from %s!" %
-		[event.ctx.source.resource.name, current_mana - new_mana, event.ctx.target.resource.name]
+		[event.ctx.source.trap.name, current_mana - new_mana, event.ctx.target.resource.name]
 	)

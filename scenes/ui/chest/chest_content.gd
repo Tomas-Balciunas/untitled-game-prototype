@@ -27,12 +27,13 @@ func init(_chest: Chest) -> void:
 		label.text = "<Chest is empty>"
 		return
 	
+	members_select.visible = true
+	
 	for item in chest.items:
-		var item_instance: ItemInstance = item.instantiate()
-		items.append(item_instance)
+		items.append(item)
 		var inst := CHEST_ITEM_SCENE.instantiate()
 		v_box_container.add_child(inst)
-		inst.init(item_instance)
+		inst.init(item)
 		inst.chest_item_selected.connect(on_item_selected)
 	
 	for member in PartyManager.members:
@@ -56,19 +57,31 @@ func on_character_selected(character: CharacterInstance) -> void:
 	if !character.inventory.has_free_slot():
 		NotificationBus.notification_requested.emit("%s has no free slots" % character.resource.name)
 
-	character.inventory.add_item(selected_item)
-	NotificationBus.notification_requested.emit("%s has received %s" % [character.resource.name, selected_item.get_item_name()])
-	remove_item_from_chest(selected_item)
+	if remove_item_from_chest(selected_item):
+		character.inventory.add_item(selected_item)
+		NotificationBus.notification_requested.emit("%s has received %s" % [character.resource.name, selected_item.get_item_name()])
+		remove_item(selected_item)
+	else:
+		push_error("Item was not removed from chest")
 	
-func remove_item_from_chest(item: ItemInstance) -> void:
-	chest.remove_item(item)
-	items.erase(item)
+func remove_item_from_chest(item: ItemInstance) -> bool:
+	var success: bool = chest.remove_item(item)
+	
+	if not success:
+		return false
+	
 	ChestBus.chest_state_changed.emit(chest)
 	
+	return true
+
+
+func remove_item(item: ItemInstance) -> void:
 	for child in v_box_container.get_children():
 		if child.get_item_instance() == item:
 			child.queue_free()
 			break
+	
+	items.erase(item)
 	
 	if items.is_empty():
 		label.text = "<Chest is empty>"
@@ -77,6 +90,7 @@ func remove_item_from_chest(item: ItemInstance) -> void:
 		members_select.visible = false
 	else:
 		on_item_selected(items[0])
+
 
 func _on_close_pressed() -> void:
 	close_chest_content.emit()

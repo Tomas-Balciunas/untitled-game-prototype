@@ -76,22 +76,22 @@ func _init(res: CharacterResource) -> void:
 	inventory = Inventory.new()
 	inventory.owner = self
 	
-	for item in res.default_items:
-		if item is Gear:
-			var gear := GearInstance.new(item)
-			inventory.add_item(gear)
-			
-			continue
-			
-		if item is ConsumableItem:
-			var cons := ConsumableInstance.new(item)
-			inventory.add_item(cons)
-			
-			continue
-		
-		var inst := ItemInstance.new()
-		inst.template = item
-		inventory.add_item(inst)
+	#for item in res.default_items:
+		#if item is Gear:
+			#var gear := GearInstance.new(item)
+			#inventory.add_item(gear)
+			#
+			#continue
+			#
+		#if item is ConsumableItem:
+			#var cons := ConsumableInstance.new(item)
+			#inventory.add_item(cons)
+			#
+			#continue
+		#
+		#var inst := ItemInstance.new()
+		#inst.template = item
+		#inventory.add_item(inst)
 	
 	damage_type = res.default_damage_type
 	
@@ -139,7 +139,7 @@ func set_current_health(new_health: int, ctx: ActionContext = null) -> void:
 	CharacterBus.health_changed.emit(self, old, state.current_health)
 	
 	if new == 0 and old > 0:
-		stats.current_health = int(new)
+		state.current_health = int(new)
 		is_dead = true
 		emit_signal("died", self)
 		
@@ -285,7 +285,7 @@ func unequip_slot(slot_name: String) -> bool:
 	return true
 
 func get_slot_name_for_item(item: GearInstance) -> String:
-	match item.template.type:
+	match item.type:
 		Item.ItemType.WEAPON: return "weapon"
 		Item.ItemType.CHEST: return "chest"
 		Item.ItemType.HELMET: return "helmet"
@@ -387,13 +387,13 @@ static func from_dict(data: Dictionary) -> CharacterInstance:
 				push_error("Item not found! %s" % id)
 				continue
 			
-			if item_res is Gear:
-				var gear := GearInstance.from_dict(item_data)
-				inst.inventory.add_item(gear)
+			#if item_res is Gear:
+				#var gear := GearInstance.from_dict(item_data)
+				#inst.inventory.add_item(gear)
 			
-			if item_res is ConsumableItem:
-				var cons := ConsumableInstance.from_dict(item_data)
-				inst.inventory.add_item(cons)
+			#if item_res is ConsumableItem:
+				#var cons := ConsumableInstance.game_load()
+				#inst.inventory.add_item(cons)
 				
 	if data.has("effects"):
 		inst.effects = []
@@ -413,13 +413,13 @@ static func from_dict(data: Dictionary) -> CharacterInstance:
 				continue
 			inst.learnt_skills.append(skill)
 
-	if data.has("equipment"):
-		for slot: String in data["equipment"].keys():
-			var item_dict: Dictionary = data["equipment"][slot]
-			if item_dict != null:
-				var gear_inst := GearInstance.from_dict(item_dict)
-				if gear_inst and gear_inst is GearInstance:
-					inst.equip_item(gear_inst)
+	#if data.has("equipment"):
+		#for slot: String in data["equipment"].keys():
+			#var item_dict: Dictionary = data["equipment"][slot]
+			#if item_dict != null:
+				#var gear_inst := GearInstance.from_dict(item_dict)
+				#if gear_inst and gear_inst is GearInstance:
+					#inst.equip_item(gear_inst)
 					
 	StatCalculator.recalculate_all_stats(inst)
 	return inst

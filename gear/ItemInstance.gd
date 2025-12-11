@@ -7,6 +7,10 @@ var item_description: String
 var type: Item.ItemType
 
 
+func get_item_name() -> String:
+	return item_name
+
+
 func item_type_to_string(item_type: Item.ItemType) -> String:
 	var names := {
 		Item.ItemType.WEAPON: "Weapon",
@@ -25,4 +29,4 @@ func item_type_to_string(item_type: Item.ItemType) -> String:
 func game_save() -> Dictionary
 
 @abstract
-func game_load() -> void
+func game_load(data: Dictionary) -> void

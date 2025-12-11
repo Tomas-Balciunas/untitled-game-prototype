@@ -1,3 +1,4 @@
+@abstract
 extends Resource
 
 class_name Item
@@ -19,6 +20,14 @@ enum ItemType {
 @export var type: ItemType
 @export var description: String
 @export var icon: Texture2D
+
+
+@abstract
+func _init() -> void
+
+
+@abstract
+func _build_instance() -> Variant
 
 
 static func item_type_to_string(item_type: Item.ItemType) -> String:

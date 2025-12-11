@@ -1,4 +1,4 @@
-[gd_scene load_steps=32 format=3 uid="uid://c8n1llsvvhonb"]
+[gd_scene load_steps=35 format=3 uid="uid://c8n1llsvvhonb"]
 
 [ext_resource type="MeshLibrary" uid="uid://uso6cfmk5r51" path="res://tileset white.tres" id="1_mdjaj"]
 [ext_resource type="Script" uid="uid://7pao6hs651jh" path="res://scripts/EnemyController.gd" id="2_g1pjd"]
@@ -9,6 +9,7 @@
 [ext_resource type="Script" uid="uid://bwn4gpkaijqsg" path="res://scripts/CharacterResource.gd" id="6_bgo3i"]
 [ext_resource type="Script" uid="uid://dbfiub7761eey" path="res://scripts/triggerables/MapTransitionTriggerable.gd" id="7_lk5gk"]
 [ext_resource type="PackedScene" uid="uid://dphnv8sgmui72" path="res://maps/crypt/crypt.tscn" id="7_uvgea"]
+[ext_resource type="Script" uid="uid://dshxh47nef2ua" path="res://gear/weapon/weapon_resource.gd" id="7_y5qhy"]
 [ext_resource type="Resource" uid="uid://8ufc6fbnjad8" path="res://trap/_traps/PoisonTrap.tres" id="8_g2q70"]
 [ext_resource type="Script" uid="uid://i6llluly1w8" path="res://scripts/MapData.gd" id="8_uo6qj"]
 [ext_resource type="Script" uid="uid://8n2g1of6dlbp" path="res://scripts/interactables/RestAreaInteractable.gd" id="9_kjsaj"]
@@ -29,11 +30,38 @@ vertices = PackedVector3Array(-3.5, 0.02, -1, -3.75, 0.02, -6.75, -6, 0.02, -6.7
 polygons = [PackedInt32Array(2, 1, 0), PackedInt32Array(4, 3, 2), PackedInt32Array(0, 5, 2), PackedInt32Array(2, 5, 6), PackedInt32Array(2, 6, 4), PackedInt32Array(8, 7, 9), PackedInt32Array(9, 7, 10), PackedInt32Array(11, 0, 1), PackedInt32Array(12, 10, 13), PackedInt32Array(9, 10, 1), PackedInt32Array(1, 10, 12), PackedInt32Array(1, 12, 14), PackedInt32Array(1, 14, 11), PackedInt32Array(16, 15, 17), PackedInt32Array(17, 15, 14), PackedInt32Array(17, 14, 18), PackedInt32Array(18, 14, 12), PackedInt32Array(18, 12, 19)]
 cell_height = 0.01
 
+[sub_resource type="Resource" id="Resource_geffd"]
+script = ExtResource("7_y5qhy")
+targeting = null
+weapon_type = 1
+accuracy_range = 5
+modifiers = null
+effects = null
+id = null
+name = "Iron Axe"
+type = null
+description = null
+metadata/_custom_type_script = "uid://dshxh47nef2ua"
+
+[sub_resource type="Resource" id="Resource_y1j8o"]
+script = ExtResource("7_y5qhy")
+targeting = null
+weapon_type = 1
+accuracy_range = 5
+modifiers = null
+effects = null
+id = null
+name = "Crude Axe"
+type = null
+description = null
+metadata/_custom_type_script = "uid://dshxh47nef2ua"
+
 [sub_resource type="Resource" id="Resource_s27v5"]
 script = ExtResource("5_ktguo")
 id = "starting_area_chest_02"
 trapped = true
 trap = ExtResource("8_g2q70")
+items = Array[ExtResource("4_0wmue")]([SubResource("Resource_geffd"), SubResource("Resource_y1j8o")])
 metadata/_custom_type_script = "uid://djh7svb2aijp2"
 
 [sub_resource type="Resource" id="Resource_0wmue"]
@@ -77,6 +105,7 @@ script = ExtResource("2_uvgea")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.7453785, 0.5260688, -7.930229)
 id = "starting_area_chest_01"
 random = true
+quantity = 3
 
 [node name="ChestBasic2" parent="StartingArea/Chests" instance=ExtResource("9_lk5gk")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.0930414, 0.5260688, -7.930229)

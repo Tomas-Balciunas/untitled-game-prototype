@@ -1,27 +1,23 @@
-[gd_resource type="Resource" script_class="CharacterResource" load_steps=15 format=3 uid="uid://dk7pc5rr0xhbs"]
+[gd_resource type="Resource" script_class="CharacterResource" load_steps=18 format=3 uid="uid://dk7pc5rr0xhbs"]
 
 [ext_resource type="Script" uid="uid://blqk30gl013xc" path="res://stat/_attribute/attributes.gd" id="1_klpoy"]
 [ext_resource type="PackedScene" uid="uid://dqjihmjf45spx" path="res://characters/allies/Coura/_body/Coura.tscn" id="2_klpoy"]
+[ext_resource type="Resource" uid="uid://57fo0cycgjne" path="res://stat/_stats/DefaultStats.tres" id="2_nkkwp"]
 [ext_resource type="Script" uid="uid://dq4acpkde276p" path="res://skills/Skill.gd" id="3_ma71o"]
 [ext_resource type="Resource" uid="uid://dt2wtnoyod5yd" path="res://effect/_passive/mp_cost/MpCostReduction.tres" id="4_3lheu"]
 [ext_resource type="Resource" uid="uid://drqy6f6xdgohu" path="res://skills/_offensive/confusion.tres" id="4_8awbe"]
 [ext_resource type="Script" uid="uid://cgllfcpvodqsg" path="res://scripts/experience/ExperienceManager.gd" id="4_g8tir"]
 [ext_resource type="Resource" uid="uid://dwkrtdgmmacpv" path="res://skills/_offensive/row_attack_buff.tres" id="5_8dd4x"]
 [ext_resource type="Resource" uid="uid://pchf07nevgay" path="res://characters/_gender/Female.tres" id="6_8awbe"]
+[ext_resource type="Script" uid="uid://b06vmgrh4qa8i" path="res://gear/Item.gd" id="6_nka8l"]
 [ext_resource type="Resource" uid="uid://cdu3c36ji1mmg" path="res://characters/_class/Knight.tres" id="7_8dd4x"]
 [ext_resource type="Script" uid="uid://bp0biy0knxw2o" path="res://effect/Effect.gd" id="7_klpoy"]
 [ext_resource type="Resource" uid="uid://eiwm6khdbjki" path="res://characters/_race/Human.tres" id="8_3lheu"]
 [ext_resource type="Script" uid="uid://bwn4gpkaijqsg" path="res://scripts/CharacterResource.gd" id="9_0ou40"]
+[ext_resource type="Resource" uid="uid://s8gs3fa65s30" path="res://stat/_stats/DefaultStatGrowth.tres" id="15_0ou40"]
 
 [sub_resource type="Resource" id="Resource_ci8co"]
 script = ExtResource("1_klpoy")
-str = 1
-iq = 1
-pie = 2
-vit = 4
-dex = 1
-spd = 2
-luk = 3
 metadata/_custom_type_script = "uid://blqk30gl013xc"
 
 [sub_resource type="Resource" id="Resource_klpoy"]
@@ -39,29 +35,6 @@ slot_width = null
 default_skills = Array[ExtResource("3_ma71o")]([ExtResource("4_8awbe"), ExtResource("5_8dd4x")])
 default_effects = Array[ExtResource("7_klpoy")]([ExtResource("4_3lheu")])
 default_damage_type = null
-default_items = null
-base_stats = {
-&"ATTACK": 10.0,
-&"DEFENSE": 10.0,
-&"DIVINE_POWER": 5.0,
-&"HEALTH": 50.0,
-&"MAGIC_DEFENSE": 15.0,
-&"MAGIC_POWER": 5.0,
-&"MANA": 10.0,
-&"RESISTANCE": 10.0,
-&"SPEED": 15.0
-}
-stat_level_growth = {
-"ATTACK": 0.0,
-"DEFENSE": 0.0,
-"DIVINE_POWER": 0.0,
-"HEALTH": -10.0,
-"MAGIC_DEFENSE": 0.0,
-"MAGIC_POWER": 0.0,
-"MANA": 0.0,
-"RESISTANCE": 0.0,
-"SPEED": 0.0
-}
 battle_events = null
 experience_manager = SubResource("Resource_klpoy")
 id = "a_coura_1"

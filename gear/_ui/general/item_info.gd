@@ -14,14 +14,14 @@ func show_item_info(item: ItemInstance) -> void:
 
 	self.visible = true
 	item_name_label.text = item.get_item_name()
-	item_type_label.text = item.item_type_to_string(item.template.type)
+	item_type_label.text = item.item_type_to_string(item.type)
 
 	if item is GearInstance:
-		var base_stats: Stats = item.get_base_stats()
+		var stats: Stats = item.stats
 		var stat_lines: Array[String] = []
 		for stat: Stats.StatRef in Stats.StatRef.values():
-			if base_stats.get_stat(stat) != 0:
-				stat_lines.append("%s: %d" % [base_stats.get_stat_name(stat), int(base_stats.get_stat(stat))])
+			if stats.get_stat(stat) != 0:
+				stat_lines.append("%s: %d" % [stats.get_stat_name(stat), int(stats.get_stat(stat))])
 		stats_label.text = "\n".join(stat_lines)
 		
 		if item.get_all_modifiers().size() > 0:
@@ -34,7 +34,7 @@ func show_item_info(item: ItemInstance) -> void:
 	else:
 		stats_label.text = ""
 	
-	if item is ConsumableInstance or item is GearInstance:
+	if item is Consumable or item is GearInstance:
 		if item.get_all_effects().size() > 0:
 			var effect_lines: Array[String] = []
 			for e: Effect in item.get_all_effects():

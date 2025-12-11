@@ -50,7 +50,7 @@ func _on_inventory_item_selected(item: ItemInstance) -> void:
 	if item is GearInstance:
 		action_button.text = "Equip"
 		action_button.visible = true
-	elif item is ConsumableInstance:
+	elif item is Consumable:
 		action_button.text = "Use"
 		action_button.visible = true
 	else:
@@ -71,7 +71,7 @@ func _on_action_button_pressed() -> void:
 
 	if _selected_item is GearInstance:
 		bound_character.equip_item(_selected_item)
-	elif _selected_item is ConsumableInstance:
+	elif _selected_item is Consumable:
 		_selected_item.use_item(bound_character, _selected_item)
 
 	refresh_lists()

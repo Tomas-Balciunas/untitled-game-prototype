@@ -15,10 +15,20 @@ func on_map_loaded(_map_data: Dictionary) -> void:
 	
 	if !data.is_empty():
 		chest = from_dict(data)
+		
+		return
 	
 	if !chest:
 		build_chest(_map_data)
+		update_chest_state()
 		
+		return
+	
+	if not chest.custom_items.is_empty() and not chest.was_opened:
+		for item: Item in chest.custom_items:
+			chest.items.append(item._build_instance())
+	
+	chest.custom_items.clear()
 	update_chest_state()
 
 func _interact() -> void:
@@ -29,7 +39,7 @@ func _interact() -> void:
 	
 	ChestBus.open_chest_requested.emit(chest)
 
-func build_items(_map_data: Dictionary) -> Array[Item]:
+func build_items(_map_data: Dictionary) -> Array[ItemInstance]:
 	var generator := GearGenerator.new(quantity)
 	return generator.generate()
 
@@ -52,30 +62,15 @@ func on_chest_state_changed(_chest: Chest) -> void:
 func to_dict() -> Dictionary:
 	var items := []
 	
-	for item: Item in chest.items:
-		if item is Gear:
-			var mods := []
-			
-			for mod: StatModifier in item.modifiers:
-				mods.append(mod.id)
-			
-			items.append({
-				"id": item.id,
-				"modifiers": mods
-			})
-			
-			continue
-		if item is ConsumableItem:
-			items.append({
-				"id": item.id
-			})
-			
-			continue
+	for item: ItemInstance in chest.items:
+		items.append(item.game_save())
 	
 	return {
+		"id": id,
 		"items": items,
 		"locked": chest.locked,
 		"trapped": chest.trapped,
+		"was_opened": chest.was_opened,
 		"random": random
 	}
 	
@@ -83,29 +78,19 @@ func from_dict(data: Dictionary) -> Chest:
 	if !data:
 		return null
 		
-	var items: Array[Item] = []
+	var items: Array[ItemInstance] = []
 	
 	for item: Dictionary in data.get("items", {}):
-		var item_id: String = item.get("id")
-		var item_res := ItemsRegistry.get_item(item_id).duplicate(true)
-		
-		if item_res:
-			if item_res is Gear:
-				var mods: Array[StatModifier] = []
-				
-				for mod_id: String in item.get("modifiers", []):
-					var mod_res := StatModifierRegistry.get_modifier(mod_id)
-					
-					if mod_res:
-						mods.append(mod_res)
-					
-				item_res.modifiers.append_array(mods)
-		
-		items.append(item_res)
+		var item_class: String = item.get("class")
+		var cls: ItemInstance = ClassDB.instantiate(item_class)
+		cls.game_load(item)
+		items.append(cls)
 		
 	var updated_chest := Chest.new()
+	updated_chest.id = data.get("id")
 	updated_chest.locked = data.get("locked")
 	updated_chest.trapped = data.get("trapped")
+	updated_chest.was_opened = data.get("was_opened")
 	updated_chest.items = items
 	
 	return updated_chest

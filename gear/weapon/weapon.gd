@@ -1,12 +1,16 @@
-extends Gear
-
+extends GearInstance
 class_name Weapon
 
-enum Type {
-	SWORD,
-	AXE
-}
+var targeting: TargetingManager.TargetType
+var weapon_type: WeaponResource.Type
+var accuracy_range: int = 0
 
-@export var targeting: TargetingManager.TargetType = TargetingManager.TargetType.SINGLE
-@export var weapon_type: Type = Type.SWORD 
-@export var accuracy_range: int = 0
+
+func game_save() -> Dictionary:
+	return {
+		"class": get_class()
+	}
+
+
+func game_load(data: Dictionary) -> void:
+	pass

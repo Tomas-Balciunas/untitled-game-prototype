@@ -9,7 +9,7 @@ enum States {
 	EVENT
 }
 
-var gold: int = 1000
+var gold: int = 0
 
 var current_state: States = States.IDLE
 
@@ -27,3 +27,10 @@ func game_save() -> int:
 	
 func game_load(data: Dictionary) -> void:
 	gold = data["gold"]
+
+func generate_id() -> String:
+	var a: float = randi()
+	var b: float = randi()
+	var c: float = randi()
+	var d: float = randi()
+	return "%08x%08x%08x%08x" % [a, b, c, d]
