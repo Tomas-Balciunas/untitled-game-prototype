@@ -4,4 +4,14 @@
 
 [resource]
 script = ExtResource("1_adoub")
+attack = 10
+health = 50
+mana = 20
+sp = 20
+speed = 5
+defense = 10
+magic_power = 10
+divine_power = 10
+magic_defense = 10
+resistance = 10
 metadata/_custom_type_script = "uid://bqln4xpkkidja"

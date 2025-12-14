@@ -2,8 +2,6 @@ extends RefCounted
 
 class_name CharacterInstance
 
-signal mana_changed(old_mana: int, new_mana: int)
-signal sp_changed(old_sp: int, new_sp: int)
 signal mana_consumed(amount: int, source: CharacterInstance)
 signal mana_restored(amount: int, source: CharacterInstance)
 signal died(ded: CharacterInstance)
@@ -118,6 +116,9 @@ func _init(res: CharacterResource) -> void:
 			apply_effect(effect, CharacterSource.new(self))
 	
 	StatCalculator.recalculate_all_stats(self)
+	state.current_health = stats.health
+	state.current_mana = stats.mana
+	state.current_sp = stats.sp
 
 func set_current_health(new_health: int, ctx: ActionContext = null) -> void:
 	var old: int = state.current_health
@@ -136,7 +137,7 @@ func set_current_health(new_health: int, ctx: ActionContext = null) -> void:
 		state.current_health = int(new)
 		CharacterBus.character_healed.emit(self, state.current_health - old)
 	
-	CharacterBus.health_changed.emit(self, old, state.current_health)
+	CharacterBus.stat_changed.emit(self, Stats.StatRef.HEALTH)
 	
 	if new == 0 and old > 0:
 		state.current_health = int(new)
@@ -162,7 +163,8 @@ func set_current_mana(new_mana: int) -> void:
 	elif new > old:
 		state.current_mana = int(new)
 		emit_signal("mana_restored", state.current_mana - old, self)
-	emit_signal("mana_changed", old, state.current_mana)
+	
+	CharacterBus.stat_changed.emit(self, Stats.StatRef.MANA)
 
 func set_current_sp(new_sp: int) -> void:
 	var old: int = state.current_sp
@@ -172,7 +174,8 @@ func set_current_sp(new_sp: int) -> void:
 		state.current_sp = int(new)
 	elif new > old:
 		state.current_sp = int(new)
-	emit_signal("sp_changed", old, state.current_sp)
+	
+	CharacterBus.stat_changed.emit(self, Stats.StatRef.SP)
 
 func prepare_for_battle() -> void:
 	for e: Effect in effects:
@@ -183,8 +186,8 @@ func cleanup_after_battle() -> void:
 		if e.is_battle_only:
 			e.remove_self()
 	
-	stats.temporary_modifiers = []
-	stats.recalculate_stats()
+	state.temporary_modifiers = []
+	StatCalculator.recalculate_all_stats(self)
 
 func apply_effect(effect: Effect, source: ContextSource) -> Effect:
 	var inst: Effect = effect.duplicate(true)

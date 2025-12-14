@@ -9,7 +9,7 @@ var character_instance: CharacterInstance
 var targeting_enabled := false
 
 func _ready() -> void:
-	CharacterBus.health_changed.connect(_on_health_changed)
+	CharacterBus.stat_changed.connect(_on_stat_changed)
 	CharacterBus.character_damaged.connect(_on_damaged)
 	CharacterBus.character_healed.connect(_on_healed)
 	
@@ -52,16 +52,29 @@ func hide_info() -> void:
 	var cont := $MarginContainer
 	cont.visible = false
 
-func _on_health_changed(who: CharacterInstance, _old_health: int, _new_health: int) -> void:
-	if character_instance == who:
-		$MarginContainer/GridContainer/LabelValueContainer/Values/HPContainer/CurrentHP.text = str(character_instance.state.current_health)
-		$MarginContainer/GridContainer/LabelValueContainer/Values/HPContainer/MaxHP.text = str(character_instance.stats.health)
 
-func _on_mana_changed(_old_mana: int, _new_mana: int) -> void:
+func _on_stat_changed(who: CharacterInstance, stat: Stats.StatRef) -> void:
+	if not character_instance == who:
+		return
+	
+	match stat:
+		Stats.StatRef.HEALTH:
+			_on_health_changed()
+		Stats.StatRef.MANA:
+			_on_mana_changed()
+		Stats.StatRef.SP:
+			_on_sp_changed()
+
+
+func _on_health_changed() -> void:
+	$MarginContainer/GridContainer/LabelValueContainer/Values/HPContainer/CurrentHP.text = str(character_instance.state.current_health)
+	$MarginContainer/GridContainer/LabelValueContainer/Values/HPContainer/MaxHP.text = str(character_instance.stats.health)
+
+func _on_mana_changed() -> void:
 	$MarginContainer/GridContainer/LabelValueContainer/Values/MPContainer/CurrentMP.text = str(character_instance.state.current_mana)
 	$MarginContainer/GridContainer/LabelValueContainer/Values/MPContainer/MaxMP.text = str(character_instance.stats.mana)
 
-func _on_sp_changed(_old_sp: int, _new_sp: int) -> void:
+func _on_sp_changed() -> void:
 	$MarginContainer/GridContainer/LabelValueContainer/Values/SPContainer/CurrentSP.text = str(character_instance.state.current_sp)
 	$MarginContainer/GridContainer/LabelValueContainer/Values/SPContainer/MaxSP.text = str(character_instance.stats.sp)
 

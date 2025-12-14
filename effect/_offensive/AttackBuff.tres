@@ -4,9 +4,9 @@
 
 [resource]
 script = ExtResource("1_sow8y")
+duration_turns = 2
 id = "attack_buff"
 name = "Attack+"
 description = "Increases attack power"
-duration_turns = 2
 is_battle_only = true
 metadata/_custom_type_script = "uid://bq6ql8p3x0ob1"

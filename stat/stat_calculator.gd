@@ -8,7 +8,7 @@ static func recalculate_all_stats(c: CharacterInstance, should_fill_hp: bool = f
 	
 
 static func recalculate_stat(c: CharacterInstance, s: Stats.StatRef) -> void:
-	var base_value: float = c.base_stats.get_stat(s)
+	var base_value: int = c.base_stats.get_stat(s)
 	var computed_stat: float = base_value + get_attribute_contribution(s, c) + get_level_contribution(s, c)
 	c.computed_stats.set_stat(s, computed_stat)
 	
@@ -41,11 +41,7 @@ static func recalculate_stat(c: CharacterInstance, s: Stats.StatRef) -> void:
 	
 	c.stats.set_stat(s, final)
 
-	if s == Stats.StatRef.HEALTH:
-		CharacterBus.health_changed.emit(c, c.state.current_health, c.state.current_health)
-	
-	if s == Stats.StatRef.MANA:
-		c.emit_signal("mana_changed", c.state.current_mana, c.state.current_mana)
+	CharacterBus.stat_changed.emit(c, s)
 
 
 static func get_attribute_contribution(stat: Stats.StatRef, c: CharacterInstance) -> float:

@@ -34,8 +34,6 @@ func _on_party_reloaded() -> void:
 func _on_member_added(character: CharacterInstance, row_index: int, slot_index: int) -> void:
 	var character_ui: PartyMemberSlot = formation[row_index][slot_index]
 	character_ui.bind(character)
-	character.connect("mana_changed", Callable(character_ui, "_on_mana_changed"))
-	character.connect("sp_changed", Callable(character_ui, "_on_sp_changed"))
 
 #func _on_member_removed(character: CharacterInstance):
 	#for child in get_children():

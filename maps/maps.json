@@ -5,7 +5,7 @@
 		"name": "Beginning Area",
 		"starting_position": "(0, 0)",
 		"available_enemies": ["0000", "e_enemy_002", "e_enemy_001"],
-		"gear_tiers": ["tier_1"]
+		"gear_tiers": ["tier_1", "tier_2"]
 	},
 	"crypt_00": {
 		"id": "crypt_00",

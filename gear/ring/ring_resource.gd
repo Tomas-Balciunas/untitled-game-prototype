@@ -16,6 +16,8 @@ func _build_instance() -> Ring:
 	var ring: Ring = Ring.new()
 	ring.id = id
 	ring.item_name = name
+	ring.type = type
+	ring.quality = quality
 	ring.item_description = description
 	ring.stats = base_stats.duplicate(true)
 	ring.base_stats = ring.stats.duplicate(true)
@@ -23,3 +25,7 @@ func _build_instance() -> Ring:
 	ring.base_modifiers = modifiers.duplicate(true)
 	
 	return ring
+
+
+func get_applicable_stat_modifiers() -> Array[Stats.StatRef]:
+	return [Stats.StatRef.SP, Stats.StatRef.DEFENSE, Stats.StatRef.MAGIC_DEFENSE]

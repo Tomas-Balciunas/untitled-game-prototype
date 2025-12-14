@@ -18,8 +18,9 @@ func on_apply() -> void:
 		
 		modifier = mod
 	
-	owner.stats.add_temporary_modifier(modifier)
+	owner.state.add_temporary_modifier(modifier)
 	remaining_turns = duration_turns
+	StatCalculator.recalculate_stat(owner, modifier.stat)
 	
 func listened_triggers() -> Array:
 	return [EffectTriggers.ON_TURN_END]

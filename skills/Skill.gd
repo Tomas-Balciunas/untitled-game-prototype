@@ -27,7 +27,7 @@ func get_resolver() -> EffectResolver:
 	return
 
 func can_use(c: CharacterInstance) -> bool:
-	return final_mp_cost <= c.stats.current_mana and final_sp_cost <= c.stats.current_sp
+	return final_mp_cost <= c.state.current_mana and final_sp_cost <= c.state.current_sp
 
 func set_cost(c: CharacterInstance) -> void:
 	final_mp_cost = mp_cost

@@ -26,6 +26,8 @@ func _build_instance() -> Weapon:
 	var weapon: Weapon = Weapon.new()
 	weapon.id = id
 	weapon.item_name = name
+	weapon.type = type
+	weapon.quality = quality
 	weapon.item_description = description
 	weapon.stats = base_stats.duplicate(true)
 	weapon.base_stats = weapon.stats.duplicate(true)
@@ -36,3 +38,7 @@ func _build_instance() -> Weapon:
 	weapon.accuracy_range = accuracy_range
 	
 	return weapon
+
+
+func get_applicable_stat_modifiers() -> Array[Stats.StatRef]:
+	return [Stats.StatRef.ATTACK, Stats.StatRef.MAGIC_POWER, Stats.StatRef.DIVINE_POWER]

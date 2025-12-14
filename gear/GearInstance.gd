@@ -4,6 +4,8 @@ class_name GearInstance
 
 var enhancement_level: int = 0
 
+var quality: int = 1
+
 var stats: Stats
 var base_stats: Stats
 

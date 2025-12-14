@@ -190,7 +190,7 @@ func _perform_player_action(action: String, target: CharacterInstance) -> void:
 	
 	match action:
 		BattleBus.ATTACK:
-			var targeting: TargetingManager.TargetType = current_battler.equipment["weapon"].template.targeting if current_battler.equipment["weapon"] else TargetingManager.TargetType.SINGLE
+			var targeting: TargetingManager.TargetType = current_battler.equipment["weapon"].targeting if current_battler.equipment["weapon"] else TargetingManager.TargetType.SINGLE
 			var _targets := get_applicable_targets(target, targeting)
 			
 			current_state = BattleState.ANIMATING
@@ -235,8 +235,8 @@ func _perform_player_action(action: String, target: CharacterInstance) -> void:
 				push_error("Attack connected signal timed out for character: %s, %s " % [current_battler.resource.name, current_battler.resource.id])
 			
 			
-			current_battler.set_current_mana(current_battler.stats.current_mana - skill.final_mp_cost)
-			current_battler.set_current_sp(current_battler.stats.current_sp - skill.final_sp_cost)
+			current_battler.set_current_mana(current_battler.state.current_mana - skill.final_mp_cost)
+			current_battler.set_current_sp(current_battler.state.current_sp - skill.final_sp_cost)
 			
 			for t in _targets:
 				if not t:

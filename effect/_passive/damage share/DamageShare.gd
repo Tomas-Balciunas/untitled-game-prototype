@@ -17,7 +17,7 @@ func on_trigger(event: TriggerEvent) -> void:
 	var transfer := ceili(event.ctx.final_value * share_percent)
 	var final := floori(event.ctx.final_value - transfer)
 	event.ctx.final_value = final
-	owner.set_current_health(owner.stats.current_health - transfer)
+	owner.set_current_health(owner.state.current_health - transfer)
 	BattleTextLines.print_line(
 		"%s absorbs %d damage for %s!" %
 		[owner.resource.name, transfer, damaged.resource.name]

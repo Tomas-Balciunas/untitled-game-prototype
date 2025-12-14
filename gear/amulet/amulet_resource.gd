@@ -16,6 +16,8 @@ func _build_instance() -> Amulet:
 	var amulet: Amulet = Amulet.new()
 	amulet.id = id
 	amulet.item_name = name
+	amulet.type = type
+	amulet.quality = quality
 	amulet.item_description = description
 	amulet.stats = base_stats.duplicate(true)
 	amulet.base_stats = amulet.stats.duplicate(true)
@@ -23,3 +25,6 @@ func _build_instance() -> Amulet:
 	amulet.base_modifiers = modifiers.duplicate(true)
 	
 	return amulet
+
+func get_applicable_stat_modifiers() -> Array[Stats.StatRef]:
+	return [Stats.StatRef.HEALTH, Stats.StatRef.MANA, Stats.StatRef.SP]

@@ -19,7 +19,7 @@ func execute(_ctx: ActionContext) -> HealingContext:
 	event.trigger = EffectTriggers.ON_RECEIVE_HEAL
 	EffectRunner.process_trigger(event)
 
-	event.ctx.target.set_current_health(event.ctx.target.stats.current_health + event.ctx.final_value)
+	event.ctx.target.set_current_health(event.ctx.target.state.current_health + event.ctx.final_value)
 
 	BattleTextLines.print_line("%s healed %s for %d" % [event.actor.get_source_name(), event.ctx.target.resource.name, ctx.final_value])
 

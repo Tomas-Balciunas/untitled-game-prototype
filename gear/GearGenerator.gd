@@ -2,16 +2,16 @@ extends Node
 
 class_name GearGenerator
 
-const MAX_QUANTITY = 5
+const MAX_QUANTITY = 10
 
 const allowed_types: Array[Item.ItemType] = [
 		Item.ItemType.WEAPON, 
 		Item.ItemType.CHEST, 
-		#Item.ItemType.HELMET,
-		#Item.ItemType.BOOTS,
-		#Item.ItemType.GLOVES,
-		#Item.ItemType.RING,
-		#Item.ItemType.AMULET,
+		Item.ItemType.HELMET,
+		Item.ItemType.BOOTS,
+		Item.ItemType.GLOVES,
+		Item.ItemType.RING,
+		Item.ItemType.AMULET,
 		#Item.ItemType.CONSUMABLE
 	]
 	
@@ -54,7 +54,10 @@ func generate() -> Array[ItemInstance]:
 		var type: Item.ItemType = requested_types[randi() % len(requested_types)]
 		var item: ItemInstance = builder.build_item(type, tier)
 		
-		generated_gear.append(item)
+		if item:
+			generated_gear.append(item)
+		else:
+			push_error("item could not be generated: %s %s" % [tier, Item.item_type_to_string(type)])
 		
 	return generated_gear
 

@@ -2,6 +2,7 @@ extends Node
 
 @onready var item_name_label: Label = $ItemName
 @onready var item_type_label: Label = $ItemType
+@onready var item_quality: Label = $ItemQuality
 @onready var stats_label: Label = $StatsLabel
 @onready var effects_label: Label = $EffectsLabel
 @onready var modifiers_label: Label = $ModifiersLabel
@@ -23,7 +24,7 @@ func show_item_info(item: ItemInstance) -> void:
 			if stats.get_stat(stat) != 0:
 				stat_lines.append("%s: %d" % [stats.get_stat_name(stat), int(stats.get_stat(stat))])
 		stats_label.text = "\n".join(stat_lines)
-		
+		item_quality.text = "Quality: %s" % item.quality
 		if item.get_all_modifiers().size() > 0:
 			var mod_lines: Array[String] = []
 			for mod: StatModifier in item.get_all_modifiers():

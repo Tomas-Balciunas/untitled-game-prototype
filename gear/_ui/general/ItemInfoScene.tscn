@@ -27,6 +27,9 @@ layout_mode = 2
 [node name="ItemType" type="Label" parent="."]
 layout_mode = 2
 
+[node name="ItemQuality" type="Label" parent="."]
+layout_mode = 2
+
 [node name="StatsLabel" type="Label" parent="."]
 layout_mode = 2
 
