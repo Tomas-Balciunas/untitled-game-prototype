@@ -208,11 +208,9 @@ func _perform_player_action(action: String, target: CharacterInstance) -> void:
 			for t in _targets:
 				if not t:
 					continue
-				var dmg := DamageContext.new()
+				var dmg := DamageContext.new(current_battler.stats.attack)
 				dmg.source = CharacterSource.new(current_battler)
 				dmg.target   = t
-				dmg.base_value = current_battler.stats.attack
-				dmg.final_value = current_battler.stats.attack
 				dmg.type = current_battler.damage_type
 				dmg.actively_cast = true
 				var _ctx := await DamageResolver.new().execute(dmg)
@@ -315,11 +313,9 @@ func _process_enemy_turn(event: TriggerEvent = null) -> void:
 	var attacker_slot := get_slot(current_battler)
 	var target_slot := get_slot(target)
 	
-	var atk := DamageContext.new()
+	var atk := DamageContext.new(current_battler.stats.attack)
 	atk.source = CharacterSource.new(current_battler)
 	atk.target   = target
-	atk.base_value = current_battler.stats.attack
-	atk.final_value = current_battler.stats.attack
 	atk.actively_cast = true
 	
 	ChatEventBus.chat_event.emit(ChatterManager.ATTACKING, {

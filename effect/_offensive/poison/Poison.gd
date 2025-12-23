@@ -39,12 +39,10 @@ func on_trigger(_event: TriggerEvent) -> void:
 	if owner == null:
 		push_error("PoisonEffect: Owner is null during on_turn_end tick.")
 		return
-	var tick := DamageContext.new()
+	var tick := DamageContext.new(damage_per_turn * stacks)
 	tick.source = source
 	tick.target = owner
 	tick.type = DamageTypes.Type.POISON
-	tick.base_value = damage_per_turn * stacks
-	tick.final_value = damage_per_turn * stacks
 	tick.options = tick.options.duplicate() if tick.options else {}
 	DamageResolver.new().execute(tick)
 

@@ -10,6 +10,7 @@ func execute(_ctx: ActionContext) -> DamageContext:
 		push_error("DamageResolver received invalid context")
 		return ctx
 	#TODO: refactor trigger flow
+	
 	var event := TriggerEvent.new()
 	event.actor = ctx.source
 	event.ctx = ctx
@@ -20,12 +21,7 @@ func execute(_ctx: ActionContext) -> DamageContext:
 	event.trigger = EffectTriggers.ON_BEFORE_RECEIVE_DAMAGE
 	EffectRunner.process_trigger(event)
 	
-	var defense_ignore := 0
-	if ctx.has_meta("ignore_defense_percent"):
-		defense_ignore = ctx.get_meta("ignore_defense_percent")
-	
-	var calculator := DamageCalculator.new(ctx, defense_ignore)
-	ctx.final_value = max(calculator.get_final_damage(), 0)
+	ctx.final_value = max(ctx.calculator.get_final_damage(), 0)
 	
 	BattleEventBus.before_receive_damage.emit(ctx)
 	await BattleFlow.wait_if_paused()

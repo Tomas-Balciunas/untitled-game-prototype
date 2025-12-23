@@ -3,17 +3,15 @@ extends Node
 class_name DamageCalculator
 
 var context: DamageContext = null
+var final_damage: float = 0
+var base_damage: float = 0
 var defense_ignore: int = 0
 
-func _init(ctx: DamageContext, pierce: int = 0) -> void:
+func _init(ctx: DamageContext, dmg: float) -> void:
 	context = ctx
-	defense_ignore = pierce
+	base_damage = dmg
+	final_damage = dmg
 
 func get_final_damage() -> float:
-	var final := context.final_value
-	
-	#if context.type == DamageTypes.Type.PHYSICAL:
-	#if context.options.has("dot") and not context.options.has("dot"): 
-		#final -= context.target.stats.defense * 1 - defense_ignore
 		
-	return final
+	return final_damage
