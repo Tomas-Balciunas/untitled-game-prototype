@@ -19,6 +19,9 @@ func is_busy() -> bool:
 func set_idle() -> void:
 	current_state = States.IDLE
 
+func set_menu() -> void:
+	current_state = States.MENU
+
 func set_event() -> void:
 	current_state = States.EVENT
 

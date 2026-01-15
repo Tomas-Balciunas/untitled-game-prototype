@@ -1,13 +1,19 @@
-[gd_resource type="Resource" script_class="HealingSkill" load_steps=3 format=3 uid="uid://c5xohmycfkr5c"]
+[gd_resource type="Resource" script_class="HealingSkill" load_steps=5 format=3 uid="uid://c5xohmycfkr5c"]
 
 [ext_resource type="Script" uid="uid://bp0biy0knxw2o" path="res://effect/Effect.gd" id="1_b30u2"]
+[ext_resource type="Script" uid="uid://e2eu5fed8nv8" path="res://skills/skill_cost.gd" id="1_c4285"]
 [ext_resource type="Script" uid="uid://c8rbj8kuxcoqs" path="res://skills/HealingSkill.gd" id="2_c4285"]
+
+[sub_resource type="Resource" id="Resource_8opuj"]
+script = ExtResource("1_c4285")
+mana = 10.0
+metadata/_custom_type_script = "uid://e2eu5fed8nv8"
 
 [resource]
 script = ExtResource("2_c4285")
 healing_amount = 10
 id = "row_heal"
 name = "row heal"
-mp_cost = 10
+cost = SubResource("Resource_8opuj")
 targeting_type = 3
 metadata/_custom_type_script = "uid://c8rbj8kuxcoqs"

@@ -70,7 +70,7 @@ func get_centered_positions(count: int, z: float) -> Array:
 		
 	return positions
 	
-func get_column_enemies(target: CharacterInstance) -> Array[CharacterInstance]:
+func get_column(target: CharacterInstance) -> Array[CharacterInstance]:
 	for i in range(max_slots):
 		if front_slots[i] and front_slots[i].character_instance == target:
 			return get_adjacent_in_column(back_slots, i, front_slots[i])
@@ -80,7 +80,7 @@ func get_column_enemies(target: CharacterInstance) -> Array[CharacterInstance]:
 	push_error("Column Targeting: Target not found!")
 	return [target]
 	
-func get_blast_enemies(target: CharacterInstance) -> Array[CharacterInstance]:
+func get_blast(target: CharacterInstance) -> Array[CharacterInstance]:
 	for i in range(max_slots):
 		if front_slots[i] and front_slots[i].character_instance == target:
 			return get_adjacent_in_row(front_slots, i)
@@ -90,7 +90,7 @@ func get_blast_enemies(target: CharacterInstance) -> Array[CharacterInstance]:
 	push_error("Blast Targeting: Target not found!")
 	return [target]
 
-func get_row_enemies(_target: CharacterInstance) -> Array[CharacterInstance]:
+func get_row(_target: CharacterInstance) -> Array[CharacterInstance]:
 	return slots_to_character_instances(front_slots)
 	#for i in range(max_slots):
 		#var slot: FormationSlot = front_slots[i]
@@ -98,7 +98,7 @@ func get_row_enemies(_target: CharacterInstance) -> Array[CharacterInstance]:
 			#return front_slots
 	#return back_slots
 	
-func get_adjacent_enemies(target: CharacterInstance) -> Array[CharacterInstance]:
+func get_adjacent(target: CharacterInstance) -> Array[CharacterInstance]:
 	for i in range(max_slots):
 		if front_slots[i] and front_slots[i].character_instance == target:
 			var row :=  get_adjacent_in_row(front_slots, i)
@@ -113,7 +113,7 @@ func get_adjacent_enemies(target: CharacterInstance) -> Array[CharacterInstance]
 	push_error("Adjacent Targeting: Target not found!")
 	return [target]
 	
-func get_mass_enemies() -> Array[CharacterInstance]:
+func get_mass() -> Array[CharacterInstance]:
 	var mass: Array[FormationSlot] = (front_slots + back_slots).filter(func(slot: FormationSlot) -> bool: return slot != null)
 		
 	return slots_to_character_instances(mass)

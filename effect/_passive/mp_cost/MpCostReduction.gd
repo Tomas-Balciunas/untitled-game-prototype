@@ -13,6 +13,6 @@ func listened_triggers() -> Array:
 func _modifies_skill_cost() -> bool:
 	return true
 
-func modify_skill_cost(skill: Skill) -> Skill:
-	skill.final_mp_cost = round(skill.final_mp_cost * (1.0 - modifier))
-	return skill
+func modify_skill_cost(_skill: Skill, sc: SkillCost) -> SkillCost:
+	sc.mana = sc.mana - _skill.cost.get_mana_cost() * modifier
+	return sc

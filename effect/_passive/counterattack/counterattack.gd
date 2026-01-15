@@ -7,7 +7,7 @@ func listened_triggers() -> Array:
 	return [EffectTriggers.ON_DAMAGE_APPLIED]
 	
 func can_process(event: TriggerEvent) -> bool:
-	return event.ctx.actively_cast and owner == event.ctx.target
+	return event.ctx.actively_cast and event.ctx.targets.has(owner)
 
 func on_trigger(event: TriggerEvent) -> void:
 	var counter := chance * 100 >= randi() % 100

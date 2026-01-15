@@ -15,6 +15,11 @@ class_name CharacterMenu
 
 var character_instance: CharacterInstance
 
+
+func _ready() -> void:
+	visible = false
+
+
 func bind(character: CharacterInstance) -> void:
 	if BattleContext.in_battle:
 		return
@@ -42,10 +47,11 @@ func show_tab(tab: String) -> void:
 	for key: String in tabs.keys():
 		if key == tab:
 			tabs[tab].visible = true
-			if tabs[tab].has_method("close"):
-				tabs[tab].close()
+			if tabs[tab].has_method("cleanup"):
+				tabs[tab].cleanup()
 			continue
 		tabs[key].visible = false
+
 
 func _on_inventory_pressed() -> void:
 	inventory_tab.bind_character(character_instance)
@@ -69,7 +75,7 @@ func _on_effects_pressed() -> void:
 
 func _on_close_pressed() -> void:
 	hide()
-	inventory_tab.close()
+	inventory_tab.cleanup()
 
 
 func _on_talk_pressed() -> void:

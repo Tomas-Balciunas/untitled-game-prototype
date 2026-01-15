@@ -6,11 +6,13 @@ class_name PoisonRes
 func listened_triggers() -> Array:
 	return [EffectTriggers.ON_BEFORE_RECEIVE_DAMAGE]
 	
-func can_process(_event: TriggerEvent) -> bool:
-	return owner == _event.ctx.target
+func can_process(event: TriggerEvent) -> bool:
+	return owner == event.target and event is DamageTriggerEvent
 
 func on_trigger(event: TriggerEvent) -> void:
-	if not event.ctx.type == DamageTypes.Type.POISON:
+	var dmg: DamageTriggerEvent = event as DamageTriggerEvent
+	
+	if not dmg.ctx.type == DamageTypes.Type.POISON:
 		return
-	event.ctx.final_value -= (event.ctx.final_value * resistance)
-	BattleTextLines.print_line("Reducing poison damage for %s to %f" % [event.ctx.target.resource.name, event.ctx.final_value])
+	
+	event.calculator.final_value -= (dmg.calculator.final_value * resistance)

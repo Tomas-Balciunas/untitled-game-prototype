@@ -6,13 +6,11 @@ class_name Skill
 @export var name: String
 @export var description: String
 #@export var icon: Texture2D
-@export var mp_cost: int = 0
-@export var sp_cost: int = 0
+@export var cost: SkillCost
 @export var effects: Array[Effect] = []
 @export var targeting_type: TargetingManager.TargetType = TargetingManager.TargetType.SINGLE
+@export var owner_only: bool = false
 
-var final_mp_cost: int = 0
-var final_sp_cost: int = 0
 
 func _get_name() -> String:
 	return name
@@ -20,19 +18,29 @@ func _get_name() -> String:
 func get_description() -> String:
 	return description
 
-func build_context(_source: SkillSource, _target: CharacterInstance) -> ActionContext:
+func build_context(_skill_ctx: SkillContext) -> ActionContext:
 	return
 
 func get_resolver() -> EffectResolver:
 	return
 
-func can_use(c: CharacterInstance) -> bool:
-	return final_mp_cost <= c.state.current_mana and final_sp_cost <= c.state.current_sp
+func can_select(c: CharacterInstance) -> bool:
+	var computed_cost: SkillCost = compute_cost(c)
+	
+	return computed_cost.get_mana_cost() <= c.state.current_mana and computed_cost.get_sp_cost() <= c.state.current_sp
 
-func set_cost(c: CharacterInstance) -> void:
-	final_mp_cost = mp_cost
-	final_sp_cost = sp_cost
+func can_use(c: CharacterInstance) -> bool:
+	return can_select(c)
+
+func compute_cost(c: CharacterInstance) -> SkillCost:
+	if !cost:
+		cost = SkillCost.new()
+		push_error('%s skill is missing cost!' % name)
+	
+	var sc: SkillCost = cost.duplicate(true)
 	
 	for e: Effect in c.effects:
 		if e._modifies_skill_cost():
-			e.modify_skill_cost(self)
+			e.modify_skill_cost(self, sc)
+	
+	return sc

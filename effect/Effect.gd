@@ -15,6 +15,7 @@ enum EffectCategory {
 @export var name: String = "Unnamed Effect"
 @export var description: String = "Unnamed Effect"
 
+@export var battle_only: bool = true
 @export var single_trigger: bool = false
 @export var priority: int = 200
 @export var is_battle_only := false
@@ -66,5 +67,5 @@ func remove_self() -> void:
 func _modifies_skill_cost() -> bool:
 	return false
 
-func modify_skill_cost(_skill: Skill) -> Skill:
-	return _skill
+func modify_skill_cost(_skill: Skill, _sc: SkillCost) -> SkillCost:
+	return _sc

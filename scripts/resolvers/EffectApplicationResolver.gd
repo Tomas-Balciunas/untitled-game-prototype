@@ -10,19 +10,25 @@ func execute(_ctx: ActionContext) -> EffectApplicationContext:
 		push_error("EffectApplicationResolver received invalid context")
 		return ctx
 	
-	var event := TriggerEvent.new()
-	event.actor = ctx.source
-	event.ctx = ctx
+	for target in ctx.targets:
+		var event := TriggerEvent.new()
+		event.actor = ctx.source
+		event.target = target
+		event.ctx = ctx
+		
+		run_pipeline(event)
+
+	return ctx
+
+
+func run_pipeline(event: TriggerEvent) -> void:
 	event.trigger = EffectTriggers.ON_BEFORE_APPLY_EFFECT
-	
 	EffectRunner.process_trigger(event)
 	
 	event.trigger = EffectTriggers.ON_BEFORE_RECEIVE_EFFECT
 	EffectRunner.process_trigger(event)
 	
-	ctx.target.apply_effect(ctx.effect, event.actor)
+	event.target.apply_effect(event.ctx.effect, event.actor)
 	
 	event.trigger = EffectTriggers.ON_APPLY_EFFECT
 	EffectRunner.process_trigger(event)
-
-	return ctx

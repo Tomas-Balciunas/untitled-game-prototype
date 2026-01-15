@@ -143,4 +143,4 @@ func _on_input_event(_camera: Camera3D, event: InputEvent, _position: Vector3, _
 		return
 		
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
-		BattleBus.target_selected.emit(character_instance)
+		TargetingManager.battle_target_selected.emit(character_instance)

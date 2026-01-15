@@ -2,7 +2,8 @@
 class_name ActionContext
 
 var source: ContextSource
-var target: CharacterInstance
+var initial_target: CharacterInstance
+var targets: Array[CharacterInstance]
 var temporary_effects: Array[Effect] = []
 var options: Dictionary = {}
 var actively_cast: bool = false

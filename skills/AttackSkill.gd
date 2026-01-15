@@ -7,10 +7,14 @@ class_name AttackSkill
 ## only matters when bounce targeting is selected
 @export var bounce_instances: int = 0
 
-func build_context(_source: SkillSource, _target: CharacterInstance) -> DamageContext:
-	var ctx := DamageContext.new(_source.character.stats.attack * modifier)
-	ctx.source = _source
-	ctx.target = _target
+func build_context(skill_ctx: SkillContext) -> DamageContext:
+	var actor: CharacterInstance = skill_ctx.source.get_actor()
+	var damage: float = actor.stats.attack * modifier
+	
+	var ctx: DamageContext = DamageContext.new(damage)
+	ctx.source = skill_ctx.source
+	ctx.initial_target = skill_ctx.initial_target
+	ctx.targets = skill_ctx.targets
 	ctx.temporary_effects = effects
 	ctx.actively_cast = true
 	

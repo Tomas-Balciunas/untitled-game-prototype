@@ -8,7 +8,7 @@ func listened_triggers() -> Array:
 	return [EffectTriggers.ON_TURN_START, EffectTriggers.ON_TURN_END]
 	
 func can_process(event: TriggerEvent) -> bool:
-	return owner == event.actor.character
+	return owner == event.actor.get_actor()
 	
 func on_apply() -> void:
 	is_battle_only = true

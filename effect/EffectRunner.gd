@@ -50,6 +50,9 @@ func _sort_effects(a: Dictionary, b: Dictionary) -> int:
 	return ea.priority > eb.priority
 
 static func _passes_scope(effect: Effect, event: TriggerEvent) -> bool:
+	if !BattleContext.in_battle and effect.battle_only:
+		return false
+	
 	if event.trigger not in effect.listened_triggers():
 		return false
 
