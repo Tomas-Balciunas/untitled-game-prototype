@@ -82,7 +82,6 @@ script = ExtResource("4_a8y0u")
 
 [node name="CharacterMenu" type="Panel" parent="UIRoot/OverworldInterface"]
 unique_name_in_owner = true
-visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -507,7 +506,6 @@ layout_mode = 2
 
 [node name="SkillsUI" type="PanelContainer" parent="UIRoot/OverworldInterface/CharacterMenu"]
 unique_name_in_owner = true
-visible = false
 layout_mode = 1
 anchors_preset = 9
 anchor_bottom = 1.0
@@ -517,6 +515,12 @@ script = ExtResource("11_yq6so")
 
 [node name="Skills" type="VBoxContainer" parent="UIRoot/OverworldInterface/CharacterMenu/SkillsUI"]
 layout_mode = 2
+
+[node name="UseSkill" type="Button" parent="UIRoot/OverworldInterface/CharacterMenu/SkillsUI"]
+z_index = 6
+layout_mode = 2
+size_flags_vertical = 8
+text = "Use"
 
 [node name="LevelUpUI" type="Panel" parent="UIRoot/OverworldInterface/CharacterMenu"]
 unique_name_in_owner = true
@@ -1071,6 +1075,7 @@ script = ExtResource("10_ya4ey")
 [connection signal="pressed" from="UIRoot/OverworldInterface/CharacterMenu/InventoryUI/Inventory/ActionButton" to="UIRoot/OverworldInterface/CharacterMenu/InventoryUI" method="_on_action_button_pressed"]
 [connection signal="pressed" from="UIRoot/OverworldInterface/CharacterMenu/InventoryUI/Inventory/UnequipButton" to="UIRoot/OverworldInterface/CharacterMenu/InventoryUI" method="_on_unequip_button_pressed"]
 [connection signal="pressed" from="UIRoot/OverworldInterface/CharacterMenu/InventoryUI/Inventory/TransferButton" to="UIRoot/OverworldInterface/CharacterMenu/InventoryUI" method="_on_transfer_button_pressed"]
+[connection signal="pressed" from="UIRoot/OverworldInterface/CharacterMenu/SkillsUI/UseSkill" to="UIRoot/OverworldInterface/CharacterMenu/SkillsUI" method="_on_use_skill_pressed"]
 [connection signal="pressed" from="UIRoot/OverworldInterface/Chest/ChestContent/Close" to="UIRoot/OverworldInterface/Chest/ChestContent" method="_on_close_pressed"]
 [connection signal="pressed" from="UIRoot/BattleInterface/BattleControls/Buttons/AttackButton" to="UIRoot/BattleInterface/BattleControls" method="_on_attack_button_pressed"]
 [connection signal="pressed" from="UIRoot/BattleInterface/BattleControls/Buttons/DefendButton" to="UIRoot/BattleInterface/BattleControls" method="_on_defend_button_pressed"]

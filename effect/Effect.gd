@@ -15,6 +15,7 @@ enum EffectCategory {
 @export var name: String = "Unnamed Effect"
 @export var description: String = "Unnamed Effect"
 
+@export var battle_only: bool = true
 @export var single_trigger: bool = false
 @export var priority: int = 200
 @export var is_battle_only := false

@@ -10,6 +10,7 @@ class_name Skill
 @export var sp_cost: int = 0
 @export var effects: Array[Effect] = []
 @export var targeting_type: TargetingManager.TargetType = TargetingManager.TargetType.SINGLE
+@export var owner_only: bool = false
 
 var final_mp_cost: int = 0
 var final_sp_cost: int = 0
@@ -25,6 +26,9 @@ func build_context(_source: SkillSource, _target: CharacterInstance) -> ActionCo
 
 func get_resolver() -> EffectResolver:
 	return
+
+func can_select(c: CharacterInstance) -> bool:
+	return final_mp_cost <= c.state.current_mana and final_sp_cost <= c.state.current_sp
 
 func can_use(c: CharacterInstance) -> bool:
 	return final_mp_cost <= c.state.current_mana and final_sp_cost <= c.state.current_sp

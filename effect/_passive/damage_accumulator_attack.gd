@@ -31,7 +31,7 @@ func on_trigger(_event: TriggerEvent) -> void:
 			return
 		
 		var tgt: CharacterInstance = _event.ctx.target
-		var adjacent := BattleContext.manager.get_applicable_targets(tgt, TargetingManager.TargetType.ADJACENT)
+		var adjacent := TargetingManager.get_applicable_targets(tgt, TargetingManager.TargetType.ADJACENT)
 		
 		BattleTextLines.print_line("Lash activated!")
 		var resolver := DamageResolver.new()

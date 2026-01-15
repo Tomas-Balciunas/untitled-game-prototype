@@ -85,7 +85,7 @@ func _on_unequip_button_pressed() -> void:
 
 	refresh_lists()
 
-func close() -> void:
+func cleanup() -> void:
 	item_info_panel.hide()
 	InventoryBus.inventory_closed.emit()
 

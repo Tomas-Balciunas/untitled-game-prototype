@@ -3,7 +3,7 @@ extends Node
 var in_battle: bool = false
 var event_running: bool = false
 var manager: BattleManager = null
-var enemy_grid: Node = null
+var enemy_grid: EnemyFormation = null
 var encounter_data: EncounterData = null
 
 var ally_targeting_enabled: bool = false

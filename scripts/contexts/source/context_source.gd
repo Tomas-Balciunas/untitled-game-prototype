@@ -15,3 +15,6 @@ func get_type() -> SourceType
 
 @abstract
 func get_source_name() -> String
+
+func get_actor() -> CharacterInstance:
+	return character

@@ -36,7 +36,7 @@ var action_queue: Array[DamageContext] = []
 
 func begin(_enemies: Array[CharacterInstance]) -> void:
 	BattleEventBus.event_concluded.connect(Callable(self, "_on_event_concluded"))
-	BattleBus.target_selected.connect(_on_target_selected)
+	TargetingManager.battle_target_selected.connect(_on_target_selected)
 	BattleBus.action_selected.connect(_on_player_action_selected)
 	
 	var party_members := PartyManager.members
@@ -191,7 +191,7 @@ func _perform_player_action(action: String, target: CharacterInstance) -> void:
 	match action:
 		BattleBus.ATTACK:
 			var targeting: TargetingManager.TargetType = current_battler.equipment["weapon"].targeting if current_battler.equipment["weapon"] else TargetingManager.TargetType.SINGLE
-			var _targets := get_applicable_targets(target, targeting)
+			var _targets := TargetingManager.get_applicable_targets(target, targeting)
 			
 			current_state = BattleState.ANIMATING
 			ChatEventBus.chat_event.emit(ChatterManager.ATTACKING, {
@@ -222,7 +222,7 @@ func _perform_player_action(action: String, target: CharacterInstance) -> void:
 			var skill := _pending_entity as Skill
 				
 			var targeting: TargetingManager.TargetType = skill.targeting_type
-			var _targets := get_applicable_targets(target, targeting)
+			var _targets := TargetingManager.get_applicable_targets(target, targeting)
 			
 			current_state = BattleState.ANIMATING
 			await attacker_slot.perform_run_towards_target(target_slot)
@@ -256,7 +256,7 @@ func _perform_player_action(action: String, target: CharacterInstance) -> void:
 			var item := _pending_entity as Consumable
 			
 			var targeting: TargetingManager.TargetType = item.template.targeting_type
-			var _targets := get_applicable_targets(target, targeting)
+			var _targets := TargetingManager.get_applicable_targets(target, targeting)
 			
 			current_state = BattleState.ANIMATING
 			await attacker_slot.perform_run_towards_target(target_slot)
@@ -433,35 +433,6 @@ func enable_ally_targeting() -> void:
 func disable_ally_targeting() -> void:
 	BattleContext.ally_targeting_enabled = false
 
-func get_applicable_targets(current: CharacterInstance, type: TargetingManager.TargetType) -> Array[CharacterInstance]:
-	match type:
-		TargetingManager.TargetType.SINGLE:
-			return [current]
-		TargetingManager.TargetType.COLUMN:
-			if party.has(current):
-				return PartyManager.get_column_allies(current)
-			return enemy_grid.get_column_enemies(current)
-		TargetingManager.TargetType.ROW:
-			if party.has(current):
-				return PartyManager.get_row_allies(current)
-			return enemy_grid.get_row_enemies(current)
-		TargetingManager.TargetType.BLAST:
-			if party.has(current):
-				return PartyManager.get_blast_allies(current)
-			return enemy_grid.get_blast_enemies(current)
-		TargetingManager.TargetType.ADJACENT:
-			if party.has(current):
-				return PartyManager.get_adjacent_allies(current)
-			return enemy_grid.get_adjacent_enemies(current)
-		TargetingManager.TargetType.MASS:
-			if party.has(current):
-				return PartyManager.get_mass_allies()
-			return enemy_grid.get_mass_enemies()
-		#TODO: bounce targeting
-	return [current]
-		
-func same_side(a: CharacterInstance, b: CharacterInstance) -> bool:
-	return (a in party) == (b in party)
 
 func _on_event_concluded() -> void:
 	BattleContext.event_running = false

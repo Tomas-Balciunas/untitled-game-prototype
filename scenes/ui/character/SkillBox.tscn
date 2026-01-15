@@ -1,0 +1,13 @@
+[gd_scene load_steps=2 format=3 uid="uid://bpkmimsr5asu2"]
+
+[ext_resource type="Script" uid="uid://bi0t4w3atd3su" path="res://scenes/ui/character/skill_box.gd" id="1_7kb0p"]
+
+[node name="HBoxContainer" type="HBoxContainer"]
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("1_7kb0p")
+
+[node name="SkillLabel" type="Label" parent="."]
+layout_mode = 2
+
+[connection signal="gui_input" from="." to="." method="_on_gui_input"]
