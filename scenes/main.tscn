@@ -506,7 +506,6 @@ layout_mode = 2
 
 [node name="SkillsUI" type="PanelContainer" parent="UIRoot/OverworldInterface/CharacterMenu"]
 unique_name_in_owner = true
-visible = false
 layout_mode = 1
 anchors_preset = 9
 anchor_bottom = 1.0
