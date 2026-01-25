@@ -7,8 +7,11 @@ class_name HealBoost
 func listened_triggers() -> Array:
 	return [EffectTriggers.ON_HEAL]
 	
-func can_process(event: TriggerEvent) -> bool:
-	return event.actor.character == owner and event.ctx is HealingContext
+func can_process(_stage: String, event: TriggerEvent) -> bool:
+	if !event is HealTriggerEvent:
+		return false
+	
+	return event.actor.get_actor() == owner
 
-func on_trigger(event: TriggerEvent) -> void:
-	event.ctx.final_value += event.ctx.final_value * modifier
+func on_trigger(_stage: String, event: TriggerEvent) -> void:
+	event.heal += event.heal * modifier

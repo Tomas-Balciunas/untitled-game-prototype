@@ -2,7 +2,7 @@
 extends Resource
 class_name ContextSource
 
-enum SourceType { CHARACTER, ITEM, SKILL, TRAP, UNKNOWN }
+enum SourceType { CHARACTER, ITEM, SKILL, TRAP, STAGE, UNKNOWN }
 
 var character: CharacterInstance = null
 var skill: Skill = null

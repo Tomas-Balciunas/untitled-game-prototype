@@ -16,7 +16,7 @@ func _on_chatter_event_received(e: String, data: Dictionary) -> void:
 func _on_damaged_event(data: Dictionary) -> void:
 	var amount: int = data.get("amount", null)
 	var target: CharacterInstance = data.get("target", null)
-	var ctx: DamageContext = data.get("ctx", null)
+	var ctx: ActionContext = data.get("ctx", null)
 	
 	if target == null:
 		if ctx and ctx.target:

@@ -32,7 +32,7 @@ var _pending_action: String = ""
 var _pending_entity: Variant = null
 var _pending_target: CharacterInstance = null
 var current_battler: CharacterInstance = null
-var action_queue: Array[DamageContext] = []
+#var action_queue: Array[DamageContext] = []
 
 func begin(_enemies: Array[CharacterInstance]) -> void:
 	BattleEventBus.event_concluded.connect(Callable(self, "_on_event_concluded"))
@@ -109,10 +109,11 @@ func _on_turn_start() -> void:
 	BattleBus.turn_started.emit(current_battler, is_party_member)
 
 	var event := TriggerEvent.new()
-	event.trigger = EffectTriggers.ON_TURN_START
 	event.actor = CharacterSource.new(current_battler)
 	event.ctx = ActionContext.new()
-	EffectRunner.process_trigger(event)
+	
+	EffectRunner.process_trigger(EffectTriggers.ON_TURN_START, event)
+	
 	disable_all_targeting()
 	
 	if is_party_member:
@@ -124,10 +125,11 @@ func _on_turn_start() -> void:
 
 func _on_turn_end() -> void:
 	var event := TriggerEvent.new()
-	event.trigger = EffectTriggers.ON_TURN_END
 	event.actor = CharacterSource.new(current_battler)
 	event.ctx = ActionContext.new()
-	EffectRunner.process_trigger(event)
+	
+	EffectRunner.process_trigger(EffectTriggers.ON_TURN_END, event)
+	
 	current_battler.action_value += 1000 / (100 + current_battler.stats.speed)
 	BattleBus.turn_ended.emit()
 	current_battler = null
@@ -193,6 +195,11 @@ func _perform_player_action(action: String, target: CharacterInstance) -> void:
 			var targeting: TargetingManager.TargetType = current_battler.equipment["weapon"].targeting if current_battler.equipment["weapon"] else TargetingManager.TargetType.SINGLE
 			var targets := TargetingManager.get_applicable_targets(target, targeting)
 			
+			var ctx := ActionContext.new()
+			ctx.source = CharacterSource.new(current_battler)
+			ctx.set_targets(target, targets)
+			ctx.actively_cast = true
+			
 			current_state = BattleState.ANIMATING
 			ChatEventBus.chat_event.emit(ChatterManager.ATTACKING, {
 				"source": current_battler,
@@ -205,13 +212,7 @@ func _perform_player_action(action: String, target: CharacterInstance) -> void:
 			if timed_out:
 				push_error("Attack connected signal timed out for character: %s, %s " % [current_battler.resource.name, current_battler.resource.id])
 			
-			var dmg := DamageContext.new(current_battler.stats.attack)
-			dmg.source = CharacterSource.new(current_battler)
-			dmg.initial_target   = target
-			dmg.targets = targets
-			dmg.type = current_battler.damage_type
-			dmg.actively_cast = true
-			await DamageResolver.new().execute(dmg)
+			await DamageResolver.new(current_battler.stats.attack).execute(ctx)
 		
 		BattleBus.SKILL:
 			if _pending_entity is not Skill:
@@ -219,6 +220,11 @@ func _perform_player_action(action: String, target: CharacterInstance) -> void:
 				return
 				
 			var skill = _pending_entity as Skill
+			var targets := TargetingManager.get_applicable_targets(target, skill.targeting_type)
+			var ctx := ActionContext.new()
+			ctx.source = CharacterSource.new(current_battler)
+			ctx.set_targets(target, targets)
+			ctx.actively_cast = true
 			
 			current_state = BattleState.ANIMATING
 			await attacker_slot.perform_run_towards_target(target_slot)
@@ -228,8 +234,7 @@ func _perform_player_action(action: String, target: CharacterInstance) -> void:
 			if timed_out:
 				push_error("Attack connected signal timed out for character: %s, %s " % [current_battler.resource.name, current_battler.resource.id])
 			
-			var executor: SkillExecutor = SkillExecutor.new(skill, current_battler, target)
-			executor.execute()
+			await SkillResolver.new(skill).execute(ctx)
 			
 		BattleBus.ITEM:
 			if _pending_entity is not Consumable:
@@ -296,10 +301,9 @@ func _process_enemy_turn(event: TriggerEvent = null) -> void:
 	var attacker_slot := get_slot(current_battler)
 	var target_slot := get_slot(target)
 	
-	var atk := DamageContext.new(current_battler.stats.attack)
+	var atk := ActionContext.new()
 	atk.source = CharacterSource.new(current_battler)
-	atk.initial_target   = target
-	atk.targets = [target]
+	atk.set_targets(current_battler)
 	atk.actively_cast = true
 	
 	ChatEventBus.chat_event.emit(ChatterManager.ATTACKING, {
@@ -315,7 +319,7 @@ func _process_enemy_turn(event: TriggerEvent = null) -> void:
 		push_error("Attack connected signal timed out for character: %s, %s " % [current_battler.resource.name, current_battler.resource.id])
 	
 	
-	await DamageResolver.new().execute(atk)
+	await DamageResolver.new(current_battler.stats.attack).execute(atk)
 	
 	await attacker_slot.position_back()
 	await process_queue()
@@ -423,24 +427,25 @@ func _on_event_concluded() -> void:
 
 func process_queue() -> void:
 	# TODO need to consider clean up and end checks
-	while action_queue.size() > 0:
-		var a: ActionContext = action_queue[0]
-		var target := get_slot(a.target)
-		var attacker: FormationSlot = get_slot(a.source.character)
-		
-		if !attacker:
-			continue
-		
-		await attacker.perform_run_towards_target(target)
-		attacker.perform_attack()
-		var timed_out: bool = await SignalFailsafe.await_signal_or_timeout(self, BattleBus.attack_connected, ATTACK_CONNECTED_TIMEOUT)
-
-		if timed_out:
-			push_error("Attack connected signal timed out for character: %s, %s " % [current_battler.resource.name, current_battler.resource.id])
-		
-		await DamageResolver.new().execute(a)
-		await attacker.position_back()
-		action_queue.pop_front()
+	pass
+	#while action_queue.size() > 0:
+		#var a: ActionContext = action_queue[0]
+		#var target := get_slot(a.target)
+		#var attacker: FormationSlot = get_slot(a.source.character)
+		#
+		#if !attacker:
+			#continue
+		#
+		#await attacker.perform_run_towards_target(target)
+		#attacker.perform_attack()
+		#var timed_out: bool = await SignalFailsafe.await_signal_or_timeout(self, BattleBus.attack_connected, ATTACK_CONNECTED_TIMEOUT)
+#
+		#if timed_out:
+			#push_error("Attack connected signal timed out for character: %s, %s " % [current_battler.resource.name, current_battler.resource.id])
+		#
+		#await DamageResolver.new().execute(a)
+		#await attacker.position_back()
+		#action_queue.pop_front()
 		
 func get_slot(chara: CharacterInstance) -> FormationSlot:
 	if enemies.has(chara):

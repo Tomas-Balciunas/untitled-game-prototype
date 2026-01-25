@@ -12,9 +12,14 @@ func _init() -> void:
 func _is_stackable() -> bool:
 	return true
 
-	
-func can_process(event: TriggerEvent) -> bool:
-	return event.actor.character == owner
+
+func listened_triggers() -> Array:
+	return [EffectTriggers.ON_TURN_END]
+
+
+func can_process(_stage: String, event: TriggerEvent) -> bool:
+	return event.actor.get_actor() == owner
+
 
 func on_apply() -> void:
 	_remaining = duration_turns
@@ -30,21 +35,17 @@ func on_apply() -> void:
 	BattleTextLines.print_line("Poison applied to %s for %d turns" % [owner.resource.name, duration_turns])
 
 
-func listened_triggers() -> Array:
-	return [EffectTriggers.ON_TURN_END]
-
-func on_trigger(_event: TriggerEvent) -> void:
-	if _remaining <= 0:
-		return
+func on_trigger(_stage: String, _event: TriggerEvent) -> void:
 	if owner == null:
 		push_error("PoisonEffect: Owner is null during on_turn_end tick.")
 		return
-	var tick := DamageContext.new(damage_per_turn * stacks)
+	
+	var tick := ActionContext.new()
 	tick.source = source
-	tick.target = owner
+	tick.set_targets(owner)
 	tick.type = DamageTypes.Type.POISON
 	tick.options = tick.options.duplicate() if tick.options else {}
-	DamageResolver.new().execute(tick)
+	DamageResolver.new(damage_per_turn * stacks).execute(tick)
 
 	_remaining -= 1
 	print("Poison tick: %s takes %d from %s — remaining %d" % [owner.resource.name, damage_per_turn, tick.source.get_source_name(), _remaining])

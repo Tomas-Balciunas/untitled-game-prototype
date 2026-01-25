@@ -22,13 +22,10 @@ func execute(_ctx: ActionContext) -> EffectApplicationContext:
 
 
 func run_pipeline(event: TriggerEvent) -> void:
-	event.trigger = EffectTriggers.ON_BEFORE_APPLY_EFFECT
-	EffectRunner.process_trigger(event)
+	EffectRunner.process_trigger(EffectTriggers.ON_BEFORE_APPLY_EFFECT, event)
 	
-	event.trigger = EffectTriggers.ON_BEFORE_RECEIVE_EFFECT
-	EffectRunner.process_trigger(event)
+	EffectRunner.process_trigger(EffectTriggers.ON_BEFORE_RECEIVE_EFFECT, event)
 	
 	event.target.apply_effect(event.ctx.effect, event.actor)
 	
-	event.trigger = EffectTriggers.ON_APPLY_EFFECT
-	EffectRunner.process_trigger(event)
+	EffectRunner.process_trigger(EffectTriggers.ON_APPLY_EFFECT, event)

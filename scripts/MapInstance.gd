@@ -40,10 +40,9 @@ func update_player_position(pos: Vector2i, facing: Vector3) -> void:
 	
 	for c in PartyManager.members:
 		var event: TriggerEvent = TriggerEvent.new()
-		event.trigger = EffectTriggers.ON_TURN_END
 		event.actor = CharacterSource.new(c)
 		event.ctx = ActionContext.new()
-		EffectRunner.process_trigger(event)
+		EffectRunner.process_trigger(EffectTriggers.ON_TURN_END, event)
 		
 func add_encounter(data: EncounterData) -> void:
 	if not encounters.has(map_id):

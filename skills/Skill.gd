@@ -18,10 +18,7 @@ func _get_name() -> String:
 func get_description() -> String:
 	return description
 
-func build_context(_skill_ctx: SkillContext) -> ActionContext:
-	return
-
-func get_resolver() -> EffectResolver:
+func get_resolver(_ctx: ActionContext) -> EffectResolver:
 	return
 
 func can_select(c: CharacterInstance) -> bool:

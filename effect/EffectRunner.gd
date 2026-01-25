@@ -1,16 +1,17 @@
 extends Node
 
 
-func process_trigger(event: TriggerEvent) -> void:
+func process_trigger(stage: String, event: TriggerEvent) -> void:
 	var start := Time.get_ticks_usec()
 
+	var ctx: ActionContext = event.ctx
 	var effects_to_run: Array[Effect] = []
 	
-	if event.ctx.temporary_effects:
-		for e in event.ctx.temporary_effects:
-			e.set_owner(event.actor.character)
-			e.set_source(event.actor)
-			if not _passes_scope(e, event):
+	if ctx.temporary_effects:
+		for e in ctx.temporary_effects:
+			e.set_owner(ctx.source.get_actor())
+			e.set_source(ctx.source)
+			if not _passes_scope(e, stage, event):
 				continue
 			effects_to_run.append(e)
 	
@@ -18,13 +19,13 @@ func process_trigger(event: TriggerEvent) -> void:
 		var battlers := BattleContext.manager.battlers
 		for b in battlers:
 			for e in b.effects:
-				if not _passes_scope(e, event):
+				if not _passes_scope(e, stage, event):
 					continue
 				effects_to_run.append(e)
 	else:
 		for p in PartyManager.members:
 			for e in p.effects:
-				if not _passes_scope(e, event):
+				if not _passes_scope(e, stage, event):
 					continue
 				effects_to_run.append(e)
 
@@ -32,11 +33,11 @@ func process_trigger(event: TriggerEvent) -> void:
 
 	for entry: Effect in effects_to_run:
 		
-		if event.ctx.stop_processing:
+		if ctx.stop_processing:
 			print("[EffectProcessor] processing stopped by", entry.name)
 			return
 
-		entry.on_trigger(event)
+		entry.on_trigger(stage, event)
 		
 		if entry.single_trigger:
 			entry.remove_self()
@@ -49,11 +50,11 @@ func _sort_effects(a: Dictionary, b: Dictionary) -> int:
 	var eb: Effect = b.effect
 	return ea.priority > eb.priority
 
-static func _passes_scope(effect: Effect, event: TriggerEvent) -> bool:
+static func _passes_scope(effect: Effect, stage: String, event: TriggerEvent) -> bool:
 	if !BattleContext.in_battle and effect.battle_only:
 		return false
 	
-	if event.trigger not in effect.listened_triggers():
+	if stage not in effect.listened_triggers():
 		return false
 
-	return effect.can_process(event)
+	return effect.can_process(stage, event)

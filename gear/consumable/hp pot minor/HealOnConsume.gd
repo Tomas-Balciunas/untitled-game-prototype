@@ -6,17 +6,15 @@ class_name Heal
 func listened_triggers() -> Array:
 	return [EffectTriggers.ON_USE_CONSUMABLE]
 	
-func can_process(_event: TriggerEvent) -> bool:
+func can_process(_stage: String, _event: TriggerEvent) -> bool:
 	return true
 
-func on_trigger(event: TriggerEvent) -> void:
-	var action := HealingContext.new()
-	action.base_value = heal_amount
-	action.final_value = heal_amount
-	action.source = event.ctx.source
-	action.target = event.ctx.target
+func on_trigger(_stage: String, event: TriggerEvent) -> void:
+	var action := ActionContext.new()
+	action.source = event.source
+	action.set_targets(event.target)
 	
-	HealingResolver.new().execute(action)
+	HealingResolver.new(heal_amount).execute(action)
 
 func get_description() -> String:
 	return "Heals for %s" % heal_amount

@@ -1,7 +1,7 @@
-[gd_resource type="Resource" script_class="CharacterResource" load_steps=12 format=3 uid="uid://dq6o86j5axtjb"]
+[gd_resource type="Resource" script_class="CharacterResource" load_steps=13 format=3 uid="uid://dq6o86j5axtjb"]
 
+[ext_resource type="Resource" uid="uid://57fo0cycgjne" path="res://stat/_stats/DefaultStats.tres" id="1_0q48i"]
 [ext_resource type="Script" uid="uid://bwn4gpkaijqsg" path="res://scripts/CharacterResource.gd" id="1_l56jw"]
-[ext_resource type="Resource" uid="uid://bm8voqn41431y" path="res://stat/_attribute/_Unknown.tres" id="1_uy2ep"]
 [ext_resource type="Script" uid="uid://cbelvg2fndssu" path="res://scripts/BattleEvent.gd" id="2_2p1x5"]
 [ext_resource type="PackedScene" uid="uid://brmuxif8auto4" path="res://characters/foes/Balmer/_body/Balmet.tscn" id="3_2p1x5"]
 [ext_resource type="Script" uid="uid://bp0biy0knxw2o" path="res://effect/Effect.gd" id="3_qj1j7"]
@@ -11,21 +11,11 @@
 [ext_resource type="Resource" uid="uid://cs2tci0dc3vvo" path="res://characters/_class/_Unknown.tres" id="6_0q48i"]
 [ext_resource type="Resource" uid="uid://lcgngc3c13fc" path="res://characters/_race/_Unknown.tres" id="7_mwqcq"]
 [ext_resource type="Resource" uid="uid://c5qyqcmwx0qfy" path="res://scripts/experience/ExperienceManager.tres" id="8_mwqcq"]
+[ext_resource type="Resource" uid="uid://s8gs3fa65s30" path="res://stat/_stats/DefaultStatGrowth.tres" id="12_mwqcq"]
 
 [resource]
 script = ExtResource("1_l56jw")
 experience = 150
-base_stats = {
-"ATTACK": 5.0,
-"DEFENSE": 5.0,
-"DIVINE_POWER": 5.0,
-"HEALTH": 15.0,
-"MAGIC_DEFENSE": 5.0,
-"MAGIC_POWER": 5.0,
-"MANA": 5.0,
-"RESISTANCE": 5.0,
-"SPEED": 5.0
-}
 id = "e_enemy_002"
 name = "Balmer"
 character_body = ExtResource("3_2p1x5")

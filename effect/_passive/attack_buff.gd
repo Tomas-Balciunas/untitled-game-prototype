@@ -26,10 +26,10 @@ func on_apply() -> void:
 func listened_triggers() -> Array:
 	return [EffectTriggers.ON_TURN_END]
 	
-func can_process(_event: TriggerEvent) -> bool:
+func can_process(_stage: String, _event: TriggerEvent) -> bool:
 	return owner == _event.actor.get_actor()
 
-func on_trigger(_event: TriggerEvent) -> void:
+func on_trigger(_stage: String, _event: TriggerEvent) -> void:
 	remaining_turns -= 1
 	
 	if remaining_turns <= 0:

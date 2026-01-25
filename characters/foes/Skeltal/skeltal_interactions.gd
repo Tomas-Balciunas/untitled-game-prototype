@@ -22,7 +22,7 @@ func get_chatter(_topic: String) -> String:
 	return ""
 
 
-func get_damaged_line(key: String, _amt: int, _ctx: DamageContext = null) -> String:
+func get_damaged_line(key: String, _amt: int, _ctx: ActionContext = null) -> String:
 	var lines: Dictionary = chatter.get(key, {})
 	var default: Array = lines.get("default", [])
 	

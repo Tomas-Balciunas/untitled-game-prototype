@@ -4,8 +4,8 @@
 
 [resource]
 script = ExtResource("1_adoub")
-attack = 10
-health = 50
+attack = 1
+health = 500
 mana = 20
 sp = 20
 speed = 5

@@ -4,7 +4,7 @@ class_name MpCostReduction
 
 @export var modifier: float = 0.2
 
-func can_process(_event: TriggerEvent) -> bool:
+func can_process(_stage: String, _event: TriggerEvent) -> bool:
 	return false
 
 func listened_triggers() -> Array:

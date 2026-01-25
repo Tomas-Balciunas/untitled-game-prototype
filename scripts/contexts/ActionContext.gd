@@ -1,4 +1,3 @@
-
 class_name ActionContext
 
 var source: ContextSource
@@ -13,3 +12,11 @@ var root_trigger: Effect = null
 var skip_turn: bool = false
 var force_action: bool = false
 var forced_skill: Skill = null
+
+
+func set_targets(initial: CharacterInstance, all_targets: Array[CharacterInstance] = []) -> void:
+	initial_target = initial
+	targets = all_targets
+	
+	if all_targets.is_empty():
+		targets.append(initial_target)

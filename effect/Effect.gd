@@ -35,7 +35,7 @@ func set_source(_source: ContextSource) -> void:
 func listened_triggers() -> Array
 
 @abstract
-func can_process(_event: TriggerEvent) -> bool
+func can_process(_stage: String, _event: TriggerEvent) -> bool
 
 func prepare_for_battle() -> void:
 	pass
@@ -43,7 +43,7 @@ func prepare_for_battle() -> void:
 func should_append() -> bool:
 	return _should_append
 
-func on_trigger(_event: TriggerEvent) -> void:
+func on_trigger(_stage: String, _ctx: TriggerEvent) -> void:
 	pass
 
 func _get_name() -> String:

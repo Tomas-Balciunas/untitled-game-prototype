@@ -1,11 +1,9 @@
-[gd_resource type="Resource" script_class="PriestClass" load_steps=11 format=3 uid="uid://br55c33pop4ux"]
+[gd_resource type="Resource" script_class="PriestClass" load_steps=9 format=3 uid="uid://br55c33pop4ux"]
 
 [ext_resource type="Script" uid="uid://bp0biy0knxw2o" path="res://effect/Effect.gd" id="1_odaop"]
 [ext_resource type="Script" uid="uid://blqk30gl013xc" path="res://stat/_attribute/attributes.gd" id="1_wubjf"]
 [ext_resource type="Script" uid="uid://krvcd4i0cl6r" path="res://characters/_class/Priest.gd" id="2_odaop"]
 [ext_resource type="Script" uid="uid://dq4acpkde276p" path="res://skills/Skill.gd" id="3_cd4k3"]
-[ext_resource type="Resource" uid="uid://c4v8018wjpyyf" path="res://effect/_passive/healing/HealBoost.tres" id="3_rx8nc"]
-[ext_resource type="Resource" uid="uid://dgxlt0x8p42nw" path="res://effect/_passive/damage share/DamageShare.tres" id="4_0qdgc"]
 [ext_resource type="Resource" uid="uid://c5xohmycfkr5c" path="res://skills/_defensive/_heal/row heal.tres" id="5_lu6jk"]
 [ext_resource type="Resource" uid="uid://bk1ekpvjscjmg" path="res://skills/_defensive/_heal/single heal.tres" id="6_rx8nc"]
 [ext_resource type="Resource" uid="uid://s8gs3fa65s30" path="res://stat/_stats/DefaultStatGrowth.tres" id="9_0qdgc"]
@@ -19,5 +17,4 @@ script = ExtResource("2_odaop")
 name = 3
 attributes = SubResource("Resource_lyfav")
 skills = Array[ExtResource("3_cd4k3")]([ExtResource("5_lu6jk"), ExtResource("6_rx8nc")])
-effects = Array[ExtResource("1_odaop")]([ExtResource("3_rx8nc"), ExtResource("4_0qdgc")])
 metadata/_custom_type_script = "uid://krvcd4i0cl6r"

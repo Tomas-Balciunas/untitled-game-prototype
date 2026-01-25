@@ -49,8 +49,12 @@ func target_selected(t: CharacterInstance) -> void:
 	if not selected_skill:
 		return
 	
-	var executor: SkillExecutor = SkillExecutor.new(selected_skill, _owner, t)
-	executor.execute()
+	var targets := TargetingManager.get_applicable_targets(t, selected_skill.targeting_type)
+	var ctx: ActionContext = ActionContext.new()
+	ctx.set_targets(t, targets)
+	ctx.source = SkillSource.new(_owner, selected_skill)
+	
+	SkillResolver.new(selected_skill).execute(ctx)
 
 
 func _on_use_skill_pressed() -> void:

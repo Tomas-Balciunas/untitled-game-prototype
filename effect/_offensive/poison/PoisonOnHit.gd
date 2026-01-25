@@ -6,14 +6,14 @@ var damage_per_turn: int = 5
 func listened_triggers() -> Array:
 	return [EffectTriggers.ON_DAMAGE_APPLIED]
 	
-func can_process(event: TriggerEvent) -> bool:
+func can_process(_stage: String, event: TriggerEvent) -> bool:
 	match event.actor:
 		TrapSource:
 			return true
 	
-	return event.actor.character == owner and event.ctx.actively_cast
+	return event.actor.get_actor() == owner and event.ctx.actively_cast
 
-func on_trigger(event: TriggerEvent) -> void:
+func on_trigger(_stage: String, event: TriggerEvent) -> void:
 	var poison: PoisonEffect = PoisonEffect.new()
 	poison.duration_turns = duration_turns
 	poison.damage_per_turn = damage_per_turn

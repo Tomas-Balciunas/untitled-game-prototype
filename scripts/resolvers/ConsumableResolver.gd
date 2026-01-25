@@ -18,6 +18,6 @@ func execute(_ctx: ActionContext) -> ConsumableContext:
 		ev.actor = ctx.source
 		ev.ctx = ctx
 		ev.trigger = trig
-		EffectRunner.process_trigger(ev)
+		EffectRunner.process_trigger(trig, ev)
 
 	return ctx

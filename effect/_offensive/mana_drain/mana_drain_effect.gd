@@ -9,12 +9,12 @@ func listened_triggers() -> Array:
 	return [EffectTriggers.ON_APPLY_EFFECT]
 
 
-func can_process(event: TriggerEvent) -> bool:
+func can_process(_stage: String, event: TriggerEvent) -> bool:
 	return owner == event.ctx.target
 
 
-func on_trigger(event: TriggerEvent) -> void:
-	var current_mana := event.target.state.current_mana
+func on_trigger(_stage: String, event: TriggerEvent) -> void:
+	var current_mana: int = event.target.state.current_mana
 	var new_mana := floori(current_mana * (1 - amount))
 	event.target.set_current_mana(new_mana)
 	

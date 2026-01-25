@@ -159,7 +159,7 @@ func _populate_skill_list() -> void:
 func _on_skill_hover(skill: Skill) -> void:
 	skill_info_panel.visible = true
 	skill_info_name_label.text = skill.name
-	skill_info_cost_label.text = "MP: %s, SP: %s" % [skill.mp_cost, skill.sp_cost]
+	skill_info_cost_label.text = "MP: %s, SP: %s" % [skill.cost.mana, skill.cost.sp]
 	skill_info_description_label.text = skill.description
 
 func _on_skill_unhover() -> void:

@@ -1,8 +1,8 @@
-[gd_resource type="Resource" script_class="CharacterResource" load_steps=14 format=3 uid="uid://wuehd43nakji"]
+[gd_resource type="Resource" script_class="CharacterResource" load_steps=15 format=3 uid="uid://wuehd43nakji"]
 
+[ext_resource type="Resource" uid="uid://57fo0cycgjne" path="res://stat/_stats/DefaultStats.tres" id="1_6he51"]
 [ext_resource type="Script" uid="uid://bp0biy0knxw2o" path="res://effect/Effect.gd" id="1_73qgh"]
 [ext_resource type="Script" uid="uid://dq4acpkde276p" path="res://skills/Skill.gd" id="1_cc3t0"]
-[ext_resource type="Resource" uid="uid://bm8voqn41431y" path="res://stat/_attribute/_Unknown.tres" id="1_goqyc"]
 [ext_resource type="Script" uid="uid://bwn4gpkaijqsg" path="res://scripts/CharacterResource.gd" id="1_km1me"]
 [ext_resource type="Resource" uid="uid://badgfln40mudj" path="res://effect/_passive/resistance poison/PoisonRes.tres" id="2_d15h4"]
 [ext_resource type="Script" uid="uid://cbelvg2fndssu" path="res://scripts/BattleEvent.gd" id="2_gcpvx"]
@@ -13,23 +13,13 @@
 [ext_resource type="Resource" uid="uid://lcgngc3c13fc" path="res://characters/_race/_Unknown.tres" id="7_gcpvx"]
 [ext_resource type="Resource" uid="uid://c5qyqcmwx0qfy" path="res://scripts/experience/ExperienceManager.tres" id="8_tl2ml"]
 [ext_resource type="Resource" uid="uid://d0teo8fy4hnlf" path="res://characters/foes/Skeltal/skeltal_interactions.tres" id="10_07eh6"]
+[ext_resource type="Resource" uid="uid://s8gs3fa65s30" path="res://stat/_stats/DefaultStatGrowth.tres" id="14_smc4f"]
 
 [resource]
 script = ExtResource("1_km1me")
-id = "0000"
-character_body = ExtResource("3_tl2ml")
-name = "Skeleton"
 default_effects = Array[ExtResource("1_73qgh")]([ExtResource("2_d15h4")])
-base_stats = {
-"ATTACK": 10.0,
-"DEFENSE": 5.0,
-"DIVINE_POWER": 5.0,
-"HEALTH": 20.0,
-"MAGIC_DEFENSE": 5.0,
-"MAGIC_POWER": 5.0,
-"MANA": 5.0,
-"RESISTANCE": 5.0,
-"SPEED": 5.0
-}
+id = "0000"
+name = "Skeleton"
+character_body = ExtResource("3_tl2ml")
 interactions = ExtResource("10_07eh6")
 metadata/_custom_type_script = "uid://bwn4gpkaijqsg"
