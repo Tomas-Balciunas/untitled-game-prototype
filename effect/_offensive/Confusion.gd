@@ -11,7 +11,7 @@ func can_process(_stage: String, event: TriggerEvent) -> bool:
 	return owner == event.actor.get_actor()
 	
 func on_apply() -> void:
-	is_battle_only = true
+	battle_only = true
 	BattleTextLines.print_line("%s is confused!" % owner.resource.name)
 
 	

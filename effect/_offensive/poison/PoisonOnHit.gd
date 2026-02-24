@@ -18,11 +18,15 @@ func on_trigger(_stage: String, event: TriggerEvent) -> void:
 	poison.duration_turns = duration_turns
 	poison.damage_per_turn = damage_per_turn
 	poison.source = event.actor
-	var app := EffectApplicationContext.new()
+	
+	var app := ActionContext.new()
 	app.source = event.actor
-	app.target = event.ctx.target
-	app.effect = poison
-	EffectApplicationResolver.new().execute(app)
+	app.set_targets(event.target)
+	
+	event.ctx.additional_procs.append({
+		"resolver": EffectApplicationResolver.new(poison),
+		"ctx": app
+	})
 
 func get_description() -> String:
 	return "Applies poison on the target for %s turns dealing %s damage per turn" % [duration_turns, damage_per_turn]

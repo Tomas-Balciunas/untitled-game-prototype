@@ -1,4 +1,4 @@
-[gd_scene load_steps=36 format=3 uid="uid://cphcmsugjsscn"]
+[gd_scene format=3 uid="uid://cphcmsugjsscn"]
 
 [ext_resource type="Script" uid="uid://bsq341p3oxk46" path="res://scenes/GameState.gd" id="1_o6xl0"]
 [ext_resource type="Script" uid="uid://x2dulqp2hx2s" path="res://scenes/dungeon/dungeon.gd" id="2_o6xl0"]
@@ -48,15 +48,15 @@ bg_color = Color(0, 0.559558, 0.459418, 1)
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_muem4"]
 bg_color = Color(0, 0.508119, 0.47713, 1)
 
-[node name="Main" type="Node3D"]
+[node name="Main" type="Node3D" unique_id=1041609217]
 script = ExtResource("1_o6xl0")
 
-[node name="Dungeon" type="GridMap" parent="."]
+[node name="Dungeon" type="GridMap" parent="." unique_id=1191917963]
 cell_size = Vector3(1, 1, 1)
 cell_center_y = false
 script = ExtResource("2_o6xl0")
 
-[node name="TransitionRect" type="ColorRect" parent="Dungeon"]
+[node name="TransitionRect" type="ColorRect" parent="Dungeon" unique_id=537003393]
 visible = false
 layout_direction = 1
 anchors_preset = 15
@@ -67,10 +67,10 @@ grow_vertical = 2
 mouse_filter = 2
 color = Color(0.0694218, 0.00964971, 0.263646, 1)
 
-[node name="UIRoot" type="CanvasLayer" parent="."]
+[node name="UIRoot" type="CanvasLayer" parent="." unique_id=1208632606]
 script = ExtResource("4_trceg")
 
-[node name="OverworldInterface" type="Control" parent="UIRoot"]
+[node name="OverworldInterface" type="Control" parent="UIRoot" unique_id=1416117088]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -80,7 +80,7 @@ grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("4_a8y0u")
 
-[node name="CharacterMenu" type="Panel" parent="UIRoot/OverworldInterface"]
+[node name="CharacterMenu" type="Panel" parent="UIRoot/OverworldInterface" unique_id=1194874376]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 15
@@ -92,7 +92,7 @@ grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_tel4y")
 script = ExtResource("5_y6deb")
 
-[node name="Name" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu"]
+[node name="Name" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu" unique_id=649018858]
 layout_mode = 0
 offset_left = 505.0
 offset_top = 26.0
@@ -100,7 +100,7 @@ offset_right = 640.0
 offset_bottom = 67.0
 size_flags_horizontal = 4
 
-[node name="CharacterMenuButtons" type="PanelContainer" parent="UIRoot/OverworldInterface/CharacterMenu"]
+[node name="CharacterMenuButtons" type="PanelContainer" parent="UIRoot/OverworldInterface/CharacterMenu" unique_id=712624605]
 layout_mode = 1
 anchors_preset = 3
 anchor_left = 1.0
@@ -112,53 +112,53 @@ offset_top = -31.0
 grow_horizontal = 0
 grow_vertical = 0
 
-[node name="HBoxContainer" type="HBoxContainer" parent="UIRoot/OverworldInterface/CharacterMenu/CharacterMenuButtons"]
+[node name="HBoxContainer" type="HBoxContainer" parent="UIRoot/OverworldInterface/CharacterMenu/CharacterMenuButtons" unique_id=117383671]
 layout_mode = 2
 
-[node name="Stats" type="Button" parent="UIRoot/OverworldInterface/CharacterMenu/CharacterMenuButtons/HBoxContainer"]
+[node name="Stats" type="Button" parent="UIRoot/OverworldInterface/CharacterMenu/CharacterMenuButtons/HBoxContainer" unique_id=868539447]
 layout_mode = 2
 size_flags_horizontal = 3
 focus_mode = 0
 text = "Stats"
 
-[node name="Inventory" type="Button" parent="UIRoot/OverworldInterface/CharacterMenu/CharacterMenuButtons/HBoxContainer"]
+[node name="Inventory" type="Button" parent="UIRoot/OverworldInterface/CharacterMenu/CharacterMenuButtons/HBoxContainer" unique_id=2107585730]
 layout_mode = 2
 size_flags_horizontal = 3
 focus_mode = 0
 text = "Inventory"
 
-[node name="Skills" type="Button" parent="UIRoot/OverworldInterface/CharacterMenu/CharacterMenuButtons/HBoxContainer"]
+[node name="Skills" type="Button" parent="UIRoot/OverworldInterface/CharacterMenu/CharacterMenuButtons/HBoxContainer" unique_id=1915169243]
 layout_mode = 2
 size_flags_horizontal = 3
 focus_mode = 0
 text = "Skills"
 
-[node name="Effects" type="Button" parent="UIRoot/OverworldInterface/CharacterMenu/CharacterMenuButtons/HBoxContainer"]
+[node name="Effects" type="Button" parent="UIRoot/OverworldInterface/CharacterMenu/CharacterMenuButtons/HBoxContainer" unique_id=1775392650]
 layout_mode = 2
 size_flags_horizontal = 3
 focus_mode = 0
 text = "Effects"
 
-[node name="Talk" type="Button" parent="UIRoot/OverworldInterface/CharacterMenu/CharacterMenuButtons/HBoxContainer"]
+[node name="Talk" type="Button" parent="UIRoot/OverworldInterface/CharacterMenu/CharacterMenuButtons/HBoxContainer" unique_id=1163377330]
 layout_mode = 2
 size_flags_horizontal = 3
 focus_mode = 0
 keep_pressed_outside = true
 text = "Talk"
 
-[node name="LevelUp" type="Button" parent="UIRoot/OverworldInterface/CharacterMenu/CharacterMenuButtons/HBoxContainer"]
+[node name="LevelUp" type="Button" parent="UIRoot/OverworldInterface/CharacterMenu/CharacterMenuButtons/HBoxContainer" unique_id=1908328033]
 unique_name_in_owner = true
 layout_mode = 2
 focus_mode = 0
 text = "Level Up"
 
-[node name="Close" type="Button" parent="UIRoot/OverworldInterface/CharacterMenu/CharacterMenuButtons/HBoxContainer"]
+[node name="Close" type="Button" parent="UIRoot/OverworldInterface/CharacterMenu/CharacterMenuButtons/HBoxContainer" unique_id=990070556]
 layout_mode = 2
 size_flags_horizontal = 3
 focus_mode = 0
 text = "X"
 
-[node name="InventoryUI" type="Panel" parent="UIRoot/OverworldInterface/CharacterMenu"]
+[node name="InventoryUI" type="Panel" parent="UIRoot/OverworldInterface/CharacterMenu" unique_id=1077545601]
 unique_name_in_owner = true
 visible = false
 layout_mode = 1
@@ -169,7 +169,7 @@ grow_vertical = 2
 theme = SubResource("Theme_qkpxi")
 script = ExtResource("5_pm3ni")
 
-[node name="Inventory" type="VBoxContainer" parent="UIRoot/OverworldInterface/CharacterMenu/InventoryUI"]
+[node name="Inventory" type="VBoxContainer" parent="UIRoot/OverworldInterface/CharacterMenu/InventoryUI" unique_id=910992472]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 9
@@ -179,150 +179,150 @@ grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="Equipped" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/InventoryUI/Inventory"]
+[node name="Equipped" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/InventoryUI/Inventory" unique_id=1536573495]
 layout_mode = 2
 text = "Equipped"
 
-[node name="EquippedList" type="VBoxContainer" parent="UIRoot/OverworldInterface/CharacterMenu/InventoryUI/Inventory"]
+[node name="EquippedList" type="VBoxContainer" parent="UIRoot/OverworldInterface/CharacterMenu/InventoryUI/Inventory" unique_id=46964756]
 layout_mode = 2
 size_flags_vertical = 3
 script = ExtResource("6_y6deb")
 
-[node name="Weapon" type="PanelContainer" parent="UIRoot/OverworldInterface/CharacterMenu/InventoryUI/Inventory/EquippedList"]
+[node name="Weapon" type="PanelContainer" parent="UIRoot/OverworldInterface/CharacterMenu/InventoryUI/Inventory/EquippedList" unique_id=1613125291]
 layout_mode = 2
 size_flags_vertical = 3
 script = ExtResource("7_og1vs")
 
-[node name="Container" type="HBoxContainer" parent="UIRoot/OverworldInterface/CharacterMenu/InventoryUI/Inventory/EquippedList/Weapon"]
+[node name="Container" type="HBoxContainer" parent="UIRoot/OverworldInterface/CharacterMenu/InventoryUI/Inventory/EquippedList/Weapon" unique_id=455390802]
 layout_mode = 2
 
-[node name="Key" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/InventoryUI/Inventory/EquippedList/Weapon/Container"]
+[node name="Key" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/InventoryUI/Inventory/EquippedList/Weapon/Container" unique_id=157632346]
 layout_mode = 2
 text = "Weapon: "
 
-[node name="Value" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/InventoryUI/Inventory/EquippedList/Weapon/Container"]
+[node name="Value" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/InventoryUI/Inventory/EquippedList/Weapon/Container" unique_id=249556546]
 layout_mode = 2
 text = "<empty>"
 
-[node name="Helmet" type="PanelContainer" parent="UIRoot/OverworldInterface/CharacterMenu/InventoryUI/Inventory/EquippedList"]
+[node name="Helmet" type="PanelContainer" parent="UIRoot/OverworldInterface/CharacterMenu/InventoryUI/Inventory/EquippedList" unique_id=1720952183]
 layout_mode = 2
 size_flags_vertical = 3
 script = ExtResource("7_og1vs")
 
-[node name="Container" type="HBoxContainer" parent="UIRoot/OverworldInterface/CharacterMenu/InventoryUI/Inventory/EquippedList/Helmet"]
+[node name="Container" type="HBoxContainer" parent="UIRoot/OverworldInterface/CharacterMenu/InventoryUI/Inventory/EquippedList/Helmet" unique_id=444328574]
 layout_mode = 2
 
-[node name="Key" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/InventoryUI/Inventory/EquippedList/Helmet/Container"]
+[node name="Key" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/InventoryUI/Inventory/EquippedList/Helmet/Container" unique_id=1952255690]
 layout_mode = 2
 text = "Helmet: "
 
-[node name="Value" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/InventoryUI/Inventory/EquippedList/Helmet/Container"]
+[node name="Value" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/InventoryUI/Inventory/EquippedList/Helmet/Container" unique_id=1381388547]
 layout_mode = 2
 text = "<empty>"
 
-[node name="Chest" type="PanelContainer" parent="UIRoot/OverworldInterface/CharacterMenu/InventoryUI/Inventory/EquippedList"]
+[node name="Chest" type="PanelContainer" parent="UIRoot/OverworldInterface/CharacterMenu/InventoryUI/Inventory/EquippedList" unique_id=1670410809]
 layout_mode = 2
 size_flags_vertical = 3
 script = ExtResource("7_og1vs")
 
-[node name="Container" type="HBoxContainer" parent="UIRoot/OverworldInterface/CharacterMenu/InventoryUI/Inventory/EquippedList/Chest"]
+[node name="Container" type="HBoxContainer" parent="UIRoot/OverworldInterface/CharacterMenu/InventoryUI/Inventory/EquippedList/Chest" unique_id=713122925]
 layout_mode = 2
 
-[node name="Key" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/InventoryUI/Inventory/EquippedList/Chest/Container"]
+[node name="Key" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/InventoryUI/Inventory/EquippedList/Chest/Container" unique_id=376045520]
 layout_mode = 2
 text = "Chest: "
 
-[node name="Value" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/InventoryUI/Inventory/EquippedList/Chest/Container"]
+[node name="Value" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/InventoryUI/Inventory/EquippedList/Chest/Container" unique_id=1683480888]
 layout_mode = 2
 text = "<empty>"
 
-[node name="Gloves" type="PanelContainer" parent="UIRoot/OverworldInterface/CharacterMenu/InventoryUI/Inventory/EquippedList"]
+[node name="Gloves" type="PanelContainer" parent="UIRoot/OverworldInterface/CharacterMenu/InventoryUI/Inventory/EquippedList" unique_id=400105943]
 layout_mode = 2
 size_flags_vertical = 3
 script = ExtResource("7_og1vs")
 
-[node name="Container" type="HBoxContainer" parent="UIRoot/OverworldInterface/CharacterMenu/InventoryUI/Inventory/EquippedList/Gloves"]
+[node name="Container" type="HBoxContainer" parent="UIRoot/OverworldInterface/CharacterMenu/InventoryUI/Inventory/EquippedList/Gloves" unique_id=1196586459]
 layout_mode = 2
 
-[node name="Key" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/InventoryUI/Inventory/EquippedList/Gloves/Container"]
+[node name="Key" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/InventoryUI/Inventory/EquippedList/Gloves/Container" unique_id=120956231]
 layout_mode = 2
 text = "Gloves: "
 
-[node name="Value" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/InventoryUI/Inventory/EquippedList/Gloves/Container"]
+[node name="Value" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/InventoryUI/Inventory/EquippedList/Gloves/Container" unique_id=862203528]
 layout_mode = 2
 text = "<empty>"
 
-[node name="Boots" type="PanelContainer" parent="UIRoot/OverworldInterface/CharacterMenu/InventoryUI/Inventory/EquippedList"]
+[node name="Boots" type="PanelContainer" parent="UIRoot/OverworldInterface/CharacterMenu/InventoryUI/Inventory/EquippedList" unique_id=1545494822]
 layout_mode = 2
 size_flags_vertical = 3
 script = ExtResource("7_og1vs")
 
-[node name="Container" type="HBoxContainer" parent="UIRoot/OverworldInterface/CharacterMenu/InventoryUI/Inventory/EquippedList/Boots"]
+[node name="Container" type="HBoxContainer" parent="UIRoot/OverworldInterface/CharacterMenu/InventoryUI/Inventory/EquippedList/Boots" unique_id=2049012922]
 layout_mode = 2
 
-[node name="Key" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/InventoryUI/Inventory/EquippedList/Boots/Container"]
+[node name="Key" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/InventoryUI/Inventory/EquippedList/Boots/Container" unique_id=1621568439]
 layout_mode = 2
 text = "Boots: "
 
-[node name="Value" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/InventoryUI/Inventory/EquippedList/Boots/Container"]
+[node name="Value" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/InventoryUI/Inventory/EquippedList/Boots/Container" unique_id=1572442360]
 layout_mode = 2
 text = "<empty>"
 
-[node name="Ring" type="PanelContainer" parent="UIRoot/OverworldInterface/CharacterMenu/InventoryUI/Inventory/EquippedList"]
+[node name="Ring" type="PanelContainer" parent="UIRoot/OverworldInterface/CharacterMenu/InventoryUI/Inventory/EquippedList" unique_id=1658308793]
 layout_mode = 2
 size_flags_vertical = 3
 script = ExtResource("7_og1vs")
 
-[node name="Container" type="HBoxContainer" parent="UIRoot/OverworldInterface/CharacterMenu/InventoryUI/Inventory/EquippedList/Ring"]
+[node name="Container" type="HBoxContainer" parent="UIRoot/OverworldInterface/CharacterMenu/InventoryUI/Inventory/EquippedList/Ring" unique_id=1181254102]
 layout_mode = 2
 
-[node name="Key" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/InventoryUI/Inventory/EquippedList/Ring/Container"]
+[node name="Key" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/InventoryUI/Inventory/EquippedList/Ring/Container" unique_id=798353508]
 layout_mode = 2
 text = "Ring: "
 
-[node name="Value" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/InventoryUI/Inventory/EquippedList/Ring/Container"]
+[node name="Value" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/InventoryUI/Inventory/EquippedList/Ring/Container" unique_id=710101620]
 layout_mode = 2
 text = "<empty>"
 
-[node name="Amulet" type="PanelContainer" parent="UIRoot/OverworldInterface/CharacterMenu/InventoryUI/Inventory/EquippedList"]
+[node name="Amulet" type="PanelContainer" parent="UIRoot/OverworldInterface/CharacterMenu/InventoryUI/Inventory/EquippedList" unique_id=1999279846]
 layout_mode = 2
 size_flags_vertical = 3
 script = ExtResource("7_og1vs")
 
-[node name="Container" type="HBoxContainer" parent="UIRoot/OverworldInterface/CharacterMenu/InventoryUI/Inventory/EquippedList/Amulet"]
+[node name="Container" type="HBoxContainer" parent="UIRoot/OverworldInterface/CharacterMenu/InventoryUI/Inventory/EquippedList/Amulet" unique_id=1616598158]
 layout_mode = 2
 
-[node name="Key" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/InventoryUI/Inventory/EquippedList/Amulet/Container"]
+[node name="Key" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/InventoryUI/Inventory/EquippedList/Amulet/Container" unique_id=2136452508]
 layout_mode = 2
 text = "Amulet: "
 
-[node name="Value" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/InventoryUI/Inventory/EquippedList/Amulet/Container"]
+[node name="Value" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/InventoryUI/Inventory/EquippedList/Amulet/Container" unique_id=1090021343]
 layout_mode = 2
 text = "<empty>"
 
-[node name="Inventory" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/InventoryUI/Inventory"]
+[node name="Inventory" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/InventoryUI/Inventory" unique_id=1701044048]
 layout_mode = 2
 text = "Inventory"
 
-[node name="InventoryList" type="VBoxContainer" parent="UIRoot/OverworldInterface/CharacterMenu/InventoryUI/Inventory"]
+[node name="InventoryList" type="VBoxContainer" parent="UIRoot/OverworldInterface/CharacterMenu/InventoryUI/Inventory" unique_id=584566779]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 mouse_filter = 2
 
-[node name="ActionButton" type="Button" parent="UIRoot/OverworldInterface/CharacterMenu/InventoryUI/Inventory"]
+[node name="ActionButton" type="Button" parent="UIRoot/OverworldInterface/CharacterMenu/InventoryUI/Inventory" unique_id=1161560249]
 layout_mode = 2
 text = "Equip"
 
-[node name="UnequipButton" type="Button" parent="UIRoot/OverworldInterface/CharacterMenu/InventoryUI/Inventory"]
+[node name="UnequipButton" type="Button" parent="UIRoot/OverworldInterface/CharacterMenu/InventoryUI/Inventory" unique_id=188427850]
 layout_mode = 2
 text = "Unequip"
 
-[node name="TransferButton" type="Button" parent="UIRoot/OverworldInterface/CharacterMenu/InventoryUI/Inventory"]
+[node name="TransferButton" type="Button" parent="UIRoot/OverworldInterface/CharacterMenu/InventoryUI/Inventory" unique_id=387404502]
 layout_mode = 2
 text = "Transfer"
 
-[node name="ItemInfoPanel" parent="UIRoot/OverworldInterface/CharacterMenu/InventoryUI" instance=ExtResource("8_2wyq8")]
+[node name="ItemInfoPanel" parent="UIRoot/OverworldInterface/CharacterMenu/InventoryUI" unique_id=1718494719 instance=ExtResource("8_2wyq8")]
 unique_name_in_owner = true
 layout_mode = 0
 anchors_preset = 0
@@ -337,7 +337,7 @@ offset_bottom = 384.0
 grow_horizontal = 1
 grow_vertical = 1
 
-[node name="StatsUI" type="PanelContainer" parent="UIRoot/OverworldInterface/CharacterMenu"]
+[node name="StatsUI" type="PanelContainer" parent="UIRoot/OverworldInterface/CharacterMenu" unique_id=1434579513]
 unique_name_in_owner = true
 visible = false
 layout_mode = 1
@@ -347,150 +347,150 @@ offset_right = 320.0
 grow_vertical = 2
 script = ExtResource("9_vxglm")
 
-[node name="Stats" type="VBoxContainer" parent="UIRoot/OverworldInterface/CharacterMenu/StatsUI"]
+[node name="Stats" type="VBoxContainer" parent="UIRoot/OverworldInterface/CharacterMenu/StatsUI" unique_id=1640933909]
 layout_mode = 2
 
-[node name="Exp" type="HBoxContainer" parent="UIRoot/OverworldInterface/CharacterMenu/StatsUI/Stats"]
+[node name="Exp" type="HBoxContainer" parent="UIRoot/OverworldInterface/CharacterMenu/StatsUI/Stats" unique_id=2077320278]
 layout_mode = 2
 
-[node name="ExpKey" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/StatsUI/Stats/Exp"]
+[node name="ExpKey" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/StatsUI/Stats/Exp" unique_id=176797052]
 layout_mode = 2
 text = "Experience: "
 
-[node name="ExpValue" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/StatsUI/Stats/Exp"]
+[node name="ExpValue" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/StatsUI/Stats/Exp" unique_id=430916436]
 layout_mode = 2
 
-[node name="HP" type="HBoxContainer" parent="UIRoot/OverworldInterface/CharacterMenu/StatsUI/Stats"]
+[node name="HP" type="HBoxContainer" parent="UIRoot/OverworldInterface/CharacterMenu/StatsUI/Stats" unique_id=71569962]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="HpKey" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/StatsUI/Stats/HP"]
+[node name="HpKey" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/StatsUI/Stats/HP" unique_id=643037305]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "HP:"
 
-[node name="HpValue" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/StatsUI/Stats/HP"]
+[node name="HpValue" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/StatsUI/Stats/HP" unique_id=891840210]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="MP" type="HBoxContainer" parent="UIRoot/OverworldInterface/CharacterMenu/StatsUI/Stats"]
+[node name="MP" type="HBoxContainer" parent="UIRoot/OverworldInterface/CharacterMenu/StatsUI/Stats" unique_id=6958834]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="MpKey" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/StatsUI/Stats/MP"]
+[node name="MpKey" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/StatsUI/Stats/MP" unique_id=930456522]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "MP:"
 
-[node name="MpValue" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/StatsUI/Stats/MP"]
+[node name="MpValue" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/StatsUI/Stats/MP" unique_id=1341513961]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="SP" type="HBoxContainer" parent="UIRoot/OverworldInterface/CharacterMenu/StatsUI/Stats"]
+[node name="SP" type="HBoxContainer" parent="UIRoot/OverworldInterface/CharacterMenu/StatsUI/Stats" unique_id=1838286569]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="SpKey" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/StatsUI/Stats/SP"]
+[node name="SpKey" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/StatsUI/Stats/SP" unique_id=706807435]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "SP:"
 
-[node name="SpValue" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/StatsUI/Stats/SP"]
+[node name="SpValue" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/StatsUI/Stats/SP" unique_id=380641044]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Attack" type="HBoxContainer" parent="UIRoot/OverworldInterface/CharacterMenu/StatsUI/Stats"]
+[node name="Attack" type="HBoxContainer" parent="UIRoot/OverworldInterface/CharacterMenu/StatsUI/Stats" unique_id=1420048000]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="AttackKey" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/StatsUI/Stats/Attack"]
+[node name="AttackKey" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/StatsUI/Stats/Attack" unique_id=163229841]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Attack:"
 
-[node name="AttackValue" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/StatsUI/Stats/Attack"]
+[node name="AttackValue" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/StatsUI/Stats/Attack" unique_id=1549883043]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="MagicPower" type="HBoxContainer" parent="UIRoot/OverworldInterface/CharacterMenu/StatsUI/Stats"]
+[node name="MagicPower" type="HBoxContainer" parent="UIRoot/OverworldInterface/CharacterMenu/StatsUI/Stats" unique_id=541527229]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="MagicPowerKey" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/StatsUI/Stats/MagicPower"]
+[node name="MagicPowerKey" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/StatsUI/Stats/MagicPower" unique_id=2091272845]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Magic Power:"
 
-[node name="MagicPowerValue" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/StatsUI/Stats/MagicPower"]
+[node name="MagicPowerValue" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/StatsUI/Stats/MagicPower" unique_id=1871784889]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="DivinePower" type="HBoxContainer" parent="UIRoot/OverworldInterface/CharacterMenu/StatsUI/Stats"]
+[node name="DivinePower" type="HBoxContainer" parent="UIRoot/OverworldInterface/CharacterMenu/StatsUI/Stats" unique_id=960077509]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="DivinePowerKey" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/StatsUI/Stats/DivinePower"]
+[node name="DivinePowerKey" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/StatsUI/Stats/DivinePower" unique_id=1068638276]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Divine Power:"
 
-[node name="DivinePowerValue" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/StatsUI/Stats/DivinePower"]
+[node name="DivinePowerValue" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/StatsUI/Stats/DivinePower" unique_id=859259689]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Speed" type="HBoxContainer" parent="UIRoot/OverworldInterface/CharacterMenu/StatsUI/Stats"]
+[node name="Speed" type="HBoxContainer" parent="UIRoot/OverworldInterface/CharacterMenu/StatsUI/Stats" unique_id=136441107]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="SpeedKey" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/StatsUI/Stats/Speed"]
+[node name="SpeedKey" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/StatsUI/Stats/Speed" unique_id=1765327947]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Speed:"
 
-[node name="SpeedValue" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/StatsUI/Stats/Speed"]
+[node name="SpeedValue" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/StatsUI/Stats/Speed" unique_id=185467283]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Defense" type="HBoxContainer" parent="UIRoot/OverworldInterface/CharacterMenu/StatsUI/Stats"]
+[node name="Defense" type="HBoxContainer" parent="UIRoot/OverworldInterface/CharacterMenu/StatsUI/Stats" unique_id=1740957332]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="DefenseKey" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/StatsUI/Stats/Defense"]
+[node name="DefenseKey" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/StatsUI/Stats/Defense" unique_id=203310629]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Defense:"
 
-[node name="DefenseValue" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/StatsUI/Stats/Defense"]
+[node name="DefenseValue" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/StatsUI/Stats/Defense" unique_id=192828377]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="MagicDefense" type="HBoxContainer" parent="UIRoot/OverworldInterface/CharacterMenu/StatsUI/Stats"]
+[node name="MagicDefense" type="HBoxContainer" parent="UIRoot/OverworldInterface/CharacterMenu/StatsUI/Stats" unique_id=709279102]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="MagicDefenseKey" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/StatsUI/Stats/MagicDefense"]
+[node name="MagicDefenseKey" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/StatsUI/Stats/MagicDefense" unique_id=160303540]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Magic Defense:"
 
-[node name="MagicDefenseValue" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/StatsUI/Stats/MagicDefense"]
+[node name="MagicDefenseValue" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/StatsUI/Stats/MagicDefense" unique_id=2067379361]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Resistance" type="HBoxContainer" parent="UIRoot/OverworldInterface/CharacterMenu/StatsUI/Stats"]
+[node name="Resistance" type="HBoxContainer" parent="UIRoot/OverworldInterface/CharacterMenu/StatsUI/Stats" unique_id=1225313822]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="ResistanceKey" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/StatsUI/Stats/Resistance"]
+[node name="ResistanceKey" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/StatsUI/Stats/Resistance" unique_id=416890663]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Resistance:"
 
-[node name="ResistanceValue" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/StatsUI/Stats/Resistance"]
+[node name="ResistanceValue" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/StatsUI/Stats/Resistance" unique_id=619541571]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="EffectsUI" type="PanelContainer" parent="UIRoot/OverworldInterface/CharacterMenu"]
+[node name="EffectsUI" type="PanelContainer" parent="UIRoot/OverworldInterface/CharacterMenu" unique_id=1787143395]
 unique_name_in_owner = true
 visible = false
 layout_mode = 1
@@ -501,10 +501,10 @@ offset_right = 64.0
 grow_vertical = 2
 script = ExtResource("10_2f3dj")
 
-[node name="Effects" type="VBoxContainer" parent="UIRoot/OverworldInterface/CharacterMenu/EffectsUI"]
+[node name="Effects" type="VBoxContainer" parent="UIRoot/OverworldInterface/CharacterMenu/EffectsUI" unique_id=213922769]
 layout_mode = 2
 
-[node name="SkillsUI" type="PanelContainer" parent="UIRoot/OverworldInterface/CharacterMenu"]
+[node name="SkillsUI" type="PanelContainer" parent="UIRoot/OverworldInterface/CharacterMenu" unique_id=1605601520]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 9
@@ -513,16 +513,16 @@ offset_right = 320.0
 grow_vertical = 2
 script = ExtResource("11_yq6so")
 
-[node name="Skills" type="VBoxContainer" parent="UIRoot/OverworldInterface/CharacterMenu/SkillsUI"]
+[node name="Skills" type="VBoxContainer" parent="UIRoot/OverworldInterface/CharacterMenu/SkillsUI" unique_id=1896463333]
 layout_mode = 2
 
-[node name="UseSkill" type="Button" parent="UIRoot/OverworldInterface/CharacterMenu/SkillsUI"]
+[node name="UseSkill" type="Button" parent="UIRoot/OverworldInterface/CharacterMenu/SkillsUI" unique_id=669171507]
 z_index = 6
 layout_mode = 2
 size_flags_vertical = 8
 text = "Use"
 
-[node name="LevelUpUI" type="Panel" parent="UIRoot/OverworldInterface/CharacterMenu"]
+[node name="LevelUpUI" type="Panel" parent="UIRoot/OverworldInterface/CharacterMenu" unique_id=424778743]
 unique_name_in_owner = true
 visible = false
 layout_mode = 0
@@ -530,167 +530,167 @@ offset_right = 304.0
 offset_bottom = 264.0
 script = ExtResource("12_fv21b")
 
-[node name="Attributes" type="GridContainer" parent="UIRoot/OverworldInterface/CharacterMenu/LevelUpUI"]
+[node name="Attributes" type="GridContainer" parent="UIRoot/OverworldInterface/CharacterMenu/LevelUpUI" unique_id=539622730]
 layout_mode = 0
 offset_left = 8.0
 offset_right = 143.0
 offset_bottom = 241.0
 columns = 2
 
-[node name="Labels" type="VBoxContainer" parent="UIRoot/OverworldInterface/CharacterMenu/LevelUpUI/Attributes"]
+[node name="Labels" type="VBoxContainer" parent="UIRoot/OverworldInterface/CharacterMenu/LevelUpUI/Attributes" unique_id=2052108934]
 layout_mode = 2
 
-[node name="STR" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/LevelUpUI/Attributes/Labels"]
+[node name="STR" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/LevelUpUI/Attributes/Labels" unique_id=1270645912]
 layout_mode = 2
 size_flags_vertical = 6
 text = "Strength"
 
-[node name="IQ" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/LevelUpUI/Attributes/Labels"]
+[node name="IQ" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/LevelUpUI/Attributes/Labels" unique_id=1687099890]
 layout_mode = 2
 size_flags_vertical = 6
 text = "Intelligence"
 
-[node name="PIE" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/LevelUpUI/Attributes/Labels"]
+[node name="PIE" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/LevelUpUI/Attributes/Labels" unique_id=1802794256]
 layout_mode = 2
 size_flags_vertical = 6
 text = "Piety"
 
-[node name="VIT" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/LevelUpUI/Attributes/Labels"]
+[node name="VIT" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/LevelUpUI/Attributes/Labels" unique_id=565140634]
 layout_mode = 2
 size_flags_vertical = 6
 text = "Vitality"
 
-[node name="DEX" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/LevelUpUI/Attributes/Labels"]
+[node name="DEX" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/LevelUpUI/Attributes/Labels" unique_id=1969110699]
 layout_mode = 2
 size_flags_vertical = 6
 text = "Dexterity"
 
-[node name="SPD" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/LevelUpUI/Attributes/Labels"]
+[node name="SPD" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/LevelUpUI/Attributes/Labels" unique_id=822774654]
 layout_mode = 2
 size_flags_vertical = 6
 text = "Speed"
 
-[node name="LUK" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/LevelUpUI/Attributes/Labels"]
+[node name="LUK" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/LevelUpUI/Attributes/Labels" unique_id=1182777097]
 layout_mode = 2
 size_flags_vertical = 6
 text = "Luck"
 
-[node name="Values" type="VBoxContainer" parent="UIRoot/OverworldInterface/CharacterMenu/LevelUpUI/Attributes"]
+[node name="Values" type="VBoxContainer" parent="UIRoot/OverworldInterface/CharacterMenu/LevelUpUI/Attributes" unique_id=1133508812]
 layout_mode = 2
 
-[node name="STR" type="HBoxContainer" parent="UIRoot/OverworldInterface/CharacterMenu/LevelUpUI/Attributes/Values"]
-layout_mode = 2
-size_flags_vertical = 3
-
-[node name="Dec" type="Button" parent="UIRoot/OverworldInterface/CharacterMenu/LevelUpUI/Attributes/Values/STR"]
-layout_mode = 2
-text = "-"
-
-[node name="Value" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/LevelUpUI/Attributes/Values/STR"]
-layout_mode = 2
-
-[node name="Inc" type="Button" parent="UIRoot/OverworldInterface/CharacterMenu/LevelUpUI/Attributes/Values/STR"]
-layout_mode = 2
-text = "+"
-
-[node name="IQ" type="HBoxContainer" parent="UIRoot/OverworldInterface/CharacterMenu/LevelUpUI/Attributes/Values"]
+[node name="STR" type="HBoxContainer" parent="UIRoot/OverworldInterface/CharacterMenu/LevelUpUI/Attributes/Values" unique_id=1669351449]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="Dec" type="Button" parent="UIRoot/OverworldInterface/CharacterMenu/LevelUpUI/Attributes/Values/IQ"]
+[node name="Dec" type="Button" parent="UIRoot/OverworldInterface/CharacterMenu/LevelUpUI/Attributes/Values/STR" unique_id=868973494]
 layout_mode = 2
 text = "-"
 
-[node name="Value" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/LevelUpUI/Attributes/Values/IQ"]
+[node name="Value" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/LevelUpUI/Attributes/Values/STR" unique_id=934737729]
 layout_mode = 2
 
-[node name="Inc" type="Button" parent="UIRoot/OverworldInterface/CharacterMenu/LevelUpUI/Attributes/Values/IQ"]
+[node name="Inc" type="Button" parent="UIRoot/OverworldInterface/CharacterMenu/LevelUpUI/Attributes/Values/STR" unique_id=1836805304]
 layout_mode = 2
 text = "+"
 
-[node name="PIE" type="HBoxContainer" parent="UIRoot/OverworldInterface/CharacterMenu/LevelUpUI/Attributes/Values"]
+[node name="IQ" type="HBoxContainer" parent="UIRoot/OverworldInterface/CharacterMenu/LevelUpUI/Attributes/Values" unique_id=929470175]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="Dec" type="Button" parent="UIRoot/OverworldInterface/CharacterMenu/LevelUpUI/Attributes/Values/PIE"]
+[node name="Dec" type="Button" parent="UIRoot/OverworldInterface/CharacterMenu/LevelUpUI/Attributes/Values/IQ" unique_id=2070322737]
 layout_mode = 2
 text = "-"
 
-[node name="Value" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/LevelUpUI/Attributes/Values/PIE"]
+[node name="Value" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/LevelUpUI/Attributes/Values/IQ" unique_id=1026987341]
 layout_mode = 2
 
-[node name="Inc" type="Button" parent="UIRoot/OverworldInterface/CharacterMenu/LevelUpUI/Attributes/Values/PIE"]
+[node name="Inc" type="Button" parent="UIRoot/OverworldInterface/CharacterMenu/LevelUpUI/Attributes/Values/IQ" unique_id=2048586572]
 layout_mode = 2
 text = "+"
 
-[node name="VIT" type="HBoxContainer" parent="UIRoot/OverworldInterface/CharacterMenu/LevelUpUI/Attributes/Values"]
+[node name="PIE" type="HBoxContainer" parent="UIRoot/OverworldInterface/CharacterMenu/LevelUpUI/Attributes/Values" unique_id=1848296517]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="Dec" type="Button" parent="UIRoot/OverworldInterface/CharacterMenu/LevelUpUI/Attributes/Values/VIT"]
+[node name="Dec" type="Button" parent="UIRoot/OverworldInterface/CharacterMenu/LevelUpUI/Attributes/Values/PIE" unique_id=469845949]
 layout_mode = 2
 text = "-"
 
-[node name="Value" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/LevelUpUI/Attributes/Values/VIT"]
+[node name="Value" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/LevelUpUI/Attributes/Values/PIE" unique_id=2021312319]
 layout_mode = 2
 
-[node name="Inc" type="Button" parent="UIRoot/OverworldInterface/CharacterMenu/LevelUpUI/Attributes/Values/VIT"]
+[node name="Inc" type="Button" parent="UIRoot/OverworldInterface/CharacterMenu/LevelUpUI/Attributes/Values/PIE" unique_id=572401749]
 layout_mode = 2
 text = "+"
 
-[node name="DEX" type="HBoxContainer" parent="UIRoot/OverworldInterface/CharacterMenu/LevelUpUI/Attributes/Values"]
+[node name="VIT" type="HBoxContainer" parent="UIRoot/OverworldInterface/CharacterMenu/LevelUpUI/Attributes/Values" unique_id=104323643]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="Dec" type="Button" parent="UIRoot/OverworldInterface/CharacterMenu/LevelUpUI/Attributes/Values/DEX"]
+[node name="Dec" type="Button" parent="UIRoot/OverworldInterface/CharacterMenu/LevelUpUI/Attributes/Values/VIT" unique_id=1300650495]
 layout_mode = 2
 text = "-"
 
-[node name="Value" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/LevelUpUI/Attributes/Values/DEX"]
+[node name="Value" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/LevelUpUI/Attributes/Values/VIT" unique_id=87741528]
 layout_mode = 2
 
-[node name="Inc" type="Button" parent="UIRoot/OverworldInterface/CharacterMenu/LevelUpUI/Attributes/Values/DEX"]
+[node name="Inc" type="Button" parent="UIRoot/OverworldInterface/CharacterMenu/LevelUpUI/Attributes/Values/VIT" unique_id=721619410]
 layout_mode = 2
 text = "+"
 
-[node name="SPD" type="HBoxContainer" parent="UIRoot/OverworldInterface/CharacterMenu/LevelUpUI/Attributes/Values"]
+[node name="DEX" type="HBoxContainer" parent="UIRoot/OverworldInterface/CharacterMenu/LevelUpUI/Attributes/Values" unique_id=1501904258]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="Dec" type="Button" parent="UIRoot/OverworldInterface/CharacterMenu/LevelUpUI/Attributes/Values/SPD"]
+[node name="Dec" type="Button" parent="UIRoot/OverworldInterface/CharacterMenu/LevelUpUI/Attributes/Values/DEX" unique_id=699753962]
 layout_mode = 2
 text = "-"
 
-[node name="Value" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/LevelUpUI/Attributes/Values/SPD"]
+[node name="Value" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/LevelUpUI/Attributes/Values/DEX" unique_id=1761352080]
 layout_mode = 2
 
-[node name="Inc" type="Button" parent="UIRoot/OverworldInterface/CharacterMenu/LevelUpUI/Attributes/Values/SPD"]
+[node name="Inc" type="Button" parent="UIRoot/OverworldInterface/CharacterMenu/LevelUpUI/Attributes/Values/DEX" unique_id=1709299594]
 layout_mode = 2
 text = "+"
 
-[node name="LUK" type="HBoxContainer" parent="UIRoot/OverworldInterface/CharacterMenu/LevelUpUI/Attributes/Values"]
+[node name="SPD" type="HBoxContainer" parent="UIRoot/OverworldInterface/CharacterMenu/LevelUpUI/Attributes/Values" unique_id=372615561]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="Dec" type="Button" parent="UIRoot/OverworldInterface/CharacterMenu/LevelUpUI/Attributes/Values/LUK"]
+[node name="Dec" type="Button" parent="UIRoot/OverworldInterface/CharacterMenu/LevelUpUI/Attributes/Values/SPD" unique_id=1487509042]
 layout_mode = 2
 text = "-"
 
-[node name="Value" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/LevelUpUI/Attributes/Values/LUK"]
+[node name="Value" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/LevelUpUI/Attributes/Values/SPD" unique_id=2061297228]
 layout_mode = 2
 
-[node name="Inc" type="Button" parent="UIRoot/OverworldInterface/CharacterMenu/LevelUpUI/Attributes/Values/LUK"]
+[node name="Inc" type="Button" parent="UIRoot/OverworldInterface/CharacterMenu/LevelUpUI/Attributes/Values/SPD" unique_id=1170969588]
 layout_mode = 2
 text = "+"
 
-[node name="Points" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/LevelUpUI"]
+[node name="LUK" type="HBoxContainer" parent="UIRoot/OverworldInterface/CharacterMenu/LevelUpUI/Attributes/Values" unique_id=172979397]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Dec" type="Button" parent="UIRoot/OverworldInterface/CharacterMenu/LevelUpUI/Attributes/Values/LUK" unique_id=1985554435]
+layout_mode = 2
+text = "-"
+
+[node name="Value" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/LevelUpUI/Attributes/Values/LUK" unique_id=2043130749]
+layout_mode = 2
+
+[node name="Inc" type="Button" parent="UIRoot/OverworldInterface/CharacterMenu/LevelUpUI/Attributes/Values/LUK" unique_id=1058681155]
+layout_mode = 2
+text = "+"
+
+[node name="Points" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/LevelUpUI" unique_id=1381715502]
 layout_mode = 0
 offset_left = 160.0
 offset_top = 216.0
 offset_right = 295.0
 offset_bottom = 239.0
 
-[node name="Chest" type="Control" parent="UIRoot/OverworldInterface"]
+[node name="Chest" type="Control" parent="UIRoot/OverworldInterface" unique_id=862795752]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 13
@@ -706,7 +706,7 @@ grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("14_yq6so")
 
-[node name="ChestOpenerChoice" type="Panel" parent="UIRoot/OverworldInterface/Chest"]
+[node name="ChestOpenerChoice" type="Panel" parent="UIRoot/OverworldInterface/Chest" unique_id=1049241454]
 unique_name_in_owner = true
 visible = false
 layout_mode = 1
@@ -717,12 +717,12 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("14_vxglm")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="UIRoot/OverworldInterface/Chest/ChestOpenerChoice"]
+[node name="VBoxContainer" type="VBoxContainer" parent="UIRoot/OverworldInterface/Chest/ChestOpenerChoice" unique_id=1329113947]
 layout_mode = 0
 offset_right = 40.0
 offset_bottom = 40.0
 
-[node name="ChestContent" type="Panel" parent="UIRoot/OverworldInterface/Chest"]
+[node name="ChestContent" type="Panel" parent="UIRoot/OverworldInterface/Chest" unique_id=1537809091]
 unique_name_in_owner = true
 visible = false
 layout_mode = 1
@@ -734,14 +734,14 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("15_2f3dj")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="UIRoot/OverworldInterface/Chest/ChestContent"]
+[node name="VBoxContainer" type="VBoxContainer" parent="UIRoot/OverworldInterface/Chest/ChestContent" unique_id=1883160392]
 layout_mode = 1
 anchors_preset = 9
 anchor_bottom = 1.0
 offset_right = 448.0
 grow_vertical = 2
 
-[node name="Label" type="Label" parent="UIRoot/OverworldInterface/Chest/ChestContent"]
+[node name="Label" type="Label" parent="UIRoot/OverworldInterface/Chest/ChestContent" unique_id=1749362050]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -755,7 +755,7 @@ offset_bottom = -185.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Close" type="Button" parent="UIRoot/OverworldInterface/Chest/ChestContent"]
+[node name="Close" type="Button" parent="UIRoot/OverworldInterface/Chest/ChestContent" unique_id=711710380]
 layout_mode = 1
 anchors_preset = 1
 anchor_left = 1.0
@@ -765,21 +765,21 @@ offset_bottom = 31.0
 grow_horizontal = 0
 text = "X"
 
-[node name="ItemInfoPanel" parent="UIRoot/OverworldInterface/Chest/ChestContent" instance=ExtResource("8_2wyq8")]
+[node name="ItemInfoPanel" parent="UIRoot/OverworldInterface/Chest/ChestContent" unique_id=75556148 instance=ExtResource("8_2wyq8")]
 layout_mode = 1
 offset_left = -536.0
 offset_top = -144.0
 offset_right = -216.0
 offset_bottom = 112.0
 
-[node name="MembersSelect" type="HBoxContainer" parent="UIRoot/OverworldInterface/Chest/ChestContent"]
+[node name="MembersSelect" type="HBoxContainer" parent="UIRoot/OverworldInterface/Chest/ChestContent" unique_id=2004817056]
 layout_mode = 0
 offset_left = 576.0
 offset_top = 320.0
 offset_right = 1152.0
 offset_bottom = 416.0
 
-[node name="BattleInterface" type="Control" parent="UIRoot"]
+[node name="BattleInterface" type="Control" parent="UIRoot" unique_id=1391678494]
 z_index = 5
 layout_mode = 3
 anchors_preset = 15
@@ -790,14 +790,14 @@ grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("6_jbj1t")
 
-[node name="BattleControls" type="Control" parent="UIRoot/BattleInterface"]
+[node name="BattleControls" type="Control" parent="UIRoot/BattleInterface" unique_id=698027517]
 z_index = 5
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
 script = ExtResource("18_2f3dj")
 
-[node name="Buttons" type="VBoxContainer" parent="UIRoot/BattleInterface/BattleControls"]
+[node name="Buttons" type="VBoxContainer" parent="UIRoot/BattleInterface/BattleControls" unique_id=1130610488]
 z_index = 5
 layout_mode = 0
 offset_left = 151.0
@@ -805,7 +805,7 @@ offset_top = 618.0
 offset_right = 216.0
 offset_bottom = 789.0
 
-[node name="AttackButton" type="Button" parent="UIRoot/BattleInterface/BattleControls/Buttons"]
+[node name="AttackButton" type="Button" parent="UIRoot/BattleInterface/BattleControls/Buttons" unique_id=1008824424]
 unique_name_in_owner = true
 layout_mode = 2
 focus_mode = 0
@@ -813,33 +813,33 @@ theme_override_styles/focus = SubResource("StyleBoxFlat_jkv2x")
 action_mode = 0
 text = "Attack"
 
-[node name="DefendButton" type="Button" parent="UIRoot/BattleInterface/BattleControls/Buttons"]
+[node name="DefendButton" type="Button" parent="UIRoot/BattleInterface/BattleControls/Buttons" unique_id=214008683]
 unique_name_in_owner = true
 layout_mode = 2
 focus_mode = 0
 theme_override_styles/hover = SubResource("StyleBoxFlat_jbj1t")
 text = "Defend"
 
-[node name="SkillButton" type="Button" parent="UIRoot/BattleInterface/BattleControls/Buttons"]
+[node name="SkillButton" type="Button" parent="UIRoot/BattleInterface/BattleControls/Buttons" unique_id=1652761218]
 unique_name_in_owner = true
 layout_mode = 2
 focus_mode = 0
 text = "Skill"
 
-[node name="ItemButton" type="Button" parent="UIRoot/BattleInterface/BattleControls/Buttons"]
+[node name="ItemButton" type="Button" parent="UIRoot/BattleInterface/BattleControls/Buttons" unique_id=2105048270]
 unique_name_in_owner = true
 layout_mode = 2
 focus_mode = 0
 theme_override_styles/hover = SubResource("StyleBoxFlat_muem4")
 text = "Item"
 
-[node name="FleeButton" type="Button" parent="UIRoot/BattleInterface/BattleControls/Buttons"]
+[node name="FleeButton" type="Button" parent="UIRoot/BattleInterface/BattleControls/Buttons" unique_id=913773815]
 unique_name_in_owner = true
 layout_mode = 2
 focus_mode = 0
 text = "Flee"
 
-[node name="Skill" type="Control" parent="UIRoot/BattleInterface/BattleControls"]
+[node name="Skill" type="Control" parent="UIRoot/BattleInterface/BattleControls" unique_id=1334706348]
 layout_mode = 1
 anchor_left = 0.262
 anchor_top = 0.354
@@ -850,7 +850,7 @@ offset_top = 269.168
 offset_right = 308.55994
 offset_bottom = 268.904
 
-[node name="ScrollContainer" type="ScrollContainer" parent="UIRoot/BattleInterface/BattleControls/Skill"]
+[node name="ScrollContainer" type="ScrollContainer" parent="UIRoot/BattleInterface/BattleControls/Skill" unique_id=330798066]
 clip_contents = false
 layout_mode = 1
 anchors_preset = 15
@@ -860,13 +860,13 @@ grow_horizontal = 2
 grow_vertical = 2
 horizontal_scroll_mode = 0
 
-[node name="SkillListContainer" type="VBoxContainer" parent="UIRoot/BattleInterface/BattleControls/Skill/ScrollContainer"]
+[node name="SkillListContainer" type="VBoxContainer" parent="UIRoot/BattleInterface/BattleControls/Skill/ScrollContainer" unique_id=596797618]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 mouse_filter = 2
 
-[node name="SkillInfoPanel" type="VBoxContainer" parent="UIRoot/BattleInterface/BattleControls/Skill"]
+[node name="SkillInfoPanel" type="VBoxContainer" parent="UIRoot/BattleInterface/BattleControls/Skill" unique_id=1013026894]
 visible = false
 layout_mode = 0
 anchor_left = -1.2
@@ -880,17 +880,17 @@ offset_bottom = -132.05
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="SkillName" type="Label" parent="UIRoot/BattleInterface/BattleControls/Skill/SkillInfoPanel"]
+[node name="SkillName" type="Label" parent="UIRoot/BattleInterface/BattleControls/Skill/SkillInfoPanel" unique_id=2055428538]
 layout_mode = 2
 mouse_filter = 0
 
-[node name="SkillCost" type="Label" parent="UIRoot/BattleInterface/BattleControls/Skill/SkillInfoPanel"]
+[node name="SkillCost" type="Label" parent="UIRoot/BattleInterface/BattleControls/Skill/SkillInfoPanel" unique_id=649072015]
 layout_mode = 2
 
-[node name="SkillDescription" type="Label" parent="UIRoot/BattleInterface/BattleControls/Skill/SkillInfoPanel"]
+[node name="SkillDescription" type="Label" parent="UIRoot/BattleInterface/BattleControls/Skill/SkillInfoPanel" unique_id=2060984436]
 layout_mode = 2
 
-[node name="Item" type="Control" parent="UIRoot/BattleInterface/BattleControls"]
+[node name="Item" type="Control" parent="UIRoot/BattleInterface/BattleControls" unique_id=354167535]
 visible = false
 layout_mode = 1
 anchor_left = 0.231
@@ -902,7 +902,7 @@ offset_top = 308.75198
 offset_right = 267.96
 offset_bottom = 311.56
 
-[node name="ScrollContainer" type="ScrollContainer" parent="UIRoot/BattleInterface/BattleControls/Item"]
+[node name="ScrollContainer" type="ScrollContainer" parent="UIRoot/BattleInterface/BattleControls/Item" unique_id=256277694]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = -0.858
@@ -915,10 +915,10 @@ offset_right = 1.04
 offset_bottom = -8.07001
 horizontal_scroll_mode = 0
 
-[node name="ItemListContainer" type="VBoxContainer" parent="UIRoot/BattleInterface/BattleControls/Item/ScrollContainer"]
+[node name="ItemListContainer" type="VBoxContainer" parent="UIRoot/BattleInterface/BattleControls/Item/ScrollContainer" unique_id=928384609]
 layout_mode = 2
 
-[node name="ItemInfoPanel" type="VBoxContainer" parent="UIRoot/BattleInterface/BattleControls/Item"]
+[node name="ItemInfoPanel" type="VBoxContainer" parent="UIRoot/BattleInterface/BattleControls/Item" unique_id=1694867526]
 visible = false
 layout_mode = 1
 anchors_preset = -1
@@ -933,20 +933,20 @@ offset_bottom = -140.05
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="ItemName" type="Label" parent="UIRoot/BattleInterface/BattleControls/Item/ItemInfoPanel"]
+[node name="ItemName" type="Label" parent="UIRoot/BattleInterface/BattleControls/Item/ItemInfoPanel" unique_id=2057261307]
 layout_mode = 2
 mouse_filter = 0
 
-[node name="ItemDescription" type="Label" parent="UIRoot/BattleInterface/BattleControls/Item/ItemInfoPanel"]
+[node name="ItemDescription" type="Label" parent="UIRoot/BattleInterface/BattleControls/Item/ItemInfoPanel" unique_id=1525489804]
 layout_mode = 2
 
-[node name="VBoxContainer2" type="VBoxContainer" parent="UIRoot/BattleInterface/BattleControls"]
+[node name="VBoxContainer2" type="VBoxContainer" parent="UIRoot/BattleInterface/BattleControls" unique_id=2021014620]
 layout_mode = 0
 offset_top = -424.0
 offset_right = 40.0
 offset_bottom = -384.0
 
-[node name="EventInterface" type="Control" parent="UIRoot"]
+[node name="EventInterface" type="Control" parent="UIRoot" unique_id=1041232143]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -955,7 +955,7 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("7_muem4")
 
-[node name="ConversationInterface" type="Control" parent="UIRoot/EventInterface"]
+[node name="ConversationInterface" type="Control" parent="UIRoot/EventInterface" unique_id=1689052262]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 15
@@ -966,7 +966,7 @@ grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("5_tipki")
 
-[node name="TextboxUI" type="Control" parent="UIRoot/EventInterface/ConversationInterface"]
+[node name="TextboxUI" type="Control" parent="UIRoot/EventInterface/ConversationInterface" unique_id=2116743433]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -976,7 +976,7 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("5_tbgi4")
 
-[node name="Panel" type="Panel" parent="UIRoot/EventInterface/ConversationInterface/TextboxUI"]
+[node name="Panel" type="Panel" parent="UIRoot/EventInterface/ConversationInterface/TextboxUI" unique_id=424184552]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -985,7 +985,7 @@ offset_bottom = 4.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="SpeakerLabel" type="Label" parent="UIRoot/EventInterface/ConversationInterface/TextboxUI/Panel"]
+[node name="SpeakerLabel" type="Label" parent="UIRoot/EventInterface/ConversationInterface/TextboxUI/Panel" unique_id=2122333709]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.325
@@ -997,7 +997,7 @@ offset_right = 108.8
 offset_bottom = 7.56
 theme_override_font_sizes/font_size = 20
 
-[node name="TextLabel" type="Label" parent="UIRoot/EventInterface/ConversationInterface/TextboxUI/Panel"]
+[node name="TextLabel" type="Label" parent="UIRoot/EventInterface/ConversationInterface/TextboxUI/Panel" unique_id=1994038287]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.32
@@ -1008,7 +1008,7 @@ offset_left = -6.10352e-05
 offset_top = 0.255981
 theme_override_font_sizes/font_size = 20
 
-[node name="ChoiceInterface" type="Control" parent="UIRoot/EventInterface"]
+[node name="ChoiceInterface" type="Control" parent="UIRoot/EventInterface" unique_id=1839792374]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 15
@@ -1019,7 +1019,7 @@ grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("11_eb6dy")
 
-[node name="PartyInterface" type="Control" parent="UIRoot"]
+[node name="PartyInterface" type="Control" parent="UIRoot" unique_id=1964900156]
 layout_mode = 3
 anchors_preset = 12
 anchor_top = 1.0
@@ -1029,7 +1029,7 @@ grow_horizontal = 2
 grow_vertical = 0
 script = ExtResource("11_dp3eg")
 
-[node name="PartyPanel" parent="UIRoot/PartyInterface" instance=ExtResource("5_85g3d")]
+[node name="PartyPanel" parent="UIRoot/PartyInterface" unique_id=1945293516 instance=ExtResource("5_85g3d")]
 layout_mode = 1
 anchors_preset = 10
 anchor_top = 0.0
@@ -1038,16 +1038,16 @@ offset_top = -180.0
 grow_vertical = 1
 mouse_filter = 2
 
-[node name="BattleTextLines" parent="UIRoot/PartyInterface" instance=ExtResource("25_yq6so")]
+[node name="BattleTextLines" parent="UIRoot/PartyInterface" unique_id=166178460 instance=ExtResource("25_yq6so")]
 layout_mode = 1
 offset_top = -181.0
 
-[node name="Managers" type="Node" parent="."]
+[node name="Managers" type="Node" parent="." unique_id=1152471153]
 
-[node name="EncounterManager" type="Node" parent="Managers"]
+[node name="EncounterManager" type="Node" parent="Managers" unique_id=1085051883]
 script = ExtResource("9_85g3d")
 
-[node name="BattleTransition" type="ColorRect" parent="Managers/EncounterManager"]
+[node name="BattleTransition" type="ColorRect" parent="Managers/EncounterManager" unique_id=1404983670]
 visible = false
 anchors_preset = 15
 anchor_right = 1.0
@@ -1057,13 +1057,13 @@ grow_vertical = 2
 mouse_filter = 2
 color = Color(0.545098, 0, 0, 1)
 
-[node name="RestManager" type="Node" parent="Managers"]
+[node name="RestManager" type="Node" parent="Managers" unique_id=1795448114]
 script = ExtResource("9_choun")
 
-[node name="NotificationManager" type="Node" parent="Managers"]
+[node name="NotificationManager" type="Node" parent="Managers" unique_id=421939316]
 script = ExtResource("10_ya4ey")
 
-[node name="Player" parent="." instance=ExtResource("2_sugp2")]
+[node name="Player" parent="." unique_id=605237485 instance=ExtResource("2_sugp2")]
 
 [connection signal="pressed" from="UIRoot/OverworldInterface/CharacterMenu/CharacterMenuButtons/HBoxContainer/Stats" to="UIRoot/OverworldInterface/CharacterMenu" method="_on_stats_pressed"]
 [connection signal="pressed" from="UIRoot/OverworldInterface/CharacterMenu/CharacterMenuButtons/HBoxContainer/Inventory" to="UIRoot/OverworldInterface/CharacterMenu" method="_on_inventory_pressed"]

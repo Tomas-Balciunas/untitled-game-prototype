@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://dqivkvbyr6ra"]
+[gd_scene format=3 uid="uid://dqivkvbyr6ra"]
 
 [ext_resource type="Script" uid="uid://dr1sxm5h6jdqr" path="res://scenes/CharacterBody.gd" id="1_ppl5w"]
 [ext_resource type="Texture2D" uid="uid://i63ktx555svy" path="res://characters/foes/Skeltal/_body/6979b672-301b-43dc-bcd8-88825ad75f9d.png" id="2_jg5hc"]
@@ -103,29 +103,27 @@ _data = {
 &"run_right": SubResource("Animation_omddt")
 }
 
-[node name="CharacterBody" type="CharacterBody3D"]
+[node name="CharacterBody" type="CharacterBody3D" unique_id=1629862773]
 collision_layer = 4
 script = ExtResource("1_ppl5w")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=356349689]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 shape = SubResource("CylinderShape3D_8j8tm")
 disabled = true
 
-[node name="Sprite" type="Sprite3D" parent="."]
+[node name="Sprite" type="Sprite3D" parent="." unique_id=1999505639]
 transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0.73, 0)
 pixel_size = 0.0006
 billboard = 2
 texture_filter = 0
 texture = ExtResource("2_jg5hc")
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=827356110]
 deterministic = true
-libraries = {
-&"": SubResource("AnimationLibrary_2w84f")
-}
+libraries/ = SubResource("AnimationLibrary_2w84f")
 
-[node name="NumberDisplay" parent="." instance=ExtResource("3_vcoio")]
+[node name="NumberDisplay" parent="." unique_id=848916739 instance=ExtResource("3_vcoio")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
 
-[node name="SmallChatter" parent="." instance=ExtResource("4_jg5hc")]
+[node name="SmallChatter" parent="." unique_id=1142985678 instance=ExtResource("4_jg5hc")]

@@ -11,7 +11,7 @@ func can_process(_stage: String, _event: TriggerEvent) -> bool:
 
 func on_trigger(_stage: String, event: TriggerEvent) -> void:
 	var action := ActionContext.new()
-	action.source = event.source
+	action.source = event.actor
 	action.set_targets(event.target)
 	
 	HealingResolver.new(heal_amount).execute(action)

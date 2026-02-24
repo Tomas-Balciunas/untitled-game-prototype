@@ -1,0 +1,7 @@
+[gd_resource type="Resource" script_class="PoisonOnTurnStart" format=3 uid="uid://cek6hg5m1l1oa"]
+
+[ext_resource type="Script" uid="uid://b2i8grxq2tx0n" path="res://effect/_passive/poison_on_turn_start.gd" id="1_d758l"]
+
+[resource]
+script = ExtResource("1_d758l")
+metadata/_custom_type_script = "uid://b2i8grxq2tx0n"

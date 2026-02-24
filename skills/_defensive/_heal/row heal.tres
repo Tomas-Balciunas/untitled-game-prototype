@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="HealingSkill" load_steps=5 format=3 uid="uid://c5xohmycfkr5c"]
+[gd_resource type="Resource" script_class="HealingSkill" format=3 uid="uid://c5xohmycfkr5c"]
 
 [ext_resource type="Script" uid="uid://bp0biy0knxw2o" path="res://effect/Effect.gd" id="1_b30u2"]
 [ext_resource type="Script" uid="uid://e2eu5fed8nv8" path="res://skills/skill_cost.gd" id="1_c4285"]

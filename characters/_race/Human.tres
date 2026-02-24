@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="Race" load_steps=4 format=3 uid="uid://eiwm6khdbjki"]
+[gd_resource type="Resource" script_class="Race" format=3 uid="uid://eiwm6khdbjki"]
 
 [ext_resource type="Script" uid="uid://blqk30gl013xc" path="res://stat/_attribute/attributes.gd" id="1_gdnyo"]
 [ext_resource type="Script" uid="uid://cc4tchcma6k2f" path="res://characters/_race/Race.gd" id="2_tv64d"]

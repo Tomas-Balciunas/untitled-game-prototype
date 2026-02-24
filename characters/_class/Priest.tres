@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="PriestClass" load_steps=9 format=3 uid="uid://br55c33pop4ux"]
+[gd_resource type="Resource" script_class="PriestClass" format=3 uid="uid://br55c33pop4ux"]
 
 [ext_resource type="Script" uid="uid://bp0biy0knxw2o" path="res://effect/Effect.gd" id="1_odaop"]
 [ext_resource type="Script" uid="uid://blqk30gl013xc" path="res://stat/_attribute/attributes.gd" id="1_wubjf"]

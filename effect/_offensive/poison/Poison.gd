@@ -1,24 +1,22 @@
 extends StatusEffect
 class_name PoisonEffect
 
-var damage_per_turn: int = 5
+@export var damage_per_turn: int = 5
 var stacks: int = 1
 var _remaining: int = 0
 var _should_refresh_duration: bool = true
 
-func _init() -> void:
-	category = EffectCategory.DEBUFF
 
 func _is_stackable() -> bool:
 	return true
 
 
 func listened_triggers() -> Array:
-	return [EffectTriggers.ON_TURN_END]
+	return []
 
 
 func can_process(_stage: String, event: TriggerEvent) -> bool:
-	return event.actor.get_actor() == owner
+	return false
 
 
 func on_apply() -> void:
@@ -35,7 +33,15 @@ func on_apply() -> void:
 	BattleTextLines.print_line("Poison applied to %s for %d turns" % [owner.resource.name, duration_turns])
 
 
-func on_trigger(_stage: String, _event: TriggerEvent) -> void:
+func _get_name() -> String:
+	return "Poison"
+
+
+func get_description() -> String:
+	return "Deals %s damage per turn, %s turns remaining" % [damage_per_turn * stacks, _remaining]
+
+
+func tick() -> void:
 	if owner == null:
 		push_error("PoisonEffect: Owner is null during on_turn_end tick.")
 		return
@@ -43,7 +49,6 @@ func on_trigger(_stage: String, _event: TriggerEvent) -> void:
 	var tick := ActionContext.new()
 	tick.source = source
 	tick.set_targets(owner)
-	tick.type = DamageTypes.Type.POISON
 	tick.options = tick.options.duplicate() if tick.options else {}
 	DamageResolver.new(damage_per_turn * stacks).execute(tick)
 
@@ -53,9 +58,3 @@ func on_trigger(_stage: String, _event: TriggerEvent) -> void:
 	if _remaining <= 0:
 		print("Poison expired on %s" % owner.resource.name)
 		on_expire()
-
-func _get_name() -> String:
-	return "Poison"
-	
-func get_description() -> String:
-	return "Deals %s damage per turn, %s turns remaining" % [damage_per_turn * stacks, _remaining]

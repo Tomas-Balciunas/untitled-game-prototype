@@ -14,7 +14,6 @@ func on_trigger(_stage: String, event: TriggerEvent) -> void:
 	var act := EffectApplicationContext.new()
 	act.actively_cast = event.ctx.actively_cast
 	act.source = event.actor
-	act.target = event.ctx.target
-	act.effect = stun
+	act.set_targets(event.target)
 	
-	EffectApplicationResolver.new().execute(act)
+	EffectApplicationResolver.new(stun).execute(act)

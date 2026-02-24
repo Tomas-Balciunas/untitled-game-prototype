@@ -1,8 +1,8 @@
-[gd_scene load_steps=2 format=3 uid="uid://bcmw8nisgq2m8"]
+[gd_scene format=3 uid="uid://bcmw8nisgq2m8"]
 
 [ext_resource type="Script" uid="uid://d5sp3hsla3no" path="res://scenes/ui/notification/NotificationLine.gd" id="1_slbhw"]
 
-[node name="NotificationLine" type="Label"]
+[node name="NotificationLine" type="Label" unique_id=1162354642]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0

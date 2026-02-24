@@ -17,9 +17,8 @@ func on_trigger(_stage: String, event: TriggerEvent) -> void:
 	poison._is_instance = true
 	var app := EffectApplicationContext.new()
 	app.source = event.actor
-	app.target = event.ctx.target
-	app.effect = poison
-	EffectApplicationResolver.new().execute(app)
+	app.set_targets(event.target)
+	EffectApplicationResolver.new(poison).execute(app)
 
 func get_description() -> String:
 	return "Applies poison on the target for %s turns dealing %s damage per turn" % [duration_turns, damage_per_turn]

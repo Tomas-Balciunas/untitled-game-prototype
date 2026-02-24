@@ -1,4 +1,4 @@
-[gd_resource type="MeshLibrary" load_steps=24 format=4 uid="uid://uso6cfmk5r51"]
+[gd_resource type="MeshLibrary" format=4 uid="uid://uso6cfmk5r51"]
 
 [ext_resource type="Texture2D" uid="uid://cnngmhcosv6pl" path="res://white tileset_atlas.png" id="1_xr4l1"]
 [ext_resource type="Texture2D" uid="uid://dpppwuawmicqa" path="res://white tileset_atlas_n.png" id="2_mcin3"]

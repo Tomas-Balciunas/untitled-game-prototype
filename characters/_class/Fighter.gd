@@ -5,7 +5,11 @@ class_name FighterClass
 func _init() -> void:
 	level_skills = {
 		2: load("uid://cneghh04ud4gg"),
-		5: load("uid://d2u72es2eig6a")
+		5: load("uid://d2u72es2eig6a"),
+	}
+	
+	level_effects = {
+		3: load("uid://cek6hg5m1l1oa")
 	}
 
 var stat_attribute_modifiers: Dictionary = {

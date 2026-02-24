@@ -1,10 +1,11 @@
-[gd_resource type="Resource" script_class="CharacterResource" load_steps=14 format=3 uid="uid://dvky7cvffgf22"]
+[gd_resource type="Resource" script_class="CharacterResource" format=3 uid="uid://dvky7cvffgf22"]
 
 [ext_resource type="Resource" uid="uid://jj60dk764c5i" path="res://characters/allies/MC/BaseStats.tres" id="1_lkn2v"]
 [ext_resource type="Script" uid="uid://cbelvg2fndssu" path="res://scripts/BattleEvent.gd" id="2_2usx5"]
 [ext_resource type="PackedScene" uid="uid://bbixalnsv3np6" path="res://characters/allies/MC/_body/MC.tscn" id="3_2usx5"]
 [ext_resource type="Script" uid="uid://bp0biy0knxw2o" path="res://effect/Effect.gd" id="4_2usx5"]
 [ext_resource type="Script" uid="uid://b06vmgrh4qa8i" path="res://gear/Item.gd" id="4_jti2u"]
+[ext_resource type="Resource" uid="uid://bksuu5x4hbshr" path="res://gear/consumable/hp pot minor/hp_pot.tres" id="6_jti2u"]
 [ext_resource type="Resource" uid="uid://c5qyqcmwx0qfy" path="res://scripts/experience/ExperienceManager.tres" id="6_l36pt"]
 [ext_resource type="Script" uid="uid://dq4acpkde276p" path="res://skills/Skill.gd" id="6_lkn2v"]
 [ext_resource type="Resource" uid="uid://ccd45ithmlluj" path="res://characters/_gender/_Unknown.tres" id="7_up1d2"]
@@ -29,6 +30,7 @@ metadata/_custom_type_script = "uid://bqln4xpkkidja"
 
 [resource]
 script = ExtResource("10_fb0jw")
+default_items = Array[ExtResource("4_jti2u")]([ExtResource("6_jti2u")])
 base_stats = ExtResource("1_lkn2v")
 stat_level_growth = SubResource("Resource_uxndi")
 id = "mc"

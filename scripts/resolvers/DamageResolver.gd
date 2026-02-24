@@ -13,6 +13,10 @@ func execute(ctx: ActionContext) -> ActionContext:
 		var event: DamageTriggerEvent = build_event(ctx, target)
 		run_pipeline(event)
 	
+	for i in len(ctx.additional_procs):
+		ctx.additional_procs[i]["resolver"].execute(ctx.additional_procs[i]["ctx"])
+		ctx.additional_procs.erase(ctx.additional_procs[i])
+	
 	return ctx
 
 
@@ -40,6 +44,7 @@ func run_pipeline(event: DamageTriggerEvent) -> void:
 	#if event.ctx.target.is_dead:
 		#event.trigger = EffectTriggers.ON_DEATH
 		#EffectRunner.process_trigger(event)
+	
 
 
 func build_event(ctx: ActionContext, target: CharacterInstance) -> DamageTriggerEvent:

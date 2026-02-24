@@ -72,7 +72,7 @@ func _on_action_button_pressed() -> void:
 	if _selected_item is GearInstance:
 		bound_character.equip_item(_selected_item)
 	elif _selected_item is Consumable:
-		_selected_item.use_item(bound_character, _selected_item)
+		_selected_item.use_item(bound_character)
 
 	refresh_lists()
 

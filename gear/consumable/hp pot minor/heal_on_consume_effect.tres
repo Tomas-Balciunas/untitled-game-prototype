@@ -1,13 +1,10 @@
-[gd_resource type="Resource" script_class="Heal" load_steps=2 format=3 uid="uid://dvjflkpi3yh2i"]
+[gd_resource type="Resource" script_class="Heal" format=3 uid="uid://dvjflkpi3yh2i"]
 
 [ext_resource type="Script" uid="uid://hoa2yy3t7yl1" path="res://gear/consumable/hp pot minor/HealOnConsume.gd" id="1_vaws4"]
 
 [resource]
 script = ExtResource("1_vaws4")
-heal_amount = 20
 id = "heal_on_consume_00"
 name = "Heal"
-description = "Unnamed Effect"
-category = 5
-duration_turns = -1
+battle_only = false
 metadata/_custom_type_script = "uid://hoa2yy3t7yl1"

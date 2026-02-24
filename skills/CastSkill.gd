@@ -6,4 +6,4 @@ class_name CastSkill
 
 
 func get_resolver(_ctx: ActionContext) -> EffectApplicationResolver:
-	return EffectApplicationResolver.new()
+	return EffectApplicationResolver.new(effect)

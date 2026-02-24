@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="PoisonEffect" format=3 uid="uid://hl7x16puy8hq"]
+
+[ext_resource type="Script" uid="uid://cuf03a6q4u1c6" path="res://effect/_offensive/poison/Poison.gd" id="1_6d6hr"]
+
+[resource]
+script = ExtResource("1_6d6hr")
+duration_turns = 10
+name = "Poison"
+description = "Poison"
+battle_only = false
+metadata/_custom_type_script = "uid://cuf03a6q4u1c6"

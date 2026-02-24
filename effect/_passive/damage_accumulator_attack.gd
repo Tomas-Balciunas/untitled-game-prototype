@@ -22,7 +22,7 @@ func on_trigger(_stage: String, _event: TriggerEvent) -> void:
 	var event: DamageTriggerEvent = _event
 	
 	if event.target == owner:
-		accumulator += event.calculator.final_value
+		accumulator += event.calculator.get_final_damage()
 		BattleTextLines.print_line("Accumulated %s, total: %s" % [event.calculator.get_final_damage(), accumulator])
 		if accumulator >= THRESHOLD:
 			BattleTextLines.print_line("Lash will be unleashed!")

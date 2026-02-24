@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="CharacterResource" load_steps=17 format=3 uid="uid://dh8kad7brt53b"]
+[gd_resource type="Resource" script_class="CharacterResource" format=3 uid="uid://dh8kad7brt53b"]
 
 [ext_resource type="Script" uid="uid://bp0biy0knxw2o" path="res://effect/Effect.gd" id="1_7ajkr"]
 [ext_resource type="Script" uid="uid://blqk30gl013xc" path="res://stat/_attribute/attributes.gd" id="1_lgdsj"]
@@ -10,6 +10,7 @@
 [ext_resource type="PackedScene" uid="uid://dr6mixlbl8nmf" path="res://characters/allies/Lili/_body/Lili.tscn" id="3_tttne"]
 [ext_resource type="Resource" uid="uid://by14sh5h8t7hf" path="res://characters/allies/Lili/lili_controller.tres" id="4_tttne"]
 [ext_resource type="Script" uid="uid://b06vmgrh4qa8i" path="res://gear/Item.gd" id="6_7lkq3"]
+[ext_resource type="Resource" uid="uid://bksuu5x4hbshr" path="res://gear/consumable/hp pot minor/hp_pot.tres" id="7_tttne"]
 [ext_resource type="Resource" uid="uid://br55c33pop4ux" path="res://characters/_class/Priest.tres" id="8_23xqr"]
 [ext_resource type="Resource" uid="uid://coilrntx01n8m" path="res://characters/allies/Lili/new_resource.tres" id="10_pwtr7"]
 [ext_resource type="Script" uid="uid://dq4acpkde276p" path="res://skills/Skill.gd" id="10_tttne"]
@@ -33,6 +34,7 @@ race = ExtResource("2_gmj68")
 job = ExtResource("8_23xqr")
 gender = ExtResource("3_abpod")
 attributes = SubResource("Resource_n7wih")
+default_items = Array[ExtResource("6_7lkq3")]([ExtResource("7_tttne")])
 id = "a_lili_1"
 name = "Lili"
 character_body = ExtResource("3_tttne")

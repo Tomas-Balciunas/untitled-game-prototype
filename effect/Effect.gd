@@ -18,7 +18,6 @@ enum EffectCategory {
 @export var battle_only: bool = true
 @export var single_trigger: bool = false
 @export var priority: int = 200
-@export var is_battle_only := false
 @export var _should_append: bool = true
 
 var owner: CharacterInstance = null
@@ -69,3 +68,6 @@ func _modifies_skill_cost() -> bool:
 
 func modify_skill_cost(_skill: Skill, _sc: SkillCost) -> SkillCost:
 	return _sc
+
+func tick() -> void:
+	pass

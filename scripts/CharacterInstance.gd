@@ -74,19 +74,19 @@ func _init(res: CharacterResource) -> void:
 	inventory = Inventory.new()
 	inventory.owner = self
 	
-	#for item in res.default_items:
+	for item in res.default_items:
 		#if item is Gear:
 			#var gear := GearInstance.new(item)
 			#inventory.add_item(gear)
 			#
 			#continue
-			#
-		#if item is ConsumableItem:
-			#var cons := ConsumableInstance.new(item)
-			#inventory.add_item(cons)
-			#
-			#continue
-		#
+			
+		if item is ConsumableItem:
+			var cons: Consumable = item._build_instance()
+			inventory.add_item(cons)
+			
+			continue
+		
 		#var inst := ItemInstance.new()
 		#inst.template = item
 		#inventory.add_item(inst)
@@ -306,8 +306,8 @@ func to_dict() -> Dictionary:
 			equip_dict[slot] = item.to_dict()
 		
 	var inventory_arr := []
-	for slot: ItemInstance in inventory.slots:
-		inventory_arr.append(slot.to_dict())
+	#for slot: ItemInstance in inventory.slots:
+		#inventory_arr.append(slot.to_dict())
 		
 	var effect_arr := []
 	for effect: Effect in effects:

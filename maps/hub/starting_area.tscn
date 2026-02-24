@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=3 uid="uid://c8n1llsvvhonb"]
+[gd_scene format=3 uid="uid://c8n1llsvvhonb"]
 
 [ext_resource type="MeshLibrary" uid="uid://uso6cfmk5r51" path="res://tileset white.tres" id="1_mdjaj"]
 [ext_resource type="Script" uid="uid://7pao6hs651jh" path="res://scripts/EnemyController.gd" id="2_g1pjd"]
@@ -48,10 +48,10 @@ fog_light_energy = 0.85
 fog_density = 0.0283
 fog_sky_affect = 0.0
 
-[node name="NavigationRegion3D" type="NavigationRegion3D"]
+[node name="NavigationRegion3D" type="NavigationRegion3D" unique_id=570528448]
 navigation_mesh = SubResource("NavigationMesh_g2q70")
 
-[node name="StartingArea" type="GridMap" parent="."]
+[node name="StartingArea" type="GridMap" parent="." unique_id=353800824]
 mesh_library = ExtResource("1_mdjaj")
 cell_size = Vector3(1, 1, 1)
 cell_center_y = false
@@ -60,102 +60,102 @@ data = {
 }
 metadata/_editor_floor_ = Vector3(0, 0, 0)
 
-[node name="Chests" type="Node" parent="StartingArea"]
+[node name="Chests" type="Node" parent="StartingArea" unique_id=826065528]
 script = ExtResource("2_uvgea")
 
-[node name="ChestBasic" parent="StartingArea/Chests" instance=ExtResource("9_lk5gk")]
+[node name="ChestBasic" parent="StartingArea/Chests" unique_id=731437107 instance=ExtResource("9_lk5gk")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.7453785, 0.5260688, -7.930229)
 id = "starting_area_chest_01"
 random = true
 quantity = 10
 
-[node name="ChestBasic2" parent="StartingArea/Chests" instance=ExtResource("9_lk5gk")]
+[node name="ChestBasic2" parent="StartingArea/Chests" unique_id=517250672 instance=ExtResource("9_lk5gk")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.0930414, 0.5260688, -7.930229)
 id = "starting_area_chest_02"
 random = true
 quantity = 6
 
-[node name="Transitions" type="Node" parent="StartingArea"]
+[node name="Transitions" type="Node" parent="StartingArea" unique_id=1602761208]
 
-[node name="Area3D" type="Area3D" parent="StartingArea/Transitions"]
+[node name="Area3D" type="Area3D" parent="StartingArea/Transitions" unique_id=569174887]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 1, -8)
 script = ExtResource("7_lk5gk")
 map_data = SubResource("Resource_0wmue")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="StartingArea/Transitions/Area3D"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StartingArea/Transitions/Area3D" unique_id=1013954541]
 shape = SubResource("BoxShape3D_g1pjd")
 
-[node name="Rest" type="Node" parent="StartingArea"]
+[node name="Rest" type="Node" parent="StartingArea" unique_id=1413687424]
 
-[node name="Area3D" type="Area3D" parent="StartingArea/Rest"]
+[node name="Area3D" type="Area3D" parent="StartingArea/Rest" unique_id=675381988]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, -8)
 script = ExtResource("9_kjsaj")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="StartingArea/Rest/Area3D"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StartingArea/Rest/Area3D" unique_id=1231358043]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 shape = SubResource("BoxShape3D_lk5gk")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="StartingArea/Rest/Area3D"]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="StartingArea/Rest/Area3D" unique_id=1201594315]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 mesh = SubResource("BoxMesh_lk5gk")
 
-[node name="Interactable" type="Node" parent="StartingArea"]
+[node name="Interactable" type="Node" parent="StartingArea" unique_id=24789888]
 
-[node name="Interactable" parent="StartingArea/Interactable" instance=ExtResource("10_lk5gk")]
+[node name="Interactable" parent="StartingArea/Interactable" unique_id=241145539 instance=ExtResource("10_lk5gk")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, -8)
 
-[node name="Events" type="Node" parent="StartingArea"]
+[node name="Events" type="Node" parent="StartingArea" unique_id=1407211780]
 
-[node name="Area3D" type="Area3D" parent="StartingArea/Events"]
+[node name="Area3D" type="Area3D" parent="StartingArea/Events" unique_id=499566801]
 script = ExtResource("11_bgo3i")
 event_id = "test_event_000"
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="StartingArea/Events/Area3D"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StartingArea/Events/Area3D" unique_id=1746186979]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 1, -4)
 shape = SubResource("BoxShape3D_bgo3i")
 
-[node name="WorldEnvironment" type="WorldEnvironment" parent="StartingArea"]
+[node name="WorldEnvironment" type="WorldEnvironment" parent="StartingArea" unique_id=1268670882]
 environment = SubResource("Environment_kjsaj")
 
-[node name="NPC" type="Node" parent="StartingArea"]
+[node name="NPC" type="Node" parent="StartingArea" unique_id=1874350952]
 script = ExtResource("16_q33ho")
 
-[node name="Lili" parent="StartingArea/NPC" instance=ExtResource("17_p4hwn")]
+[node name="Lili" parent="StartingArea/NPC" unique_id=524633703 instance=ExtResource("17_p4hwn")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, -2)
 script = ExtResource("18_y3577")
 character = ExtResource("19_l6obu")
 
-[node name="TestNPC" parent="StartingArea/NPC" instance=ExtResource("17_p4hwn")]
+[node name="TestNPC" parent="StartingArea/NPC" unique_id=864089884 instance=ExtResource("17_p4hwn")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, -2)
 script = ExtResource("18_y3577")
 character = ExtResource("20_rna72")
 
-[node name="Enemies" type="Node" parent="."]
+[node name="Enemies" type="Node" parent="." unique_id=1583926156]
 script = ExtResource("2_g1pjd")
 
-[node name="Marker3D" type="Marker3D" parent="Enemies"]
+[node name="Marker3D" type="Marker3D" parent="Enemies" unique_id=569814239]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.6091213, 0, 6.07604)
 script = ExtResource("3_w2sle")
 spawn_id = "spawn_01"
 
-[node name="Marker3D2" type="Marker3D" parent="Enemies"]
+[node name="Marker3D2" type="Marker3D" parent="Enemies" unique_id=864279360]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -18.351437, 0, 6.4214334)
 script = ExtResource("3_w2sle")
 spawn_id = "spawn_02"
 
-[node name="Marker3D3" type="Marker3D" parent="Enemies"]
+[node name="Marker3D3" type="Marker3D" parent="Enemies" unique_id=2061622316]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -18.096066, 0, -6.1178665)
 script = ExtResource("3_w2sle")
 spawn_id = "spawn_03"
 
-[node name="Marker3D4" type="Marker3D" parent="Enemies"]
+[node name="Marker3D4" type="Marker3D" parent="Enemies" unique_id=201559146]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.447188, 0, -5.7185793)
 script = ExtResource("3_w2sle")
 spawn_id = "spawn_04"
 
-[node name="EnemiesCustom" type="Node" parent="."]
+[node name="EnemiesCustom" type="Node" parent="." unique_id=1119602021]
 
-[node name="Enemy" parent="EnemiesCustom" instance=ExtResource("18_bko6l")]
+[node name="Enemy" parent="EnemiesCustom" unique_id=1824928787 instance=ExtResource("18_bko6l")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15, 0, -3)
 encounter_data = ExtResource("19_4x3pf")
 enemy_scene = ExtResource("20_hag8j")

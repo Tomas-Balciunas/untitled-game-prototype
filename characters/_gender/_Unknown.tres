@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="Gender" load_steps=4 format=3 uid="uid://ccd45ithmlluj"]
+[gd_resource type="Resource" script_class="Gender" format=3 uid="uid://ccd45ithmlluj"]
 
 [ext_resource type="Script" uid="uid://blqk30gl013xc" path="res://stat/_attribute/attributes.gd" id="1_3wma8"]
 [ext_resource type="Script" uid="uid://c548a16bd0808" path="res://characters/_gender/Gender.gd" id="1_5d6xe"]

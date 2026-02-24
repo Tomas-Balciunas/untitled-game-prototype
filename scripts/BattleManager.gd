@@ -73,7 +73,7 @@ func _process(_delta: float) -> void:
 		BattleState.PLAYER_TURN:
 			pass
 		BattleState.ENEMY_TURN:
-			_process_enemy_turn()
+			pass
 		BattleState.ANIMATING:
 			pass
 		BattleState.TURN_END:
@@ -105,49 +105,45 @@ func _process_turn_queue() -> void:
 	BattleBus.queue_processed.emit(turn_queue)
 
 func _on_turn_start() -> void:
+	disable_all_targeting()
 	var is_party_member: bool = current_battler in party
 	BattleBus.turn_started.emit(current_battler, is_party_member)
 
-	var event := TriggerEvent.new()
-	event.actor = CharacterSource.new(current_battler)
-	event.ctx = ActionContext.new()
-	
-	EffectRunner.process_trigger(EffectTriggers.ON_TURN_START, event)
-	
-	disable_all_targeting()
+	var ctx: ActionContext = ActionContext.new()
+	var resolver: TurnStageResolver = TurnStageResolver.new(EffectTriggers.ON_TURN_START, current_battler)
+	resolver.execute(ctx)
 	
 	if is_party_member:
 		current_state = BattleState.PLAYER_TURN
-		_on_player_turn(event) ## handle cases like checking for hard CC
+		_on_player_turn(ctx) ## handle cases like checking for hard CC
 	else:
 		current_state = BattleState.ENEMY_TURN
-		_process_enemy_turn(event)
+		_process_enemy_turn(ctx)
 
 func _on_turn_end() -> void:
-	var event := TriggerEvent.new()
-	event.actor = CharacterSource.new(current_battler)
-	event.ctx = ActionContext.new()
-	
-	EffectRunner.process_trigger(EffectTriggers.ON_TURN_END, event)
+	var ctx: ActionContext = ActionContext.new()
+	ctx.should_tick = true
+	var resolver: TurnStageResolver = TurnStageResolver.new(EffectTriggers.ON_TURN_END, current_battler)
+	resolver.execute(ctx)
 	
 	current_battler.action_value += 1000 / (100 + current_battler.stats.speed)
 	BattleBus.turn_ended.emit()
 	current_battler = null
 	current_state = BattleState.CHECK_END
 	
-func _on_player_turn(event: TriggerEvent) -> void:
+func _on_player_turn(ctx: ActionContext) -> void:
 	BattleBus.ally_turn_started.emit(current_battler)
-	if event.ctx.skip_turn:
+	if ctx.skip_turn:
 		current_state = BattleState.TURN_END
 		return
 	
-	if event.ctx.force_action:
-		if !event.ctx.target:
+	if ctx.force_action:
+		if !ctx.target:
 			push_error("Forced action for %s did not have a target" % current_battler.resource.name)
 			current_state = BattleState.TURN_END
 			return
 			
-		await _perform_player_action("attack", event.ctx.target)
+		await _perform_player_action("attack", ctx.initial_target)
 		current_state = BattleState.TURN_END
 		return
 		
@@ -206,6 +202,7 @@ func _perform_player_action(action: String, target: CharacterInstance) -> void:
 				"target": targets
 			})
 			await attacker_slot.perform_run_towards_target(target_slot)
+			
 			attacker_slot.perform_attack()
 			var timed_out: bool = await SignalFailsafe.await_signal_or_timeout(self, BattleBus.attack_connected, ATTACK_CONNECTED_TIMEOUT)
 
@@ -225,6 +222,7 @@ func _perform_player_action(action: String, target: CharacterInstance) -> void:
 			ctx.source = CharacterSource.new(current_battler)
 			ctx.set_targets(target, targets)
 			ctx.actively_cast = true
+			ctx.temporary_effects = skill.effects
 			
 			current_state = BattleState.ANIMATING
 			await attacker_slot.perform_run_towards_target(target_slot)
@@ -234,7 +232,10 @@ func _perform_player_action(action: String, target: CharacterInstance) -> void:
 			if timed_out:
 				push_error("Attack connected signal timed out for character: %s, %s " % [current_battler.resource.name, current_battler.resource.id])
 			
-			await SkillResolver.new(skill).execute(ctx)
+			var context = await SkillResolver.new(skill).execute(ctx)
+			
+			for proc in context.additional_procs:
+				proc["resolver"].execute(proc["ctx"])
 			
 		BattleBus.ITEM:
 			if _pending_entity is not Consumable:
@@ -244,7 +245,13 @@ func _perform_player_action(action: String, target: CharacterInstance) -> void:
 			var item := _pending_entity as Consumable
 			
 			var targeting: TargetingManager.TargetType = item.template.targeting_type
-			var _targets := TargetingManager.get_applicable_targets(target, targeting)
+			var targets := TargetingManager.get_applicable_targets(target, targeting)
+			
+			var cons := ConsumableContext.new()
+			cons.source = ItemSource.new(current_battler, item)
+			cons.set_targets(target, targets)
+			cons.temporary_effects = item.get_all_effects()
+			cons.actively_cast = true
 			
 			current_state = BattleState.ANIMATING
 			await attacker_slot.perform_run_towards_target(target_slot)
@@ -254,40 +261,29 @@ func _perform_player_action(action: String, target: CharacterInstance) -> void:
 			if timed_out:
 				push_error("Attack connected signal timed out for character: %s, %s " % [current_battler.resource.name, current_battler.resource.id])
 			
-			
-			for t in _targets:
-				if not t:
-					continue
-				
-				var cons := ConsumableContext.new()
-				cons.consumable = item
-				cons.source = ItemSource.new(current_battler, item)
-				cons.target = t
-				cons.temporary_effects = item.get_all_effects()
-				cons.actively_cast = true
-				var _ctx := ConsumableResolver.new().execute(cons)
+			var _ctx := ConsumableResolver.new(item).execute(cons)
 				
 	await attacker_slot.position_back()
 	await process_queue()
 
-func _process_enemy_turn(event: TriggerEvent = null) -> void:
+func _process_enemy_turn(ctx: ActionContext) -> void:
 	if current_battler == null:
 		current_state = BattleState.CHECK_END
 		return
 		
-	if event and event.ctx.skip_turn:
+	if ctx.skip_turn:
 		current_state = BattleState.TURN_END
 		return
 	
 	var target: CharacterInstance = null
 	
-	if event and event.ctx.force_action:
-		if !event.ctx.target:
+	if ctx.force_action:
+		if !ctx.target:
 			push_error("Forced action for %s did not have a target" % current_battler.resource.name)
 			current_state = BattleState.TURN_END
 			return
 			
-		target = event.ctx.target
+		target = ctx.initial_target
 
 	if !target:
 		var valid_targets := party.filter(func(p: CharacterInstance) -> bool: return p.is_dead == false)
@@ -303,7 +299,7 @@ func _process_enemy_turn(event: TriggerEvent = null) -> void:
 	
 	var atk := ActionContext.new()
 	atk.source = CharacterSource.new(current_battler)
-	atk.set_targets(current_battler)
+	atk.set_targets(target)
 	atk.actively_cast = true
 	
 	ChatEventBus.chat_event.emit(ChatterManager.ATTACKING, {

@@ -8,13 +8,12 @@ var targeting_type: TargetingManager.TargetType = TargetingManager.TargetType.SI
 func use_item(user: CharacterInstance) -> void:
 	var ctx := ConsumableContext.new()
 	ctx.source = ItemSource.new(user, self)
-	ctx.target = user
-	ctx.consumable = self
+	ctx.set_targets(user)
 	ctx.actively_cast = true
 	ctx.temporary_effects = effects
 	
 	## TODO: fix targeting
-	ConsumableResolver.new().execute(ctx)
+	ConsumableResolver.new(self).execute(ctx)
 	user.inventory.remove_item(self)
 
 func get_all_effects() -> Array[Effect]:
