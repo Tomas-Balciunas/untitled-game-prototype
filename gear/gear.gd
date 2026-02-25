@@ -11,3 +11,6 @@ enum Quality { POOR, COMMON, UNCOMMON, RARE, EXCEPTIONAL }
 
 @abstract
 func get_applicable_stat_modifiers() -> Array[Stats.StatRef]
+
+@abstract
+func _build_instance() -> Variant

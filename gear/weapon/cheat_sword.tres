@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="WeaponResource" format=3 uid="uid://cakblj60r6ir"]
+
+[ext_resource type="Script" uid="uid://bp0biy0knxw2o" path="res://effect/Effect.gd" id="1_rexg1"]
+[ext_resource type="Script" uid="uid://bqln4xpkkidja" path="res://stat/_stats/stats.gd" id="1_tpkit"]
+[ext_resource type="Script" uid="uid://cyhrh3l20i5dm" path="res://stat/StatModifier.gd" id="2_tpkit"]
+[ext_resource type="Script" uid="uid://dshxh47nef2ua" path="res://gear/weapon/weapon_resource.gd" id="3_pcxjb"]
+
+[sub_resource type="Resource" id="Resource_pcxjb"]
+script = ExtResource("1_tpkit")
+attack = 500
+metadata/_custom_type_script = "uid://bqln4xpkkidja"
+
+[resource]
+script = ExtResource("3_pcxjb")
+base_stats = SubResource("Resource_pcxjb")
+metadata/_custom_type_script = "uid://dshxh47nef2ua"

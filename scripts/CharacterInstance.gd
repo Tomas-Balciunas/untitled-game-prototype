@@ -75,11 +75,11 @@ func _init(res: CharacterResource) -> void:
 	inventory.owner = self
 	
 	for item in res.default_items:
-		#if item is Gear:
-			#var gear := GearInstance.new(item)
-			#inventory.add_item(gear)
-			#
-			#continue
+		if item is Gear:
+			var gear = item._build_instance()
+			inventory.add_item(gear)
+			
+			continue
 			
 		if item is ConsumableItem:
 			var cons: Consumable = item._build_instance()

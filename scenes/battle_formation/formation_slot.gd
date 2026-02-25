@@ -11,6 +11,7 @@ var home_global: Vector3
 var animation_player: AnimationPlayer
 
 func _ready() -> void:
+	BattleBus.enemy_died.connect(on_ded)
 	if targeting_area:
 		targeting_area.mouse_entered.connect(_on_mouse_entered)
 		targeting_area.mouse_exited.connect(_on_mouse_exited)
@@ -125,8 +126,9 @@ func position_back() -> void:
 func capture_home() -> void:
 	home_global = global_position
 
-func on_ded() -> void:
-	body_instance.play_dead()
+func on_ded(c: CharacterInstance) -> void:
+	if c == character_instance:
+		body_instance.play_dead()
 
 func _on_mouse_entered() -> void:
 	if not character_instance:

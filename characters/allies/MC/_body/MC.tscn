@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://bbixalnsv3np6"]
+[gd_scene format=3 uid="uid://bbixalnsv3np6"]
 
 [ext_resource type="Script" uid="uid://dr1sxm5h6jdqr" path="res://scenes/CharacterBody.gd" id="1_y8q8x"]
 [ext_resource type="PackedScene" uid="uid://cvlg8i4oihok1" path="res://scenes/damage_numbers/3d/number_display_3d.tscn" id="2_cms24"]
@@ -222,15 +222,15 @@ _data = {
 &"run_right": SubResource("Animation_omddt")
 }
 
-[node name="CharacterBody" type="CharacterBody3D"]
+[node name="CharacterBody" type="CharacterBody3D" unique_id=622304715]
 script = ExtResource("1_y8q8x")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=190584308]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 shape = SubResource("CylinderShape3D_8j8tm")
 disabled = true
 
-[node name="Sprite" type="Sprite3D" parent="."]
+[node name="Sprite" type="Sprite3D" parent="." unique_id=923233634]
 transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 1, 0)
 billboard = 2
 texture_filter = 0
@@ -238,29 +238,25 @@ hframes = 12
 vframes = 8
 frame = 57
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=487895316]
 deterministic = true
-libraries = {
-&"": SubResource("AnimationLibrary_2w84f")
-}
+libraries/ = SubResource("AnimationLibrary_2w84f")
 
-[node name="NumberDisplay" parent="." instance=ExtResource("2_cms24")]
+[node name="NumberDisplay" parent="." unique_id=1769346084 instance=ExtResource("2_cms24")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
 
-[node name="Attack" type="Sprite2D" parent="."]
+[node name="Attack" type="Sprite2D" parent="." unique_id=503883801]
 visible = false
 modulate = Color(1, 1, 1, 0)
-position = Vector2(599.37006, 400.00003)
-scale = Vector2(1.2596945, 0.8659793)
 texture = ExtResource("3_16jax")
 
-[node name="Camera3D" type="Camera3D" parent="."]
+[node name="Camera3D" type="Camera3D" parent="." unique_id=1277161859]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, -0.303)
 current = true
 fov = 93.0034
 far = 285.41
 
-[node name="OmniLight3D" type="OmniLight3D" parent="Camera3D"]
+[node name="OmniLight3D" type="OmniLight3D" parent="Camera3D" unique_id=728674626]
 transform = Transform3D(1, 0, 0, 0, 0.0297301, 0, 0, 0, 1, 0, 0, 0.312911)
 light_color = Color(0.585928, 0.568995, 0.564924, 1)
 light_indirect_energy = 2.826

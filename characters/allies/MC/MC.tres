@@ -9,6 +9,7 @@
 [ext_resource type="Resource" uid="uid://c5qyqcmwx0qfy" path="res://scripts/experience/ExperienceManager.tres" id="6_l36pt"]
 [ext_resource type="Script" uid="uid://dq4acpkde276p" path="res://skills/Skill.gd" id="6_lkn2v"]
 [ext_resource type="Resource" uid="uid://ccd45ithmlluj" path="res://characters/_gender/_Unknown.tres" id="7_up1d2"]
+[ext_resource type="Resource" uid="uid://cakblj60r6ir" path="res://gear/weapon/cheat_sword.tres" id="7_uxndi"]
 [ext_resource type="Resource" uid="uid://cs2tci0dc3vvo" path="res://characters/_class/_Unknown.tres" id="8_xghbj"]
 [ext_resource type="Resource" uid="uid://lcgngc3c13fc" path="res://characters/_race/_Unknown.tres" id="9_ghhp2"]
 [ext_resource type="Script" uid="uid://bwn4gpkaijqsg" path="res://scripts/CharacterResource.gd" id="10_fb0jw"]
@@ -30,7 +31,7 @@ metadata/_custom_type_script = "uid://bqln4xpkkidja"
 
 [resource]
 script = ExtResource("10_fb0jw")
-default_items = Array[ExtResource("4_jti2u")]([ExtResource("6_jti2u")])
+default_items = Array[ExtResource("4_jti2u")]([ExtResource("6_jti2u"), ExtResource("7_uxndi")])
 base_stats = ExtResource("1_lkn2v")
 stat_level_growth = SubResource("Resource_uxndi")
 id = "mc"
