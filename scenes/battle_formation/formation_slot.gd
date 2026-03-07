@@ -3,6 +3,7 @@ extends Node3D
 class_name FormationSlot
 
 @onready var targeting_area: Area3D = $Area3D
+var is_slot_targeting_enabled: bool = true
 
 var character_instance: CharacterInstance
 var body_instance: CharacterBody
@@ -11,7 +12,7 @@ var home_global: Vector3
 var animation_player: AnimationPlayer
 
 func _ready() -> void:
-	BattleBus.enemy_died.connect(on_ded)
+	#BattleBus.enemy_died.connect(on_ded)
 	if targeting_area:
 		targeting_area.mouse_entered.connect(_on_mouse_entered)
 		targeting_area.mouse_exited.connect(_on_mouse_exited)
@@ -62,6 +63,26 @@ func clear() -> void:
 func _on_anim_finish(_e: StringName) -> void:
 	body_instance.play_idle()
 
+
+func perform_attack(range: TargetingManager.RangeType, target: FormationSlot) -> void:
+	if range == TargetingManager.RangeType.MELEE:
+		await perform_run_towards_target(target)
+	
+	body_instance.play_attack(range)
+
+
+func perform_skill(range: TargetingManager.RangeType, animation: String, target: FormationSlot) -> void:
+	if range == TargetingManager.RangeType.MELEE:
+		await perform_run_towards_target(target)
+	
+	body_instance.play_skill(range, animation)
+
+
+func perform_item_use(target: FormationSlot) -> void:
+	await perform_run_towards_target(target)
+	body_instance.play_item_use()
+
+
 func perform_run_towards_target(target: FormationSlot) -> void:
 	var tween := create_tween()
 
@@ -90,8 +111,6 @@ func perform_run_towards_target(target: FormationSlot) -> void:
 		.set_ease(Tween.EASE_IN_OUT)
 	await tween.finished
 
-func perform_attack() -> void:
-	body_instance.play_attack()
 
 func position_back() -> void:
 	if animation_player.is_playing() and animation_player.current_animation:
@@ -126,9 +145,9 @@ func position_back() -> void:
 func capture_home() -> void:
 	home_global = global_position
 
-func on_ded(c: CharacterInstance) -> void:
-	if c == character_instance:
-		body_instance.play_dead()
+func perform_death() -> void:
+	is_slot_targeting_enabled = false
+	body_instance.play_dead()
 
 func _on_mouse_entered() -> void:
 	if not character_instance:
@@ -141,7 +160,7 @@ func _on_mouse_exited() -> void:
 	unhover()
 
 func _on_input_event(_camera: Camera3D, event: InputEvent, _position: Vector3, _normal: Vector3, _shape_idx: int) -> void:
-	if !BattleContext.enemy_targeting_enabled:
+	if !BattleContext.enemy_targeting_enabled or !is_slot_targeting_enabled:
 		return
 		
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:

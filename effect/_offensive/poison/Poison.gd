@@ -7,6 +7,10 @@ var _remaining: int = 0
 var _should_refresh_duration: bool = true
 
 
+func _init() -> void:
+	battle_only = false
+
+
 func _is_stackable() -> bool:
 	return true
 

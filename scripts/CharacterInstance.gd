@@ -183,7 +183,7 @@ func prepare_for_battle() -> void:
 
 func cleanup_after_battle() -> void:
 	for e: Effect in effects:
-		if e.is_battle_only:
+		if e.battle_only:
 			e.remove_self()
 	
 	state.temporary_modifiers = []

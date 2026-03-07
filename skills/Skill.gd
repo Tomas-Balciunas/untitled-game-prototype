@@ -9,6 +9,8 @@ class_name Skill
 @export var cost: SkillCost
 @export var effects: Array[Effect] = []
 @export var targeting_type: TargetingManager.TargetType = TargetingManager.TargetType.SINGLE
+@export var skill_range: TargetingManager.RangeType = TargetingManager.RangeType.MELEE
+@export var animation_name: String
 @export var owner_only: bool = false
 
 

@@ -1,21 +1,21 @@
-[gd_scene load_steps=5 format=3 uid="uid://kreplysm57gi"]
+[gd_scene format=3 uid="uid://kreplysm57gi"]
 
 [ext_resource type="Script" uid="uid://c3w3lgndriikd" path="res://scripts/BattleScene.gd" id="1_28s16"]
 [ext_resource type="Script" uid="uid://w5crfr45qebk" path="res://scenes/battle_formation/enemy_formation.gd" id="2_ftvu5"]
 [ext_resource type="Script" uid="uid://4pqalqx03wf1" path="res://scenes/battle_formation/ally_formation.gd" id="3_ftvu5"]
 [ext_resource type="Script" uid="uid://djga0vllljxhw" path="res://scripts/BattleManager.gd" id="5_ftvu5"]
 
-[node name="BattleScene" type="Node3D"]
+[node name="BattleScene" type="Node3D" unique_id=1669004556]
 script = ExtResource("1_28s16")
 metadata/_editor_floor_ = Vector3(0, 0, 0)
 
-[node name="EnemyFormation" type="Node3D" parent="."]
+[node name="EnemyFormation" type="Node3D" parent="." unique_id=877517853]
 script = ExtResource("2_ftvu5")
 
-[node name="AllyFormation" type="Node3D" parent="."]
+[node name="AllyFormation" type="Node3D" parent="." unique_id=1926438377]
 script = ExtResource("3_ftvu5")
 
-[node name="SpotLight3D" type="SpotLight3D" parent="."]
+[node name="SpotLight3D" type="SpotLight3D" parent="." unique_id=1985327168]
 transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 0, 3, -9)
 light_energy = 1.162
 light_specular = 0.0
@@ -24,7 +24,7 @@ spot_attenuation = 1.19
 spot_angle = 49.32
 spot_angle_attenuation = 1.56917
 
-[node name="ArenaRoot" type="Node3D" parent="."]
+[node name="ArenaRoot" type="Node3D" parent="." unique_id=1846614400]
 
-[node name="BattleManager" type="Node" parent="."]
+[node name="BattleManager" type="Node" parent="." unique_id=1852551703]
 script = ExtResource("5_ftvu5")

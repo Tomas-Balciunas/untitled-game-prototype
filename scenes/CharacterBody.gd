@@ -48,9 +48,10 @@ func play_dead() -> void:
 	var material := ShaderMaterial.new()
 	material.shader = death_shader
 	material.set_shader_parameter("albedo_texture", sprite.texture)
-	material.set_shader_parameter("noise_strength", 0.08)
+	material.set_shader_parameter("noise_strength", 0.12)
+	material.set_shader_parameter("noise_scale", 25.0)
 	material.set_shader_parameter("edge_color", Color(0.5, 0.0, 0.0, 1.0))
-	material.set_shader_parameter("edge_size", 0.05)
+	material.set_shader_parameter("edge_size", 0.08)
 	sprite.material_override = material
 	
 	material.set_shader_parameter("uv_scale", uv_scale)
@@ -61,14 +62,14 @@ func play_dead() -> void:
 		func(v): material.set_shader_parameter("death_progress", v),
 		0.0,
 		1.0,
-		1
+		0.8
 	)
 	
 	var particles = GPUParticles3D.new()
-	particles.amount = 90
-	particles.lifetime = 1.0
+	particles.amount = 120
+	particles.lifetime = 1.2
 	particles.one_shot = true
-	particles.explosiveness = 0.8
+	particles.explosiveness = 0.7
 	particles.emitting = true
 	particles.process_material = ParticleProcessMaterial.new() if blood_particle_material == null else blood_particle_material
 	
@@ -77,12 +78,12 @@ func play_dead() -> void:
 		process_mat.emission_shape = ParticleProcessMaterial.EMISSION_SHAPE_BOX
 		process_mat.emission_box_extents = Vector3(0.2, 0.5, 0.2)
 		process_mat.direction = Vector3(0, -1, 0)
-		process_mat.spread = 50.0
-		process_mat.initial_velocity_min = 0.2
-		process_mat.initial_velocity_max = 5.0
+		process_mat.spread = 60.0
+		process_mat.initial_velocity_min = 0.1
+		process_mat.initial_velocity_max = 4.0
 		process_mat.gravity = Vector3(0, -11.8, 0)
-		process_mat.scale_min = 0.07
-		process_mat.scale_max = 0.1
+		process_mat.scale_min = 0.05
+		process_mat.scale_max = 0.12
 		process_mat.color = Color(0.8, 0.0, 0.0, 1.0)
 		var gradient = Gradient.new()
 		gradient.add_point(0.0, Color(0.8, 0.0, 0.0, 1.0))
@@ -94,7 +95,7 @@ func play_dead() -> void:
 		process_mat.color_ramp = gradient_texture
 		
 		particles.draw_pass_1 = PlaneMesh.new()
-		particles.draw_pass_1.size = Vector2(0.1, 0.1)
+		particles.draw_pass_1.size = Vector2(0.08, 0.08)
 	
 	add_child(particles)
 	particles.position = sprite.position
@@ -112,10 +113,55 @@ func play_run_back() -> void:
 	if animation_player.has_animation("run_back"):
 		animation_player.play("run_back")
 
-func play_attack() -> void:
+func play_attack(range: TargetingManager.RangeType) -> void:
+	if range == TargetingManager.RangeType.MELEE:
+		if animation_player.has_animation("melee_attack"):
+			animation_player.play("melee_attack")
+			await animation_player.animation_finished
+			
+			return
+	
+	if range == TargetingManager.RangeType.RANGED:
+		if animation_player.has_animation("ranged_attack"):
+			animation_player.play("ranged_attack")
+			await animation_player.animation_finished
+			
+			return
+	
 	if animation_player.has_animation("attack"):
 		animation_player.play("attack")
 		await animation_player.animation_finished
+
+
+func play_skill(range: TargetingManager.RangeType, animation: String) -> void:
+	if animation_player.has_animation(animation):
+		animation_player.play(animation)
+		await animation_player.animation_finished
+		
+		return
+	
+	if range == TargetingManager.RangeType.MELEE:
+		if animation_player.has_animation("melee_attack"):
+			animation_player.play("melee_attack")
+			await animation_player.animation_finished
+			
+			return
+	
+	if range == TargetingManager.RangeType.RANGED:
+		if animation_player.has_animation("ranged_attack"):
+			animation_player.play("ranged_attack")
+			await animation_player.animation_finished
+	
+	if animation_player.has_animation("attack"):
+		animation_player.play("attack")
+		await animation_player.animation_finished
+
+
+func play_item_use() -> void:
+	if animation_player.has_animation("attack"):
+		animation_player.play("attack")
+		await animation_player.animation_finished
+
 
 func play_damaged() -> void:
 	if animation_player.has_animation("damaged"):

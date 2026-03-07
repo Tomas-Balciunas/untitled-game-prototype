@@ -189,6 +189,7 @@ func _perform_player_action(action: String, target: CharacterInstance) -> void:
 	match action:
 		BattleBus.ATTACK:
 			var targeting: TargetingManager.TargetType = current_battler.equipment["weapon"].targeting if current_battler.equipment["weapon"] else TargetingManager.TargetType.SINGLE
+			var range: TargetingManager.RangeType = current_battler.equipment["weapon"].weapon_range if current_battler.equipment["weapon"] else TargetingManager.RangeType.MELEE
 			var targets := TargetingManager.get_applicable_targets(target, targeting)
 			
 			var ctx := ActionContext.new()
@@ -201,9 +202,8 @@ func _perform_player_action(action: String, target: CharacterInstance) -> void:
 				"source": current_battler,
 				"target": targets
 			})
-			await attacker_slot.perform_run_towards_target(target_slot)
 			
-			attacker_slot.perform_attack()
+			await attacker_slot.perform_attack(range, target_slot)
 			var timed_out: bool = await SignalFailsafe.await_signal_or_timeout(self, BattleBus.attack_connected, ATTACK_CONNECTED_TIMEOUT)
 
 			if timed_out:
@@ -225,14 +225,13 @@ func _perform_player_action(action: String, target: CharacterInstance) -> void:
 			ctx.temporary_effects = skill.effects
 			
 			current_state = BattleState.ANIMATING
-			await attacker_slot.perform_run_towards_target(target_slot)
-			attacker_slot.perform_attack()
+			await attacker_slot.perform_skill(skill.skill_range, skill.animation_name, target_slot)
 			var timed_out: bool = await SignalFailsafe.await_signal_or_timeout(self, BattleBus.attack_connected, ATTACK_CONNECTED_TIMEOUT)
 
 			if timed_out:
 				push_error("Attack connected signal timed out for character: %s, %s " % [current_battler.resource.name, current_battler.resource.id])
 			
-			var context = await SkillResolver.new(skill).execute(ctx)
+			var context: ActionContext = await SkillResolver.new(skill).execute(ctx)
 			
 			for proc in context.additional_procs:
 				proc["resolver"].execute(proc["ctx"])
@@ -254,8 +253,7 @@ func _perform_player_action(action: String, target: CharacterInstance) -> void:
 			cons.actively_cast = true
 			
 			current_state = BattleState.ANIMATING
-			await attacker_slot.perform_run_towards_target(target_slot)
-			attacker_slot.perform_attack()
+			await attacker_slot.perform_item_use(target_slot)
 			var timed_out: bool = await SignalFailsafe.await_signal_or_timeout(self, BattleBus.attack_connected, ATTACK_CONNECTED_TIMEOUT)
 
 			if timed_out:
@@ -293,9 +291,10 @@ func _process_enemy_turn(ctx: ActionContext) -> void:
 
 		target = valid_targets.pick_random()
 	
-	current_state = BattleState.ANIMATING
+	
 	var attacker_slot := get_slot(current_battler)
 	var target_slot := get_slot(target)
+	var range: TargetingManager.RangeType = current_battler.equipment["weapon"].weapon_range if current_battler.equipment["weapon"] else TargetingManager.RangeType.MELEE
 	
 	var atk := ActionContext.new()
 	atk.source = CharacterSource.new(current_battler)
@@ -307,8 +306,8 @@ func _process_enemy_turn(ctx: ActionContext) -> void:
 				"target": [target]
 			})
 	
-	await attacker_slot.perform_run_towards_target(target_slot)
-	attacker_slot.perform_attack()
+	current_state = BattleState.ANIMATING
+	await attacker_slot.perform_attack(range, target_slot)
 	var timed_out: bool = await SignalFailsafe.await_signal_or_timeout(self, BattleBus.attack_connected, ATTACK_CONNECTED_TIMEOUT)
 
 	if timed_out:
@@ -385,17 +384,23 @@ func _register_battler(battler: CharacterInstance) -> void:
 func _on_battler_died(rip: CharacterInstance) -> void:
 	if rip not in party:
 		_to_cleanup.append(rip)
+		var slot = get_slot(rip)
+		slot.perform_death()
 	
 func _corpse_janny() -> void:
+	var old_state = current_state
+	
+	current_state = BattleState.ANIMATING
+	
 	for dead in _to_cleanup:
 		battlers.erase(dead)
 		#party.erase(dead)
 		enemies.erase(dead)
 		turn_queue.erase(dead)
 		#battle_ui.remove_character(dead)
-		
-		BattleBus.enemy_died.emit(dead)
 	_to_cleanup.clear()
+	
+	current_state = old_state
 
 func disable_all_targeting() -> void:
 	BattleContext.enemy_targeting_enabled = false

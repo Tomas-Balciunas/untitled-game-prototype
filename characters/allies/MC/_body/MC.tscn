@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://bbixalnsv3np6"]
 
-[ext_resource type="Script" uid="uid://dr1sxm5h6jdqr" path="res://scenes/CharacterBody.gd" id="1_y8q8x"]
+[ext_resource type="Script" uid="uid://cy1ormkhyh1hu" path="res://characters/mc_body.gd" id="1_16jax"]
 [ext_resource type="PackedScene" uid="uid://cvlg8i4oihok1" path="res://scenes/damage_numbers/3d/number_display_3d.tscn" id="2_cms24"]
 [ext_resource type="Texture2D" uid="uid://b1b6hho86aj7g" path="res://characters/allies/MC/_body/slash.png" id="3_16jax"]
 
@@ -223,7 +223,7 @@ _data = {
 }
 
 [node name="CharacterBody" type="CharacterBody3D" unique_id=622304715]
-script = ExtResource("1_y8q8x")
+script = ExtResource("1_16jax")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=190584308]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)

@@ -12,6 +12,11 @@ enum TargetType {
 	MASS
 }
 
+enum RangeType {
+	MELEE,
+	RANGED
+}
+
 enum Mode {
 	DISABLED,
 	NONE,
