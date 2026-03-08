@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://cygiaifldp3mm"]
+[gd_scene format=3 uid="uid://cygiaifldp3mm"]
 
 [ext_resource type="Script" uid="uid://dr1sxm5h6jdqr" path="res://scenes/CharacterBody.gd" id="1_2mlou"]
 [ext_resource type="Texture2D" uid="uid://hyelqwalee3g" path="res://characters/foes/Skeltal/219169-f863df69f4ba01ca40a9ae2d1d3b0209.png" id="2_afkie"]
@@ -186,16 +186,16 @@ _data = {
 &"run_right": SubResource("Animation_omddt")
 }
 
-[node name="CharacterBody" type="CharacterBody3D"]
+[node name="CharacterBody" type="CharacterBody3D" unique_id=900480159]
 collision_layer = 4
 script = ExtResource("1_2mlou")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1406767763]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 shape = SubResource("CylinderShape3D_8j8tm")
 disabled = true
 
-[node name="Sprite" type="Sprite3D" parent="."]
+[node name="Sprite" type="Sprite3D" parent="." unique_id=1131830136]
 transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 1, 0)
 billboard = 2
 texture_filter = 0
@@ -204,11 +204,12 @@ hframes = 12
 vframes = 8
 frame = 57
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1223166895]
 deterministic = true
-libraries = {
-&"": SubResource("AnimationLibrary_2w84f")
-}
+libraries/ = SubResource("AnimationLibrary_2w84f")
 
-[node name="NumberDisplay" parent="." instance=ExtResource("3_mkxmg")]
+[node name="NumberDisplay" parent="." unique_id=845883962 instance=ExtResource("3_mkxmg")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+
+[node name="ProjectileSpawn" type="Node3D" parent="." unique_id=718878794]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.85, 0)

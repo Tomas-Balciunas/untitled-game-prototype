@@ -12,18 +12,18 @@ func _init(_stage: String, _actor: CharacterInstance) -> void:
 
 
 func execute(ctx: ActionContext) -> ActionContext:
-	var event = build_event(ctx)
+	var event: TriggerEvent = build_event(ctx)
 	
 	EffectRunner.process_trigger(stage, event)
 	
 	if event.ctx.should_tick:
-		var ticker = TickDoT.new(actor)
+		var ticker: TickDoT = TickDoT.new(actor, ctx)
 		ticker.execute()
 
 	return event.ctx
 
 func build_event(ctx: ActionContext) -> TriggerEvent:
-	var event = TriggerEvent.new()
+	var event: TriggerEvent = TriggerEvent.new()
 	event.ctx = ctx
 	event.actor = CharacterSource.new(actor)
 	

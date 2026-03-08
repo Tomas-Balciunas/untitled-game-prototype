@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://o2er7ci6l504"]
+[gd_scene format=3 uid="uid://o2er7ci6l504"]
 
 [ext_resource type="Script" uid="uid://dr1sxm5h6jdqr" path="res://scenes/CharacterBody.gd" id="1_iglqt"]
 [ext_resource type="Texture2D" uid="uid://derbgmwdiip8f" path="res://characters/foes/Balmer/219247-6cdde8c35dac084c38e70faab7ba7f2a.png" id="2_y3csi"]
@@ -187,16 +187,16 @@ _data = {
 &"run_right": SubResource("Animation_omddt")
 }
 
-[node name="CharacterBody" type="CharacterBody3D"]
+[node name="CharacterBody" type="CharacterBody3D" unique_id=1321871472]
 collision_layer = 4
 script = ExtResource("1_iglqt")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1996644018]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 shape = SubResource("CylinderShape3D_8j8tm")
 disabled = true
 
-[node name="Sprite" type="Sprite3D" parent="."]
+[node name="Sprite" type="Sprite3D" parent="." unique_id=55518271]
 transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 1, 0)
 billboard = 2
 texture_filter = 0
@@ -205,13 +205,14 @@ hframes = 12
 vframes = 8
 frame = 57
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1217871949]
 deterministic = true
-libraries = {
-&"": SubResource("AnimationLibrary_2w84f")
-}
+libraries/ = SubResource("AnimationLibrary_2w84f")
 
-[node name="NumberDisplay" parent="." instance=ExtResource("3_d5n0v")]
+[node name="NumberDisplay" parent="." unique_id=1185067126 instance=ExtResource("3_d5n0v")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
 
-[node name="SmallChatter" parent="." instance=ExtResource("4_cfoa8")]
+[node name="SmallChatter" parent="." unique_id=1262946904 instance=ExtResource("4_cfoa8")]
+
+[node name="ProjectileSpawn" type="Node3D" parent="." unique_id=274462983]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.85, 0)

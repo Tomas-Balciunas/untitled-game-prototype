@@ -1,0 +1,13 @@
+[gd_scene format=3 uid="uid://ixevorw37712"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_u1anp"]
+albedo_color = Color(0.526684, 0.4486071, 0.52945197, 1)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_u1anp"]
+material = SubResource("StandardMaterial3D_u1anp")
+
+[node name="Projectile" type="RigidBody3D" unique_id=736219474]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1019647280]
+transform = Transform3D(1.3524169e-16, -6.5567085e-09, 0.014999999, -0.014999999, -6.5567085e-09, 1.0658138e-16, 6.556708e-10, -0.14999999, -6.556708e-10, 0, 0, 0)
+mesh = SubResource("CylinderMesh_u1anp")

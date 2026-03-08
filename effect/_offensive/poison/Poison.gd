@@ -45,7 +45,7 @@ func get_description() -> String:
 	return "Deals %s damage per turn, %s turns remaining" % [damage_per_turn * stacks, _remaining]
 
 
-func tick() -> void:
+func tick(ctx: ActionContext) -> void:
 	if owner == null:
 		push_error("PoisonEffect: Owner is null during on_turn_end tick.")
 		return
@@ -54,9 +54,11 @@ func tick() -> void:
 	tick.source = source
 	tick.set_targets(owner)
 	tick.options = tick.options.duplicate() if tick.options else {}
-	DamageResolver.new(damage_per_turn * stacks).execute(tick)
+	DamageResolver.new((damage_per_turn * stacks) * ctx.tick_power).execute(tick)
 
-	_remaining -= 1
+	if ctx.should_tick_consume_duration:
+		_remaining -= 1
+	
 	print("Poison tick: %s takes %d from %s — remaining %d" % [owner.resource.name, damage_per_turn, tick.source.get_source_name(), _remaining])
 
 	if _remaining <= 0:

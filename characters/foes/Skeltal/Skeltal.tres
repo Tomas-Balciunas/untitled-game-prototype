@@ -17,7 +17,7 @@
 
 [resource]
 script = ExtResource("1_km1me")
-default_effects = Array[ExtResource("1_73qgh")]([ExtResource("5_6he51"), ExtResource("5_6he51"), ExtResource("5_6he51"), ExtResource("5_6he51"), ExtResource("5_6he51"), ExtResource("5_6he51"), ExtResource("5_6he51"), ExtResource("5_6he51"), ExtResource("5_6he51"), ExtResource("5_6he51")])
+default_effects = Array[ExtResource("1_73qgh")]([ExtResource("5_6he51"), ExtResource("5_6he51")])
 id = "0000"
 name = "Skeleton"
 character_body = ExtResource("3_tl2ml")

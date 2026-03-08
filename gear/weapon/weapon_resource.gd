@@ -8,6 +8,7 @@ enum Type {
 }
 
 @export var targeting: TargetingManager.TargetType = TargetingManager.TargetType.SINGLE
+@export var attack_rate: int = 1
 @export var weapon_range: TargetingManager.RangeType = TargetingManager.RangeType.MELEE
 @export var weapon_type: Type = Type.SWORD 
 @export var accuracy_range: int = 0
@@ -38,6 +39,7 @@ func _build_instance() -> Weapon:
 	weapon.weapon_type = weapon_type
 	weapon.weapon_range = weapon_range
 	weapon.accuracy_range = accuracy_range
+	weapon.attack_rate = attack_rate
 	
 	return weapon
 

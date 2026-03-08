@@ -69,5 +69,5 @@ func _modifies_skill_cost() -> bool:
 func modify_skill_cost(_skill: Skill, _sc: SkillCost) -> SkillCost:
 	return _sc
 
-func tick() -> void:
+func tick(_ctx: ActionContext) -> void:
 	pass

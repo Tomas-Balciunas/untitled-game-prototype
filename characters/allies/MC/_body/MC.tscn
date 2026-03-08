@@ -153,6 +153,9 @@ tracks/0/keys = {
 "values": [57, 58, 59, 58]
 }
 
+[sub_resource type="Animation" id="Animation_16jax"]
+resource_name = "ranged_attack"
+
 [sub_resource type="Animation" id="Animation_gy4ce"]
 resource_name = "run_up"
 length = 0.7
@@ -216,6 +219,7 @@ _data = {
 &"attack": SubResource("Animation_2behk"),
 &"damaged": SubResource("Animation_ygenq"),
 &"idle": SubResource("Animation_5vn74"),
+&"ranged_attack": SubResource("Animation_16jax"),
 &"run_back": SubResource("Animation_gy4ce"),
 &"run_front": SubResource("Animation_tuj5j"),
 &"run_left": SubResource("Animation_cp8t1"),
@@ -261,3 +265,6 @@ transform = Transform3D(1, 0, 0, 0, 0.0297301, 0, 0, 0, 1, 0, 0, 0.312911)
 light_color = Color(0.585928, 0.568995, 0.564924, 1)
 light_indirect_energy = 2.826
 omni_range = 6.66321
+
+[node name="ProjectileSpawn" type="Node3D" parent="." unique_id=1575553711]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.85, 0)

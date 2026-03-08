@@ -9,11 +9,39 @@
 [ext_resource type="Resource" uid="uid://c5qyqcmwx0qfy" path="res://scripts/experience/ExperienceManager.tres" id="6_l36pt"]
 [ext_resource type="Script" uid="uid://dq4acpkde276p" path="res://skills/Skill.gd" id="6_lkn2v"]
 [ext_resource type="Resource" uid="uid://ccd45ithmlluj" path="res://characters/_gender/_Unknown.tres" id="7_up1d2"]
-[ext_resource type="Resource" uid="uid://cakblj60r6ir" path="res://gear/weapon/cheat_sword.tres" id="7_uxndi"]
 [ext_resource type="Resource" uid="uid://cs2tci0dc3vvo" path="res://characters/_class/_Unknown.tres" id="8_xghbj"]
 [ext_resource type="Resource" uid="uid://lcgngc3c13fc" path="res://characters/_race/_Unknown.tres" id="9_ghhp2"]
+[ext_resource type="Script" uid="uid://cyhrh3l20i5dm" path="res://stat/StatModifier.gd" id="9_up1d2"]
+[ext_resource type="Resource" uid="uid://b6feokcsb2ttg" path="res://effect/_offensive/poison/poison_resolution_on_hit.tres" id="9_xghbj"]
 [ext_resource type="Script" uid="uid://bwn4gpkaijqsg" path="res://scripts/CharacterResource.gd" id="10_fb0jw"]
+[ext_resource type="Script" uid="uid://dshxh47nef2ua" path="res://gear/weapon/weapon_resource.gd" id="10_xghbj"]
 [ext_resource type="Script" uid="uid://bqln4xpkkidja" path="res://stat/_stats/stats.gd" id="12_jti2u"]
+
+[sub_resource type="Resource" id="Resource_pcxjb"]
+script = ExtResource("12_jti2u")
+attack = 500
+metadata/_custom_type_script = "uid://bqln4xpkkidja"
+
+[sub_resource type="Resource" id="Resource_up1d2"]
+script = ExtResource("10_xghbj")
+targeting = 1
+base_stats = SubResource("Resource_pcxjb")
+metadata/_custom_type_script = "uid://dshxh47nef2ua"
+
+[sub_resource type="Resource" id="Resource_ghhp2"]
+script = ExtResource("12_jti2u")
+attack = 5
+metadata/_custom_type_script = "uid://bqln4xpkkidja"
+
+[sub_resource type="Resource" id="Resource_fb0jw"]
+script = ExtResource("10_xghbj")
+attack_rate = 3
+weapon_range = 1
+base_stats = SubResource("Resource_ghhp2")
+effects = Array[ExtResource("4_2usx5")]([ExtResource("9_xghbj")])
+name = "Dagger"
+description = "whatever"
+metadata/_custom_type_script = "uid://dshxh47nef2ua"
 
 [sub_resource type="Resource" id="Resource_uxndi"]
 script = ExtResource("12_jti2u")
@@ -31,7 +59,7 @@ metadata/_custom_type_script = "uid://bqln4xpkkidja"
 
 [resource]
 script = ExtResource("10_fb0jw")
-default_items = Array[ExtResource("4_jti2u")]([ExtResource("6_jti2u"), ExtResource("7_uxndi")])
+default_items = Array[ExtResource("4_jti2u")]([ExtResource("6_jti2u"), SubResource("Resource_up1d2"), SubResource("Resource_fb0jw")])
 base_stats = ExtResource("1_lkn2v")
 stat_level_growth = SubResource("Resource_uxndi")
 id = "mc"

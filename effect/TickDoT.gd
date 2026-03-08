@@ -6,10 +6,12 @@ class_name TickDoT
 var target: CharacterInstance = null
 var tick_power: float = 1.0
 var should_consume_duration: bool = true
+var ctx: ActionContext = null
 
 
-func _init(_target: CharacterInstance) -> void:
+func _init(_target: CharacterInstance, _ctx: ActionContext) -> void:
 	target = _target
+	ctx = _ctx
 
 
 func set_tick_power(power: float) -> void:
@@ -22,4 +24,4 @@ func set_duration_consumption(should_consume: bool) -> void:
 
 func execute() -> void:
 	for effect in target.effects:
-		effect.tick()
+		effect.tick(ctx)

@@ -65,17 +65,11 @@ func _on_anim_finish(_e: StringName) -> void:
 
 
 func perform_attack(range: TargetingManager.RangeType, target: FormationSlot) -> void:
-	if range == TargetingManager.RangeType.MELEE:
-		await perform_run_towards_target(target)
-	
-	body_instance.play_attack(range)
+	body_instance.play_attack(range, target.global_position)
 
 
 func perform_skill(range: TargetingManager.RangeType, animation: String, target: FormationSlot) -> void:
-	if range == TargetingManager.RangeType.MELEE:
-		await perform_run_towards_target(target)
-	
-	body_instance.play_skill(range, animation)
+	body_instance.play_skill(range, animation, target.global_position)
 
 
 func perform_item_use(target: FormationSlot) -> void:
@@ -84,7 +78,7 @@ func perform_item_use(target: FormationSlot) -> void:
 
 
 func perform_run_towards_target(target: FormationSlot) -> void:
-	var tween := create_tween()
+	var tween: Tween = create_tween()
 
 	var parent_space := get_parent()
 	var self_pos_local: Vector3 = parent_space.to_local(global_position)
@@ -96,38 +90,29 @@ func perform_run_towards_target(target: FormationSlot) -> void:
 
 	body_instance.play_run_back()
 
-	if character_instance.is_main:
-		if body_instance.has_node("Camera3D"):
-			var cam: Camera3D = body_instance.get_node("Camera3D")
-			var target_pos := target.global_position
-			var dir := (target_pos - cam.global_position).normalized()
-			var desired_yaw := atan2(dir.x, dir.z) + PI
-			tween.set_parallel()
-			tween.tween_property(cam, "rotation:y", desired_yaw, 0.3)\
-			.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
-
 	tween.tween_property(self, "position", stop_position_local, 1)\
 		.set_trans(Tween.TRANS_SINE)\
 		.set_ease(Tween.EASE_IN_OUT)
 	await tween.finished
 
 
-func position_back() -> void:
-	if animation_player.is_playing() and animation_player.current_animation:
-		var anim := animation_player.current_animation
-		if not animation_player.get_animation(anim).loop_mode:
-			await animation_player.animation_finished
+func look_at_target(target: FormationSlot) -> void:
+	if body_instance.has_node("Camera3D"):
+		var tween: Tween = create_tween()
+		var cam: Camera3D = body_instance.get_node("Camera3D")
+		var target_pos := target.global_position
+		var dir := (target_pos - cam.global_position).normalized()
+		var desired_yaw := atan2(dir.x, dir.z) + PI
+		tween.set_parallel()
+		tween.tween_property(cam, "rotation:y", desired_yaw, 0.3)\
+		.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+		await tween.finished
 
+
+func position_back() -> void:
 	var parent_space := get_parent()
 	var home_local: Vector3 = parent_space.to_local(home_global)
-
-	if position == home_local:
-		return
-
 	var tween_back := create_tween()
-	tween_back.set_parallel()
-	body_instance.play_run()
-	tween_back.tween_property(self, "position", home_local, 0.4).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
 	
 	if body_instance.has_node("Camera3D"):
 		var cam: Camera3D = body_instance.get_node("Camera3D")
@@ -137,6 +122,14 @@ func position_back() -> void:
 			0 + PI,
 			0.3
 		).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+
+	if position == home_local:
+		return
+
+	
+	tween_back.set_parallel()
+	body_instance.play_run()
+	tween_back.tween_property(self, "position", home_local, 0.4).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
 	
 	await tween_back.finished
 

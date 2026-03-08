@@ -1,7 +1,7 @@
 shader_type spatial;
 render_mode unshaded, cull_disabled, blend_mix;
 
-uniform sampler2D albedo_texture : source_color;
+uniform sampler2D albedo_texture : source_color, filter_nearest;
 
 uniform vec2 uv_scale = vec2(1.0, 1.0);
 uniform vec2 uv_offset = vec2(0.0, 0.0);
@@ -59,7 +59,8 @@ void fragment() {
     ALBEDO = tex.rgb;
     ALPHA = tex.a;
 
-    if (abs(local_uv.y - threshold) < edge_size) {
-        ALBEDO = mix(ALBEDO, edge_color.rgb, 0.7);
+    if (abs(local_uv.y - effective_threshold) < edge_size) {
+        float edge_factor = smoothstep(0.0, edge_size, edge_size - abs(local_uv.y - effective_threshold));
+        ALBEDO = mix(ALBEDO, edge_color.rgb, edge_factor * 0.8);  // Smoother transition for gooey feel
     }
 }

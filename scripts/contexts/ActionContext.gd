@@ -13,6 +13,8 @@ var skip_turn: bool = false
 var force_action: bool = false
 var forced_skill: Skill = null
 var should_tick: bool = false
+var should_tick_consume_duration: bool = true
+var tick_power: float = 1.0
 
 var additional_procs: Array = []
 

@@ -5,6 +5,8 @@ class_name CharacterBody
 @onready var sprite: Sprite3D = $Sprite
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
 @onready var number_display: FormationSlotNumbers = $NumberDisplay
+@onready var projectile_spawn: Node3D = $ProjectileSpawn
+const DEFAULT_PROJECTILE = preload("uid://ixevorw37712")
 
 var body_owner: CharacterInstance = null
 var death_shader = preload("uid://crlilwavkuu5u")
@@ -18,6 +20,7 @@ func _ready() -> void:
 	
 func _on_damaged(c: CharacterInstance, amt: int) -> void:
 	if body_owner and c == body_owner:
+		animation_player.stop()
 		play_damaged()
 		number_display.display_damage(amt)
 	
@@ -62,7 +65,7 @@ func play_dead() -> void:
 		func(v): material.set_shader_parameter("death_progress", v),
 		0.0,
 		1.0,
-		0.8
+		1
 	)
 	
 	var particles = GPUParticles3D.new()
@@ -79,12 +82,13 @@ func play_dead() -> void:
 		process_mat.emission_box_extents = Vector3(0.2, 0.5, 0.2)
 		process_mat.direction = Vector3(0, -1, 0)
 		process_mat.spread = 60.0
-		process_mat.initial_velocity_min = 0.1
+		process_mat.initial_velocity_min = 0.0
 		process_mat.initial_velocity_max = 4.0
 		process_mat.gravity = Vector3(0, -11.8, 0)
 		process_mat.scale_min = 0.05
 		process_mat.scale_max = 0.12
 		process_mat.color = Color(0.8, 0.0, 0.0, 1.0)
+		process_mat.particle_flag_align_y = true
 		var gradient = Gradient.new()
 		gradient.add_point(0.0, Color(0.8, 0.0, 0.0, 1.0))
 		gradient.add_point(1.0, Color(0.8, 0.0, 0.0, 0.0))
@@ -96,7 +100,7 @@ func play_dead() -> void:
 		
 		particles.draw_pass_1 = PlaneMesh.new()
 		particles.draw_pass_1.size = Vector2(0.08, 0.08)
-	
+	particles.draw_pass_1.size = Vector2(0.1, 0.3)
 	add_child(particles)
 	particles.position = sprite.position
 	
@@ -113,7 +117,7 @@ func play_run_back() -> void:
 	if animation_player.has_animation("run_back"):
 		animation_player.play("run_back")
 
-func play_attack(range: TargetingManager.RangeType) -> void:
+func play_attack(range: TargetingManager.RangeType, target_pos: Vector3) -> void:
 	if range == TargetingManager.RangeType.MELEE:
 		if animation_player.has_animation("melee_attack"):
 			animation_player.play("melee_attack")
@@ -122,18 +126,16 @@ func play_attack(range: TargetingManager.RangeType) -> void:
 			return
 	
 	if range == TargetingManager.RangeType.RANGED:
-		if animation_player.has_animation("ranged_attack"):
-			animation_player.play("ranged_attack")
-			await animation_player.animation_finished
-			
-			return
+		fire_projectile(target_pos)
+	
+		return
 	
 	if animation_player.has_animation("attack"):
 		animation_player.play("attack")
 		await animation_player.animation_finished
 
 
-func play_skill(range: TargetingManager.RangeType, animation: String) -> void:
+func play_skill(range: TargetingManager.RangeType, animation: String, target_pos: Vector3) -> void:
 	if animation_player.has_animation(animation):
 		animation_player.play(animation)
 		await animation_player.animation_finished
@@ -148,9 +150,9 @@ func play_skill(range: TargetingManager.RangeType, animation: String) -> void:
 			return
 	
 	if range == TargetingManager.RangeType.RANGED:
-		if animation_player.has_animation("ranged_attack"):
-			animation_player.play("ranged_attack")
-			await animation_player.animation_finished
+		fire_projectile(target_pos)
+		
+		return
 	
 	if animation_player.has_animation("attack"):
 		animation_player.play("attack")
@@ -175,3 +177,22 @@ func _on_anim_finish() -> void:
 
 func _attack_connected() -> void:
 	BattleBus.attack_connected.emit()
+
+
+func fire_projectile(target_pos: Vector3) -> void:
+	var projectile: RigidBody3D = DEFAULT_PROJECTILE.instantiate()
+	var to_target: Vector3 = target_pos - global_position
+	var distance: float = to_target.length()
+	var direction: Vector3 = to_target.normalized()
+	var speed: float = 40.0
+	var travel_time: float = distance / speed
+	
+	get_tree().current_scene.add_child(projectile)
+
+	projectile.global_transform = projectile_spawn.global_transform
+	projectile.linear_velocity = direction * speed
+	projectile.look_at(target_pos, Vector3.UP)
+	
+	await get_tree().create_timer(travel_time).timeout
+	_attack_connected()
+	projectile.queue_free()

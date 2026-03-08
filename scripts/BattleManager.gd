@@ -142,8 +142,9 @@ func _on_player_turn(ctx: ActionContext) -> void:
 			push_error("Forced action for %s did not have a target" % current_battler.resource.name)
 			current_state = BattleState.TURN_END
 			return
-			
-		await _perform_player_action("attack", ctx.initial_target)
+		
+		var attacker_slot := get_slot(current_battler)
+		await _perform_player_action("attack", ctx.initial_target, attacker_slot)
 		current_state = BattleState.TURN_END
 		return
 		
@@ -179,17 +180,36 @@ func _on_target_selected(target: CharacterInstance) -> void:
 	_resolve_player_action()
 
 func _resolve_player_action() -> void:
-	await _perform_player_action(_pending_action, _pending_target)
+	var attacker_slot := get_slot(current_battler)
+	
+	await _perform_player_action(_pending_action, _pending_target, attacker_slot)
+	
+	await process_queue()
+	_corpse_janny()
+	await attacker_slot.position_back()
+	
 	current_state = BattleState.TURN_END
 
-func _perform_player_action(action: String, target: CharacterInstance) -> void:
-	var attacker_slot := get_slot(current_battler)
+
+func _perform_player_action(action: String, target: CharacterInstance, attacker_slot: FormationSlot) -> void:
 	var target_slot := get_slot(target)
+	var weapon: Weapon = current_battler.equipment["weapon"] if current_battler.equipment["weapon"] else null
+	
+	var targeting: TargetingManager.TargetType
+	var range: TargetingManager.RangeType
+	var attack_rate: int
+	
+	if weapon:
+		targeting = weapon.targeting
+		range = weapon.weapon_range
+		attack_rate = weapon.attack_rate
+	else:
+		targeting = TargetingManager.TargetType.SINGLE
+		range = TargetingManager.RangeType.MELEE
+		attack_rate = 1
 	
 	match action:
 		BattleBus.ATTACK:
-			var targeting: TargetingManager.TargetType = current_battler.equipment["weapon"].targeting if current_battler.equipment["weapon"] else TargetingManager.TargetType.SINGLE
-			var range: TargetingManager.RangeType = current_battler.equipment["weapon"].weapon_range if current_battler.equipment["weapon"] else TargetingManager.RangeType.MELEE
 			var targets := TargetingManager.get_applicable_targets(target, targeting)
 			
 			var ctx := ActionContext.new()
@@ -203,13 +223,19 @@ func _perform_player_action(action: String, target: CharacterInstance) -> void:
 				"target": targets
 			})
 			
-			await attacker_slot.perform_attack(range, target_slot)
-			var timed_out: bool = await SignalFailsafe.await_signal_or_timeout(self, BattleBus.attack_connected, ATTACK_CONNECTED_TIMEOUT)
-
-			if timed_out:
-				push_error("Attack connected signal timed out for character: %s, %s " % [current_battler.resource.name, current_battler.resource.id])
+			if current_battler.is_main:
+				await attacker_slot.look_at_target(target_slot)
 			
-			await DamageResolver.new(current_battler.stats.attack).execute(ctx)
+			if range == TargetingManager.RangeType.MELEE:
+				await attacker_slot.perform_run_towards_target(target_slot)
+				
+			for i in attack_rate:
+				attacker_slot.perform_attack(range, target_slot)
+				await SignalFailsafe.await_signal_or_timeout(self, BattleBus.attack_connected, ATTACK_CONNECTED_TIMEOUT)
+				DamageResolver.new(current_battler.stats.attack).execute(ctx)
+				
+				if i < attack_rate - 1:
+					await get_tree().create_timer(0.18).timeout
 		
 		BattleBus.SKILL:
 			if _pending_entity is not Skill:
@@ -225,6 +251,13 @@ func _perform_player_action(action: String, target: CharacterInstance) -> void:
 			ctx.temporary_effects = skill.effects
 			
 			current_state = BattleState.ANIMATING
+			
+			if current_battler.is_main:
+				await attacker_slot.look_at_target(target_slot)
+			
+			if range == TargetingManager.RangeType.MELEE:
+				await attacker_slot.perform_run_towards_target(target_slot)
+			
 			await attacker_slot.perform_skill(skill.skill_range, skill.animation_name, target_slot)
 			var timed_out: bool = await SignalFailsafe.await_signal_or_timeout(self, BattleBus.attack_connected, ATTACK_CONNECTED_TIMEOUT)
 
@@ -243,7 +276,7 @@ func _perform_player_action(action: String, target: CharacterInstance) -> void:
 				
 			var item := _pending_entity as Consumable
 			
-			var targeting: TargetingManager.TargetType = item.template.targeting_type
+			targeting = item.template.targeting_type
 			var targets := TargetingManager.get_applicable_targets(target, targeting)
 			
 			var cons := ConsumableContext.new()
@@ -260,9 +293,6 @@ func _perform_player_action(action: String, target: CharacterInstance) -> void:
 				push_error("Attack connected signal timed out for character: %s, %s " % [current_battler.resource.name, current_battler.resource.id])
 			
 			var _ctx := ConsumableResolver.new(item).execute(cons)
-				
-	await attacker_slot.position_back()
-	await process_queue()
 
 func _process_enemy_turn(ctx: ActionContext) -> void:
 	if current_battler == null:
@@ -307,6 +337,7 @@ func _process_enemy_turn(ctx: ActionContext) -> void:
 			})
 	
 	current_state = BattleState.ANIMATING
+	await attacker_slot.perform_run_towards_target(target_slot)
 	await attacker_slot.perform_attack(range, target_slot)
 	var timed_out: bool = await SignalFailsafe.await_signal_or_timeout(self, BattleBus.attack_connected, ATTACK_CONNECTED_TIMEOUT)
 
@@ -358,7 +389,7 @@ func _handle_lose() -> void:
 	current_state = BattleState.IDLE
 	
 func _handle_flee() -> void:
-	var success := randf() < 0.5
+	var success := randf() < 1
 	if success:
 		print("Party flees successfully!")
 		
@@ -384,23 +415,19 @@ func _register_battler(battler: CharacterInstance) -> void:
 func _on_battler_died(rip: CharacterInstance) -> void:
 	if rip not in party:
 		_to_cleanup.append(rip)
-		var slot = get_slot(rip)
-		slot.perform_death()
 	
 func _corpse_janny() -> void:
-	var old_state = current_state
-	
 	current_state = BattleState.ANIMATING
 	
 	for dead in _to_cleanup:
+		var slot = get_slot(dead)
+		await slot.perform_death()
 		battlers.erase(dead)
 		#party.erase(dead)
 		enemies.erase(dead)
 		turn_queue.erase(dead)
 		#battle_ui.remove_character(dead)
 	_to_cleanup.clear()
-	
-	current_state = old_state
 
 func disable_all_targeting() -> void:
 	BattleContext.enemy_targeting_enabled = false

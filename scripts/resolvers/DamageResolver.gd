@@ -36,7 +36,7 @@ func run_pipeline(event: DamageTriggerEvent) -> void:
 		event.target.resource.name
 		])
 		
-	event.target.set_current_health(event.target.state.current_health - event.calculator.get_final_damage())
+	event.target.set_current_health(event.target.state.current_health - event.calculator.get_final_damage(), event)
 	
 	EffectRunner.process_trigger(EffectTriggers.ON_DAMAGE_APPLIED, event)
 	

@@ -120,18 +120,12 @@ func _init(res: CharacterResource) -> void:
 	state.current_mana = stats.mana
 	state.current_sp = stats.sp
 
-func set_current_health(new_health: int, ctx: ActionContext = null) -> void:
+func set_current_health(new_health: int, damage_event: DamageTriggerEvent = null) -> void:
 	var old: int = state.current_health
 	var new: float = clamp(new_health, 0, stats.health)
 	
 	if new < old:
 		state.current_health = int(new)
-		CharacterBus.character_damaged.emit(self, old - state.current_health)
-		ChatEventBus.chat_event.emit(ChatterManager.DAMAGED, {
-			"amount": old - state.current_health,
-			"ctx": ctx,
-			"target": self
-		})
 			
 	elif new > old:
 		state.current_health = int(new)
@@ -143,6 +137,9 @@ func set_current_health(new_health: int, ctx: ActionContext = null) -> void:
 		state.current_health = int(new)
 		is_dead = true
 		emit_signal("died", self)
+	
+	if damage_event:
+		CharacterBus.character_damaged.emit(self, damage_event.calculator.get_final_damage())
 		
 func get_body() -> CharacterBody:
 	if !body:
@@ -300,10 +297,10 @@ func get_slot_name_for_item(item: GearInstance) -> String:
 
 func to_dict() -> Dictionary:
 	var equip_dict := {}
-	for slot: String in equipment.keys():
-		var item: GearInstance = equipment[slot]
-		if item:
-			equip_dict[slot] = item.to_dict()
+	#for slot: String in equipment.keys():
+		#var item: GearInstance = equipment[slot]
+		#if item:
+			#equip_dict[slot] = item.to_dict()
 		
 	var inventory_arr := []
 	#for slot: ItemInstance in inventory.slots:
