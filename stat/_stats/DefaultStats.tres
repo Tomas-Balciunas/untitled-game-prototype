@@ -1,10 +1,10 @@
-[gd_resource type="Resource" script_class="Stats" load_steps=2 format=3 uid="uid://57fo0cycgjne"]
+[gd_resource type="Resource" script_class="Stats" format=3 uid="uid://57fo0cycgjne"]
 
 [ext_resource type="Script" uid="uid://bqln4xpkkidja" path="res://stat/_stats/stats.gd" id="1_adoub"]
 
 [resource]
 script = ExtResource("1_adoub")
-attack = 1
+attack = 5
 health = 500
 mana = 20
 sp = 20

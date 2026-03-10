@@ -64,12 +64,12 @@ func _on_anim_finish(_e: StringName) -> void:
 	body_instance.play_idle()
 
 
-func perform_attack(range: TargetingManager.RangeType, target: FormationSlot) -> void:
-	body_instance.play_attack(range, target.global_position)
+func perform_attack(event: ActionEvent, targeting_range: TargetingManager.RangeType, target: FormationSlot) -> void:
+	body_instance.play_attack(event, targeting_range, target.global_position)
 
 
-func perform_skill(range: TargetingManager.RangeType, animation: String, target: FormationSlot) -> void:
-	body_instance.play_skill(range, animation, target.global_position)
+func perform_skill(event: ActionEvent, targeting_range: TargetingManager.RangeType, animation: String, target: FormationSlot) -> void:
+	body_instance.play_skill(event, targeting_range, animation, target.global_position)
 
 
 func perform_item_use(target: FormationSlot) -> void:
@@ -112,9 +112,10 @@ func look_at_target(target: FormationSlot) -> void:
 func position_back() -> void:
 	var parent_space := get_parent()
 	var home_local: Vector3 = parent_space.to_local(home_global)
-	var tween_back := create_tween()
+	var tween_back: Tween 
 	
 	if body_instance.has_node("Camera3D"):
+		tween_back = create_tween()
 		var cam: Camera3D = body_instance.get_node("Camera3D")
 		tween_back.tween_property(
 			cam,
@@ -126,6 +127,8 @@ func position_back() -> void:
 	if position == home_local:
 		return
 
+	if !tween_back:
+		tween_back = create_tween()
 	
 	tween_back.set_parallel()
 	body_instance.play_run()

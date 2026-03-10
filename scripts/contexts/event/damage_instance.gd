@@ -1,6 +1,8 @@
 extends TriggerEvent
 
-class_name DamageTriggerEvent
+class_name DamageInstance
+
+signal hit_confirmed
 
 var calculator: DamageCalculator
 var target: CharacterInstance

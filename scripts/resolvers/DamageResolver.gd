@@ -10,7 +10,7 @@ func _init(val: int) -> void:
 
 func execute(ctx: ActionContext) -> ActionContext:
 	for target in ctx.targets:
-		var event: DamageTriggerEvent = build_event(ctx, target)
+		var event: DamageInstance = build_event(ctx, target)
 		run_pipeline(event)
 	
 	for i in len(ctx.additional_procs):
@@ -20,7 +20,7 @@ func execute(ctx: ActionContext) -> ActionContext:
 	return ctx
 
 
-func run_pipeline(event: DamageTriggerEvent) -> void:
+func run_pipeline(event: DamageInstance) -> void:
 	#TODO: refactor trigger flow
 	EffectRunner.process_trigger(EffectTriggers.ON_HIT, event)
 	EffectRunner.process_trigger(EffectTriggers.ON_BEFORE_RECEIVE_DAMAGE, event)
@@ -47,5 +47,5 @@ func run_pipeline(event: DamageTriggerEvent) -> void:
 	
 
 
-func build_event(ctx: ActionContext, target: CharacterInstance) -> DamageTriggerEvent:
-	return DamageTriggerEvent.new(ctx, target, damage)
+func build_event(ctx: ActionContext, target: CharacterInstance) -> DamageInstance:
+	return DamageInstance.new(ctx, target, damage)

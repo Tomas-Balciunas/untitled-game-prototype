@@ -196,16 +196,16 @@ func _perform_player_action(action: String, target: CharacterInstance, attacker_
 	var weapon: Weapon = current_battler.equipment["weapon"] if current_battler.equipment["weapon"] else null
 	
 	var targeting: TargetingManager.TargetType
-	var range: TargetingManager.RangeType
+	var targeting_range: TargetingManager.RangeType
 	var attack_rate: int
 	
 	if weapon:
 		targeting = weapon.targeting
-		range = weapon.weapon_range
+		targeting_range = weapon.weapon_range
 		attack_rate = weapon.attack_rate
 	else:
 		targeting = TargetingManager.TargetType.SINGLE
-		range = TargetingManager.RangeType.MELEE
+		targeting_range = TargetingManager.RangeType.MELEE
 		attack_rate = 1
 	
 	match action:
@@ -216,33 +216,43 @@ func _perform_player_action(action: String, target: CharacterInstance, attacker_
 			ctx.source = CharacterSource.new(current_battler)
 			ctx.set_targets(target, targets)
 			ctx.actively_cast = true
+			ctx.targeting = targeting
+			ctx.targeting_range = targeting_range
+			ctx.attack_rate = attack_rate
 			
 			current_state = BattleState.ANIMATING
-			ChatEventBus.chat_event.emit(ChatterManager.ATTACKING, {
-				"source": current_battler,
-				"target": targets
-			})
+			
+			var resolver: DamageResolver = DamageResolver.new(current_battler.stats.attack)
+			var orcherstrator: ActionOrchestrator = ActionOrchestrator.new(current_battler, ctx, resolver)
 			
 			if current_battler.is_main:
 				await attacker_slot.look_at_target(target_slot)
 			
-			if range == TargetingManager.RangeType.MELEE:
+			if ctx.targeting_range == TargetingManager.RangeType.MELEE:
 				await attacker_slot.perform_run_towards_target(target_slot)
 				
-			for i in attack_rate:
-				attacker_slot.perform_attack(range, target_slot)
-				await SignalFailsafe.await_signal_or_timeout(self, BattleBus.attack_connected, ATTACK_CONNECTED_TIMEOUT)
-				DamageResolver.new(current_battler.stats.attack).execute(ctx)
-				
+			for i in range(ctx.attack_rate):
+				#performer_slot.perform_attack(ctx.targeting_range, target_slot)
+				#var timed_out: bool = await SignalFailsafe.await_signal_or_timeout(self, BattleBus.attack_connected, ATTACK_CONNECTED_TIMEOUT)
+#
+				#if timed_out:
+					#push_error("Attack connected signal timed out for character: %s, %s " % [current_battler.resource.name, current_battler.resource.id])
+				await orcherstrator.execute_action(
+					func(e: ActionEvent) -> void:
+						attacker_slot.perform_attack(e, ctx.targeting_range, target_slot)
+				)
+		
+		
 				if i < attack_rate - 1:
 					await get_tree().create_timer(0.18).timeout
+			
 		
 		BattleBus.SKILL:
 			if _pending_entity is not Skill:
 				push_error("Selected skill action entity is not skill!")
 				return
 				
-			var skill = _pending_entity as Skill
+			var skill: Skill = _pending_entity as Skill
 			var targets := TargetingManager.get_applicable_targets(target, skill.targeting_type)
 			var ctx := ActionContext.new()
 			ctx.source = CharacterSource.new(current_battler)
@@ -255,16 +265,16 @@ func _perform_player_action(action: String, target: CharacterInstance, attacker_
 			if current_battler.is_main:
 				await attacker_slot.look_at_target(target_slot)
 			
-			if range == TargetingManager.RangeType.MELEE:
+			if targeting_range == TargetingManager.RangeType.MELEE:
 				await attacker_slot.perform_run_towards_target(target_slot)
 			
-			await attacker_slot.perform_skill(skill.skill_range, skill.animation_name, target_slot)
+			#await attacker_slot.perform_skill(skill.skill_range, skill.animation_name, target_slot)
 			var timed_out: bool = await SignalFailsafe.await_signal_or_timeout(self, BattleBus.attack_connected, ATTACK_CONNECTED_TIMEOUT)
 
 			if timed_out:
 				push_error("Attack connected signal timed out for character: %s, %s " % [current_battler.resource.name, current_battler.resource.id])
 			
-			var context: ActionContext = await SkillResolver.new(skill).execute(ctx)
+			var context: ActionContext = SkillResolver.new(skill).execute(ctx)
 			
 			for proc in context.additional_procs:
 				proc["resolver"].execute(proc["ctx"])
@@ -303,6 +313,21 @@ func _process_enemy_turn(ctx: ActionContext) -> void:
 		current_state = BattleState.TURN_END
 		return
 	
+	var weapon: Weapon = current_battler.equipment["weapon"] if current_battler.equipment["weapon"] else null
+	
+	var targeting: TargetingManager.TargetType
+	var targeting_range: TargetingManager.RangeType
+	var attack_rate: int
+	
+	if weapon:
+		targeting = weapon.targeting
+		targeting_range = weapon.weapon_range
+		attack_rate = weapon.attack_rate
+	else:
+		targeting = TargetingManager.TargetType.SINGLE
+		targeting_range = TargetingManager.RangeType.MELEE
+		attack_rate = 1
+	
 	var target: CharacterInstance = null
 	
 	if ctx.force_action:
@@ -324,7 +349,6 @@ func _process_enemy_turn(ctx: ActionContext) -> void:
 	
 	var attacker_slot := get_slot(current_battler)
 	var target_slot := get_slot(target)
-	var range: TargetingManager.RangeType = current_battler.equipment["weapon"].weapon_range if current_battler.equipment["weapon"] else TargetingManager.RangeType.MELEE
 	
 	var atk := ActionContext.new()
 	atk.source = CharacterSource.new(current_battler)
@@ -337,15 +361,22 @@ func _process_enemy_turn(ctx: ActionContext) -> void:
 			})
 	
 	current_state = BattleState.ANIMATING
-	await attacker_slot.perform_run_towards_target(target_slot)
-	await attacker_slot.perform_attack(range, target_slot)
-	var timed_out: bool = await SignalFailsafe.await_signal_or_timeout(self, BattleBus.attack_connected, ATTACK_CONNECTED_TIMEOUT)
+	
+	if targeting_range == TargetingManager.RangeType.MELEE:
+		await attacker_slot.perform_run_towards_target(target_slot)
+	else:
+		await get_tree().create_timer(0.6).timeout
+		
+	for i in attack_rate:
+		#attacker_slot.perform_attack(targeting_range, target_slot)
+		var timed_out: bool = await SignalFailsafe.await_signal_or_timeout(self, BattleBus.attack_connected, ATTACK_CONNECTED_TIMEOUT)
 
-	if timed_out:
-		push_error("Attack connected signal timed out for character: %s, %s " % [current_battler.resource.name, current_battler.resource.id])
-	
-	
-	await DamageResolver.new(current_battler.stats.attack).execute(atk)
+		if timed_out:
+			push_error("Attack connected signal timed out for character: %s, %s " % [current_battler.resource.name, current_battler.resource.id])
+		
+		DamageResolver.new(current_battler.stats.attack).execute(atk)
+		
+		await get_tree().create_timer(0.18).timeout
 	
 	await attacker_slot.position_back()
 	await process_queue()

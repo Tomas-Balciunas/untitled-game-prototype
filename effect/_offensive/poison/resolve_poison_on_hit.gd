@@ -14,5 +14,5 @@ func on_trigger(_stage: String, ctx: TriggerEvent) -> void:
 	ctx.ctx.tick_power = tick_power
 	ctx.ctx.should_tick_consume_duration = false
 	
-	var ticker = TickDoT.new(ctx.ctx.initial_target, ctx.ctx)
+	var ticker: TickDoT = TickDoT.new(ctx.ctx.initial_target, ctx.ctx)
 	ticker.execute()

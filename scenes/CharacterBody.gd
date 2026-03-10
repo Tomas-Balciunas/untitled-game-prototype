@@ -5,7 +5,8 @@ class_name CharacterBody
 @onready var sprite: Sprite3D = $Sprite
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
 @onready var number_display: FormationSlotNumbers = $NumberDisplay
-@onready var projectile_spawn: Node3D = $ProjectileSpawn
+@onready var projectile_spawn: Node3D
+var pending_event: ActionEvent = null
 const DEFAULT_PROJECTILE = preload("uid://ixevorw37712")
 
 var body_owner: CharacterInstance = null
@@ -13,6 +14,7 @@ var death_shader = preload("uid://crlilwavkuu5u")
 var blood_particle_material = null
 
 func _ready() -> void:
+	set_projectile_spawn_point()
 	play_idle()
 	CharacterBus.character_damaged.connect(_on_damaged)
 	CharacterBus.character_healed.connect(_on_healed)
@@ -117,16 +119,16 @@ func play_run_back() -> void:
 	if animation_player.has_animation("run_back"):
 		animation_player.play("run_back")
 
-func play_attack(range: TargetingManager.RangeType, target_pos: Vector3) -> void:
-	if range == TargetingManager.RangeType.MELEE:
+func play_attack(event: ActionEvent, targeting_range: TargetingManager.RangeType, target_pos: Vector3) -> void:
+	if targeting_range == TargetingManager.RangeType.MELEE:
 		if animation_player.has_animation("melee_attack"):
 			animation_player.play("melee_attack")
 			await animation_player.animation_finished
 			
 			return
 	
-	if range == TargetingManager.RangeType.RANGED:
-		fire_projectile(target_pos)
+	if targeting_range == TargetingManager.RangeType.RANGED:
+		fire_projectile(event, target_pos)
 	
 		return
 	
@@ -135,22 +137,22 @@ func play_attack(range: TargetingManager.RangeType, target_pos: Vector3) -> void
 		await animation_player.animation_finished
 
 
-func play_skill(range: TargetingManager.RangeType, animation: String, target_pos: Vector3) -> void:
+func play_skill(event: ActionEvent, targeting_range: TargetingManager.RangeType, animation: String, target_pos: Vector3) -> void:
 	if animation_player.has_animation(animation):
 		animation_player.play(animation)
 		await animation_player.animation_finished
 		
 		return
 	
-	if range == TargetingManager.RangeType.MELEE:
+	if targeting_range == TargetingManager.RangeType.MELEE:
 		if animation_player.has_animation("melee_attack"):
 			animation_player.play("melee_attack")
 			await animation_player.animation_finished
 			
 			return
 	
-	if range == TargetingManager.RangeType.RANGED:
-		fire_projectile(target_pos)
+	if targeting_range == TargetingManager.RangeType.RANGED:
+		fire_projectile(event, target_pos)
 		
 		return
 	
@@ -176,10 +178,12 @@ func _on_anim_finish() -> void:
 		animation_player.play("idle")
 
 func _attack_connected() -> void:
-	BattleBus.attack_connected.emit()
+	if pending_event:
+		pending_event.confirm()
+		pending_event = null
 
 
-func fire_projectile(target_pos: Vector3) -> void:
+func fire_projectile(event: ActionEvent, target_pos: Vector3) -> void:
 	var projectile: RigidBody3D = DEFAULT_PROJECTILE.instantiate()
 	var to_target: Vector3 = target_pos - global_position
 	var distance: float = to_target.length()
@@ -189,10 +193,23 @@ func fire_projectile(target_pos: Vector3) -> void:
 	
 	get_tree().current_scene.add_child(projectile)
 
-	projectile.global_transform = projectile_spawn.global_transform
+	projectile.global_transform = get_projectile_spawn_point_transform()
 	projectile.linear_velocity = direction * speed
 	projectile.look_at(target_pos, Vector3.UP)
 	
 	await get_tree().create_timer(travel_time).timeout
-	_attack_connected()
+	event.confirm()
 	projectile.queue_free()
+
+
+func set_projectile_spawn_point() -> void:
+	if (has_node("ProjectileSpawn")):
+		projectile_spawn = get_node("ProjectileSpawn")
+
+func get_projectile_spawn_point_transform() -> Transform3D:
+	if projectile_spawn:
+		return projectile_spawn.global_transform
+	
+	push_error("%s has no projectile spawn point set!" % body_owner.resource.name if body_owner else "unknown")
+	
+	return global_transform

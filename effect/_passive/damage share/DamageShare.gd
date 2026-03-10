@@ -7,7 +7,7 @@ func listened_triggers() -> Array:
 	return [EffectTriggers.ON_DAMAGE_ABOUT_TO_BE_APPLIED]
 	
 func can_process(_stage: String, event: TriggerEvent) -> bool:
-	if !event is DamageTriggerEvent:
+	if !event is DamageInstance:
 		return false
 	
 	if BattleContext.in_battle:
@@ -17,7 +17,7 @@ func can_process(_stage: String, event: TriggerEvent) -> bool:
 	return event.target != owner and not owner.is_dead
 
 func on_trigger(_stage: String, event: TriggerEvent) -> void:
-	var dmg: DamageTriggerEvent = event as DamageTriggerEvent
+	var dmg: DamageInstance = event as DamageInstance
 	var damaged := dmg.target
 	var transfer := ceili(dmg.calculator.get_final_damage() * share_percent)
 	dmg.calculator.final_damage = floori(dmg.calculator.final_damage - transfer)

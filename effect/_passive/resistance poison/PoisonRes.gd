@@ -7,10 +7,10 @@ func listened_triggers() -> Array:
 	return [EffectTriggers.ON_BEFORE_RECEIVE_DAMAGE]
 	
 func can_process(_stage: String, event: TriggerEvent) -> bool:
-	return owner == event.target and event is DamageTriggerEvent
+	return owner == event.target and event is DamageInstance
 
 func on_trigger(_stage: String, event: TriggerEvent) -> void:
-	var dmg: DamageTriggerEvent = event as DamageTriggerEvent
+	var dmg: DamageInstance = event as DamageInstance
 	
 	if not dmg.calculator.type == DamageTypes.Type.POISON:
 		return

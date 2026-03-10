@@ -8,6 +8,9 @@ var options: Dictionary = {}
 var actively_cast: bool = false
 var stop_processing: bool = false
 var root_trigger: Effect = null
+var targeting: TargetingManager.TargetType = TargetingManager.TargetType.SINGLE
+var targeting_range: TargetingManager.RangeType = TargetingManager.RangeType.MELEE
+var attack_rate: int = 1
 
 var skip_turn: bool = false
 var force_action: bool = false

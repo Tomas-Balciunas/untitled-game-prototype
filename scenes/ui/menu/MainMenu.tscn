@@ -1,8 +1,8 @@
-[gd_scene load_steps=2 format=3 uid="uid://cy17x515s2gnd"]
+[gd_scene format=3 uid="uid://cy17x515s2gnd"]
 
 [ext_resource type="Script" uid="uid://bdl3j7vf8ryb0" path="res://scenes/ui/menu/main_menu.gd" id="1_manl8"]
 
-[node name="MainMenu" type="PanelContainer"]
+[node name="MainMenu" type="PanelContainer" unique_id=1835296621]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -10,16 +10,16 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_manl8")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=2014933647]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 
-[node name="Start" type="Button" parent="VBoxContainer"]
+[node name="Start" type="Button" parent="VBoxContainer" unique_id=1646373745]
 layout_mode = 2
 text = "Start"
 
-[node name="Exit" type="Button" parent="VBoxContainer"]
+[node name="Exit" type="Button" parent="VBoxContainer" unique_id=1076935750]
 layout_mode = 2
 text = "Exit"
 

@@ -22,7 +22,7 @@ func show_item_info(item: ItemInstance) -> void:
 		var stat_lines: Array[String] = []
 		for stat: Stats.StatRef in Stats.StatRef.values():
 			if stats.get_stat(stat) != 0:
-				stat_lines.append("%s: %d" % [stats.get_stat_name(stat), int(stats.get_stat(stat))])
+				stat_lines.append("%s: %d" % [Stats.get_stat_name(stat), int(stats.get_stat(stat))])
 		stats_label.text = "\n".join(stat_lines)
 		item_quality.text = "Quality: %s" % item.quality
 		if item.get_all_modifiers().size() > 0:

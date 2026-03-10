@@ -120,7 +120,7 @@ func _init(res: CharacterResource) -> void:
 	state.current_mana = stats.mana
 	state.current_sp = stats.sp
 
-func set_current_health(new_health: int, damage_event: DamageTriggerEvent = null) -> void:
+func set_current_health(new_health: int, damage_event: DamageInstance = null) -> void:
 	var old: int = state.current_health
 	var new: float = clamp(new_health, 0, stats.health)
 	

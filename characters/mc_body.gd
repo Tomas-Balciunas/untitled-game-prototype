@@ -3,11 +3,13 @@ extends CharacterBody
 class_name MainCharacterBody
 
 @onready var melee_attack: Sprite2D = $Attack
+@onready var camera_3d: Camera3D = $Camera3D
 
 
-func play_attack(range: TargetingManager.RangeType, target_pos: Vector3) -> void:
-	if range == TargetingManager.RangeType.RANGED:
-			fire_projectile(target_pos)
+func play_attack(event: ActionEvent, targeting_range: TargetingManager.RangeType, target_pos: Vector3) -> void:
+	pending_event = event
+	if targeting_range == TargetingManager.RangeType.RANGED:
+			fire_projectile(event, target_pos)
 			
 			return
 	
@@ -17,3 +19,8 @@ func play_attack(range: TargetingManager.RangeType, target_pos: Vector3) -> void
 		melee_attack.rotation_degrees = randf_range(-150.0, 50.0)
 		animation_player.play("attack")
 		await animation_player.animation_finished
+
+
+func set_projectile_spawn_point() -> void:
+	if (camera_3d.has_node("ProjectileSpawn")):
+		projectile_spawn = camera_3d.get_node("ProjectileSpawn")

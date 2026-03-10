@@ -13,13 +13,13 @@ func listened_triggers() -> Array:
 	return [EffectTriggers.ON_DAMAGE_APPLIED]
 	
 func can_process(_stage: String, event: TriggerEvent) -> bool:
-	if !event is DamageTriggerEvent:
+	if !event is DamageInstance:
 		return false
 	
 	return event.target == owner or (event.actor.get_actor() == owner and event.target != owner)
 
 func on_trigger(_stage: String, _event: TriggerEvent) -> void:
-	var event: DamageTriggerEvent = _event
+	var event: DamageInstance = _event
 	
 	if event.target == owner:
 		accumulator += event.calculator.get_final_damage()

@@ -12,7 +12,7 @@ var final_damage: float = 0
 var base_damage: float = 0
 var defense_ignore: int = 0
 
-func _init(event: DamageTriggerEvent) -> void:
+func _init(event: DamageInstance) -> void:
 	context = event.ctx
 	final_damage = event.damage
 	base_damage = event.damage

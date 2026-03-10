@@ -19,7 +19,7 @@ func listened_triggers() -> Array:
 	return []
 
 
-func can_process(_stage: String, event: TriggerEvent) -> bool:
+func can_process(_stage: String, _event: TriggerEvent) -> bool:
 	return false
 
 
@@ -50,16 +50,16 @@ func tick(ctx: ActionContext) -> void:
 		push_error("PoisonEffect: Owner is null during on_turn_end tick.")
 		return
 	
-	var tick := ActionContext.new()
-	tick.source = source
-	tick.set_targets(owner)
-	tick.options = tick.options.duplicate() if tick.options else {}
-	DamageResolver.new((damage_per_turn * stacks) * ctx.tick_power).execute(tick)
+	var tick_ctx: ActionContext = ActionContext.new()
+	tick_ctx.source = source
+	tick_ctx.set_targets(owner)
+	tick_ctx.options = tick_ctx.options.duplicate() if tick_ctx.options else {}
+	DamageResolver.new((damage_per_turn * stacks) * ctx.tick_power).execute(tick_ctx)
 
 	if ctx.should_tick_consume_duration:
 		_remaining -= 1
 	
-	print("Poison tick: %s takes %d from %s — remaining %d" % [owner.resource.name, damage_per_turn, tick.source.get_source_name(), _remaining])
+	print("Poison tick: %s takes %d from %s — remaining %d" % [owner.resource.name, damage_per_turn, tick_ctx.source.get_source_name(), _remaining])
 
 	if _remaining <= 0:
 		print("Poison expired on %s" % owner.resource.name)
