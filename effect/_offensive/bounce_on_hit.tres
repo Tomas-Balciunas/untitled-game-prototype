@@ -1,0 +1,8 @@
+[gd_resource type="Resource" script_class="ProjectileBounceOnHit" format=3 uid="uid://h7vic11h4pe6"]
+
+[ext_resource type="Script" uid="uid://cqltck683tyqb" path="res://effect/_offensive/projectile_bounce_on_hit.gd" id="1_4fql4"]
+
+[resource]
+script = ExtResource("1_4fql4")
+name = "Bounce on hit"
+metadata/_custom_type_script = "uid://cqltck683tyqb"

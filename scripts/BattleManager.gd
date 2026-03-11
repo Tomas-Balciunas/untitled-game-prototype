@@ -183,10 +183,10 @@ func _resolve_player_action() -> void:
 	var attacker_slot := get_slot(current_battler)
 	
 	await _perform_player_action(_pending_action, _pending_target, attacker_slot)
-	
-	await process_queue()
-	_corpse_janny()
 	await attacker_slot.position_back()
+	
+	if BattleContext.pending_actions > 0:
+		await BattleContext.actions_concluded
 	
 	current_state = BattleState.TURN_END
 
@@ -232,6 +232,7 @@ func _perform_player_action(action: String, target: CharacterInstance, attacker_
 				await attacker_slot.perform_run_towards_target(target_slot)
 				
 			for i in range(ctx.attack_rate):
+				BattleContext.new_action()
 				#performer_slot.perform_attack(ctx.targeting_range, target_slot)
 				#var timed_out: bool = await SignalFailsafe.await_signal_or_timeout(self, BattleBus.attack_connected, ATTACK_CONNECTED_TIMEOUT)
 #
@@ -239,12 +240,11 @@ func _perform_player_action(action: String, target: CharacterInstance, attacker_
 					#push_error("Attack connected signal timed out for character: %s, %s " % [current_battler.resource.name, current_battler.resource.id])
 				await orcherstrator.execute_action(
 					func(e: ActionEvent) -> void:
-						attacker_slot.perform_attack(e, ctx.targeting_range, target_slot)
+						attacker_slot.perform_attack(e, targeting_range, target_slot)
 				)
 		
-		
 				if i < attack_rate - 1:
-					await get_tree().create_timer(0.18).timeout
+					await get_tree().create_timer(0.08).timeout
 			
 		
 		BattleBus.SKILL:
@@ -367,16 +367,17 @@ func _process_enemy_turn(ctx: ActionContext) -> void:
 	else:
 		await get_tree().create_timer(0.6).timeout
 		
-	for i in attack_rate:
-		#attacker_slot.perform_attack(targeting_range, target_slot)
-		var timed_out: bool = await SignalFailsafe.await_signal_or_timeout(self, BattleBus.attack_connected, ATTACK_CONNECTED_TIMEOUT)
-
-		if timed_out:
-			push_error("Attack connected signal timed out for character: %s, %s " % [current_battler.resource.name, current_battler.resource.id])
+	for i in range(attack_rate):
 		
-		DamageResolver.new(current_battler.stats.attack).execute(atk)
+		var resolver: DamageResolver = DamageResolver.new(current_battler.stats.attack)
+		var orchertrator: ActionOrchestrator = ActionOrchestrator.new(current_battler, atk, resolver)
+		await orchertrator.execute_action(
+			func (e: ActionEvent) -> void:
+				attacker_slot.perform_attack(e, targeting_range, target_slot)
+		)
 		
-		await get_tree().create_timer(0.18).timeout
+		if i < attack_rate - 1:
+			await get_tree().create_timer(0.18).timeout
 	
 	await attacker_slot.position_back()
 	await process_queue()
@@ -448,8 +449,6 @@ func _on_battler_died(rip: CharacterInstance) -> void:
 		_to_cleanup.append(rip)
 	
 func _corpse_janny() -> void:
-	current_state = BattleState.ANIMATING
-	
 	for dead in _to_cleanup:
 		var slot = get_slot(dead)
 		await slot.perform_death()

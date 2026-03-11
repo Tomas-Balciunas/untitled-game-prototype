@@ -52,7 +52,7 @@ func emit_selection(target: CharacterInstance) -> void:
 
 func get_applicable_targets(target: CharacterInstance, type: TargetType) -> Array[CharacterInstance]:
 	var is_party_member: bool = PartyManager.has_member(target.resource.id)
-	var enemy_grid: EnemyFormation = BattleContext.enemy_grid
+	var enemy_grid: EnemyFormation = BattleContext.enemy_formation
 	var in_battle: bool = BattleContext.in_battle and enemy_grid != null
 	
 	match type:

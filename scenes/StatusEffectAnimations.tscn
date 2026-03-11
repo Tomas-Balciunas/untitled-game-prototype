@@ -1,0 +1,125 @@
+[gd_scene format=3 uid="uid://l8b2sorte2wn"]
+
+[ext_resource type="Script" uid="uid://cq74okkaer4xm" path="res://scenes/status_effect_animation.gd" id="1_eoin4"]
+[ext_resource type="Texture2D" uid="uid://cb7ce01qale7f" path="res://assets/status_effects/poison/poison_test_temp.png" id="1_sf10p"]
+
+[sub_resource type="Animation" id="Animation_eoin4"]
+resource_name = "poison_tick"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatedSprite3D:animation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(),
+"transitions": PackedFloat32Array(),
+"update": 1,
+"values": []
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_bts6r"]
+_data = {
+&"poison_tick": SubResource("Animation_eoin4")
+}
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_exhpo"]
+atlas = ExtResource("1_sf10p")
+region = Rect2(0, 0, 97, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wk03q"]
+atlas = ExtResource("1_sf10p")
+region = Rect2(97, 0, 97, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_icnpm"]
+atlas = ExtResource("1_sf10p")
+region = Rect2(194, 0, 97, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7ko3u"]
+atlas = ExtResource("1_sf10p")
+region = Rect2(291, 0, 97, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_e4ucd"]
+atlas = ExtResource("1_sf10p")
+region = Rect2(388, 0, 97, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4p6ar"]
+atlas = ExtResource("1_sf10p")
+region = Rect2(0, 96, 97, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_joaiv"]
+atlas = ExtResource("1_sf10p")
+region = Rect2(97, 96, 97, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6ovuc"]
+atlas = ExtResource("1_sf10p")
+region = Rect2(194, 96, 97, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rbccy"]
+atlas = ExtResource("1_sf10p")
+region = Rect2(291, 96, 97, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tj7ik"]
+atlas = ExtResource("1_sf10p")
+region = Rect2(388, 96, 97, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_uahoj"]
+atlas = ExtResource("1_sf10p")
+region = Rect2(0, 192, 97, 96)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_vfc6k"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_exhpo")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wk03q")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_icnpm")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7ko3u")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_e4ucd")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4p6ar")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_joaiv")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6ovuc")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rbccy")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_tj7ik")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_uahoj")
+}],
+"loop": false,
+"name": &"tick",
+"speed": 30.0
+}]
+
+[node name="StatusEffectAnimations" type="Node3D" unique_id=24062440]
+script = ExtResource("1_eoin4")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1303745867]
+libraries/ = SubResource("AnimationLibrary_bts6r")
+
+[node name="AnimatedSprite3D" type="AnimatedSprite3D" parent="." unique_id=1628393301]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+visible = false
+billboard = 2
+texture_filter = 0
+sprite_frames = SubResource("SpriteFrames_vfc6k")
+animation = &"tick"
+frame = 10
+frame_progress = 1.0

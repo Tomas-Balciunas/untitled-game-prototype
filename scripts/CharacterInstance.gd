@@ -179,9 +179,9 @@ func prepare_for_battle() -> void:
 		e.prepare_for_battle()
 
 func cleanup_after_battle() -> void:
-	for e: Effect in effects:
-		if e.battle_only:
-			e.remove_self()
+	#for e: Effect in effects:
+		#if e.battle_only:
+			#e.remove_self()
 	
 	state.temporary_modifiers = []
 	StatCalculator.recalculate_all_stats(self)

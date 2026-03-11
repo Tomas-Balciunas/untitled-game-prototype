@@ -7,7 +7,6 @@ class_name MainCharacterBody
 
 
 func play_attack(event: ActionEvent, targeting_range: TargetingManager.RangeType, target_pos: Vector3) -> void:
-	pending_event = event
 	if targeting_range == TargetingManager.RangeType.RANGED:
 			fire_projectile(event, target_pos)
 			
@@ -18,6 +17,8 @@ func play_attack(event: ActionEvent, targeting_range: TargetingManager.RangeType
 		melee_attack.global_position = get_viewport().size / 2
 		melee_attack.rotation_degrees = randf_range(-150.0, 50.0)
 		animation_player.play("attack")
+		await hit_confirmed
+		event.confirm()
 		await animation_player.animation_finished
 
 

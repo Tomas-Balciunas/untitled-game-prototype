@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="KnightClass" load_steps=5 format=3 uid="uid://cdu3c36ji1mmg"]
+[gd_resource type="Resource" script_class="KnightClass" format=3 uid="uid://cdu3c36ji1mmg"]
 
 [ext_resource type="Script" uid="uid://blqk30gl013xc" path="res://stat/_attribute/attributes.gd" id="1_v728n"]
 [ext_resource type="Script" uid="uid://6gf11w4qa7j8" path="res://characters/_class/Knight.gd" id="2_ht54m"]

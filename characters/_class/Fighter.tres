@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="FighterClass" load_steps=7 format=3 uid="uid://bswm14k77iahf"]
+[gd_resource type="Resource" script_class="FighterClass" format=3 uid="uid://bswm14k77iahf"]
 
 [ext_resource type="Script" uid="uid://bp0biy0knxw2o" path="res://effect/Effect.gd" id="1_v5w75"]
 [ext_resource type="Script" uid="uid://blqk30gl013xc" path="res://stat/_attribute/attributes.gd" id="1_vmy0q"]

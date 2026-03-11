@@ -3,8 +3,8 @@ class_name EnemyController
 
 @export var spawner_scene: PackedScene = preload("uid://c8fyl6fq4crr0")
 @export var randomize_spawn := true
-@export var min_group_size := 6
-@export var max_group_size := 10
+@export var min_group_size := 4
+@export var max_group_size := 7
 
 
 func populate_enemy_spawn_points() -> void:

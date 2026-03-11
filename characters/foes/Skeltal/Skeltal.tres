@@ -6,7 +6,7 @@
 [ext_resource type="Script" uid="uid://bwn4gpkaijqsg" path="res://scripts/CharacterResource.gd" id="1_km1me"]
 [ext_resource type="Script" uid="uid://cbelvg2fndssu" path="res://scripts/BattleEvent.gd" id="2_gcpvx"]
 [ext_resource type="PackedScene" uid="uid://dqivkvbyr6ra" path="res://characters/foes/Skeltal/_body/Skeltal.tscn" id="3_tl2ml"]
-[ext_resource type="Resource" uid="uid://hl7x16puy8hq" path="res://characters/foes/Skeltal/poisontest.tres" id="5_6he51"]
+[ext_resource type="Script" uid="uid://cuf03a6q4u1c6" path="res://effect/_offensive/poison/Poison.gd" id="5_6he51"]
 [ext_resource type="Resource" uid="uid://ccd45ithmlluj" path="res://characters/_gender/_Unknown.tres" id="5_e8tyq"]
 [ext_resource type="Script" uid="uid://b06vmgrh4qa8i" path="res://gear/Item.gd" id="5_mpmjy"]
 [ext_resource type="Resource" uid="uid://cs2tci0dc3vvo" path="res://characters/_class/_Unknown.tres" id="6_mpmjy"]
@@ -15,9 +15,29 @@
 [ext_resource type="Resource" uid="uid://d0teo8fy4hnlf" path="res://characters/foes/Skeltal/skeltal_interactions.tres" id="10_07eh6"]
 [ext_resource type="Resource" uid="uid://s8gs3fa65s30" path="res://stat/_stats/DefaultStatGrowth.tres" id="14_smc4f"]
 
+[sub_resource type="Resource" id="Resource_6he51"]
+script = ExtResource("5_6he51")
+duration_turns = 10
+name = "Poison"
+description = "idk"
+battle_only = false
+metadata/_custom_type_script = "uid://cuf03a6q4u1c6"
+
+[sub_resource type="Resource" id="Resource_smc4f"]
+script = ExtResource("5_6he51")
+damage_per_turn = 7
+duration_turns = 10
+metadata/_custom_type_script = "uid://cuf03a6q4u1c6"
+
+[sub_resource type="Resource" id="Resource_rmkt2"]
+script = ExtResource("5_6he51")
+damage_per_turn = 10
+duration_turns = 10
+metadata/_custom_type_script = "uid://cuf03a6q4u1c6"
+
 [resource]
 script = ExtResource("1_km1me")
-default_effects = Array[ExtResource("1_73qgh")]([ExtResource("5_6he51"), ExtResource("5_6he51")])
+default_effects = Array[ExtResource("1_73qgh")]([SubResource("Resource_6he51"), SubResource("Resource_smc4f"), SubResource("Resource_rmkt2")])
 id = "0000"
 name = "Skeleton"
 character_body = ExtResource("3_tl2ml")

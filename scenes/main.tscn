@@ -29,6 +29,7 @@
 [ext_resource type="Script" uid="uid://rkotit4vkflf" path="res://scenes/ui/chest/chest_content.gd" id="15_2f3dj"]
 [ext_resource type="Script" uid="uid://b4kodgy0qo0cl" path="res://scenes/ui/battle/battle_controls/battle_controls_interface.gd" id="18_2f3dj"]
 [ext_resource type="PackedScene" uid="uid://c1geh2y2biany" path="res://scenes/battle_text_lines.tscn" id="25_yq6so"]
+[ext_resource type="Script" uid="uid://dd5ranljoqy48" path="res://scenes/fps.gd" id="30_fv21b"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tel4y"]
 bg_color = Color(0.6, 0.6, 0.6, 0.105)
@@ -1064,6 +1065,11 @@ script = ExtResource("9_choun")
 script = ExtResource("10_ya4ey")
 
 [node name="Player" parent="." unique_id=605237485 instance=ExtResource("2_sugp2")]
+
+[node name="Label" type="Label" parent="." unique_id=1099810785]
+offset_right = 66.0
+offset_bottom = 39.0
+script = ExtResource("30_fv21b")
 
 [connection signal="pressed" from="UIRoot/OverworldInterface/CharacterMenu/CharacterMenuButtons/HBoxContainer/Stats" to="UIRoot/OverworldInterface/CharacterMenu" method="_on_stats_pressed"]
 [connection signal="pressed" from="UIRoot/OverworldInterface/CharacterMenu/CharacterMenuButtons/HBoxContainer/Inventory" to="UIRoot/OverworldInterface/CharacterMenu" method="_on_inventory_pressed"]

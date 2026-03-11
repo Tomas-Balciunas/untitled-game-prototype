@@ -8,6 +8,10 @@ func register_label(label: RichTextLabel) -> void:
 	
 func print_line(line: String) -> void:
 	_text.append(line)
+	
+	if len(_text) > 100:
+		_text.pop_front()
+	
 	print_text()
 	
 func print_text() -> void:

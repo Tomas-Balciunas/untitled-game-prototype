@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="CharacterResource" load_steps=18 format=3 uid="uid://dk7pc5rr0xhbs"]
+[gd_resource type="Resource" script_class="CharacterResource" format=3 uid="uid://dk7pc5rr0xhbs"]
 
 [ext_resource type="Script" uid="uid://blqk30gl013xc" path="res://stat/_attribute/attributes.gd" id="1_klpoy"]
 [ext_resource type="PackedScene" uid="uid://dqjihmjf45spx" path="res://characters/allies/Coura/_body/Coura.tscn" id="2_klpoy"]

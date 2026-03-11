@@ -1,5 +1,5 @@
 @abstract
-extends Node
+extends RefCounted
 
 class_name EffectResolver
 

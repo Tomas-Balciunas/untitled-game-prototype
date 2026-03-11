@@ -5,12 +5,12 @@ const FRONT_ROW_Z    := -2.0
 const BACK_ROW_Z     := 0.0
 const SLOT_SPACING_X := 2
 const MAX_SLOTS      := 5
-
 const FORMATION_SLOT = preload("uid://b1jxfg32brb8x")
+
 
 func _ready() -> void:
 	front_row_z = FRONT_ROW_Z
-	#back_row_z = BACK_ROW_Z
+	back_row_z = BACK_ROW_Z
 	slot_spacing_x = SLOT_SPACING_X
 	max_slots = MAX_SLOTS
 	front_slots.resize(MAX_SLOTS)
@@ -73,7 +73,7 @@ func remove_slot_for(enemy: CharacterInstance) -> void:
 		if slot and slot.character_instance == enemy:
 			slot.queue_free()
 			front_slots[i] = null
-			#_promote_from_back_to_front(i)
+			_promote_from_back_to_front(i)
 			return
 
 	for j in range(MAX_SLOTS):

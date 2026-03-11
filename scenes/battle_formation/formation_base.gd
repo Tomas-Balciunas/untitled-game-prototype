@@ -6,8 +6,6 @@ var back_row_z: float
 var slot_spacing_x: int
 var max_slots: int
 
-
-
 var front_slots: Array[FormationSlot] = []
 var back_slots: Array[FormationSlot] = []
 
@@ -90,13 +88,14 @@ func get_blast(target: CharacterInstance) -> Array[CharacterInstance]:
 	push_error("Blast Targeting: Target not found!")
 	return [target]
 
-func get_row(_target: CharacterInstance) -> Array[CharacterInstance]:
+func get_row(target: CharacterInstance) -> Array[CharacterInstance]:
 	return slots_to_character_instances(front_slots)
-	#for i in range(max_slots):
-		#var slot: FormationSlot = front_slots[i]
-		#if slot and slot.character_instance == target:
-			#return front_slots
-	#return back_slots
+	for i in range(max_slots):
+		var slot: FormationSlot = front_slots[i]
+		if slot and slot.character_instance == target:
+			return slots_to_character_instances(front_slots)
+			
+	return slots_to_character_instances(back_slots)
 	
 func get_adjacent(target: CharacterInstance) -> Array[CharacterInstance]:
 	for i in range(max_slots):
@@ -156,3 +155,21 @@ func slots_to_character_instances(slots: Array[FormationSlot]) -> Array[Characte
 			result.append(slot.character_instance)
 
 	return result
+
+
+func get_all_slots() -> Array[FormationSlot]:
+	var slots: Array[FormationSlot] = []
+	
+	for slot: FormationSlot in front_slots:
+		if slot == null:
+			continue
+		
+		slots.append(slot)
+	
+	for slot: FormationSlot in back_slots:
+		if slot == null:
+			continue
+		
+		slots.append(slot)
+	
+	return slots

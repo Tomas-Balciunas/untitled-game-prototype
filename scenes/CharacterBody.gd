@@ -1,13 +1,15 @@
 extends CharacterBody3D
 class_name CharacterBody
 
+signal hit_confirmed
+
+const DEFAULT_PROJECTILE = preload("uid://ixevorw37712")
+
 @onready var collision: CollisionShape3D = $CollisionShape3D
 @onready var sprite: Sprite3D = $Sprite
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
 @onready var number_display: FormationSlotNumbers = $NumberDisplay
 @onready var projectile_spawn: Node3D
-var pending_event: ActionEvent = null
-const DEFAULT_PROJECTILE = preload("uid://ixevorw37712")
 
 var body_owner: CharacterInstance = null
 var death_shader = preload("uid://crlilwavkuu5u")
@@ -108,7 +110,7 @@ func play_dead() -> void:
 	
 	tween.tween_callback(func():
 		particles.queue_free()
-		queue_free()
+		visible = false
 	)
 
 func play_run() -> void:
@@ -123,6 +125,8 @@ func play_attack(event: ActionEvent, targeting_range: TargetingManager.RangeType
 	if targeting_range == TargetingManager.RangeType.MELEE:
 		if animation_player.has_animation("melee_attack"):
 			animation_player.play("melee_attack")
+			await hit_confirmed
+			event.confirm()
 			await animation_player.animation_finished
 			
 			return
@@ -134,7 +138,13 @@ func play_attack(event: ActionEvent, targeting_range: TargetingManager.RangeType
 	
 	if animation_player.has_animation("attack"):
 		animation_player.play("attack")
+		await hit_confirmed
+		event.confirm()
 		await animation_player.animation_finished
+		
+		return
+	
+	event.confirm()
 
 
 func play_skill(event: ActionEvent, targeting_range: TargetingManager.RangeType, animation: String, target_pos: Vector3) -> void:
@@ -178,28 +188,28 @@ func _on_anim_finish() -> void:
 		animation_player.play("idle")
 
 func _attack_connected() -> void:
-	if pending_event:
-		pending_event.confirm()
-		pending_event = null
+	hit_confirmed.emit()
 
 
-func fire_projectile(event: ActionEvent, target_pos: Vector3) -> void:
-	var projectile: RigidBody3D = DEFAULT_PROJECTILE.instantiate()
-	var to_target: Vector3 = target_pos - global_position
-	var distance: float = to_target.length()
-	var direction: Vector3 = to_target.normalized()
-	var speed: float = 40.0
-	var travel_time: float = distance / speed
-	
+func bounce_projectile(event: ActionEvent, from: Vector3, to: Vector3) -> void:
+	fire_projectile(event, to, from)
+
+
+func fire_projectile(event: ActionEvent, target_pos: Vector3, start_pos: Vector3 = global_position) -> void:
+	var projectile := DEFAULT_PROJECTILE.instantiate()
+
+	var to_target := target_pos - start_pos
+	var distance := to_target.length()
+	var direction := to_target.normalized()
+	var speed := 35.0
+	var travel_time := distance / speed
+
 	get_tree().current_scene.add_child(projectile)
 
 	projectile.global_transform = get_projectile_spawn_point_transform()
-	projectile.linear_velocity = direction * speed
 	projectile.look_at(target_pos, Vector3.UP)
-	
-	await get_tree().create_timer(travel_time).timeout
-	event.confirm()
-	projectile.queue_free()
+
+	projectile.launch_projectile(event, direction, speed, travel_time)
 
 
 func set_projectile_spawn_point() -> void:
@@ -213,3 +223,19 @@ func get_projectile_spawn_point_transform() -> Transform3D:
 	push_error("%s has no projectile spawn point set!" % body_owner.resource.name if body_owner else "unknown")
 	
 	return global_transform
+
+
+func play_poison(event: ActionEvent) -> void:
+	if has_node("StatusEffectAnimations"):
+		var player: StatusEffectAnimation = get_node("StatusEffectAnimations")
+		player.play_poison()
+		event.confirm()
+		
+		
+		
+		
+		
+		
+		
+		
+		
