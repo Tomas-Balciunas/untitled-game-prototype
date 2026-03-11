@@ -62,3 +62,30 @@ func get_slots_enemies() -> Array[FormationSlot]:
 
 func get_slots_allies() -> Array[FormationSlot]:
 	return ally_formation.get_all_slots()
+
+
+func get_valid_slots(is_ally: bool) -> Array[FormationSlot]:
+	var all: Array[FormationSlot]
+	
+	if is_ally:
+		all = get_slots_allies()
+	else:
+		all = get_slots_enemies()
+	
+	var slots: Array[FormationSlot] = []
+	
+	for slot in all:
+		if !slot or !slot.is_slot_targeting_enabled:
+			continue
+		
+		slots.append(slot)
+	
+	return slots
+	
+	
+func get_slot(character: CharacterInstance, is_ally: bool) -> FormationSlot:
+	if is_ally:
+		return ally_formation.get_slot_for(character)
+	
+	return enemy_formation.get_slot_for(character)
+	

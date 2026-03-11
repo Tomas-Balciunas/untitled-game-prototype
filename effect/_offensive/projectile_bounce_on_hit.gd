@@ -10,6 +10,9 @@ func listened_triggers() -> Array:
 
 
 func can_process(_stage: String, event: TriggerEvent) -> bool:
+	if !BattleContext.in_battle:
+		return false
+	
 	return event.ctx.source.get_actor() == owner and event.ctx.actively_cast == true
 
 
@@ -19,57 +22,28 @@ func on_trigger(_stage: String, _event: TriggerEvent) -> void:
 	
 	var event: DamageInstance = _event as DamageInstance
 	
-	var slots: Array[FormationSlot] = BattleContext.get_slots_enemies()
-	slots = slots.filter(func (s: FormationSlot) -> bool: return s.is_slot_targeting_enabled == true)
-	
-	if len(slots) < 2:
-		return
-	
-	slots.shuffle()
-	
 	var initial_target: CharacterInstance = event.ctx.initial_target
+	var is_ally: bool = PartyManager.has_member(initial_target.resource.id)
+	var initial_target_slot: FormationSlot = BattleContext.get_slot(initial_target, is_ally)
 	var actor: CharacterInstance = event.ctx.source.get_actor()
 	
-	if !actor is CharacterInstance:
+	if !initial_target or !actor is CharacterInstance:
 		return
 	
-	var targets: Array[FormationSlot]
+	var slots: Array[FormationSlot] = BattleContext.get_valid_slots(is_ally)
 	
-	var last_target: FormationSlot = null
-	
-	for i in range(bounces):
-		var t: FormationSlot
-		
-		if i == 0:
-			t = slots.filter(
-				func (s: FormationSlot) -> bool: return s.character_instance != initial_target
-				).pick_random()
-		elif last_target:
-			t = slots.filter(
-				func (s: FormationSlot) -> bool: return last_target != s
-				).pick_random()
-		else:
-			t = slots.pick_random()
-		
-		if t:
-			targets.append(t)
-			last_target = t
-			BattleContext.new_action()
-			
-	
-	var initial_target_slot: FormationSlot = BattleContext.enemy_formation.get_slot_for(initial_target)
 	var previous_target: FormationSlot = initial_target_slot
 
-	for target: FormationSlot in targets:
+	for i in range(bounces):
+		var target: FormationSlot = get_valid_slot(previous_target, slots)
+		
 		if !target:
-			BattleContext.end_action()
 			continue
 		
 		var bounce_ctx: ActionContext = ActionContext.new()
 		bounce_ctx.source = event.ctx.source
 		bounce_ctx.targeting_range = TargetingManager.RangeType.RANGED
 		bounce_ctx.set_targets(target.character_instance)
-		
 		
 		var resolver: DamageResolver = DamageResolver.new(8)
 		
@@ -80,3 +54,27 @@ func on_trigger(_stage: String, _event: TriggerEvent) -> void:
 		)
 		
 		previous_target = target
+	
+	
+func get_valid_slot(exclude: FormationSlot, slots: Array[FormationSlot]) -> FormationSlot:
+	var candidates: Array[FormationSlot] = []
+	
+	for s in slots:
+		if valid_slot(s, exclude):
+			candidates.append(s)
+	
+	if candidates.is_empty():
+		return null
+	
+	return candidates.pick_random()
+	
+	
+func valid_slot(slot: FormationSlot, exclude: FormationSlot) -> bool:
+	if !slot.is_slot_targeting_enabled or slot == exclude:
+		return false
+	
+	return true
+	
+	
+	
+	
