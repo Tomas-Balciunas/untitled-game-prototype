@@ -12,6 +12,7 @@ enum BattleState {
 	PROCESS_TURNS,
 	TURN_START,
 	PLAYER_TURN,
+	ACTION_QUEUE,
 	ENEMY_TURN,
 	ANIMATING,
 	TURN_END,
@@ -32,7 +33,7 @@ var _pending_action: String = ""
 var _pending_entity: Variant = null
 var _pending_target: CharacterInstance = null
 var current_battler: CharacterInstance = null
-#var action_queue: Array[DamageContext] = []
+var action_queue: Array[ActionEvent] = []
 
 func begin(_enemies: Array[CharacterInstance]) -> void:
 	BattleEventBus.event_concluded.connect(Callable(self, "_on_event_concluded"))
@@ -72,6 +73,8 @@ func _process(_delta: float) -> void:
 			_on_turn_start()
 		BattleState.PLAYER_TURN:
 			pass
+		BattleState.ACTION_QUEUE:
+			await_action_queue()
 		BattleState.ENEMY_TURN:
 			pass
 		BattleState.ANIMATING:
@@ -185,10 +188,19 @@ func _resolve_player_action() -> void:
 	await _perform_player_action(_pending_action, _pending_target, attacker_slot)
 	await attacker_slot.position_back()
 	
-	if BattleContext.pending_actions > 0:
-		await BattleContext.actions_concluded
+	current_state = BattleState.ACTION_QUEUE
+
+
+func await_action_queue() -> void:
+	for action in action_queue:
+		if !action.finished:
+			return
+		else:
+			action_queue.erase(action)
+		
 	
 	current_state = BattleState.TURN_END
+	action_queue.clear()
 
 
 func _perform_player_action(action: String, target: CharacterInstance, attacker_slot: FormationSlot) -> void:
@@ -232,7 +244,6 @@ func _perform_player_action(action: String, target: CharacterInstance, attacker_
 				await attacker_slot.perform_run_towards_target(target_slot)
 				
 			for i in range(ctx.attack_rate):
-				BattleContext.new_action()
 				#performer_slot.perform_attack(ctx.targeting_range, target_slot)
 				#var timed_out: bool = await SignalFailsafe.await_signal_or_timeout(self, BattleBus.attack_connected, ATTACK_CONNECTED_TIMEOUT)
 #
@@ -380,9 +391,8 @@ func _process_enemy_turn(ctx: ActionContext) -> void:
 			await get_tree().create_timer(0.18).timeout
 	
 	await attacker_slot.position_back()
-	await process_queue()
 	
-	current_state = BattleState.TURN_END
+	current_state = BattleState.ACTION_QUEUE
 
 func _handle_defend() -> void:
 	print(current_battler.resource.name, " is defending!")

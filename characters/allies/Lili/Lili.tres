@@ -40,7 +40,6 @@ metadata/_custom_type_script = "uid://bqln4xpkkidja"
 
 [sub_resource type="Resource" id="Resource_vcebh"]
 script = ExtResource("9_52sjl")
-bounces = 8
 name = "Bounce on hit"
 metadata/_custom_type_script = "uid://cqltck683tyqb"
 

@@ -1,7 +1,5 @@
 extends Node
 
-signal actions_concluded
-
 var in_battle: bool = false
 var event_running: bool = false
 var pending_actions: int = 0
@@ -31,36 +29,48 @@ func clear_context() -> void:
 	encounter_data = null
 
 
-func new_action() -> void:
-	pending_actions += 1
-	print("Pending actions: %s" % pending_actions)
-
-
-func end_action() -> void:
-	pending_actions = max(pending_actions - 1, 0)
-	print("Pending actions: %s" % pending_actions)
-	
-	if pending_actions <= 0:
-		actions_concluded.emit()
+func new_action(event: ActionEvent) -> void:
+	if in_battle and manager:
+		manager.action_queue.append(event)
 
 
 func get_enemies_all() -> Array[CharacterInstance]:
+	if !manager:
+		push_error("Trying to get all enemies on null manager")
+		return []
+	
 	return manager.enemies
 
 
 func get_allies_all() -> Array[CharacterInstance]:
+	if !manager:
+		push_error("Trying to get all allies on null manager")
+		return []
+	
 	return manager.party
 
 
 func get_battlers_all() -> Array[CharacterInstance]:
+	if !manager:
+		push_error("Trying to get all battlers on null manager")
+		return []
+	
 	return manager.battlers
 
 
 func get_slots_enemies() -> Array[FormationSlot]:
+	if !enemy_formation:
+		push_error("Trying to get all enemy slots on null formation")
+		return []
+	
 	return enemy_formation.get_all_slots()
 
 
 func get_slots_allies() -> Array[FormationSlot]:
+	if !ally_formation:
+		push_error("Trying to get all ally slots on null formation")
+		return []
+	
 	return ally_formation.get_all_slots()
 
 
@@ -84,6 +94,10 @@ func get_valid_slots(is_ally: bool) -> Array[FormationSlot]:
 	
 	
 func get_slot(character: CharacterInstance, is_ally: bool) -> FormationSlot:
+	if !ally_formation or !enemy_formation:
+		push_error("Trying to get slot on null formations")
+		return null
+	
 	if is_ally:
 		return ally_formation.get_slot_for(character)
 	

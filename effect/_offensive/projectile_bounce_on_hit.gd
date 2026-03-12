@@ -33,8 +33,12 @@ func on_trigger(_stage: String, _event: TriggerEvent) -> void:
 	var slots: Array[FormationSlot] = BattleContext.get_valid_slots(is_ally)
 	
 	var previous_target: FormationSlot = initial_target_slot
-
+	
+	## TODO: make a supervisor for chain attacks 
 	for i in range(bounces):
+		if !previous_target:
+			continue
+		
 		var target: FormationSlot = get_valid_slot(previous_target, slots)
 		
 		if !target:
@@ -45,7 +49,7 @@ func on_trigger(_stage: String, _event: TriggerEvent) -> void:
 		bounce_ctx.targeting_range = TargetingManager.RangeType.RANGED
 		bounce_ctx.set_targets(target.character_instance)
 		
-		var resolver: DamageResolver = DamageResolver.new(8)
+		var resolver: DamageResolver = DamageResolver.new(1)
 		
 		var orchestrator: ActionOrchestrator = ActionOrchestrator.new(actor, bounce_ctx, resolver)
 		await orchestrator.execute_action(
@@ -54,7 +58,6 @@ func on_trigger(_stage: String, _event: TriggerEvent) -> void:
 		)
 		
 		previous_target = target
-	
 	
 func get_valid_slot(exclude: FormationSlot, slots: Array[FormationSlot]) -> FormationSlot:
 	var candidates: Array[FormationSlot] = []

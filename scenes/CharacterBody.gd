@@ -201,7 +201,7 @@ func fire_projectile(event: ActionEvent, target_pos: Vector3, start_pos: Vector3
 	var to_target := target_pos - start_pos
 	var distance := to_target.length()
 	var direction := to_target.normalized()
-	var speed := 35.0
+	var speed := 5.0
 	var travel_time := distance / speed
 
 	get_tree().current_scene.add_child(projectile)
