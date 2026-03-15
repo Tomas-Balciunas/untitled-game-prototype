@@ -6,6 +6,10 @@ signal confirmed_signal
 
 var confirmed: bool = false
 var finished: bool = false
+var info: String = ""
+
+func _init(t: String = "") -> void:
+	info = t
 
 func confirm() -> void:
 	if confirmed:

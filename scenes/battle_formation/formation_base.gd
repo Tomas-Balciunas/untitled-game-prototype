@@ -38,8 +38,7 @@ func get_slot_for(who: CharacterInstance) -> FormationSlot:
 		var slot: FormationSlot = back_slots[j]
 		if slot and slot.character_instance == who:
 			return slot
-			
-	push_error("critical, slot not found for %s" % who.resource.name)
+
 	return null
 
 func _promote_from_back_to_front(index: int) -> void:
@@ -89,7 +88,6 @@ func get_blast(target: CharacterInstance) -> Array[CharacterInstance]:
 	return [target]
 
 func get_row(target: CharacterInstance) -> Array[CharacterInstance]:
-	return slots_to_character_instances(front_slots)
 	for i in range(max_slots):
 		var slot: FormationSlot = front_slots[i]
 		if slot and slot.character_instance == target:

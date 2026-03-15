@@ -11,6 +11,10 @@ enum EffectCategory {
 	UNKNOWN
 }
 
+enum EffectType {
+	BASIC_ATTACK
+}
+
 @export var id: String
 @export var name: String = "Unnamed Effect"
 @export var description: String = "Unnamed Effect"
@@ -19,6 +23,7 @@ enum EffectCategory {
 @export var single_trigger: bool = false
 @export var priority: int = 200
 @export var _should_append: bool = true
+@export var effect_type: Array[EffectType] = []
 
 var owner: CharacterInstance = null
 var source: ContextSource = null

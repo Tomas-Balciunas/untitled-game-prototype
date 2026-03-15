@@ -9,7 +9,8 @@ enum TargetType {
 	ADJACENT,
 	ROW,
 	COLUMN,
-	MASS
+	MASS,
+	BOUNCE
 }
 
 enum RangeType {

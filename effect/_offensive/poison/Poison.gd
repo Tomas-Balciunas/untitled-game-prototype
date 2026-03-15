@@ -64,7 +64,8 @@ func tick(ctx: ActionContext) -> void:
 		var orchestrator = ActionOrchestrator.new(owner, tick_ctx, resolver)
 		orchestrator.execute_action(
 			func (e: ActionEvent) -> void:
-				slot.body_instance.play_poison(e)
+				slot.body_instance.play_poison(e),
+			"poison"
 		)
 	else:
 		resolver.execute(tick_ctx)

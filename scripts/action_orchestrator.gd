@@ -1,4 +1,4 @@
-extends RefCounted
+extends Node
 
 class_name ActionOrchestrator
 
@@ -12,9 +12,8 @@ func _init(_performer: CharacterInstance, _ctx: ActionContext, _resolver: Effect
 	resolver = _resolver
 
 
-
-func execute_action(animation_callable: Callable) -> void:
-	var event := ActionEvent.new()
+func execute_action(animation_callable: Callable, info: String = "") -> void:
+	var event := ActionEvent.new(info)
 	BattleContext.new_action(event)
 
 	animation_callable.call(event)

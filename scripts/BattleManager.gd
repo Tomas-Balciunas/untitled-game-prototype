@@ -192,15 +192,18 @@ func _resolve_player_action() -> void:
 
 
 func await_action_queue() -> void:
+	var remaining: Array[ActionEvent] = []
+	
 	for action in action_queue:
 		if !action.finished:
-			return
-		else:
-			action_queue.erase(action)
+			remaining.append(action)
+	
+	if !remaining.is_empty():
+		action_queue = remaining
 		
+		return
 	
 	current_state = BattleState.TURN_END
-	action_queue.clear()
 
 
 func _perform_player_action(action: String, target: CharacterInstance, attacker_slot: FormationSlot) -> void:
@@ -234,28 +237,8 @@ func _perform_player_action(action: String, target: CharacterInstance, attacker_
 			
 			current_state = BattleState.ANIMATING
 			
-			var resolver: DamageResolver = DamageResolver.new(current_battler.stats.attack)
-			var orcherstrator: ActionOrchestrator = ActionOrchestrator.new(current_battler, ctx, resolver)
-			
-			if current_battler.is_main:
-				await attacker_slot.look_at_target(target_slot)
-			
-			if ctx.targeting_range == TargetingManager.RangeType.MELEE:
-				await attacker_slot.perform_run_towards_target(target_slot)
-				
-			for i in range(ctx.attack_rate):
-				#performer_slot.perform_attack(ctx.targeting_range, target_slot)
-				#var timed_out: bool = await SignalFailsafe.await_signal_or_timeout(self, BattleBus.attack_connected, ATTACK_CONNECTED_TIMEOUT)
-#
-				#if timed_out:
-					#push_error("Attack connected signal timed out for character: %s, %s " % [current_battler.resource.name, current_battler.resource.id])
-				await orcherstrator.execute_action(
-					func(e: ActionEvent) -> void:
-						attacker_slot.perform_attack(e, targeting_range, target_slot)
-				)
-		
-				if i < attack_rate - 1:
-					await get_tree().create_timer(0.08).timeout
+			var basic_attack: BasicAttack = BasicAttack.new(ctx, attacker_slot, target_slot)
+			await basic_attack.attack(targeting, targeting_range, attack_rate)
 			
 		
 		BattleBus.SKILL:

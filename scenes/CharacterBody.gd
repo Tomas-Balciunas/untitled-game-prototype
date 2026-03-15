@@ -191,17 +191,13 @@ func _attack_connected() -> void:
 	hit_confirmed.emit()
 
 
-func bounce_projectile(event: ActionEvent, from: Vector3, to: Vector3) -> void:
-	fire_projectile(event, to, from)
-
-
 func fire_projectile(event: ActionEvent, target_pos: Vector3, start_pos: Vector3 = global_position) -> void:
 	var projectile := DEFAULT_PROJECTILE.instantiate()
 
 	var to_target := target_pos - start_pos
 	var distance := to_target.length()
 	var direction := to_target.normalized()
-	var speed := 5.0
+	var speed := 15.0
 	var travel_time := distance / speed
 
 	get_tree().current_scene.add_child(projectile)
@@ -230,11 +226,6 @@ func play_poison(event: ActionEvent) -> void:
 		var player: StatusEffectAnimation = get_node("StatusEffectAnimations")
 		player.play_poison()
 		event.confirm()
-		
-		
-		
-		
-		
 		
 		
 		

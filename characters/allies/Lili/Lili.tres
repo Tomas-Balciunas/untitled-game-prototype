@@ -10,15 +10,16 @@
 [ext_resource type="PackedScene" uid="uid://dr6mixlbl8nmf" path="res://characters/allies/Lili/_body/Lili.tscn" id="3_tttne"]
 [ext_resource type="Resource" uid="uid://by14sh5h8t7hf" path="res://characters/allies/Lili/lili_controller.tres" id="4_tttne"]
 [ext_resource type="Script" uid="uid://b06vmgrh4qa8i" path="res://gear/Item.gd" id="6_7lkq3"]
+[ext_resource type="Resource" uid="uid://dkbt25rbnbj2p" path="res://effect/_offensive/bouncedmg.tres" id="6_hdlg0"]
 [ext_resource type="Resource" uid="uid://bksuu5x4hbshr" path="res://gear/consumable/hp pot minor/hp_pot.tres" id="7_tttne"]
 [ext_resource type="Script" uid="uid://bqln4xpkkidja" path="res://stat/_stats/stats.gd" id="8_6yar6"]
 [ext_resource type="Resource" uid="uid://br55c33pop4ux" path="res://characters/_class/Priest.tres" id="8_23xqr"]
-[ext_resource type="Script" uid="uid://cqltck683tyqb" path="res://effect/_offensive/projectile_bounce_on_hit.gd" id="9_52sjl"]
 [ext_resource type="Script" uid="uid://cyhrh3l20i5dm" path="res://stat/StatModifier.gd" id="9_l7bhs"]
 [ext_resource type="Script" uid="uid://dshxh47nef2ua" path="res://gear/weapon/weapon_resource.gd" id="10_52sjl"]
 [ext_resource type="Script" uid="uid://4l2clqoak01s" path="res://effect/_offensive/poison/resolve_poison_on_hit.gd" id="10_hdlg0"]
 [ext_resource type="Resource" uid="uid://coilrntx01n8m" path="res://characters/allies/Lili/new_resource.tres" id="10_pwtr7"]
 [ext_resource type="Script" uid="uid://dq4acpkde276p" path="res://skills/Skill.gd" id="10_tttne"]
+[ext_resource type="Resource" uid="uid://h7vic11h4pe6" path="res://effect/_offensive/bounce_on_hit.tres" id="11_hdlg0"]
 [ext_resource type="Resource" uid="uid://c5qyqcmwx0qfy" path="res://scripts/experience/ExperienceManager.tres" id="11_tttne"]
 [ext_resource type="Resource" uid="uid://s8gs3fa65s30" path="res://stat/_stats/DefaultStatGrowth.tres" id="18_6yar6"]
 
@@ -38,11 +39,6 @@ script = ExtResource("8_6yar6")
 attack = 25
 metadata/_custom_type_script = "uid://bqln4xpkkidja"
 
-[sub_resource type="Resource" id="Resource_vcebh"]
-script = ExtResource("9_52sjl")
-name = "Bounce on hit"
-metadata/_custom_type_script = "uid://cqltck683tyqb"
-
 [sub_resource type="Resource" id="Resource_hr3l6"]
 script = ExtResource("10_hdlg0")
 name = "Poison trigger"
@@ -51,9 +47,10 @@ metadata/_custom_type_script = "uid://4l2clqoak01s"
 
 [sub_resource type="Resource" id="Resource_52sjl"]
 script = ExtResource("10_52sjl")
+targeting = 6
 weapon_range = 1
 base_stats = SubResource("Resource_pcxjb")
-effects = Array[ExtResource("1_7ajkr")]([SubResource("Resource_vcebh"), SubResource("Resource_hr3l6")])
+effects = Array[ExtResource("1_7ajkr")]([SubResource("Resource_hr3l6"), ExtResource("11_hdlg0")])
 name = "Bow"
 metadata/_custom_type_script = "uid://dshxh47nef2ua"
 
@@ -63,6 +60,7 @@ race = ExtResource("2_gmj68")
 job = ExtResource("8_23xqr")
 gender = ExtResource("3_abpod")
 attributes = SubResource("Resource_n7wih")
+default_effects = Array[ExtResource("1_7ajkr")]([ExtResource("6_hdlg0")])
 default_items = Array[ExtResource("6_7lkq3")]([ExtResource("7_tttne"), SubResource("Resource_52sjl")])
 id = "a_lili_1"
 name = "Lili"

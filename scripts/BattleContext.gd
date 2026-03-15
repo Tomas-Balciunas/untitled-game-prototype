@@ -29,6 +29,10 @@ func clear_context() -> void:
 	encounter_data = null
 
 
+static func wait(seconds: float) -> void:
+	await Engine.get_main_loop().create_timer(seconds).timeout
+
+
 func new_action(event: ActionEvent) -> void:
 	if in_battle and manager:
 		manager.action_queue.append(event)
@@ -93,13 +97,14 @@ func get_valid_slots(is_ally: bool) -> Array[FormationSlot]:
 	return slots
 	
 	
-func get_slot(character: CharacterInstance, is_ally: bool) -> FormationSlot:
+func get_slot(character: CharacterInstance) -> FormationSlot:
 	if !ally_formation or !enemy_formation:
 		push_error("Trying to get slot on null formations")
 		return null
 	
-	if is_ally:
+	var slot: FormationSlot = enemy_formation.get_slot_for(character)
+	
+	if !slot:
 		return ally_formation.get_slot_for(character)
 	
-	return enemy_formation.get_slot_for(character)
-	
+	return slot

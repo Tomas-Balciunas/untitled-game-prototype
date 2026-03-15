@@ -43,7 +43,7 @@ func process_trigger(stage: String, event: TriggerEvent) -> void:
 			entry.remove_self()
 	
 	var elapsed_usec := Time.get_ticks_usec() - start
-	print("Took %dus (%.3f ms)" % [elapsed_usec, elapsed_usec / 1000.0])
+	#print("Took %dus (%.3f ms)" % [elapsed_usec, elapsed_usec / 1000.0])
 
 func _sort_effects(a: Dictionary, b: Dictionary) -> int:
 	var ea: Effect = a.effect

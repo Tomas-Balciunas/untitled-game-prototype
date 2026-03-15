@@ -1,4 +1,4 @@
-extends Node
+extends Label
 
 func set_notification(notif: String, duration: float = 3.0) -> void:
 	self.text = notif

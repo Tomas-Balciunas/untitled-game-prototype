@@ -97,16 +97,27 @@ func perform_run_towards_target(target: FormationSlot) -> void:
 
 
 func look_at_target(target: FormationSlot) -> void:
-	if body_instance.has_node("Camera3D"):
-		var tween: Tween = create_tween()
-		var cam: Camera3D = body_instance.get_node("Camera3D")
-		var target_pos := target.global_position
-		var dir := (target_pos - cam.global_position).normalized()
-		var desired_yaw := atan2(dir.x, dir.z) + PI
-		tween.set_parallel()
-		tween.tween_property(cam, "rotation:y", desired_yaw, 0.3)\
-		.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
-		await tween.finished
+	if not body_instance.has_node("Camera3D"):
+		return
+	
+	var cam: Camera3D = body_instance.get_node("Camera3D")
+	var target_pos := target.global_position
+	var dir := (target_pos - cam.global_position).normalized()
+	
+	if dir.is_zero_approx():
+		return
+	
+	var desired_yaw := atan2(-dir.x, -dir.z)
+	var current_yaw := cam.rotation.y
+	var angle_diff := wrapf(desired_yaw - current_yaw, -PI, PI)
+	desired_yaw = current_yaw + angle_diff
+	
+	var tween := create_tween()
+	tween.tween_property(cam, "rotation:y", desired_yaw, 0.3)\
+		.set_trans(Tween.TRANS_SINE)\
+		.set_ease(Tween.EASE_IN_OUT)
+	
+	await tween.finished
 
 
 func position_back() -> void:
