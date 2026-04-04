@@ -150,6 +150,8 @@ func play_attack(event: ActionEvent, targeting_range: TargetingManager.RangeType
 func play_skill(event: ActionEvent, targeting_range: TargetingManager.RangeType, animation: String, target_pos: Vector3) -> void:
 	if animation_player.has_animation(animation):
 		animation_player.play(animation)
+		await hit_confirmed
+		event.confirm()
 		await animation_player.animation_finished
 		
 		return
@@ -157,6 +159,8 @@ func play_skill(event: ActionEvent, targeting_range: TargetingManager.RangeType,
 	if targeting_range == TargetingManager.RangeType.MELEE:
 		if animation_player.has_animation("melee_attack"):
 			animation_player.play("melee_attack")
+			await hit_confirmed
+			event.confirm()
 			await animation_player.animation_finished
 			
 			return
@@ -168,7 +172,11 @@ func play_skill(event: ActionEvent, targeting_range: TargetingManager.RangeType,
 	
 	if animation_player.has_animation("attack"):
 		animation_player.play("attack")
+		await hit_confirmed
+		event.confirm()
 		await animation_player.animation_finished
+	
+	event.confirm()
 
 
 func play_item_use() -> void:
@@ -227,6 +235,8 @@ func play_poison(event: ActionEvent) -> void:
 		player.play_poison()
 		event.confirm()
 		
+		return
 		
+	event.confirm()
 		
 		

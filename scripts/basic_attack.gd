@@ -38,10 +38,10 @@ func attack(targeting: TargetingManager.TargetType, targeting_range: TargetingMa
 		match targeting_range:
 			TargetingManager.RangeType.MELEE:
 				await melee(resolver, attacker)
+				await BattleContext.wait(0.1)
 			TargetingManager.RangeType.RANGED:
 				await ranged(resolver, targeting)
-		
-		await BattleContext.wait(0.1)
+				await BattleContext.wait(0.4)
 
 
 func melee(resolver: DamageResolver, attacker: CharacterInstance) -> void:

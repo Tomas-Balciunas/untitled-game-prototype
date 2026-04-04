@@ -47,7 +47,7 @@ metadata/_custom_type_script = "uid://4l2clqoak01s"
 
 [sub_resource type="Resource" id="Resource_52sjl"]
 script = ExtResource("10_52sjl")
-targeting = 6
+attack_rate = 3
 weapon_range = 1
 base_stats = SubResource("Resource_pcxjb")
 effects = Array[ExtResource("1_7ajkr")]([SubResource("Resource_hr3l6"), ExtResource("11_hdlg0")])

@@ -253,7 +253,7 @@ func _perform_player_action(action: String, target: CharacterInstance, attacker_
 			ctx.set_targets(target, targets)
 			ctx.actively_cast = true
 			ctx.temporary_effects = skill.effects
-			
+			var resolver: SkillResolver = SkillResolver.new(skill)
 			current_state = BattleState.ANIMATING
 			
 			if current_battler.is_main:
@@ -262,16 +262,13 @@ func _perform_player_action(action: String, target: CharacterInstance, attacker_
 			if targeting_range == TargetingManager.RangeType.MELEE:
 				await attacker_slot.perform_run_towards_target(target_slot)
 			
-			#await attacker_slot.perform_skill(skill.skill_range, skill.animation_name, target_slot)
-			var timed_out: bool = await SignalFailsafe.await_signal_or_timeout(self, BattleBus.attack_connected, ATTACK_CONNECTED_TIMEOUT)
-
-			if timed_out:
-				push_error("Attack connected signal timed out for character: %s, %s " % [current_battler.resource.name, current_battler.resource.id])
+			var orchestrator: ActionOrchestrator = ActionOrchestrator.new(current_battler, ctx, resolver)
+			await orchestrator.execute_action(
+				func (e: ActionEvent) -> void:
+					attacker_slot.perform_skill(e, skill.skill_range, skill.animation_name, target_slot),
+				"skill %s" % skill.name
+			)
 			
-			var context: ActionContext = SkillResolver.new(skill).execute(ctx)
-			
-			for proc in context.additional_procs:
-				proc["resolver"].execute(proc["ctx"])
 			
 		BattleBus.ITEM:
 			if _pending_entity is not Consumable:
@@ -325,7 +322,7 @@ func _process_enemy_turn(ctx: ActionContext) -> void:
 	var target: CharacterInstance = null
 	
 	if ctx.force_action:
-		if !ctx.target:
+		if !ctx.initial_target:
 			push_error("Forced action for %s did not have a target" % current_battler.resource.name)
 			current_state = BattleState.TURN_END
 			return

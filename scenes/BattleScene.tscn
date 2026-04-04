@@ -12,8 +12,48 @@ metadata/_editor_floor_ = Vector3(0, 0, 0)
 [node name="EnemyFormation" type="Node3D" parent="." unique_id=877517853]
 script = ExtResource("2_ftvu5")
 
+[node name="FrontRow" type="Node3D" parent="EnemyFormation" unique_id=344725301]
+
+[node name="Enemy01" type="Marker3D" parent="EnemyFormation/FrontRow" unique_id=888834423]
+
+[node name="Enemy02" type="Marker3D" parent="EnemyFormation/FrontRow" unique_id=853799875]
+
+[node name="Enemy03" type="Marker3D" parent="EnemyFormation/FrontRow" unique_id=1997247401]
+
+[node name="Enemy04" type="Marker3D" parent="EnemyFormation/FrontRow" unique_id=267937476]
+
+[node name="Enemy05" type="Marker3D" parent="EnemyFormation/FrontRow" unique_id=2086512480]
+
+[node name="BackRow" type="Node3D" parent="EnemyFormation" unique_id=1122212015]
+
+[node name="Enemy01" type="Marker3D" parent="EnemyFormation/BackRow" unique_id=1200314137]
+
+[node name="Enemy02" type="Marker3D" parent="EnemyFormation/BackRow" unique_id=824998123]
+
+[node name="Enemy03" type="Marker3D" parent="EnemyFormation/BackRow" unique_id=106445742]
+
+[node name="Enemy04" type="Marker3D" parent="EnemyFormation/BackRow" unique_id=387404669]
+
+[node name="Enemy05" type="Marker3D" parent="EnemyFormation/BackRow" unique_id=2145524499]
+
 [node name="AllyFormation" type="Node3D" parent="." unique_id=1926438377]
 script = ExtResource("3_ftvu5")
+
+[node name="FrontRow" type="Node3D" parent="AllyFormation" unique_id=1136281414]
+
+[node name="Ally01" type="Marker3D" parent="AllyFormation/FrontRow" unique_id=1189182929]
+
+[node name="Ally02" type="Marker3D" parent="AllyFormation/FrontRow" unique_id=591679018]
+
+[node name="Ally03" type="Marker3D" parent="AllyFormation/FrontRow" unique_id=339684083]
+
+[node name="BackRow" type="Node3D" parent="AllyFormation" unique_id=1836302174]
+
+[node name="Ally01" type="Marker3D" parent="AllyFormation/BackRow" unique_id=338698772]
+
+[node name="Ally02" type="Marker3D" parent="AllyFormation/BackRow" unique_id=1527907574]
+
+[node name="Ally03" type="Marker3D" parent="AllyFormation/BackRow" unique_id=1730416548]
 
 [node name="SpotLight3D" type="SpotLight3D" parent="." unique_id=1985327168]
 transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 0, 3, -9)

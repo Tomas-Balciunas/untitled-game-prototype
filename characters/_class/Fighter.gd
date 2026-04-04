@@ -9,7 +9,6 @@ func _init() -> void:
 	}
 	
 	level_effects = {
-		3: load("uid://cek6hg5m1l1oa"),
 		4: load("uid://h7vic11h4pe6"),
 	}
 

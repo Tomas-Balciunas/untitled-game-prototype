@@ -12,7 +12,6 @@ var home_global: Vector3
 var animation_player: AnimationPlayer
 
 func _ready() -> void:
-	#BattleBus.enemy_died.connect(on_ded)
 	if targeting_area:
 		targeting_area.mouse_entered.connect(_on_mouse_entered)
 		targeting_area.mouse_exited.connect(_on_mouse_exited)

@@ -18,7 +18,7 @@ func on_apply() -> void:
 func on_trigger(stage: String, event: TriggerEvent) -> void:
 	if stage == EffectTriggers.ON_TURN_START:
 		event.ctx.force_action = true
-		event.ctx.target = BattleContext.manager.battlers.pick_random()
+		event.ctx.initial_target = BattleContext.manager.battlers.pick_random()
 	
 	if stage == EffectTriggers.ON_TURN_END:
 		var r: float = randf()
