@@ -4,7 +4,6 @@ class_name CharacterResource
 
 const DEFAULT_RACE   = preload("res://characters/_race/_Unknown.tres")
 const DEFAULT_JOB    = preload("res://characters/_class/_Unknown.tres")
-const DEFAULT_GENDER = preload("res://characters/_gender/_Unknown.tres")
 const DEFAULT_EXPERIENCE_MANAGER := preload("res://scripts/experience/ExperienceManager.tres")
 const DEFAULT_STATS = preload("uid://57fo0cycgjne")
 const DEFAULT_STAT_GROWTH = preload("uid://s8gs3fa65s30")
@@ -13,7 +12,6 @@ var is_main: bool = false
 
 @export var race: Race = DEFAULT_RACE
 @export var job: Job = DEFAULT_JOB
-@export var gender: Gender = DEFAULT_GENDER
 
 @export var attributes: Attributes
 
@@ -27,7 +25,7 @@ var is_main: bool = false
 @export var default_items: Array[Item] = []
 
 @export var base_stats: Stats = DEFAULT_STATS
-@export var stat_level_growth: Stats = DEFAULT_STAT_GROWTH
+@export var stat_level_growth: Stats
 
 @export var battle_events: Array[BattleEvent]
 @export var experience_manager: ExperienceManager = DEFAULT_EXPERIENCE_MANAGER
@@ -47,4 +45,11 @@ func get_skill_for_level(lvl: int) -> Skill:
 	
 func get_effect_for_level(lvl: int) -> Effect:
 	return level_skills.get(lvl, null)
+
+func get_stat_level_growth() -> Stats:
+	if !stat_level_growth:
+		push_error("Stat growth missing for %s" % name)
+		
+		return DEFAULT_STAT_GROWTH
 	
+	return stat_level_growth

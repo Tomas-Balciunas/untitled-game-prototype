@@ -8,13 +8,11 @@
 [ext_resource type="Resource" uid="uid://drqy6f6xdgohu" path="res://skills/_offensive/confusion.tres" id="4_8awbe"]
 [ext_resource type="Script" uid="uid://cgllfcpvodqsg" path="res://scripts/experience/ExperienceManager.gd" id="4_g8tir"]
 [ext_resource type="Resource" uid="uid://dwkrtdgmmacpv" path="res://skills/_offensive/row_attack_buff.tres" id="5_8dd4x"]
-[ext_resource type="Resource" uid="uid://pchf07nevgay" path="res://characters/_gender/Female.tres" id="6_8awbe"]
 [ext_resource type="Script" uid="uid://b06vmgrh4qa8i" path="res://gear/Item.gd" id="6_nka8l"]
 [ext_resource type="Resource" uid="uid://cdu3c36ji1mmg" path="res://characters/_class/Knight.tres" id="7_8dd4x"]
 [ext_resource type="Script" uid="uid://bp0biy0knxw2o" path="res://effect/Effect.gd" id="7_klpoy"]
 [ext_resource type="Resource" uid="uid://eiwm6khdbjki" path="res://characters/_race/Human.tres" id="8_3lheu"]
 [ext_resource type="Script" uid="uid://bwn4gpkaijqsg" path="res://scripts/CharacterResource.gd" id="9_0ou40"]
-[ext_resource type="Resource" uid="uid://s8gs3fa65s30" path="res://stat/_stats/DefaultStatGrowth.tres" id="15_0ou40"]
 
 [sub_resource type="Resource" id="Resource_ci8co"]
 script = ExtResource("1_klpoy")
@@ -28,7 +26,6 @@ metadata/_custom_type_script = "uid://cgllfcpvodqsg"
 script = ExtResource("9_0ou40")
 race = ExtResource("8_3lheu")
 job = ExtResource("7_8dd4x")
-gender = ExtResource("6_8awbe")
 attributes = SubResource("Resource_ci8co")
 experience = 400
 slot_width = null

@@ -50,7 +50,7 @@ var stat_attribute_modifiers: Dictionary = {
 	}
 }
 
-func get_stat_attribute_modifiers(st: Stats.StatRef) -> Dictionary:
+func get_stat_attribute_growth(st: Stats.StatRef) -> Dictionary:
 	var entry: Dictionary = stat_attribute_modifiers.get(st, null)
 	
 	if entry:

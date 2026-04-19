@@ -7,13 +7,11 @@
 [ext_resource type="Script" uid="uid://cbelvg2fndssu" path="res://scripts/BattleEvent.gd" id="2_gcpvx"]
 [ext_resource type="PackedScene" uid="uid://dqivkvbyr6ra" path="res://characters/foes/Skeltal/_body/Skeltal.tscn" id="3_tl2ml"]
 [ext_resource type="Script" uid="uid://cuf03a6q4u1c6" path="res://effect/_offensive/poison/Poison.gd" id="5_6he51"]
-[ext_resource type="Resource" uid="uid://ccd45ithmlluj" path="res://characters/_gender/_Unknown.tres" id="5_e8tyq"]
 [ext_resource type="Script" uid="uid://b06vmgrh4qa8i" path="res://gear/Item.gd" id="5_mpmjy"]
 [ext_resource type="Resource" uid="uid://cs2tci0dc3vvo" path="res://characters/_class/_Unknown.tres" id="6_mpmjy"]
 [ext_resource type="Resource" uid="uid://lcgngc3c13fc" path="res://characters/_race/_Unknown.tres" id="7_gcpvx"]
 [ext_resource type="Resource" uid="uid://c5qyqcmwx0qfy" path="res://scripts/experience/ExperienceManager.tres" id="8_tl2ml"]
 [ext_resource type="Resource" uid="uid://d0teo8fy4hnlf" path="res://characters/foes/Skeltal/skeltal_interactions.tres" id="10_07eh6"]
-[ext_resource type="Resource" uid="uid://s8gs3fa65s30" path="res://stat/_stats/DefaultStatGrowth.tres" id="14_smc4f"]
 
 [sub_resource type="Resource" id="Resource_6he51"]
 script = ExtResource("5_6he51")

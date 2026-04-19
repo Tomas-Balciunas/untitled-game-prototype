@@ -1,4 +1,4 @@
-[gd_scene load_steps=3 format=3 uid="uid://dq6gw6kdq30h2"]
+[gd_scene format=3 uid="uid://dq6gw6kdq30h2"]
 
 [ext_resource type="MeshLibrary" uid="uid://uso6cfmk5r51" path="res://tileset white.tres" id="1_gu5d0"]
 
@@ -16,7 +16,7 @@ fog_light_color = Color(0.772549, 0.85098, 1, 1)
 fog_light_energy = 0.09
 volumetric_fog_density = 0.0
 
-[node name="ArenaDefault" type="GridMap"]
+[node name="ArenaDefault" type="GridMap" unique_id=1805042897]
 mesh_library = ExtResource("1_gu5d0")
 cell_size = Vector3(1, 1, 1)
 cell_center_y = false
@@ -25,5 +25,5 @@ data = {
 }
 metadata/_editor_floor_ = Vector3(0, 0, 0)
 
-[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=2046163733]
 environment = SubResource("Environment_es1ho")

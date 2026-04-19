@@ -28,7 +28,6 @@ var attributes: Attributes
 var level_up_attributes: Attributes
 var starting_attributes: Attributes
 var job: Job
-var gender: Gender
 var race: Race
 var inventory: Inventory
 var battle_events: Array[BattleEvent]
@@ -94,7 +93,6 @@ func _init(res: CharacterResource) -> void:
 	damage_type = res.default_damage_type
 	
 	job = res.job.duplicate(true)
-	gender = res.gender.duplicate(true)
 	race = res.race.duplicate(true)
 	
 	for skill in res.default_skills:
@@ -207,10 +205,9 @@ func remove_effect(effect: Effect) -> void:
 func fill_attributes() -> void:
 	attributes = Attributes.new()
 	attributes.add(resource.attributes)
+	
 	if resource.race:
 		attributes.add(resource.race.attributes)
-	if resource.gender:
-		attributes.add(resource.gender.attributes)
 	if resource.job:
 		attributes.add(resource.job.attributes)
 	if level_up_attributes:
@@ -330,7 +327,6 @@ func to_dict() -> Dictionary:
 		"hp": state.current_health,
 		"mp": state.current_mana,
 		"race": race.name,
-		"gender": gender.name,
 		"job": job.name,
 		"main": is_main,
 		"unspent_points": unspent_attribute_points,
@@ -351,7 +347,6 @@ static func from_dict(data: Dictionary) -> CharacterInstance:
 		return null
 
 	res.race = RaceRegistry.get_by_name(RaceRegistry.type_to_string(data["race"])) 
-	res.gender = GenderRegistry.get_by_name(GenderRegistry.type_to_string(data["gender"])) 
 	res.job = JobRegistry.get_by_name(JobRegistry.type_to_string(data["job"])) 
 	var inst := CharacterInstance.new(res)
 	

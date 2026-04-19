@@ -1,14 +1,19 @@
 extends Node3D
 class_name FormationBase
 
-var 
+var front_row_z: float
+var back_row_z: float
+var slot_spacing_x: int
+var max_slots: int
 
 var front_slots: Array[FormationSlot] = []
 var back_slots: Array[FormationSlot] = []
 
+var front_positions := []
+var back_positions  := []
 
-func remove_slot_for(character: CharacterInstance) -> void:
-	for slot in back_slots:
+func remove_slot_for(enemy: CharacterInstance) -> void:
+	for i in range(max_slots):
 		var slot: FormationSlot = front_slots[i]
 		if slot and slot.character_instance == enemy:
 			slot.queue_free()

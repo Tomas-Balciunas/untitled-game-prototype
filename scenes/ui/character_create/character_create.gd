@@ -5,11 +5,9 @@ const MC = preload("uid://dvky7cvffgf22")
 
 @onready var job_ov: Label = $Overview/Job
 @onready var race_ov: Label = $Overview/Race
-@onready var gender_ov: Label = $Overview/Gender
 
 @onready var classes_list: VBoxContainer = $Classes
 @onready var races_list: VBoxContainer = $Races
-@onready var genders_list: VBoxContainer = $Genders
 
 @onready var str_attr: Label = $Attributes/Values/STR/Value
 @onready var iq_attr: Label  = $Attributes/Values/IQ/Value
@@ -48,9 +46,6 @@ var chosen_job: Job = null
 var races: Array[Race] = []
 var chosen_race: Race = null
 
-var genders: Array[Gender] = []
-var chosen_gender: Gender = null
-
 var chosen_attributes: Attributes = null
 var display_attributes: Attributes = null
 
@@ -79,14 +74,6 @@ func _ready() -> void:
 		races_list.add_child(btn)
 	_on_race_selected(races[0])
 	
-	genders = GenderRegistry.get_all()
-	for g: Gender in genders:
-		var btn := Button.new()
-		btn.focus_mode = Control.FOCUS_NONE
-		btn.text = GenderRegistry.type_to_string(g.name)
-		btn.pressed.connect(_on_gender_selected.bind(g))
-		genders_list.add_child(btn)
-	_on_gender_selected(genders[0])
 	update_attributes()
 	_setup_attribute_buttons()
 	update_points()
@@ -177,19 +164,10 @@ func _on_race_selected(r: Race) -> void:
 	race_ov.text = RaceRegistry.type_to_string(r.name)
 	update_attributes()
 	_update_attribute_labels()
-
-
-func _on_gender_selected(g: Gender) -> void:
-	chosen_gender = g
-	gender_ov.text = GenderRegistry.type_to_string(g.name)
-	update_attributes()
-	_update_attribute_labels()
 	
 
 func update_attributes() -> void:
 	var attr := Attributes.new()
-	if chosen_gender:
-		attr.add(chosen_gender.attributes)
 	
 	if chosen_job:
 		attr.add(chosen_job.attributes)
@@ -206,7 +184,6 @@ func _on_create_pressed() -> void:
 	var res := MC
 	res.name = "Test"
 	res.job = chosen_job
-	res.gender = chosen_gender
 	res.race = chosen_race
 	res.attributes = Attributes.new()
 	res.is_main = true

@@ -1,8 +1,8 @@
-[gd_scene load_steps=2 format=3 uid="uid://bdlg0nlvckuof"]
+[gd_scene format=3 uid="uid://bdlg0nlvckuof"]
 
 [ext_resource type="Script" uid="uid://dgbnt15i33rs5" path="res://scenes/ui/character_create/character_create.gd" id="1_hps7s"]
 
-[node name="CharacterCreate" type="Panel"]
+[node name="CharacterCreate" type="Panel" unique_id=87883448]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -10,7 +10,7 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_hps7s")
 
-[node name="Overview" type="VBoxContainer" parent="."]
+[node name="Overview" type="VBoxContainer" parent="." unique_id=594643533]
 layout_mode = 1
 anchors_preset = 6
 anchor_left = 1.0
@@ -24,16 +24,13 @@ grow_horizontal = 0
 grow_vertical = 2
 size_flags_horizontal = 8
 
-[node name="Job" type="Label" parent="Overview"]
+[node name="Job" type="Label" parent="Overview" unique_id=2089714324]
 layout_mode = 2
 
-[node name="Race" type="Label" parent="Overview"]
+[node name="Race" type="Label" parent="Overview" unique_id=1338822181]
 layout_mode = 2
 
-[node name="Gender" type="Label" parent="Overview"]
-layout_mode = 2
-
-[node name="Create" type="Button" parent="."]
+[node name="Create" type="Button" parent="." unique_id=1779907078]
 layout_mode = 1
 anchors_preset = 7
 anchor_left = 0.5
@@ -50,7 +47,7 @@ size_flags_vertical = 8
 focus_mode = 0
 text = "Create"
 
-[node name="Classes" type="VBoxContainer" parent="."]
+[node name="Classes" type="VBoxContainer" parent="." unique_id=1809524799]
 layout_mode = 1
 anchors_preset = 4
 anchor_top = 0.5
@@ -63,7 +60,7 @@ grow_vertical = 2
 size_flags_horizontal = 0
 size_flags_vertical = 0
 
-[node name="Races" type="VBoxContainer" parent="."]
+[node name="Races" type="VBoxContainer" parent="." unique_id=967387524]
 layout_mode = 1
 anchors_preset = 4
 anchor_top = 0.5
@@ -74,18 +71,7 @@ offset_right = 367.0
 offset_bottom = 61.0
 grow_vertical = 2
 
-[node name="Genders" type="VBoxContainer" parent="."]
-layout_mode = 1
-anchors_preset = 4
-anchor_top = 0.5
-anchor_bottom = 0.5
-offset_left = 450.0
-offset_top = -81.0
-offset_right = 519.0
-offset_bottom = 23.0
-grow_vertical = 2
-
-[node name="Attributes" type="GridContainer" parent="."]
+[node name="Attributes" type="GridContainer" parent="." unique_id=947732637]
 layout_mode = 1
 anchors_preset = 6
 anchor_left = 1.0
@@ -100,153 +86,153 @@ grow_horizontal = 0
 grow_vertical = 2
 columns = 2
 
-[node name="Labels" type="VBoxContainer" parent="Attributes"]
+[node name="Labels" type="VBoxContainer" parent="Attributes" unique_id=273506596]
 layout_mode = 2
 
-[node name="STR" type="Label" parent="Attributes/Labels"]
+[node name="STR" type="Label" parent="Attributes/Labels" unique_id=971975709]
 layout_mode = 2
 size_flags_vertical = 6
 text = "Strength"
 
-[node name="IQ" type="Label" parent="Attributes/Labels"]
+[node name="IQ" type="Label" parent="Attributes/Labels" unique_id=79792045]
 layout_mode = 2
 size_flags_vertical = 6
 text = "Intelligence"
 
-[node name="PIE" type="Label" parent="Attributes/Labels"]
+[node name="PIE" type="Label" parent="Attributes/Labels" unique_id=822803663]
 layout_mode = 2
 size_flags_vertical = 6
 text = "Piety"
 
-[node name="VIT" type="Label" parent="Attributes/Labels"]
+[node name="VIT" type="Label" parent="Attributes/Labels" unique_id=2070058416]
 layout_mode = 2
 size_flags_vertical = 6
 text = "Vitality"
 
-[node name="DEX" type="Label" parent="Attributes/Labels"]
+[node name="DEX" type="Label" parent="Attributes/Labels" unique_id=1138077386]
 layout_mode = 2
 size_flags_vertical = 6
 text = "Dexterity"
 
-[node name="SPD" type="Label" parent="Attributes/Labels"]
+[node name="SPD" type="Label" parent="Attributes/Labels" unique_id=704266293]
 layout_mode = 2
 size_flags_vertical = 6
 text = "Speed"
 
-[node name="LUK" type="Label" parent="Attributes/Labels"]
+[node name="LUK" type="Label" parent="Attributes/Labels" unique_id=357667588]
 layout_mode = 2
 size_flags_vertical = 6
 text = "Luck"
 
-[node name="Values" type="VBoxContainer" parent="Attributes"]
+[node name="Values" type="VBoxContainer" parent="Attributes" unique_id=1819945761]
 layout_mode = 2
 
-[node name="STR" type="HBoxContainer" parent="Attributes/Values"]
-layout_mode = 2
-size_flags_vertical = 3
-
-[node name="Dec" type="Button" parent="Attributes/Values/STR"]
-layout_mode = 2
-text = "-"
-
-[node name="Value" type="Label" parent="Attributes/Values/STR"]
-layout_mode = 2
-
-[node name="Inc" type="Button" parent="Attributes/Values/STR"]
-layout_mode = 2
-text = "+"
-
-[node name="IQ" type="HBoxContainer" parent="Attributes/Values"]
+[node name="STR" type="HBoxContainer" parent="Attributes/Values" unique_id=998002773]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="Dec" type="Button" parent="Attributes/Values/IQ"]
+[node name="Dec" type="Button" parent="Attributes/Values/STR" unique_id=103429554]
 layout_mode = 2
 text = "-"
 
-[node name="Value" type="Label" parent="Attributes/Values/IQ"]
+[node name="Value" type="Label" parent="Attributes/Values/STR" unique_id=1098949745]
 layout_mode = 2
 
-[node name="Inc" type="Button" parent="Attributes/Values/IQ"]
+[node name="Inc" type="Button" parent="Attributes/Values/STR" unique_id=1549280965]
 layout_mode = 2
 text = "+"
 
-[node name="PIE" type="HBoxContainer" parent="Attributes/Values"]
+[node name="IQ" type="HBoxContainer" parent="Attributes/Values" unique_id=556070642]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="Dec" type="Button" parent="Attributes/Values/PIE"]
+[node name="Dec" type="Button" parent="Attributes/Values/IQ" unique_id=1277220531]
 layout_mode = 2
 text = "-"
 
-[node name="Value" type="Label" parent="Attributes/Values/PIE"]
+[node name="Value" type="Label" parent="Attributes/Values/IQ" unique_id=163303229]
 layout_mode = 2
 
-[node name="Inc" type="Button" parent="Attributes/Values/PIE"]
+[node name="Inc" type="Button" parent="Attributes/Values/IQ" unique_id=931500376]
 layout_mode = 2
 text = "+"
 
-[node name="VIT" type="HBoxContainer" parent="Attributes/Values"]
+[node name="PIE" type="HBoxContainer" parent="Attributes/Values" unique_id=270208618]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="Dec" type="Button" parent="Attributes/Values/VIT"]
+[node name="Dec" type="Button" parent="Attributes/Values/PIE" unique_id=194929423]
 layout_mode = 2
 text = "-"
 
-[node name="Value" type="Label" parent="Attributes/Values/VIT"]
+[node name="Value" type="Label" parent="Attributes/Values/PIE" unique_id=285035367]
 layout_mode = 2
 
-[node name="Inc" type="Button" parent="Attributes/Values/VIT"]
+[node name="Inc" type="Button" parent="Attributes/Values/PIE" unique_id=330148383]
 layout_mode = 2
 text = "+"
 
-[node name="DEX" type="HBoxContainer" parent="Attributes/Values"]
+[node name="VIT" type="HBoxContainer" parent="Attributes/Values" unique_id=1896714204]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="Dec" type="Button" parent="Attributes/Values/DEX"]
+[node name="Dec" type="Button" parent="Attributes/Values/VIT" unique_id=215682945]
 layout_mode = 2
 text = "-"
 
-[node name="Value" type="Label" parent="Attributes/Values/DEX"]
+[node name="Value" type="Label" parent="Attributes/Values/VIT" unique_id=1264591354]
 layout_mode = 2
 
-[node name="Inc" type="Button" parent="Attributes/Values/DEX"]
+[node name="Inc" type="Button" parent="Attributes/Values/VIT" unique_id=813213002]
 layout_mode = 2
 text = "+"
 
-[node name="SPD" type="HBoxContainer" parent="Attributes/Values"]
+[node name="DEX" type="HBoxContainer" parent="Attributes/Values" unique_id=141009862]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="Dec" type="Button" parent="Attributes/Values/SPD"]
+[node name="Dec" type="Button" parent="Attributes/Values/DEX" unique_id=1695272480]
 layout_mode = 2
 text = "-"
 
-[node name="Value" type="Label" parent="Attributes/Values/SPD"]
+[node name="Value" type="Label" parent="Attributes/Values/DEX" unique_id=1948451798]
 layout_mode = 2
 
-[node name="Inc" type="Button" parent="Attributes/Values/SPD"]
+[node name="Inc" type="Button" parent="Attributes/Values/DEX" unique_id=1664260864]
 layout_mode = 2
 text = "+"
 
-[node name="LUK" type="HBoxContainer" parent="Attributes/Values"]
+[node name="SPD" type="HBoxContainer" parent="Attributes/Values" unique_id=1582611039]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="Dec" type="Button" parent="Attributes/Values/LUK"]
+[node name="Dec" type="Button" parent="Attributes/Values/SPD" unique_id=862015919]
 layout_mode = 2
 text = "-"
 
-[node name="Value" type="Label" parent="Attributes/Values/LUK"]
+[node name="Value" type="Label" parent="Attributes/Values/SPD" unique_id=978436526]
 layout_mode = 2
 
-[node name="Inc" type="Button" parent="Attributes/Values/LUK"]
+[node name="Inc" type="Button" parent="Attributes/Values/SPD" unique_id=1482489474]
 layout_mode = 2
 text = "+"
 
-[node name="Points" type="Label" parent="."]
+[node name="LUK" type="HBoxContainer" parent="Attributes/Values" unique_id=1981009655]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Dec" type="Button" parent="Attributes/Values/LUK" unique_id=1355140174]
+layout_mode = 2
+text = "-"
+
+[node name="Value" type="Label" parent="Attributes/Values/LUK" unique_id=815062888]
+layout_mode = 2
+
+[node name="Inc" type="Button" parent="Attributes/Values/LUK" unique_id=121992171]
+layout_mode = 2
+text = "+"
+
+[node name="Points" type="Label" parent="." unique_id=991591851]
 layout_mode = 0
 offset_left = 967.0
 offset_top = 474.0

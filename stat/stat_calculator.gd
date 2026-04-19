@@ -2,13 +2,13 @@ extends Node
 class_name StatCalculator
 
 
-static func recalculate_all_stats(c: CharacterInstance, should_fill_hp: bool = false, should_fill_mp: bool = false) -> void:
+static func recalculate_all_stats(c: CharacterInstance) -> void:
 	for s: Stats.StatRef in Stats.StatRef.values():
 		recalculate_stat(c, s)
 	
 
 static func recalculate_stat(c: CharacterInstance, s: Stats.StatRef) -> void:
-	var base_value: int = c.base_stats.get_stat(s)
+	var base_value: float = c.base_stats.get_stat(s)
 	var computed_stat: float = base_value + get_attribute_contribution(s, c) + get_level_contribution(s, c)
 	c.computed_stats.set_stat(s, computed_stat)
 	
@@ -45,7 +45,7 @@ static func recalculate_stat(c: CharacterInstance, s: Stats.StatRef) -> void:
 
 
 static func get_attribute_contribution(stat: Stats.StatRef, c: CharacterInstance) -> float:
-	var mods: Dictionary = c.job.get_stat_attribute_modifiers(stat)
+	var mods: Dictionary = c.job.get_stat_attribute_growth(stat)
 	
 	if mods.is_empty():
 		return 0.0
@@ -61,4 +61,4 @@ static func get_attribute_contribution(stat: Stats.StatRef, c: CharacterInstance
 	return calculated_value
 	
 static func get_level_contribution(stat: Stats.StatRef, c: CharacterInstance) -> float:
-	return c.job.stat_level_growth.get_stat(stat) * (c.level - 1) + c.resource.stat_level_growth.get_stat(stat) * (c.level - 1)
+	return c.job.get_stat_level_growth().get_stat(stat) * (c.level - 1) + c.resource.get_stat_level_growth().get_stat(stat) * (c.level - 1)

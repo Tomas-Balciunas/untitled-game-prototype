@@ -27,16 +27,16 @@ const STAT_NAMES := {
 	StatRef.RESISTANCE:    "Resistance",
 }
 
-@export var attack: int = 0
-@export var health: int = 0
-@export var mana: int = 0
-@export var sp: int = 0
-@export var speed: int = 0
-@export var defense: int = 0
-@export var magic_power: int = 0
-@export var divine_power: int = 0
-@export var magic_defense: int = 0
-@export var resistance: int = 0
+@export var attack: float = 0
+@export var health: float = 0
+@export var mana: float = 0
+@export var sp: float = 0
+@export var speed: float = 0
+@export var defense: float = 0
+@export var magic_power: float = 0
+@export var divine_power: float = 0
+@export var magic_defense: float = 0
+@export var resistance: float = 0
 
 func add(other: Stats) -> void:
 	attack += other.attack
@@ -52,43 +52,43 @@ func add(other: Stats) -> void:
 
 func get_stat(stat: StatRef) -> int:
 	match stat:
-		StatRef.ATTACK:        return attack
-		StatRef.HEALTH:        return health
-		StatRef.MANA:          return mana
-		StatRef.SP:            return sp
-		StatRef.SPEED:         return speed
-		StatRef.DEFENSE:       return defense
-		StatRef.MAGIC_POWER:   return magic_power
-		StatRef.DIVINE_POWER:  return divine_power
-		StatRef.MAGIC_DEFENSE: return magic_defense
-		StatRef.RESISTANCE:    return resistance
+		StatRef.ATTACK:        return round(attack)
+		StatRef.HEALTH:        return round(health)
+		StatRef.MANA:          return round(mana)
+		StatRef.SP:            return round(sp)
+		StatRef.SPEED:         return round(speed)
+		StatRef.DEFENSE:       return round(defense)
+		StatRef.MAGIC_POWER:   return round(magic_power)
+		StatRef.DIVINE_POWER:  return round(divine_power)
+		StatRef.MAGIC_DEFENSE: return round(magic_defense)
+		StatRef.RESISTANCE:    return round(resistance)
 		_:                     return 0
 
 func set_stat(stat: StatRef, value: float) -> void:
 	match stat:
-		StatRef.ATTACK:        attack = int(value)
-		StatRef.HEALTH:        health = int(value)
-		StatRef.MANA:          mana = int(value)
-		StatRef.SP:            sp = int(value)
-		StatRef.SPEED:         speed = int(value)
-		StatRef.DEFENSE:       defense = int(value)
-		StatRef.MAGIC_POWER:   magic_power = int(value)
-		StatRef.DIVINE_POWER:  divine_power = int(value)
-		StatRef.MAGIC_DEFENSE: magic_defense = int(value)
-		StatRef.RESISTANCE:    resistance = int(value)
+		StatRef.ATTACK:        attack = value
+		StatRef.HEALTH:        health = value
+		StatRef.MANA:          mana = value
+		StatRef.SP:            sp = value
+		StatRef.SPEED:         speed = value
+		StatRef.DEFENSE:       defense = value
+		StatRef.MAGIC_POWER:   magic_power = value
+		StatRef.DIVINE_POWER:  divine_power = value
+		StatRef.MAGIC_DEFENSE: magic_defense = value
+		StatRef.RESISTANCE:    resistance = value
 
 func add_stat(stat: StatRef, value: float) -> void:
 	match stat:
-		StatRef.ATTACK:        attack += int(value)
-		StatRef.HEALTH:        health += int(value)
-		StatRef.MANA:          mana += int(value)
-		StatRef.SP:            sp += int(value)
-		StatRef.SPEED:         speed += int(value)
-		StatRef.DEFENSE:       defense += int(value)
-		StatRef.MAGIC_POWER:   magic_power += int(value)
-		StatRef.DIVINE_POWER:  divine_power += int(value)
-		StatRef.MAGIC_DEFENSE: magic_defense += int(value)
-		StatRef.RESISTANCE:    resistance += int(value)
+		StatRef.ATTACK:        attack += value
+		StatRef.HEALTH:        health += value
+		StatRef.MANA:          mana += value
+		StatRef.SP:            sp += value
+		StatRef.SPEED:         speed += value
+		StatRef.DEFENSE:       defense += value
+		StatRef.MAGIC_POWER:   magic_power += value
+		StatRef.DIVINE_POWER:  divine_power += value
+		StatRef.MAGIC_DEFENSE: magic_defense += value
+		StatRef.RESISTANCE:    resistance += value
 
 static func get_stat_name(stat: StatRef) -> String:
 	return STAT_NAMES[stat]

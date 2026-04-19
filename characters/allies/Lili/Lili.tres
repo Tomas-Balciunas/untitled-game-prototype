@@ -6,7 +6,6 @@
 [ext_resource type="Script" uid="uid://cbelvg2fndssu" path="res://scripts/BattleEvent.gd" id="2_715sk"]
 [ext_resource type="Resource" uid="uid://eiwm6khdbjki" path="res://characters/_race/Human.tres" id="2_gmj68"]
 [ext_resource type="Resource" uid="uid://57fo0cycgjne" path="res://stat/_stats/DefaultStats.tres" id="2_wayk2"]
-[ext_resource type="Resource" uid="uid://pchf07nevgay" path="res://characters/_gender/Female.tres" id="3_abpod"]
 [ext_resource type="PackedScene" uid="uid://dr6mixlbl8nmf" path="res://characters/allies/Lili/_body/Lili.tscn" id="3_tttne"]
 [ext_resource type="Resource" uid="uid://by14sh5h8t7hf" path="res://characters/allies/Lili/lili_controller.tres" id="4_tttne"]
 [ext_resource type="Script" uid="uid://b06vmgrh4qa8i" path="res://gear/Item.gd" id="6_7lkq3"]
@@ -21,7 +20,6 @@
 [ext_resource type="Script" uid="uid://dq4acpkde276p" path="res://skills/Skill.gd" id="10_tttne"]
 [ext_resource type="Resource" uid="uid://h7vic11h4pe6" path="res://effect/_offensive/bounce_on_hit.tres" id="11_hdlg0"]
 [ext_resource type="Resource" uid="uid://c5qyqcmwx0qfy" path="res://scripts/experience/ExperienceManager.tres" id="11_tttne"]
-[ext_resource type="Resource" uid="uid://s8gs3fa65s30" path="res://stat/_stats/DefaultStatGrowth.tres" id="18_6yar6"]
 
 [sub_resource type="Resource" id="Resource_n7wih"]
 script = ExtResource("1_lgdsj")
@@ -36,7 +34,6 @@ metadata/_custom_type_script = "uid://blqk30gl013xc"
 
 [sub_resource type="Resource" id="Resource_pcxjb"]
 script = ExtResource("8_6yar6")
-attack = 25
 metadata/_custom_type_script = "uid://bqln4xpkkidja"
 
 [sub_resource type="Resource" id="Resource_hr3l6"]
@@ -58,7 +55,6 @@ metadata/_custom_type_script = "uid://dshxh47nef2ua"
 script = ExtResource("1_tuon3")
 race = ExtResource("2_gmj68")
 job = ExtResource("8_23xqr")
-gender = ExtResource("3_abpod")
 attributes = SubResource("Resource_n7wih")
 default_effects = Array[ExtResource("1_7ajkr")]([ExtResource("6_hdlg0")])
 default_items = Array[ExtResource("6_7lkq3")]([ExtResource("7_tttne"), SubResource("Resource_52sjl")])

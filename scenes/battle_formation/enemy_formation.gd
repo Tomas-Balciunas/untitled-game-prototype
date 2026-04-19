@@ -1,10 +1,22 @@
 extends FormationBase
 class_name EnemyFormation
 
+const FRONT_ROW_Z    := -2.0
+const BACK_ROW_Z     := 0.0
+const SLOT_SPACING_X := 2
+const MAX_SLOTS      := 5
 const FORMATION_SLOT = preload("uid://b1jxfg32brb8x")
 
 
 func _ready() -> void:
+	front_row_z = FRONT_ROW_Z
+	back_row_z = BACK_ROW_Z
+	slot_spacing_x = SLOT_SPACING_X
+	max_slots = MAX_SLOTS
+	front_slots.resize(MAX_SLOTS)
+	back_slots.resize(MAX_SLOTS)
+	front_positions = get_centered_positions(MAX_SLOTS, FRONT_ROW_Z)
+	back_positions  = get_centered_positions(MAX_SLOTS, BACK_ROW_Z)
 	BattleBus.enemy_died.connect(_on_enemy_died)
 	
 func _on_enemy_died(dead: CharacterInstance) -> void:
@@ -40,7 +52,7 @@ func place_all_enemies(enemies: Array[CharacterInstance]) -> void:
 		slot.bind(front_enemies[i])
 		slot.capture_home()  
 		front_slots[idx] = slot
-		
+
 
 	var back_start := int((MAX_SLOTS - back_enemies.size()) * 0.5)
 	for j in range(back_enemies.size()):

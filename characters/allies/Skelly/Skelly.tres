@@ -8,11 +8,9 @@
 [ext_resource type="Resource" uid="uid://57fo0cycgjne" path="res://stat/_stats/DefaultStats.tres" id="2_jtp86"]
 [ext_resource type="PackedScene" uid="uid://cvja2deox1khy" path="res://characters/allies/Skelly/_body/Skelly.tscn" id="3_bv0l2"]
 [ext_resource type="Resource" uid="uid://eiwm6khdbjki" path="res://characters/_race/Human.tres" id="4_l3iqv"]
-[ext_resource type="Resource" uid="uid://b40pmjuvgrvn4" path="res://characters/_gender/Male.tres" id="4_p4kuy"]
 [ext_resource type="Script" uid="uid://b06vmgrh4qa8i" path="res://gear/Item.gd" id="4_yu6ia"]
 [ext_resource type="Resource" uid="uid://cm3vin4wtxpjv" path="res://effect/_passive/counterattack/Counterattack.tres" id="5_g0fbc"]
 [ext_resource type="Resource" uid="uid://c5qyqcmwx0qfy" path="res://scripts/experience/ExperienceManager.tres" id="14_tyjbr"]
-[ext_resource type="Resource" uid="uid://s8gs3fa65s30" path="res://stat/_stats/DefaultStatGrowth.tres" id="14_ympyx"]
 [ext_resource type="Resource" uid="uid://bswm14k77iahf" path="res://characters/_class/Fighter.tres" id="16_tyjbr"]
 
 [sub_resource type="Resource" id="Resource_rhf32"]
@@ -23,7 +21,6 @@ metadata/_custom_type_script = "uid://blqk30gl013xc"
 script = ExtResource("1_s17id")
 race = ExtResource("4_l3iqv")
 job = ExtResource("16_tyjbr")
-gender = ExtResource("4_p4kuy")
 attributes = SubResource("Resource_rhf32")
 default_effects = Array[ExtResource("1_l3iqv")]([ExtResource("5_g0fbc")])
 default_damage_type = 1
