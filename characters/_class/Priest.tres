@@ -6,7 +6,6 @@
 [ext_resource type="Script" uid="uid://dq4acpkde276p" path="res://skills/Skill.gd" id="3_cd4k3"]
 [ext_resource type="Resource" uid="uid://c5xohmycfkr5c" path="res://skills/_defensive/_heal/row heal.tres" id="5_lu6jk"]
 [ext_resource type="Resource" uid="uid://bk1ekpvjscjmg" path="res://skills/_defensive/_heal/single heal.tres" id="6_rx8nc"]
-[ext_resource type="Resource" uid="uid://s8gs3fa65s30" path="res://stat/_stats/DefaultStatGrowth.tres" id="9_0qdgc"]
 
 [sub_resource type="Resource" id="Resource_lyfav"]
 script = ExtResource("1_wubjf")

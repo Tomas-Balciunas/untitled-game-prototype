@@ -1,5 +1,5 @@
 {
-	"beginning_area_01": {	
+	"beginning_area_01": {
 		"id": "beginning_area_01",
 		"random": "true",
 		"name": "Beginning Area",
@@ -15,7 +15,7 @@
 		"available_enemies": ["0000", "e_enemy_002", "e_enemy_001"],
 		"gear_tiers": ["tier_1", "tier_2"]
 	},
-	"beginning_area_02": {	
+	"beginning_area_02": {
 		"id": "beginning_area_02",
 		"random": "true",
 		"name": "Beginning Area",
