@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="RiposteEffect" load_steps=2 format=3 uid="uid://riposteeff01a"]
+
+[ext_resource type="Script" path="res://effect/_passive/riposte.gd" id="1_riposte"]
+
+[resource]
+script = ExtResource("1_riposte")
+id = "riposte_00"
+name = "Riposte"
+description = "After taking a hit, the next attack deals 50% bonus damage"
+bonus = 0.5

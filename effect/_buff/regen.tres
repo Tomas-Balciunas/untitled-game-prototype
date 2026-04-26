@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RegenEffect" load_steps=2 format=3 uid="uid://buffregen01ab"]
+
+[ext_resource type="Script" path="res://effect/_buff/regen.gd" id="1_regen"]
+
+[resource]
+script = ExtResource("1_regen")
+id = "regen_00"
+name = "Regeneration"
+description = "Restores HP each turn"
+duration_turns = 3
+heal_per_turn = 10

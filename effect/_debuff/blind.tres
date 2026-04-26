@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="BlindEffect" load_steps=2 format=3 uid="uid://blindeff001ab"]
+
+[ext_resource type="Script" path="res://effect/_debuff/blind.gd" id="1_blind"]
+
+[resource]
+script = ExtResource("1_blind")
+id = "blind_00"
+name = "Blind"
+description = "50% chance to miss attacks"
+duration_turns = 2
+miss_chance = 0.5

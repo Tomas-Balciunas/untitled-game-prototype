@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="ManaShieldEffect" load_steps=2 format=3 uid="uid://manashield01a"]
+
+[ext_resource type="Script" path="res://effect/_passive/mana_shield.gd" id="1_manashield"]
+
+[resource]
+script = ExtResource("1_manashield")
+id = "mana_shield_00"
+name = "Mana Shield"
+description = "Absorbs incoming damage using mana"
+efficiency = 1.0

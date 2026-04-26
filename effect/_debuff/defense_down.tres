@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="DefenseDownEffect" load_steps=2 format=3 uid="uid://defdown001abc"]
+
+[ext_resource type="Script" path="res://effect/_debuff/defense_down.gd" id="1_defdown"]
+
+[resource]
+script = ExtResource("1_defdown")
+id = "defense_down_00"
+name = "Defense Down"
+description = "Lowers the target's defense"
+duration_turns = 3
+value = 10

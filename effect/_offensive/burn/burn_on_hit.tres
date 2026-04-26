@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="BurnOnHit" load_steps=2 format=3 uid="uid://burnonhit0001"]
+
+[ext_resource type="Script" path="res://effect/_offensive/burn/burn_on_hit.gd" id="1_burnonhit"]
+
+[resource]
+script = ExtResource("1_burnonhit")
+id = "burn_on_hit_00"
+name = "Burn on Hit"
+description = "Applies burn to the target on hit"
+duration_turns = 3
+damage_per_turn = 4

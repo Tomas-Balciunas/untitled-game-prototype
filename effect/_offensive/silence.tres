@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="SilenceEffect" load_steps=2 format=3 uid="uid://silenceeff01a"]
+
+[ext_resource type="Script" path="res://effect/_offensive/silence.gd" id="1_silence"]
+
+[resource]
+script = ExtResource("1_silence")
+id = "silence_00"
+name = "Silence"
+description = "Prevents skill use"

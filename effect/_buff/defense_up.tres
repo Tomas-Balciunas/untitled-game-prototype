@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="DefenseUpEffect" load_steps=2 format=3 uid="uid://defenseup01ab"]
+
+[ext_resource type="Script" path="res://effect/_buff/defense_up.gd" id="1_defup"]
+
+[resource]
+script = ExtResource("1_defup")
+id = "defense_up_00"
+name = "Defense Up"
+description = "Raises defense for a few turns"
+duration_turns = 3
+value = 15

@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="BerserkEffect" load_steps=2 format=3 uid="uid://berserkeff01a"]
+
+[ext_resource type="Script" path="res://effect/_offensive/berserk.gd" id="1_berserk"]
+
+[resource]
+script = ExtResource("1_berserk")
+id = "berserk_00"
+name = "Berserk"
+description = "Greatly increases attack but forces random targeting"
+duration_turns = 3
+attack_bonus = 0.4

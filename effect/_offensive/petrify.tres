@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="PetrifyEffect" load_steps=2 format=3 uid="uid://petrifyeff01a"]
+
+[ext_resource type="Script" path="res://effect/_offensive/petrify.gd" id="1_petrify"]
+
+[resource]
+script = ExtResource("1_petrify")
+id = "petrify_00"
+name = "Petrify"
+description = "Turns the target to stone; high physical resistance"
+damage_reduction = 0.7

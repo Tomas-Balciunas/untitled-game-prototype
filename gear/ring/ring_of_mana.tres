@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="RingResource" load_steps=3 format=3 uid="uid://ringmana0001a"]
+
+[ext_resource type="Script" uid="uid://bqln4xpkkidja" path="res://stat/_stats/stats.gd" id="1_stats"]
+[ext_resource type="Script" uid="uid://bixwdffu6ktda" path="res://gear/ring/ring_resource.gd" id="2_ring"]
+
+[sub_resource type="Resource" id="Resource_stats"]
+script = ExtResource("1_stats")
+mana = 30.0
+sp = 5.0
+metadata/_custom_type_script = "uid://bqln4xpkkidja"
+
+[resource]
+script = ExtResource("2_ring")
+id = "ring_of_mana"
+name = "Ring of Mana"
+description = "A sapphire ring that deepens the wearer's mana reservoir."
+quality = 2
+base_stats = SubResource("Resource_stats")
+metadata/_custom_type_script = "uid://bixwdffu6ktda"

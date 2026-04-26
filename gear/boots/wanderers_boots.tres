@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="BootsResource" load_steps=3 format=3 uid="uid://wdrerboots01a"]
+
+[ext_resource type="Script" uid="uid://bqln4xpkkidja" path="res://stat/_stats/stats.gd" id="1_stats"]
+[ext_resource type="Script" uid="uid://dkope1in62jim" path="res://gear/boots/boots_resource.gd" id="2_boots"]
+
+[sub_resource type="Resource" id="Resource_stats"]
+script = ExtResource("1_stats")
+speed = 12.0
+health = 8.0
+metadata/_custom_type_script = "uid://bqln4xpkkidja"
+
+[resource]
+script = ExtResource("2_boots")
+id = "wanderers_boots"
+name = "Wanderer's Boots"
+description = "Worn boots built for long journeys. Increases movement speed."
+quality = 2
+base_stats = SubResource("Resource_stats")
+metadata/_custom_type_script = "uid://dkope1in62jim"

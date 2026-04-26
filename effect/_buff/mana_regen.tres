@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="ManaRegenEffect" load_steps=2 format=3 uid="uid://manregen01abc"]
+
+[ext_resource type="Script" path="res://effect/_buff/mana_regen.gd" id="1_manaregen"]
+
+[resource]
+script = ExtResource("1_manaregen")
+id = "mana_regen_00"
+name = "Mana Regeneration"
+description = "Restores mana each turn"
+duration_turns = 3
+mana_per_turn = 5

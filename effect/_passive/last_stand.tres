@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="LastStandEffect" load_steps=2 format=3 uid="uid://laststand001a"]
+
+[ext_resource type="Script" path="res://effect/_passive/last_stand.gd" id="1_laststand"]
+
+[resource]
+script = ExtResource("1_laststand")
+id = "last_stand_00"
+name = "Last Stand"
+description = "Attack is greatly increased when HP falls below 25%"
+threshold = 0.25
+bonus_multiplier = 0.6

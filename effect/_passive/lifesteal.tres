@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="LifestealEffect" load_steps=2 format=3 uid="uid://lifesteal001a"]
+
+[ext_resource type="Script" path="res://effect/_passive/lifesteal.gd" id="1_lifesteal"]
+
+[resource]
+script = ExtResource("1_lifesteal")
+id = "lifesteal_00"
+name = "Lifesteal"
+description = "Heals for 20% of damage dealt"
+rate = 0.2

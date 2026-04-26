@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="SleepEffect" load_steps=2 format=3 uid="uid://sleepeff001ab"]
+
+[ext_resource type="Script" path="res://effect/_offensive/sleep.gd" id="1_sleep"]
+
+[resource]
+script = ExtResource("1_sleep")
+id = "sleep_00"
+name = "Sleep"
+description = "Skips turns; wakes on taking damage"

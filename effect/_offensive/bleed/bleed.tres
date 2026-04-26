@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="BleedEffect" load_steps=2 format=3 uid="uid://bleedeff001ab"]
+
+[ext_resource type="Script" path="res://effect/_offensive/bleed/bleed.gd" id="1_bleed"]
+
+[resource]
+script = ExtResource("1_bleed")
+id = "bleed_00"
+name = "Bleed"
+description = "Deals physical damage each turn"
+duration_turns = 3
+damage_per_turn = 6

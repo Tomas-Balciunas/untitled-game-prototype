@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="ChestpieceResource" load_steps=3 format=3 uid="uid://ltherarmorxxa"]
+
+[ext_resource type="Script" uid="uid://bqln4xpkkidja" path="res://stat/_stats/stats.gd" id="1_stats"]
+[ext_resource type="Script" uid="uid://c2lpfe7ep4fuv" path="res://gear/chest/chestpiece_resource.gd" id="2_chest"]
+
+[sub_resource type="Resource" id="Resource_stats"]
+script = ExtResource("1_stats")
+defense = 5.0
+health = 8.0
+metadata/_custom_type_script = "uid://bqln4xpkkidja"
+
+[resource]
+script = ExtResource("2_chest")
+id = "leather_armor"
+name = "Leather Armor"
+description = "Light armor made from tanned hides. Favored by scouts and rogues."
+quality = 1
+base_stats = SubResource("Resource_stats")
+metadata/_custom_type_script = "uid://c2lpfe7ep4fuv"

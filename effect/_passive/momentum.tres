@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="MomentumEffect" load_steps=2 format=3 uid="uid://momentumef01a"]
+
+[ext_resource type="Script" path="res://effect/_passive/momentum.gd" id="1_momentum"]
+
+[resource]
+script = ExtResource("1_momentum")
+id = "momentum_00"
+name = "Momentum"
+description = "Each consecutive hit increases damage by 10%, up to 5 stacks. Taking damage resets stacks."
+bonus_per_stack = 0.1
+max_stacks = 5

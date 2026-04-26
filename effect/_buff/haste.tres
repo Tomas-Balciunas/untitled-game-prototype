@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="HasteEffect" load_steps=2 format=3 uid="uid://hasteeff0001a"]
+
+[ext_resource type="Script" path="res://effect/_buff/haste.gd" id="1_haste"]
+
+[resource]
+script = ExtResource("1_haste")
+id = "haste_00"
+name = "Haste"
+description = "Increases speed for a few turns"
+duration_turns = 3
+value = 20

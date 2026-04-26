@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="BleedOnHit" load_steps=2 format=3 uid="uid://bleedonhit01"]
+
+[ext_resource type="Script" path="res://effect/_offensive/bleed/bleed_on_hit.gd" id="1_bleedonhit"]
+
+[resource]
+script = ExtResource("1_bleedonhit")
+id = "bleed_on_hit_00"
+name = "Bleed on Hit"
+description = "Applies bleed to the target on hit"
+duration_turns = 3
+damage_per_turn = 6

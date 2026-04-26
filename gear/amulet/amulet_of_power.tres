@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="AmuletResource" load_steps=3 format=3 uid="uid://amuletpwer01a"]
+
+[ext_resource type="Script" uid="uid://bqln4xpkkidja" path="res://stat/_stats/stats.gd" id="1_stats"]
+[ext_resource type="Script" uid="uid://dgejkbmc67evn" path="res://gear/amulet/amulet_resource.gd" id="2_amulet"]
+
+[sub_resource type="Resource" id="Resource_stats"]
+script = ExtResource("1_stats")
+attack = 10.0
+health = 18.0
+metadata/_custom_type_script = "uid://bqln4xpkkidja"
+
+[resource]
+script = ExtResource("2_amulet")
+id = "amulet_of_power"
+name = "Amulet of Power"
+description = "A beast-claw amulet radiating raw martial energy."
+quality = 2
+base_stats = SubResource("Resource_stats")
+metadata/_custom_type_script = "uid://dgejkbmc67evn"

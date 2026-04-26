@@ -58,6 +58,9 @@ ChatterManager="*res://scripts/ChatterManager.gd"
 ChatEventBus="*res://scripts/bus/ChatEventBus.gd"
 InteractionTagManager="*res://scripts/InteractionTagManager.gd"
 PartyBus="*res://scripts/bus/PartyBus.gd"
+QuestBus="*res://quest/QuestBus.gd"
+QuestRegistry="*res://quest/QuestRegistry.gd"
+QuestManager="*res://quest/QuestManager.gd"
 
 [debug]
 

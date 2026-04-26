@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="GlovesResource" load_steps=3 format=3 uid="uid://combatglov01a"]
+
+[ext_resource type="Script" uid="uid://bqln4xpkkidja" path="res://stat/_stats/stats.gd" id="1_stats"]
+[ext_resource type="Script" uid="uid://boy2cfkvcqeih" path="res://gear/gloves/gloves_resource.gd" id="2_gloves"]
+
+[sub_resource type="Resource" id="Resource_stats"]
+script = ExtResource("1_stats")
+attack = 5.0
+defense = 3.0
+metadata/_custom_type_script = "uid://bqln4xpkkidja"
+
+[resource]
+script = ExtResource("2_gloves")
+id = "combat_gloves"
+name = "Combat Gloves"
+description = "Reinforced gloves that improve striking power."
+quality = 2
+base_stats = SubResource("Resource_stats")
+metadata/_custom_type_script = "uid://boy2cfkvcqeih"

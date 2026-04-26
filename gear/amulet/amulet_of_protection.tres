@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="AmuletResource" load_steps=3 format=3 uid="uid://amuletprot01a"]
+
+[ext_resource type="Script" uid="uid://bqln4xpkkidja" path="res://stat/_stats/stats.gd" id="1_stats"]
+[ext_resource type="Script" uid="uid://dgejkbmc67evn" path="res://gear/amulet/amulet_resource.gd" id="2_amulet"]
+
+[sub_resource type="Resource" id="Resource_stats"]
+script = ExtResource("1_stats")
+health = 20.0
+defense = 6.0
+magic_defense = 6.0
+metadata/_custom_type_script = "uid://bqln4xpkkidja"
+
+[resource]
+script = ExtResource("2_amulet")
+id = "amulet_of_protection"
+name = "Amulet of Protection"
+description = "A warding amulet that shields against both blade and spell."
+quality = 2
+base_stats = SubResource("Resource_stats")
+metadata/_custom_type_script = "uid://dgejkbmc67evn"

@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="ThornsEffect" load_steps=2 format=3 uid="uid://thornseff001a"]
+
+[ext_resource type="Script" path="res://effect/_passive/thorns.gd" id="1_thorns"]
+
+[resource]
+script = ExtResource("1_thorns")
+id = "thorns_00"
+name = "Thorns"
+description = "Reflects 15% of incoming damage back to the attacker"
+reflect_rate = 0.15

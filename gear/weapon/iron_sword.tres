@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="WeaponResource" load_steps=3 format=3 uid="uid://ironsword001a"]
+
+[ext_resource type="Script" uid="uid://bqln4xpkkidja" path="res://stat/_stats/stats.gd" id="1_stats"]
+[ext_resource type="Script" uid="uid://dshxh47nef2ua" path="res://gear/weapon/weapon_resource.gd" id="2_weapon"]
+
+[sub_resource type="Resource" id="Resource_stats"]
+script = ExtResource("1_stats")
+attack = 12.0
+metadata/_custom_type_script = "uid://bqln4xpkkidja"
+
+[resource]
+script = ExtResource("2_weapon")
+id = "iron_sword"
+name = "Iron Sword"
+description = "A basic sword forged from iron. Reliable, if unremarkable."
+targeting = 0
+weapon_range = 0
+quality = 1
+base_stats = SubResource("Resource_stats")
+metadata/_custom_type_script = "uid://dshxh47nef2ua"

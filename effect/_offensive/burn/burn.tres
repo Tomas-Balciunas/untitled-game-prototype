@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="BurnEffect" load_steps=2 format=3 uid="uid://burneff0001ab"]
+
+[ext_resource type="Script" path="res://effect/_offensive/burn/burn.gd" id="1_burn"]
+
+[resource]
+script = ExtResource("1_burn")
+id = "burn_00"
+name = "Burn"
+description = "Deals fire damage each turn"
+duration_turns = 3
+damage_per_turn = 4
