@@ -26,6 +26,7 @@ var is_main: bool = false
 
 @export var base_stats: Stats = DEFAULT_STATS
 @export var stat_level_growth: Stats
+@export var stat_attribute_growth: StatAttributeGrowth
 
 @export var battle_events: Array[BattleEvent]
 @export var experience_manager: ExperienceManager = DEFAULT_EXPERIENCE_MANAGER

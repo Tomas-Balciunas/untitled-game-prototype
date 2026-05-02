@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="KnightClass" format=3 uid="uid://cdu3c36ji1mmg"]
+
+[ext_resource type="Script" uid="uid://blqk30gl013xc" path="res://stat/_attribute/attributes.gd" id="1_v728n"]
+[ext_resource type="Script" uid="uid://6gf11w4qa7j8" path="res://characters/_class/class_knight/Knight.gd" id="2_ht54m"]
+[ext_resource type="Script" uid="uid://bp0biy0knxw2o" path="res://effect/Effect.gd" id="2_ihgra"]
+[ext_resource type="Script" uid="uid://dq4acpkde276p" path="res://skills/Skill.gd" id="3_41lhm"]
+[ext_resource type="Resource" uid="uid://gf2lkrxi7gb1" path="res://characters/_class/class_knight/knight_attribute_contribution.tres" id="5_6og0i"]
+[ext_resource type="Resource" path="res://characters/_class/class_knight/knight_stat_growth_per_level.tres" id="6_ytt2g"]
+
+[sub_resource type="Resource" id="Resource_v728n"]
+script = ExtResource("1_v728n")
+metadata/_custom_type_script = "uid://blqk30gl013xc"
+
+[resource]
+script = ExtResource("2_ht54m")
+name = 1
+attributes = SubResource("Resource_v728n")
+stat_level_growth = ExtResource("6_ytt2g")
+stat_attribute_growth = ExtResource("5_6og0i")
+metadata/_custom_type_script = "uid://6gf11w4qa7j8"

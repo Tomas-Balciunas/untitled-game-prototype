@@ -10,12 +10,22 @@
 [ext_resource type="Resource" uid="uid://eiwm6khdbjki" path="res://characters/_race/Human.tres" id="4_l3iqv"]
 [ext_resource type="Script" uid="uid://b06vmgrh4qa8i" path="res://gear/Item.gd" id="4_yu6ia"]
 [ext_resource type="Resource" uid="uid://cm3vin4wtxpjv" path="res://effect/_passive/counterattack/Counterattack.tres" id="5_g0fbc"]
+[ext_resource type="Script" uid="uid://1soxj0rvfy7j" path="res://stat/StatGrowthEntry.gd" id="13_ympyx"]
+[ext_resource type="Script" uid="uid://c3wbue0mr3cu6" path="res://stat/AttributeMultiplier.gd" id="14_4twd5"]
 [ext_resource type="Resource" uid="uid://c5qyqcmwx0qfy" path="res://scripts/experience/ExperienceManager.tres" id="14_tyjbr"]
-[ext_resource type="Resource" uid="uid://bswm14k77iahf" path="res://characters/_class/Fighter.tres" id="16_tyjbr"]
+[ext_resource type="Script" uid="uid://iowso0enbtmd" path="res://stat/StatAttributeGrowth.gd" id="15_g0fbc"]
+[ext_resource type="Resource" uid="uid://bswm14k77iahf" path="res://characters/_class/class_fighter/class_fighter.tres" id="16_tyjbr"]
 
 [sub_resource type="Resource" id="Resource_rhf32"]
 script = ExtResource("1_ohgca")
 metadata/_custom_type_script = "uid://blqk30gl013xc"
+
+[sub_resource type="Resource" id="Resource_tyjbr"]
+script = ExtResource("13_ympyx")
+
+[sub_resource type="Resource" id="Resource_8uvd5"]
+script = ExtResource("15_g0fbc")
+entries = Array[ExtResource("13_ympyx")]([SubResource("Resource_tyjbr")])
 
 [resource]
 script = ExtResource("1_s17id")
@@ -24,6 +34,7 @@ job = ExtResource("16_tyjbr")
 attributes = SubResource("Resource_rhf32")
 default_effects = Array[ExtResource("1_l3iqv")]([ExtResource("5_g0fbc")])
 default_damage_type = 1
+stat_attribute_growth = SubResource("Resource_8uvd5")
 id = "a_skelly_1"
 name = "Skelly"
 character_body = ExtResource("3_bv0l2")

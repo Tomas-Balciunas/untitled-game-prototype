@@ -1,0 +1,53 @@
+[gd_resource type="Resource" script_class="StatAttributeGrowth" format=3 uid="uid://riijdkc770g2"]
+
+[ext_resource type="Script" uid="uid://iowso0enbtmd" path="res://stat/StatAttributeGrowth.gd" id="1_growth"]
+[ext_resource type="Script" uid="uid://c3wbue0mr3cu6" path="res://stat/AttributeMultiplier.gd" id="2_6gpaj"]
+[ext_resource type="Script" uid="uid://1soxj0rvfy7j" path="res://stat/StatGrowthEntry.gd" id="2_entry"]
+
+[sub_resource type="Resource" id="Resource_xtyap"]
+script = ExtResource("2_6gpaj")
+
+[sub_resource type="Resource" id="Resource_6gpaj"]
+script = ExtResource("2_entry")
+contributions = Array[ExtResource("2_6gpaj")]([SubResource("Resource_xtyap")])
+
+[sub_resource type="Resource" id="Resource_636fk"]
+script = ExtResource("2_entry")
+stat = 1
+
+[sub_resource type="Resource" id="Resource_fld24"]
+script = ExtResource("2_entry")
+stat = 2
+
+[sub_resource type="Resource" id="Resource_oj7b4"]
+script = ExtResource("2_entry")
+stat = 3
+
+[sub_resource type="Resource" id="Resource_rq2qy"]
+script = ExtResource("2_entry")
+stat = 4
+
+[sub_resource type="Resource" id="Resource_hm5b5"]
+script = ExtResource("2_entry")
+stat = 5
+
+[sub_resource type="Resource" id="Resource_rm2uk"]
+script = ExtResource("2_entry")
+stat = 6
+
+[sub_resource type="Resource" id="Resource_hhpha"]
+script = ExtResource("2_entry")
+stat = 7
+
+[sub_resource type="Resource" id="Resource_d6p35"]
+script = ExtResource("2_entry")
+stat = 8
+
+[sub_resource type="Resource" id="Resource_v6eg2"]
+script = ExtResource("2_entry")
+stat = 9
+
+[resource]
+script = ExtResource("1_growth")
+entries = Array[ExtResource("2_entry")]([SubResource("Resource_6gpaj"), SubResource("Resource_636fk"), SubResource("Resource_fld24"), SubResource("Resource_oj7b4"), SubResource("Resource_rq2qy"), SubResource("Resource_hm5b5"), SubResource("Resource_rm2uk"), SubResource("Resource_hhpha"), SubResource("Resource_d6p35"), SubResource("Resource_v6eg2")])
+metadata/_custom_type_script = "uid://iowso0enbtmd"

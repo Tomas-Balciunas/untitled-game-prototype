@@ -40,15 +40,15 @@ func add(other: Attributes) -> void:
 static func to_str(value: int) -> String:
 	return AttributeRef.keys()[value]
 
-func get_attribute(attr: String) -> int:
+func get_attribute(attr) -> int:
 	match attr:
-		STR: return strength
-		IQ: return intelligence
-		PIE: return piety
-		VIT: return vitality
-		DEX: return dexterity
-		SPD: return speed
-		LUK: return luck
+		STR, AttributeRef.STR: return strength
+		IQ, AttributeRef.IQ:   return intelligence
+		PIE, AttributeRef.PIE: return piety
+		VIT, AttributeRef.VIT: return vitality
+		DEX, AttributeRef.DEX: return dexterity
+		SPD, AttributeRef.SPD: return speed
+		LUK, AttributeRef.LUK: return luck
 		_: return 0
 
 func game_save() -> Dictionary:

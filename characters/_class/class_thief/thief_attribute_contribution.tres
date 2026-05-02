@@ -1,0 +1,148 @@
+[gd_resource type="Resource" script_class="StatAttributeGrowth" format=3 uid="uid://dyy7qqom1mpds"]
+
+[ext_resource type="Script" uid="uid://iowso0enbtmd" path="res://stat/StatAttributeGrowth.gd" id="1_growth"]
+[ext_resource type="Script" uid="uid://c3wbue0mr3cu6" path="res://stat/AttributeMultiplier.gd" id="2_mult"]
+[ext_resource type="Script" uid="uid://1soxj0rvfy7j" path="res://stat/StatGrowthEntry.gd" id="3_entry"]
+
+[sub_resource type="Resource" id="M1"]
+script = ExtResource("2_mult")
+attribute = 4
+multiplier = 1.2
+
+[sub_resource type="Resource" id="M2"]
+script = ExtResource("2_mult")
+multiplier = 0.5
+
+[sub_resource type="Resource" id="M3"]
+script = ExtResource("2_mult")
+attribute = 6
+multiplier = 0.3
+
+[sub_resource type="Resource" id="E0"]
+script = ExtResource("3_entry")
+contributions = Array[ExtResource("2_mult")]([SubResource("M1"), SubResource("M2"), SubResource("M3")])
+
+[sub_resource type="Resource" id="M4"]
+script = ExtResource("2_mult")
+attribute = 3
+multiplier = 0.8
+
+[sub_resource type="Resource" id="M5"]
+script = ExtResource("2_mult")
+attribute = 4
+multiplier = 0.2
+
+[sub_resource type="Resource" id="E1"]
+script = ExtResource("3_entry")
+stat = 1
+contributions = Array[ExtResource("2_mult")]([SubResource("M4"), SubResource("M5")])
+
+[sub_resource type="Resource" id="M6"]
+script = ExtResource("2_mult")
+attribute = 1
+multiplier = 0.5
+
+[sub_resource type="Resource" id="E2"]
+script = ExtResource("3_entry")
+stat = 2
+contributions = Array[ExtResource("2_mult")]([SubResource("M6")])
+
+[sub_resource type="Resource" id="M7"]
+script = ExtResource("2_mult")
+attribute = 4
+multiplier = 1.0
+
+[sub_resource type="Resource" id="M8"]
+script = ExtResource("2_mult")
+attribute = 6
+multiplier = 0.5
+
+[sub_resource type="Resource" id="E3"]
+script = ExtResource("3_entry")
+stat = 3
+contributions = Array[ExtResource("2_mult")]([SubResource("M7"), SubResource("M8")])
+
+[sub_resource type="Resource" id="M9"]
+script = ExtResource("2_mult")
+attribute = 5
+multiplier = 1.5
+
+[sub_resource type="Resource" id="M10"]
+script = ExtResource("2_mult")
+attribute = 4
+multiplier = 0.5
+
+[sub_resource type="Resource" id="E4"]
+script = ExtResource("3_entry")
+stat = 4
+contributions = Array[ExtResource("2_mult")]([SubResource("M9"), SubResource("M10")])
+
+[sub_resource type="Resource" id="M11"]
+script = ExtResource("2_mult")
+attribute = 4
+multiplier = 0.8
+
+[sub_resource type="Resource" id="M12"]
+script = ExtResource("2_mult")
+attribute = 3
+multiplier = 0.5
+
+[sub_resource type="Resource" id="E5"]
+script = ExtResource("3_entry")
+stat = 5
+contributions = Array[ExtResource("2_mult")]([SubResource("M11"), SubResource("M12")])
+
+[sub_resource type="Resource" id="M13"]
+script = ExtResource("2_mult")
+attribute = 1
+multiplier = 0.3
+
+[sub_resource type="Resource" id="E6"]
+script = ExtResource("3_entry")
+stat = 6
+contributions = Array[ExtResource("2_mult")]([SubResource("M13")])
+
+[sub_resource type="Resource" id="M14"]
+script = ExtResource("2_mult")
+attribute = 2
+multiplier = 0.1
+
+[sub_resource type="Resource" id="E7"]
+script = ExtResource("3_entry")
+stat = 7
+contributions = Array[ExtResource("2_mult")]([SubResource("M14")])
+
+[sub_resource type="Resource" id="M15"]
+script = ExtResource("2_mult")
+attribute = 1
+multiplier = 0.3
+
+[sub_resource type="Resource" id="M16"]
+script = ExtResource("2_mult")
+attribute = 4
+multiplier = 0.2
+
+[sub_resource type="Resource" id="E8"]
+script = ExtResource("3_entry")
+stat = 8
+contributions = Array[ExtResource("2_mult")]([SubResource("M15"), SubResource("M16")])
+
+[sub_resource type="Resource" id="M17"]
+script = ExtResource("2_mult")
+attribute = 6
+multiplier = 0.5
+
+[sub_resource type="Resource" id="M18"]
+script = ExtResource("2_mult")
+attribute = 4
+multiplier = 0.2
+
+[sub_resource type="Resource" id="E9"]
+script = ExtResource("3_entry")
+stat = 9
+contributions = Array[ExtResource("2_mult")]([SubResource("M17"), SubResource("M18")])
+
+[resource]
+script = ExtResource("1_growth")
+entries = Array[ExtResource("3_entry")]([SubResource("E0"), SubResource("E1"), SubResource("E2"), SubResource("E3"), SubResource("E4"), SubResource("E5"), SubResource("E6"), SubResource("E7"), SubResource("E8"), SubResource("E9")])
+metadata/_custom_type_script = "uid://iowso0enbtmd"

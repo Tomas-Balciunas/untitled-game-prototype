@@ -4,12 +4,20 @@
 [ext_resource type="Script" uid="uid://blqk30gl013xc" path="res://stat/_attribute/attributes.gd" id="1_flgxd"]
 [ext_resource type="Script" uid="uid://xepac0r71qt2" path="res://characters/_class/Job.gd" id="2_flgxd"]
 [ext_resource type="Script" uid="uid://dq4acpkde276p" path="res://skills/Skill.gd" id="3_ayw6p"]
+[ext_resource type="Resource" uid="uid://riijdkc770g2" path="res://stat/DefaultStatAttributeGrowth.tres" id="5_xyee7"]
+[ext_resource type="Script" uid="uid://bqln4xpkkidja" path="res://stat/_stats/stats.gd" id="6_to0h6"]
 
 [sub_resource type="Resource" id="Resource_ayw6p"]
 script = ExtResource("1_flgxd")
 metadata/_custom_type_script = "uid://blqk30gl013xc"
 
+[sub_resource type="Resource" id="Resource_v7jum"]
+script = ExtResource("6_to0h6")
+metadata/_custom_type_script = "uid://bqln4xpkkidja"
+
 [resource]
 script = ExtResource("2_flgxd")
 attributes = SubResource("Resource_ayw6p")
+stat_level_growth = SubResource("Resource_v7jum")
+stat_attribute_growth = ExtResource("5_xyee7")
 metadata/_custom_type_script = "uid://xepac0r71qt2"

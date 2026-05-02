@@ -12,7 +12,7 @@
 [ext_resource type="Resource" uid="uid://dkbt25rbnbj2p" path="res://effect/_offensive/bouncedmg.tres" id="6_hdlg0"]
 [ext_resource type="Resource" uid="uid://bksuu5x4hbshr" path="res://gear/consumable/hp pot minor/hp_pot.tres" id="7_tttne"]
 [ext_resource type="Script" uid="uid://bqln4xpkkidja" path="res://stat/_stats/stats.gd" id="8_6yar6"]
-[ext_resource type="Resource" uid="uid://br55c33pop4ux" path="res://characters/_class/Priest.tres" id="8_23xqr"]
+[ext_resource type="Resource" uid="uid://br55c33pop4ux" path="res://characters/_class/class_priest/class_priest.tres" id="8_23xqr"]
 [ext_resource type="Script" uid="uid://cyhrh3l20i5dm" path="res://stat/StatModifier.gd" id="9_l7bhs"]
 [ext_resource type="Script" uid="uid://dshxh47nef2ua" path="res://gear/weapon/weapon_resource.gd" id="10_52sjl"]
 [ext_resource type="Script" uid="uid://4l2clqoak01s" path="res://effect/_offensive/poison/resolve_poison_on_hit.gd" id="10_hdlg0"]

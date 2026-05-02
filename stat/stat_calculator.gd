@@ -45,20 +45,22 @@ static func recalculate_stat(c: CharacterInstance, s: Stats.StatRef) -> void:
 
 
 static func get_attribute_contribution(stat: Stats.StatRef, c: CharacterInstance) -> float:
-	var mods: Dictionary = c.job.get_stat_attribute_growth(stat)
-	
-	if mods.is_empty():
-		return 0.0
-	
-	var calculated_value: float = 0.0
-	
-	for attr: String in mods.keys():
-		var attribute_value := c.attributes.get_attribute(attr)
-		var mult: float = mods[attr]
-		
-		calculated_value += attribute_value * mult
-		
-	return calculated_value
+	var total: float = 0.0
+
+	var sources: Array = [
+		[c.job.stat_attribute_growth, "job '%s'" % c.job.name],
+		[c.resource.stat_attribute_growth, "character '%s'" % c.resource.name],
+		[c.race.stat_attribute_growth, "race '%s'" % c.race.name],
+	]
+
+	for source in sources:
+		var growth: StatAttributeGrowth = source[0]
+		if not growth:
+			push_error("StatAttributeGrowth missing on %s" % source[1])
+			continue
+		total += growth.get_contribution(stat, c.attributes)
+
+	return total
 	
 static func get_level_contribution(stat: Stats.StatRef, c: CharacterInstance) -> float:
 	return c.job.get_stat_level_growth().get_stat(stat) * (c.level - 1) + c.resource.get_stat_level_growth().get_stat(stat) * (c.level - 1)

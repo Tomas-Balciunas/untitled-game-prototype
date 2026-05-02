@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="ThiefClass" format=3 uid="uid://bkrs0ekje74i1"]
+
+[ext_resource type="Script" uid="uid://bp0biy0knxw2o" path="res://effect/Effect.gd" id="1_8skjm"]
+[ext_resource type="Script" uid="uid://yvsnknut00xd" path="res://characters/_class/class_thief/Thief.gd" id="2_rrx6c"]
+[ext_resource type="Script" uid="uid://dq4acpkde276p" path="res://skills/Skill.gd" id="3_jxnid"]
+[ext_resource type="Resource" uid="uid://dyy7qqom1mpds" path="res://characters/_class/class_thief/thief_attribute_contribution.tres" id="4_jxnid"]
+[ext_resource type="Resource" path="res://characters/_class/class_thief/thief_stat_growth_per_level.tres" id="5_bwt3x"]
+
+[resource]
+script = ExtResource("2_rrx6c")
+name = 4
+stat_level_growth = ExtResource("5_bwt3x")
+stat_attribute_growth = ExtResource("4_jxnid")
+metadata/_custom_type_script = "uid://yvsnknut00xd"

@@ -1,0 +1,141 @@
+[gd_resource type="Resource" script_class="StatAttributeGrowth" format=3 uid="uid://dk6lc61n00vsh"]
+
+[ext_resource type="Script" uid="uid://1soxj0rvfy7j" path="res://stat/StatGrowthEntry.gd" id="1_gjrfv"]
+[ext_resource type="Script" uid="uid://c3wbue0mr3cu6" path="res://stat/AttributeMultiplier.gd" id="2_fo3kp"]
+[ext_resource type="Script" uid="uid://iowso0enbtmd" path="res://stat/StatAttributeGrowth.gd" id="3_jsh2p"]
+
+[sub_resource type="Resource" id="M1"]
+script = ExtResource("2_fo3kp")
+multiplier = 1.5
+
+[sub_resource type="Resource" id="M2"]
+script = ExtResource("2_fo3kp")
+attribute = 4
+multiplier = 0.5
+
+[sub_resource type="Resource" id="E0"]
+script = ExtResource("1_gjrfv")
+contributions = Array[ExtResource("2_fo3kp")]([SubResource("M1"), SubResource("M2")])
+
+[sub_resource type="Resource" id="M3"]
+script = ExtResource("2_fo3kp")
+attribute = 3
+multiplier = 1.5
+
+[sub_resource type="Resource" id="M4"]
+script = ExtResource("2_fo3kp")
+multiplier = 0.3
+
+[sub_resource type="Resource" id="E1"]
+script = ExtResource("1_gjrfv")
+stat = 1
+contributions = Array[ExtResource("2_fo3kp")]([SubResource("M3"), SubResource("M4")])
+
+[sub_resource type="Resource" id="M5"]
+script = ExtResource("2_fo3kp")
+attribute = 1
+multiplier = 0.3
+
+[sub_resource type="Resource" id="E2"]
+script = ExtResource("1_gjrfv")
+stat = 2
+contributions = Array[ExtResource("2_fo3kp")]([SubResource("M5")])
+
+[sub_resource type="Resource" id="M6"]
+script = ExtResource("2_fo3kp")
+attribute = 4
+multiplier = 0.5
+
+[sub_resource type="Resource" id="M7"]
+script = ExtResource("2_fo3kp")
+multiplier = 0.2
+
+[sub_resource type="Resource" id="E3"]
+script = ExtResource("1_gjrfv")
+stat = 3
+contributions = Array[ExtResource("2_fo3kp")]([SubResource("M6"), SubResource("M7")])
+
+[sub_resource type="Resource" id="M8"]
+script = ExtResource("2_fo3kp")
+attribute = 5
+multiplier = 1.0
+
+[sub_resource type="Resource" id="M9"]
+script = ExtResource("2_fo3kp")
+attribute = 4
+multiplier = 0.3
+
+[sub_resource type="Resource" id="E4"]
+script = ExtResource("1_gjrfv")
+stat = 4
+contributions = Array[ExtResource("2_fo3kp")]([SubResource("M8"), SubResource("M9")])
+
+[sub_resource type="Resource" id="M10"]
+script = ExtResource("2_fo3kp")
+attribute = 3
+multiplier = 1.0
+
+[sub_resource type="Resource" id="M11"]
+script = ExtResource("2_fo3kp")
+attribute = 4
+multiplier = 0.2
+
+[sub_resource type="Resource" id="E5"]
+script = ExtResource("1_gjrfv")
+stat = 5
+contributions = Array[ExtResource("2_fo3kp")]([SubResource("M10"), SubResource("M11")])
+
+[sub_resource type="Resource" id="M12"]
+script = ExtResource("2_fo3kp")
+attribute = 1
+multiplier = 0.3
+
+[sub_resource type="Resource" id="E6"]
+script = ExtResource("1_gjrfv")
+stat = 6
+contributions = Array[ExtResource("2_fo3kp")]([SubResource("M12")])
+
+[sub_resource type="Resource" id="M13"]
+script = ExtResource("2_fo3kp")
+attribute = 2
+multiplier = 0.2
+
+[sub_resource type="Resource" id="E7"]
+script = ExtResource("1_gjrfv")
+stat = 7
+contributions = Array[ExtResource("2_fo3kp")]([SubResource("M13")])
+
+[sub_resource type="Resource" id="M14"]
+script = ExtResource("2_fo3kp")
+attribute = 2
+multiplier = 0.3
+
+[sub_resource type="Resource" id="M15"]
+script = ExtResource("2_fo3kp")
+attribute = 1
+multiplier = 0.2
+
+[sub_resource type="Resource" id="E8"]
+script = ExtResource("1_gjrfv")
+stat = 8
+contributions = Array[ExtResource("2_fo3kp")]([SubResource("M14"), SubResource("M15")])
+
+[sub_resource type="Resource" id="M16"]
+script = ExtResource("2_fo3kp")
+attribute = 2
+multiplier = 0.3
+
+[sub_resource type="Resource" id="M17"]
+script = ExtResource("2_fo3kp")
+attribute = 3
+multiplier = 0.2
+
+[sub_resource type="Resource" id="E9"]
+script = ExtResource("1_gjrfv")
+stat = 9
+contributions = Array[ExtResource("2_fo3kp")]([SubResource("M16"), SubResource("M17")])
+
+[resource]
+script = ExtResource("3_jsh2p")
+entries = Array[ExtResource("1_gjrfv")]([SubResource("E0"), SubResource("E1"), SubResource("E2"), SubResource("E3"), SubResource("E4"), SubResource("E5"), SubResource("E6"), SubResource("E7"), SubResource("E8"), SubResource("E9")])
+metadata/_custom_type_script = "uid://iowso0enbtmd"

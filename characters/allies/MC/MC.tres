@@ -15,6 +15,7 @@
 [ext_resource type="Script" uid="uid://bwn4gpkaijqsg" path="res://scripts/CharacterResource.gd" id="10_fb0jw"]
 [ext_resource type="Script" uid="uid://dshxh47nef2ua" path="res://gear/weapon/weapon_resource.gd" id="10_xghbj"]
 [ext_resource type="Script" uid="uid://bqln4xpkkidja" path="res://stat/_stats/stats.gd" id="12_jti2u"]
+[ext_resource type="Resource" uid="uid://riijdkc770g2" path="res://stat/DefaultStatAttributeGrowth.tres" id="16_up1d2"]
 
 [sub_resource type="Resource" id="Resource_pcxjb"]
 script = ExtResource("12_jti2u")
@@ -58,6 +59,7 @@ script = ExtResource("10_fb0jw")
 default_items = Array[ExtResource("4_jti2u")]([ExtResource("6_jti2u"), SubResource("Resource_up1d2"), SubResource("Resource_fb0jw")])
 base_stats = ExtResource("1_lkn2v")
 stat_level_growth = SubResource("Resource_uxndi")
+stat_attribute_growth = ExtResource("16_up1d2")
 id = "mc"
 character_body = ExtResource("3_2usx5")
 metadata/_custom_type_script = "uid://bwn4gpkaijqsg"

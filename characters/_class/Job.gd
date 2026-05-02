@@ -15,15 +15,13 @@ const DEFAULT_STAT_GROWTH = preload("uid://s8gs3fa65s30")
 
 @export var name: Name = Name.UNKNOWN
 @export var attributes: Attributes
-@export var skills: Array[Skill]
-@export var effects: Array[Effect]
+@export var skills: Array[Skill] = []
+@export var effects: Array[Effect] = []
 @export var stat_level_growth: Stats
+@export var stat_attribute_growth: StatAttributeGrowth
 var level_skills: Dictionary = {}
 var level_effects: Dictionary = {}
 
-
-func get_stat_attribute_growth(_st: Stats.StatRef) -> Dictionary:
-	return {}
 
 func get_stat_level_growth() -> Stats:
 	if !stat_level_growth:

@@ -12,3 +12,4 @@ enum Name {
 
 @export var name: Name = Name.UNKNOWN
 @export var attributes: Attributes
+@export var stat_attribute_growth: StatAttributeGrowth

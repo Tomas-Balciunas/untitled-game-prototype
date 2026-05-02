@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="Stats" format=3]
+
+[ext_resource type="Script" uid="uid://bqln4xpkkidja" path="res://stat/_stats/stats.gd" id="1_stats"]
+
+[resource]
+script = ExtResource("1_stats")
+attack = 0.3
+health = 2.5
+mana = 3.0
+sp = 0.3
+speed = 0.2
+defense = 0.5
+magic_power = 0.5
+divine_power = 2.0
+magic_defense = 1.5
+resistance = 0.8
+metadata/_custom_type_script = "uid://bqln4xpkkidja"
