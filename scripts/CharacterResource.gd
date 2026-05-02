@@ -18,9 +18,9 @@ var is_main: bool = false
 @export var experience: int = 0
 @export var slot_width: int = 1
 @export var default_skills: Array[Skill] = []
-@export var level_skills: Dictionary[int, Skill] = {}
+@export var level_skills: Dictionary = {}
 @export var default_effects: Array[Effect] = []
-@export var level_effects: Dictionary[int, Effect] = {}
+@export var level_effects: Dictionary = {}
 @export var default_damage_type: DamageTypes.Type
 @export var default_items: Array[Item] = []
 
@@ -40,11 +40,21 @@ func _init() -> void:
 	if not stat_level_growth:
 		stat_level_growth = Stats.new()
 
-func get_skill_for_level(lvl: int) -> Skill:
-	return level_skills.get(lvl, null)
-	
-func get_effect_for_level(lvl: int) -> Effect:
-	return level_skills.get(lvl, null)
+func get_skills_for_level(lvl: int) -> Array[Skill]:
+	var entry = level_skills.get(lvl, null)
+	if entry is Array:
+		return entry as Array[Skill]
+	if entry is Skill:
+		return [entry] as Array[Skill]
+	return []
+
+func get_effects_for_level(lvl: int) -> Array[Effect]:
+	var entry = level_effects.get(lvl, null)
+	if entry is Array:
+		return entry as Array[Effect]
+	if entry is Effect:
+		return [entry] as Array[Effect]
+	return []
 
 func get_stat_level_growth() -> Stats:
 	if !stat_level_growth:

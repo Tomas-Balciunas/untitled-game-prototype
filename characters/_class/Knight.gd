@@ -4,12 +4,12 @@ class_name KnightClass
 
 func _init() -> void:
 	level_skills = {
-		2: load("uid://cneghh04ud4gg"),
+		2: [preload("uid://cneghh04ud4gg")],
 	}
-	
+
 	level_effects = {
-		3: load("uid://badgfln40mudj"),
-		4: load("uid://bbhp3nyjhsykk")
+		3: [preload("uid://badgfln40mudj")],
+		4: [preload("uid://bbhp3nyjhsykk")],
 	}
 
 var stat_attribute_modifiers: Dictionary = {

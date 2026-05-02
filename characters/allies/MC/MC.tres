@@ -18,7 +18,6 @@
 
 [sub_resource type="Resource" id="Resource_pcxjb"]
 script = ExtResource("12_jti2u")
-attack = 500
 metadata/_custom_type_script = "uid://bqln4xpkkidja"
 
 [sub_resource type="Resource" id="Resource_up1d2"]
@@ -29,7 +28,6 @@ metadata/_custom_type_script = "uid://dshxh47nef2ua"
 
 [sub_resource type="Resource" id="Resource_ghhp2"]
 script = ExtResource("12_jti2u")
-attack = 5
 metadata/_custom_type_script = "uid://bqln4xpkkidja"
 
 [sub_resource type="Resource" id="Resource_fb0jw"]
