@@ -1,173 +1,88 @@
 extends Node3D
 class_name FormationBase
 
-var front_row_z: float
-var back_row_z: float
+var row_z: float
 var slot_spacing_x: int
 var max_slots: int
 
-var front_slots: Array[FormationSlot] = []
-var back_slots: Array[FormationSlot] = []
+var slots: Array[FormationSlot] = []
+var positions := []
 
-var front_positions := []
-var back_positions  := []
-
-func remove_slot_for(enemy: CharacterInstance) -> void:
+func remove_slot_for(character: CharacterInstance) -> void:
 	for i in range(max_slots):
-		var slot: FormationSlot = front_slots[i]
-		if slot and slot.character_instance == enemy:
+		var slot: FormationSlot = slots[i]
+		if slot and slot.character_instance == character:
 			slot.queue_free()
-			front_slots[i] = null
-			_promote_from_back_to_front(i)
+			slots[i] = null
 			return
 
-	for j in range(max_slots):
-		var slot: FormationSlot = back_slots[j]
-		if slot and slot.character_instance == enemy:
-			slot.queue_free()
-			back_slots[j] = null
-			return
-			
 func get_slot_for(who: CharacterInstance) -> FormationSlot:
 	for i in range(max_slots):
-		var slot: FormationSlot = front_slots[i]
+		var slot: FormationSlot = slots[i]
 		if slot and slot.character_instance == who:
 			return slot
-
-	for j in range(max_slots):
-		var slot: FormationSlot = back_slots[j]
-		if slot and slot.character_instance == who:
-			return slot
-
 	return null
 
-func _promote_from_back_to_front(index: int) -> void:
-	var back: FormationSlot = back_slots[index]
-	if back and front_slots[index] == null:
-		back_slots[index]  = null
-		front_slots[index] = back
-		back.position      = front_positions[index]
-		back.capture_home()
-
 func clear_slots() -> void:
-	for slot in front_slots + back_slots:
+	for slot in slots:
 		if slot:
 			slot.queue_free()
-	front_slots.fill(null)
-	back_slots.fill(null)
+	slots.fill(null)
 
 func get_centered_positions(count: int, z: float) -> Array:
-	var positions := []
+	var pos := []
 	if count <= 0:
-		return positions
+		return pos
 	var total_width := (count - 1) * slot_spacing_x
 	for i in range(count):
 		var x := -total_width * 0.5 + i * slot_spacing_x
-		positions.append(Vector3(x, 0, z))
-		
-	return positions
-	
+		pos.append(Vector3(x, 0, z))
+	return pos
+
 func get_column(target: CharacterInstance) -> Array[CharacterInstance]:
-	for i in range(max_slots):
-		if front_slots[i] and front_slots[i].character_instance == target:
-			return get_adjacent_in_column(back_slots, i, front_slots[i])
-		if back_slots[i] and back_slots[i].character_instance == target:
-			return get_adjacent_in_column(front_slots, i, back_slots[i])
-	
-	push_error("Column Targeting: Target not found!")
 	return [target]
-	
+
 func get_blast(target: CharacterInstance) -> Array[CharacterInstance]:
 	for i in range(max_slots):
-		if front_slots[i] and front_slots[i].character_instance == target:
-			return get_adjacent_in_row(front_slots, i)
-		if back_slots[i] and back_slots[i].character_instance == target:
-			return get_adjacent_in_row(back_slots, i)
-	
+		if slots[i] and slots[i].character_instance == target:
+			return get_adjacent_in_row(slots, i)
 	push_error("Blast Targeting: Target not found!")
 	return [target]
 
-func get_row(target: CharacterInstance) -> Array[CharacterInstance]:
-	for i in range(max_slots):
-		var slot: FormationSlot = front_slots[i]
-		if slot and slot.character_instance == target:
-			return slots_to_character_instances(front_slots)
-			
-	return slots_to_character_instances(back_slots)
-	
+func get_row(_target: CharacterInstance) -> Array[CharacterInstance]:
+	return get_mass()
+
 func get_adjacent(target: CharacterInstance) -> Array[CharacterInstance]:
-	for i in range(max_slots):
-		if front_slots[i] and front_slots[i].character_instance == target:
-			var row :=  get_adjacent_in_row(front_slots, i)
-			var column := get_adjacent_in_column(back_slots, i, front_slots[i])
-			return array_unique(row, column)
-			
-		if back_slots[i] and back_slots[i].character_instance == target:
-			var row :=  get_adjacent_in_row(back_slots, i)
-			var column := get_adjacent_in_column(front_slots, i, back_slots[i])
-			return array_unique(row, column)
-			
-	push_error("Adjacent Targeting: Target not found!")
-	return [target]
-	
+	var blast: Array[CharacterInstance] = get_blast(target)
+	blast.erase(target)
+	return blast
+
 func get_mass() -> Array[CharacterInstance]:
-	var mass: Array[FormationSlot] = (front_slots + back_slots).filter(func(slot: FormationSlot) -> bool: return slot != null)
-		
-	return slots_to_character_instances(mass)
-	
+	var filled: Array[FormationSlot] = slots.filter(func(slot: FormationSlot) -> bool: return slot != null)
+	return slots_to_character_instances(filled)
+
 func get_adjacent_in_row(row: Array[FormationSlot], index: int) -> Array[CharacterInstance]:
 	var adjacent: Array[FormationSlot] = []
 	adjacent.append(row[index])
-	
+
 	if index > 0 and row[index - 1] != null:
 		adjacent.append(row[index - 1])
-		
+
 	if index < max_slots - 1 and row[index + 1] != null:
 		adjacent.append(row[index + 1])
 
 	return slots_to_character_instances(adjacent)
 
-func get_adjacent_in_column(row: Array[FormationSlot], index: int, target: FormationSlot) -> Array[CharacterInstance]:
-	var adjacent: Array[FormationSlot] = []
-	adjacent.append(target)
-	
-	if row[index] != null:
-		adjacent.append(row[index])
-
-	return slots_to_character_instances(adjacent)
-	
-func array_unique(arr1: Array[CharacterInstance], arr2: Array[CharacterInstance]) -> Array[CharacterInstance]:
-	var unique := arr1
-	
-	for item in arr2:
-		if arr1.has(item):
-			continue
-		arr1.append(item)
-	
-	return unique
-
-func slots_to_character_instances(slots: Array[FormationSlot]) -> Array[CharacterInstance]:
+func slots_to_character_instances(s: Array[FormationSlot]) -> Array[CharacterInstance]:
 	var result: Array[CharacterInstance] = []
-	for slot in slots:
+	for slot in s:
 		if slot:
 			result.append(slot.character_instance)
-
 	return result
 
-
 func get_all_slots() -> Array[FormationSlot]:
-	var slots: Array[FormationSlot] = []
-	
-	for slot: FormationSlot in front_slots:
-		if slot == null:
-			continue
-		
-		slots.append(slot)
-	
-	for slot: FormationSlot in back_slots:
-		if slot == null:
-			continue
-		
-		slots.append(slot)
-	
-	return slots
+	var result: Array[FormationSlot] = []
+	for slot: FormationSlot in slots:
+		if slot != null:
+			result.append(slot)
+	return result

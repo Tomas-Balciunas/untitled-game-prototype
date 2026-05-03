@@ -43,13 +43,13 @@ material = SubResource("CanvasItemMaterial_sugp2")
 custom_minimum_size = Vector2(100, 50)
 layout_mode = 2
 
-[node name="FrontRow" type="GridContainer" parent="PanelContainer/PartyContainer" unique_id=143562526]
+[node name="PartyRow" type="GridContainer" parent="PanelContainer/PartyContainer" unique_id=143562526]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 10
-columns = 3
+columns = 4
 
-[node name="PartyMemberSlot1" type="MarginContainer" parent="PanelContainer/PartyContainer/FrontRow" unique_id=1637992835]
+[node name="PartyMemberSlot1" type="MarginContainer" parent="PanelContainer/PartyContainer/PartyRow" unique_id=1637992835]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -58,22 +58,10 @@ theme_override_constants/margin_top = 3
 theme_override_constants/margin_right = 3
 theme_override_constants/margin_bottom = 3
 
-[node name="PartyMember" parent="PanelContainer/PartyContainer/FrontRow/PartyMemberSlot1" unique_id=596907121 instance=ExtResource("2_gd10f")]
+[node name="PartyMember" parent="PanelContainer/PartyContainer/PartyRow/PartyMemberSlot1" unique_id=596907121 instance=ExtResource("2_gd10f")]
 layout_mode = 2
 
-[node name="PartyMemberSlot2" type="MarginContainer" parent="PanelContainer/PartyContainer/FrontRow" unique_id=516937574]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-theme_override_constants/margin_left = 3
-theme_override_constants/margin_top = 3
-theme_override_constants/margin_right = 3
-theme_override_constants/margin_bottom = 3
-
-[node name="PartyMember" parent="PanelContainer/PartyContainer/FrontRow/PartyMemberSlot2" unique_id=2079424892 instance=ExtResource("2_gd10f")]
-layout_mode = 2
-
-[node name="PartyMemberSlot3" type="MarginContainer" parent="PanelContainer/PartyContainer/FrontRow" unique_id=488021410]
+[node name="PartyMemberSlot2" type="MarginContainer" parent="PanelContainer/PartyContainer/PartyRow" unique_id=516937574]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -82,16 +70,10 @@ theme_override_constants/margin_top = 3
 theme_override_constants/margin_right = 3
 theme_override_constants/margin_bottom = 3
 
-[node name="PartyMember" parent="PanelContainer/PartyContainer/FrontRow/PartyMemberSlot3" unique_id=1177591230 instance=ExtResource("2_gd10f")]
+[node name="PartyMember" parent="PanelContainer/PartyContainer/PartyRow/PartyMemberSlot2" unique_id=2079424892 instance=ExtResource("2_gd10f")]
 layout_mode = 2
 
-[node name="BackRow" type="GridContainer" parent="PanelContainer/PartyContainer" unique_id=1726266404]
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 2
-columns = 3
-
-[node name="PartyMemberSlot1" type="MarginContainer" parent="PanelContainer/PartyContainer/BackRow" unique_id=643037970]
+[node name="PartyMemberSlot3" type="MarginContainer" parent="PanelContainer/PartyContainer/PartyRow" unique_id=488021410]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -100,22 +82,10 @@ theme_override_constants/margin_top = 3
 theme_override_constants/margin_right = 3
 theme_override_constants/margin_bottom = 3
 
-[node name="PartyMember" parent="PanelContainer/PartyContainer/BackRow/PartyMemberSlot1" unique_id=1693336358 instance=ExtResource("2_gd10f")]
+[node name="PartyMember" parent="PanelContainer/PartyContainer/PartyRow/PartyMemberSlot3" unique_id=1177591230 instance=ExtResource("2_gd10f")]
 layout_mode = 2
 
-[node name="PartyMemberSlot2" type="MarginContainer" parent="PanelContainer/PartyContainer/BackRow" unique_id=389021999]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-theme_override_constants/margin_left = 3
-theme_override_constants/margin_top = 3
-theme_override_constants/margin_right = 3
-theme_override_constants/margin_bottom = 3
-
-[node name="PartyMember" parent="PanelContainer/PartyContainer/BackRow/PartyMemberSlot2" unique_id=1753507132 instance=ExtResource("2_gd10f")]
-layout_mode = 2
-
-[node name="PartyMemberSlot3" type="MarginContainer" parent="PanelContainer/PartyContainer/BackRow" unique_id=516099191]
+[node name="PartyMemberSlot4" type="MarginContainer" parent="PanelContainer/PartyContainer/PartyRow" unique_id=234567890]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -124,5 +94,5 @@ theme_override_constants/margin_top = 3
 theme_override_constants/margin_right = 3
 theme_override_constants/margin_bottom = 3
 
-[node name="PartyMember" parent="PanelContainer/PartyContainer/BackRow/PartyMemberSlot3" unique_id=337485785 instance=ExtResource("2_gd10f")]
+[node name="PartyMember" parent="PanelContainer/PartyContainer/PartyRow/PartyMemberSlot4" unique_id=345678901 instance=ExtResource("2_gd10f")]
 layout_mode = 2
