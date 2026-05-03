@@ -6,8 +6,11 @@ class_name PoisonRes
 func listened_triggers() -> Array:
 	return [EffectTriggers.ON_BEFORE_RECEIVE_DAMAGE]
 	
+func get_scope() -> Effect.EffectScope:
+	return Effect.EffectScope.OWNER_IS_TARGET
+
 func can_process(_stage: String, event: TriggerEvent) -> bool:
-	return owner == event.target and event is DamageInstance
+	return event is DamageInstance
 
 func on_trigger(_stage: String, event: TriggerEvent) -> void:
 	var dmg: DamageInstance = event as DamageInstance

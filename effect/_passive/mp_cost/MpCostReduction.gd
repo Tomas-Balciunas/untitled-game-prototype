@@ -4,6 +4,9 @@ class_name MpCostReduction
 
 @export var modifier: float = 0.2
 
+func get_scope() -> Effect.EffectScope:
+	return Effect.EffectScope.GLOBAL
+
 func can_process(_stage: String, _event: TriggerEvent) -> bool:
 	return false
 

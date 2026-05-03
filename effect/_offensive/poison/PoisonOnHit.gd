@@ -6,12 +6,14 @@ var damage_per_turn: int = 5
 func listened_triggers() -> Array:
 	return [EffectTriggers.ON_DAMAGE_APPLIED]
 	
+func get_scope() -> Effect.EffectScope:
+	return Effect.EffectScope.OWNER_IS_ACTOR
+
 func can_process(_stage: String, event: TriggerEvent) -> bool:
 	match event.actor:
 		TrapSource:
 			return true
-	
-	return event.actor.get_actor() == owner and event.ctx.actively_cast
+	return event.ctx.actively_cast
 
 func on_trigger(_stage: String, event: TriggerEvent) -> void:
 	var poison: PoisonEffect = PoisonEffect.new()
@@ -21,7 +23,7 @@ func on_trigger(_stage: String, event: TriggerEvent) -> void:
 	
 	var app := ActionContext.new()
 	app.source = event.actor
-	app.set_targets(event.target)
+	app.set_targets((event as DamageInstance).target)
 	
 	event.ctx.additional_procs.append({
 		"resolver": EffectApplicationResolver.new(poison),

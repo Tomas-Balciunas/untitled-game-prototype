@@ -14,8 +14,11 @@ func _init() -> void:
 func listened_triggers() -> Array:
 	return [EffectTriggers.ON_BEFORE_SKILL_USE, EffectTriggers.ON_POST_SKILL_USE]
 	
+func get_scope() -> Effect.EffectScope:
+	return Effect.EffectScope.OWNER_IS_ACTOR
+
 func can_process(_stage: String, _event: TriggerEvent) -> bool:
-	return _event.actor.character == owner
+	return true
 
 func on_trigger(stage: String, _event: TriggerEvent) -> void:
 	if stage == EffectTriggers.ON_BEFORE_SKILL_USE:

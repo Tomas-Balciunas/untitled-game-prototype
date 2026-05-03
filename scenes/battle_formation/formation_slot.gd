@@ -166,8 +166,14 @@ func _on_mouse_exited() -> void:
 	unhover()
 
 func _on_input_event(_camera: Camera3D, event: InputEvent, _position: Vector3, _normal: Vector3, _shape_idx: int) -> void:
-	if !BattleContext.enemy_targeting_enabled or !is_slot_targeting_enabled:
+	if not is_slot_targeting_enabled:
 		return
-		
+
+	var is_ally := character_instance != null and PartyManager.has_member(character_instance.resource.id)
+	var targeting_enabled := BattleContext.ally_targeting_enabled if is_ally else BattleContext.enemy_targeting_enabled
+
+	if not targeting_enabled:
+		return
+
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
 		TargetingManager.battle_target_selected.emit(character_instance)

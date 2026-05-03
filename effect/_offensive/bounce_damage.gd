@@ -7,8 +7,11 @@ func listened_triggers() -> Array:
 	return [EffectTriggers.ON_BEFORE_RECEIVE_DAMAGE]
 
 
+func get_scope() -> Effect.EffectScope:
+	return Effect.EffectScope.OWNER_IS_ACTOR
+
 func can_process(_stage: String, event: TriggerEvent) -> bool:
-	return owner == event.actor.get_actor() and event is DamageInstance
+	return event is DamageInstance
 
 
 func on_trigger(_stage: String, _event: TriggerEvent) -> void:

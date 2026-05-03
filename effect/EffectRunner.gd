@@ -1,60 +1,93 @@
 extends Node
 
+var _subscriptions: Dictionary = {}
+
+
+func subscribe(effect: Effect) -> void:
+	for stage in effect.listened_triggers():
+		if not _subscriptions.has(stage):
+			_subscriptions[stage] = []
+		if not _subscriptions[stage].has(effect):
+			_subscriptions[stage].append(effect)
+
+
+func unsubscribe(effect: Effect) -> void:
+	for stage in effect.listened_triggers():
+		if _subscriptions.has(stage):
+			_subscriptions[stage].erase(effect)
+
 
 func process_trigger(stage: String, event: TriggerEvent) -> void:
-	var start := Time.get_ticks_usec()
-
 	var ctx: ActionContext = event.ctx
-	var effects_to_run: Array[Effect] = []
-	
+
 	if ctx.temporary_effects:
-		for e in ctx.temporary_effects:
+		for e: Effect in ctx.temporary_effects:
 			e.set_owner(ctx.source.get_actor())
 			e.set_source(ctx.source)
-			if not _passes_scope(e, stage, event):
+			if not _passes_filters(e, event):
 				continue
-			effects_to_run.append(e)
-	
-	if BattleContext.in_battle:
-		var battlers := BattleContext.manager.battlers
-		for b in battlers:
-			for e in b.effects:
-				if not _passes_scope(e, stage, event):
-					continue
-				effects_to_run.append(e)
-	else:
-		for p in PartyManager.members:
-			for e in p.effects:
-				if not _passes_scope(e, stage, event):
-					continue
-				effects_to_run.append(e)
+			if stage not in e.listened_triggers():
+				continue
+			if not _scope_matches(e, event):
+				continue
+			if not e.can_process(stage, event):
+				continue
+			e.on_trigger(stage, event)
+			if e.single_trigger:
+				e.remove_self()
 
-	#effects_to_run.sort_custom(_sort_effects)
+	var subscribers: Array = _subscriptions.get(stage, []).duplicate()
+	subscribers.sort_custom(_sort_by_priority)
 
-	for entry: Effect in effects_to_run:
-		
+	for effect: Effect in subscribers:
 		if ctx.stop_processing:
-			print("[EffectProcessor] processing stopped by", entry.name)
-			return
+			break
+		if not _passes_filters(effect, event):
+			continue
+		if not _scope_matches(effect, event):
+			continue
+		if not effect.can_process(stage, event):
+			continue
+		effect.on_trigger(stage, event)
+		if effect.single_trigger:
+			effect.remove_self()
 
-		entry.on_trigger(stage, event)
-		
-		if entry.single_trigger:
-			entry.remove_self()
-	
-	var elapsed_usec := Time.get_ticks_usec() - start
-	#print("Took %dus (%.3f ms)" % [elapsed_usec, elapsed_usec / 1000.0])
 
-func _sort_effects(a: Dictionary, b: Dictionary) -> int:
-	var ea: Effect = a.effect
-	var eb: Effect = b.effect
-	return ea.priority > eb.priority
+func build_subscriptions(characters: Array[CharacterInstance]) -> void:
+	_subscriptions.clear()
+	for character in characters:
+		for effect in character.effects:
+			subscribe(effect)
 
-static func _passes_scope(effect: Effect, stage: String, event: TriggerEvent) -> bool:
-	if !BattleContext.in_battle and effect.battle_only:
+
+func post_battle_cleanup(party: Array[CharacterInstance]) -> void:
+	for member: CharacterInstance in party:
+		for effect: Effect in member.effects:
+			if effect.expires_after_battle:
+				push_warning("[EffectRunner] post_battle_cleanup: leaked expires_after_battle effect '%s' on '%s'" % [effect.name, member.resource.name])
+
+	build_subscriptions(party)
+
+
+static func _passes_filters(effect: Effect, event: TriggerEvent) -> bool:
+	if not BattleContext.in_battle and effect.battle_only:
 		return false
-	
-	if stage not in effect.listened_triggers():
-		return false
+	return true
 
-	return effect.can_process(stage, event)
+
+static func _scope_matches(effect: Effect, event: TriggerEvent) -> bool:
+	match effect.get_scope():
+		Effect.EffectScope.OWNER_IS_ACTOR:
+			return event.actor != null and event.actor.get_actor() == effect.owner
+		Effect.EffectScope.OWNER_IS_TARGET:
+			var direct_target = event.get("target")
+			if direct_target != null:
+				return direct_target == effect.owner
+			return event.ctx != null and event.ctx.targets.has(effect.owner)
+		Effect.EffectScope.GLOBAL:
+			return true
+	return true
+
+
+static func _sort_by_priority(a: Effect, b: Effect) -> bool:
+	return a.priority > b.priority

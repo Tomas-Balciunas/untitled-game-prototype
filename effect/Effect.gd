@@ -11,6 +11,12 @@ enum EffectCategory {
 	UNKNOWN
 }
 
+enum EffectScope {
+	OWNER_IS_ACTOR,   # owner is the source of the triggering event
+	OWNER_IS_TARGET,  # owner is being targeted (checks event.target then ctx.targets)
+	GLOBAL            # fires for all events of this stage; scope handled in can_process
+}
+
 enum EffectType {
 	BASIC_ATTACK
 }
@@ -20,6 +26,7 @@ enum EffectType {
 @export var description: String = "Unnamed Effect"
 
 @export var battle_only: bool = true
+@export var expires_after_battle: bool = false
 @export var single_trigger: bool = false
 @export var priority: int = 200
 @export var _should_append: bool = true
@@ -40,6 +47,9 @@ func listened_triggers() -> Array
 
 @abstract
 func can_process(_stage: String, _event: TriggerEvent) -> bool
+
+func get_scope() -> EffectScope:
+	return EffectScope.GLOBAL
 
 func prepare_for_battle() -> void:
 	pass

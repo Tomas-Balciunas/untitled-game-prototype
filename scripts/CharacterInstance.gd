@@ -177,10 +177,11 @@ func prepare_for_battle() -> void:
 		e.prepare_for_battle()
 
 func cleanup_after_battle() -> void:
-	#for e: Effect in effects:
-		#if e.battle_only:
-			#e.remove_self()
-	
+	for effect in effects.duplicate():
+		EffectRunner.unsubscribe(effect)
+		if effect.expires_after_battle:
+			effects.erase(effect)
+
 	state.temporary_modifiers = []
 	StatCalculator.recalculate_all_stats(self)
 
@@ -194,11 +195,13 @@ func apply_effect(effect: Effect, source: ContextSource) -> Effect:
 		return inst
 	
 	effects.append(inst)
-	
+	EffectRunner.subscribe(inst)
+
 	return inst
 
 func remove_effect(effect: Effect) -> void:
 	if effects.has(effect):
+		EffectRunner.unsubscribe(effect)
 		effects.erase(effect)
 
 

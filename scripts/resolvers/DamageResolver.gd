@@ -15,8 +15,8 @@ func execute(ctx: ActionContext) -> ActionContext:
 	
 	for i in len(ctx.additional_procs):
 		ctx.additional_procs[i]["resolver"].execute(ctx.additional_procs[i]["ctx"])
-		ctx.additional_procs.erase(ctx.additional_procs[i])
-	
+		
+	ctx.additional_procs = []
 	return ctx
 
 

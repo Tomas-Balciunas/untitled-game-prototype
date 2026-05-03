@@ -11,7 +11,10 @@ func _init() -> void:
 
 func listened_triggers() -> Array:
 	return [EffectTriggers.ON_DAMAGE_APPLIED]
-	
+
+func get_scope() -> Effect.EffectScope:
+	return Effect.EffectScope.GLOBAL
+
 func can_process(_stage: String, event: TriggerEvent) -> bool:
 	if !event is DamageInstance:
 		return false

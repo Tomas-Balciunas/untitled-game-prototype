@@ -26,8 +26,11 @@ func on_apply() -> void:
 func listened_triggers() -> Array:
 	return [EffectTriggers.ON_TURN_END]
 	
+func get_scope() -> Effect.EffectScope:
+	return Effect.EffectScope.OWNER_IS_ACTOR
+
 func can_process(_stage: String, _event: TriggerEvent) -> bool:
-	return owner == _event.actor.get_actor()
+	return true
 
 func on_trigger(_stage: String, _event: TriggerEvent) -> void:
 	remaining_turns -= 1

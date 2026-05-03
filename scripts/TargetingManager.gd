@@ -44,10 +44,8 @@ func emit_selection(target: CharacterInstance) -> void:
 	match mode:
 		Mode.BATTLE:
 			battle_target_selected.emit(target)
-			end()
 		Mode.MENU_SKILL:
 			menu_skill_target_selected.emit(target)
-	
 	end()
 	
 

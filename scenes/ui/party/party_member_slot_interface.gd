@@ -81,21 +81,12 @@ func _on_sp_changed() -> void:
 
 func _on_gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
-		#if BattleContext.in_battle and BattleContext.ally_targeting_enabled:
-			#if not character_instance:
-				#print("Invalid party member selected")
-				#return
-				#
-			#print("targeted ", character_instance.resource.name)
-			#BattleBus.target_selected.emit(character_instance)
-		#else:
-			#if not BattleContext.in_battle:
-				#if not character_instance:
-					#print("Invalid party member selected")
-					#return
 		if TargetingManager.mode == TargetingManager.Mode.DISABLED:
 			return
-		
+
+		if TargetingManager.mode == TargetingManager.Mode.BATTLE and not BattleContext.ally_targeting_enabled:
+			return
+
 		if TargetingManager.mode != TargetingManager.Mode.NONE:
 			TargetingManager.emit_selection(character_instance)
 		else:
@@ -108,7 +99,7 @@ func enable_slot_targeting() -> void:
 	targeting_enabled = true
 
 func _on_mouse_entered() -> void:
-	if not targeting_enabled:
+	if BattleContext.in_battle and not BattleContext.ally_targeting_enabled:
 		return
 	$HoverOverlay.visible = true
 

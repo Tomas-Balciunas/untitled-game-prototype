@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="PoisonRes" load_steps=2 format=3 uid="uid://badgfln40mudj"]
+[gd_resource type="Resource" script_class="PoisonRes" format=3 uid="uid://badgfln40mudj"]
 
 [ext_resource type="Script" uid="uid://e6kqxurcakcn" path="res://effect/_passive/resistance poison/PoisonRes.gd" id="1_wunrv"]
 
@@ -7,5 +7,5 @@ script = ExtResource("1_wunrv")
 resistance = 0.5
 id = "poison_resistance_00"
 name = "Poison Resistance"
-category = 0
+battle_only = false
 metadata/_custom_type_script = "uid://e6kqxurcakcn"

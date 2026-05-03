@@ -51,6 +51,7 @@ func begin(_enemies: Array[CharacterInstance]) -> void:
 			inst.prepare(b)
 			b.battle_events.append(inst)
 	
+	EffectRunner.build_subscriptions(battlers)
 	BattleBus.battle_start.emit()
 	current_state = BattleState.CHECK_END
 
@@ -141,7 +142,7 @@ func _on_player_turn(ctx: ActionContext) -> void:
 		return
 	
 	if ctx.force_action:
-		if !ctx.target:
+		if !ctx.initial_target:
 			push_error("Forced action for %s did not have a target" % current_battler.resource.name)
 			current_state = BattleState.TURN_END
 			return
@@ -397,7 +398,7 @@ func _handle_end(result: String) -> void:
 func _handle_win() -> void:
 	for member: CharacterInstance in party:
 		member.cleanup_after_battle()
-		
+	EffectRunner.post_battle_cleanup(party)
 	BattleBus.battle_end.emit()
 	EncounterBus.encounter_ended.emit("win", BattleContext.encounter_data)
 	current_state = BattleState.IDLE
@@ -405,19 +406,18 @@ func _handle_win() -> void:
 func _handle_lose() -> void:
 	for member: CharacterInstance in party:
 		member.cleanup_after_battle()
-		
+	EffectRunner.post_battle_cleanup(party)
 	BattleBus.battle_end.emit()
 	EncounterBus.encounter_ended.emit("lose", BattleContext.encounter_data)
 	current_state = BattleState.IDLE
-	
+
 func _handle_flee() -> void:
 	var success := randf() < 1
 	if success:
 		print("Party flees successfully!")
-		
 		for member: CharacterInstance in party:
 			member.cleanup_after_battle()
-			
+		EffectRunner.post_battle_cleanup(party)
 		BattleBus.battle_end.emit()
 		EncounterBus.encounter_ended.emit("flee", BattleContext.encounter_data)
 		current_state = BattleState.IDLE
@@ -442,6 +442,7 @@ func _corpse_janny() -> void:
 	for dead in _to_cleanup:
 		var slot = get_slot(dead)
 		await slot.perform_death()
+		dead.cleanup_after_battle()
 		battlers.erase(dead)
 		#party.erase(dead)
 		enemies.erase(dead)
@@ -452,10 +453,12 @@ func _corpse_janny() -> void:
 func disable_all_targeting() -> void:
 	BattleContext.enemy_targeting_enabled = false
 	BattleContext.ally_targeting_enabled = false
+	TargetingManager.end()
 
 func enable_all_targeting() -> void:
 	BattleContext.enemy_targeting_enabled = true
 	BattleContext.ally_targeting_enabled = true
+	TargetingManager.begin(TargetingManager.Mode.BATTLE)
 
 func enable_enemy_targeting() -> void:
 	BattleContext.enemy_targeting_enabled = true

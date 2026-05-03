@@ -8,8 +8,11 @@ var turns_lasted: int = 0
 func listened_triggers() -> Array:
 	return [EffectTriggers.ON_TURN_START, EffectTriggers.ON_TURN_END]
 	
-func can_process(_stage: String, event: TriggerEvent) -> bool:
-	return owner == event.actor.get_actor()
+func get_scope() -> Effect.EffectScope:
+	return Effect.EffectScope.OWNER_IS_ACTOR
+
+func can_process(_stage: String, _event: TriggerEvent) -> bool:
+	return true
 	
 func on_apply() -> void:
 	BattleTextLines.print_line("%s is stunned!" % owner.resource.name)

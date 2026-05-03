@@ -7,8 +7,11 @@ class_name ResolvePoisonOnHit
 func listened_triggers() -> Array:
 	return [EffectTriggers.ON_DAMAGE_APPLIED]
 
-func can_process(_stage: String, event: TriggerEvent) -> bool:
-	return owner == event.actor.get_actor()
+func get_scope() -> Effect.EffectScope:
+	return Effect.EffectScope.OWNER_IS_ACTOR
+
+func can_process(_stage: String, _event: TriggerEvent) -> bool:
+	return true
 
 func on_trigger(_stage: String, ctx: TriggerEvent) -> void:
 	ctx.ctx.tick_power = tick_power

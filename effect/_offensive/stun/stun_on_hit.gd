@@ -4,8 +4,11 @@ class_name StunOnHitEffect
 func listened_triggers() -> Array:
 	return [EffectTriggers.ON_DAMAGE_APPLIED]
 	
+func get_scope() -> Effect.EffectScope:
+	return Effect.EffectScope.OWNER_IS_ACTOR
+
 func can_process(_stage: String, event: TriggerEvent) -> bool:
-	return event.actor.character == owner and event.ctx.actively_cast
+	return event.ctx.actively_cast
 
 func on_trigger(_stage: String, event: TriggerEvent) -> void:
 	var stun := StunEffect.new()
