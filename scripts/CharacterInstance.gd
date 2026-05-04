@@ -299,14 +299,15 @@ func get_slot_name_for_item(item: GearInstance) -> String:
 
 func to_dict() -> Dictionary:
 	var equip_dict := {}
-	#for slot: String in equipment.keys():
-		#var item: GearInstance = equipment[slot]
-		#if item:
-			#equip_dict[slot] = item.to_dict()
-		
+	for slot: String in equipment.keys():
+		var item: GearInstance = equipment[slot]
+		if item:
+			equip_dict[slot] = item.game_save()
+
 	var inventory_arr := []
-	#for slot: ItemInstance in inventory.slots:
-		#inventory_arr.append(slot.to_dict())
+	for item: ItemInstance in inventory.get_all_items():
+		if item is GearInstance:
+			inventory_arr.append(item.game_save())
 		
 	var effect_arr := []
 	for effect: Effect in effects:
@@ -380,20 +381,9 @@ static func from_dict(data: Dictionary) -> CharacterInstance:
 	if data.has("inventory"):
 		inst.inventory.slots = []
 		for item_data: Dictionary in data["inventory"]:
-			var id: String = item_data.get("resource")
-			var item_res := ItemsRegistry.get_item(id)
-			
-			if not item_res:
-				push_error("Item not found! %s" % id)
-				continue
-			
-			#if item_res is Gear:
-				#var gear := GearInstance.from_dict(item_data)
-				#inst.inventory.add_item(gear)
-			
-			#if item_res is ConsumableItem:
-				#var cons := ConsumableInstance.game_load()
-				#inst.inventory.add_item(cons)
+			var gear := GearInstance.from_dict(item_data)
+			if gear:
+				inst.inventory.add_item(gear)
 				
 	if data.has("effects"):
 		inst.effects = []
@@ -413,13 +403,12 @@ static func from_dict(data: Dictionary) -> CharacterInstance:
 				continue
 			inst.learnt_skills.append(skill)
 
-	#if data.has("equipment"):
-		#for slot: String in data["equipment"].keys():
-			#var item_dict: Dictionary = data["equipment"][slot]
-			#if item_dict != null:
-				#var gear_inst := GearInstance.from_dict(item_dict)
-				#if gear_inst and gear_inst is GearInstance:
-					#inst.equip_item(gear_inst)
-					
+	if data.has("equipment"):
+		for slot: String in data["equipment"].keys():
+			var item_dict: Dictionary = data["equipment"][slot]
+			var gear_inst := GearInstance.from_dict(item_dict)
+			if gear_inst:
+				inst.equip_item(gear_inst)
+
 	StatCalculator.recalculate_all_stats(inst)
 	return inst

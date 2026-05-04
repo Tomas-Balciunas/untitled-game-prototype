@@ -14,3 +14,13 @@ func get_applicable_stat_modifiers() -> Array[Stats.StatRef]
 
 @abstract
 func _build_instance() -> Variant
+
+
+static func quality_to_string(q: Quality) -> String:
+	match q:
+		Quality.POOR:        return "Poor"
+		Quality.COMMON:      return "Common"
+		Quality.UNCOMMON:    return "Uncommon"
+		Quality.RARE:        return "Rare"
+		Quality.EXCEPTIONAL: return "Exceptional"
+	return "Unknown"

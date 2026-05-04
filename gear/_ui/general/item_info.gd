@@ -18,13 +18,21 @@ func show_item_info(item: ItemInstance) -> void:
 	item_type_label.text = item.item_type_to_string(item.type)
 
 	if item is GearInstance:
-		var stats: Stats = item.stats
+		item_quality.text = "Quality: %s" % Gear.quality_to_string(item.quality as Gear.Quality)
+
 		var stat_lines: Array[String] = []
+
+		if item is Weapon:
+			stat_lines.append("Type: %s" % _weapon_type_str(item.weapon_type))
+			stat_lines.append("Range: %s" % _range_str(item.weapon_range))
+			stat_lines.append("Accuracy: +%d" % item.accuracy_range)
+
+		var stats: Stats = item.stats
 		for stat: Stats.StatRef in Stats.StatRef.values():
 			if stats.get_stat(stat) != 0:
 				stat_lines.append("%s: %d" % [Stats.get_stat_name(stat), int(stats.get_stat(stat))])
 		stats_label.text = "\n".join(stat_lines)
-		item_quality.text = "Quality: %s" % item.quality
+
 		if item.get_all_modifiers().size() > 0:
 			var mod_lines: Array[String] = []
 			for mod: StatModifier in item.get_all_modifiers():
@@ -34,7 +42,7 @@ func show_item_info(item: ItemInstance) -> void:
 			modifiers_label.text = ""
 	else:
 		stats_label.text = ""
-	
+
 	if item is Consumable or item is GearInstance:
 		if item.get_all_effects().size() > 0:
 			var effect_lines: Array[String] = []
@@ -43,13 +51,28 @@ func show_item_info(item: ItemInstance) -> void:
 			effects_label.text = "\n".join(effect_lines)
 		else:
 			effects_label.text = ""
-			
+
 func clear_info() -> void:
 	item_name_label.text = ""
 	item_type_label.text = ""
+	item_quality.text = ""
 	stats_label.text = ""
 	effects_label.text = ""
 	modifiers_label.text = ""
 
 func hide_item_info() -> void:
 	self.visible = false
+
+
+func _weapon_type_str(t: WeaponResource.Type) -> String:
+	match t:
+		WeaponResource.Type.SWORD: return "Sword"
+		WeaponResource.Type.AXE:   return "Axe"
+	return "Unknown"
+
+
+func _range_str(r: TargetingManager.RangeType) -> String:
+	match r:
+		TargetingManager.RangeType.MELEE:  return "Melee"
+		TargetingManager.RangeType.RANGED: return "Ranged"
+	return "Unknown"
