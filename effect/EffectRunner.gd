@@ -53,22 +53,6 @@ func process_trigger(stage: String, event: TriggerEvent) -> void:
 			effect.remove_self()
 
 
-func build_subscriptions(characters: Array[CharacterInstance]) -> void:
-	_subscriptions.clear()
-	for character in characters:
-		for effect in character.effects:
-			subscribe(effect)
-
-
-func post_battle_cleanup(party: Array[CharacterInstance]) -> void:
-	for member: CharacterInstance in party:
-		for effect: Effect in member.effects:
-			if effect.expires_after_battle:
-				push_warning("[EffectRunner] post_battle_cleanup: leaked expires_after_battle effect '%s' on '%s'" % [effect.name, member.resource.name])
-
-	build_subscriptions(party)
-
-
 static func _passes_filters(effect: Effect, event: TriggerEvent) -> bool:
 	if not BattleContext.in_battle and effect.battle_only:
 		return false

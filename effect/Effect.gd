@@ -72,6 +72,9 @@ func get_category() -> EffectCategory
 func on_apply() -> void:
 	pass
 
+func on_battle_end() -> void:
+	pass
+
 func on_expire() -> void:
 	remove_self()
 

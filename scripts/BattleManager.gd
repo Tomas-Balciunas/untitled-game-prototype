@@ -51,7 +51,6 @@ func begin(_enemies: Array[CharacterInstance]) -> void:
 			inst.prepare(b)
 			b.battle_events.append(inst)
 	
-	EffectRunner.build_subscriptions(battlers)
 	BattleBus.battle_start.emit()
 	current_state = BattleState.CHECK_END
 
@@ -398,7 +397,6 @@ func _handle_end(result: String) -> void:
 func _handle_win() -> void:
 	for member: CharacterInstance in party:
 		member.cleanup_after_battle()
-	EffectRunner.post_battle_cleanup(party)
 	BattleBus.battle_end.emit()
 	EncounterBus.encounter_ended.emit("win", BattleContext.encounter_data)
 	current_state = BattleState.IDLE
@@ -406,7 +404,6 @@ func _handle_win() -> void:
 func _handle_lose() -> void:
 	for member: CharacterInstance in party:
 		member.cleanup_after_battle()
-	EffectRunner.post_battle_cleanup(party)
 	BattleBus.battle_end.emit()
 	EncounterBus.encounter_ended.emit("lose", BattleContext.encounter_data)
 	current_state = BattleState.IDLE
@@ -417,7 +414,6 @@ func _handle_flee() -> void:
 		print("Party flees successfully!")
 		for member: CharacterInstance in party:
 			member.cleanup_after_battle()
-		EffectRunner.post_battle_cleanup(party)
 		BattleBus.battle_end.emit()
 		EncounterBus.encounter_ended.emit("flee", BattleContext.encounter_data)
 		current_state = BattleState.IDLE

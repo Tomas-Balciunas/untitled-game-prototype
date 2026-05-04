@@ -178,9 +178,11 @@ func prepare_for_battle() -> void:
 
 func cleanup_after_battle() -> void:
 	for effect in effects.duplicate():
-		EffectRunner.unsubscribe(effect)
 		if effect.expires_after_battle:
 			effects.erase(effect)
+
+	for effect in effects:
+		effect.on_battle_end()
 
 	state.temporary_modifiers = []
 	StatCalculator.recalculate_all_stats(self)
