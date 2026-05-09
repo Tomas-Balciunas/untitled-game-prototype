@@ -22,11 +22,11 @@ func _ready() -> void:
 	CharacterBus.character_healed.connect(_on_healed)
 	ChatEventBus.chat.connect(_on_chat)
 	
-func _on_damaged(c: CharacterInstance, amt: int) -> void:
+func _on_damaged(c: CharacterInstance, damage_instance: DamageInstance) -> void:
 	if body_owner and c == body_owner:
 		animation_player.stop()
 		play_damaged()
-		number_display.display_damage(amt)
+		number_display.display_damage(damage_instance)
 	
 func _on_healed(c: CharacterInstance, amt: int) -> void:
 	if body_owner and c == body_owner:

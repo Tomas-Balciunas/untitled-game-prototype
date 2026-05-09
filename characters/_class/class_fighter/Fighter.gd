@@ -2,12 +2,17 @@ extends Job
 
 class_name FighterClass
 
-func _init() -> void:
-	level_skills = {
-		2: [preload("uid://cneghh04ud4gg"), preload("uid://drqy6f6xdgohu")],
-		5: [preload("uid://d2u72es2eig6a")],
-	}
+const CLEAVE = preload("res://skills/_offensive/cleave.tres")
+const COUNTER_STRIKE = preload("res://effect/_passive/counter_strike/counter_strike.tres")
 
-	level_effects = {
-		4: [preload("uid://h7vic11h4pe6")],
-	}
+
+func get_skills_for_level(lvl: int) -> Array:
+	match lvl:
+		3: return [CLEAVE]
+	return []
+
+
+func get_effects_for_level(lvl: int) -> Array:
+	match lvl:
+		5: return [COUNTER_STRIKE]
+	return []

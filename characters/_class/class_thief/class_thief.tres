@@ -5,10 +5,14 @@
 [ext_resource type="Script" uid="uid://dq4acpkde276p" path="res://skills/Skill.gd" id="3_jxnid"]
 [ext_resource type="Resource" uid="uid://dyy7qqom1mpds" path="res://characters/_class/class_thief/thief_attribute_contribution.tres" id="4_jxnid"]
 [ext_resource type="Resource" path="res://characters/_class/class_thief/thief_stat_growth_per_level.tres" id="5_bwt3x"]
+[ext_resource type="Resource" uid="uid://cneghh04ud4gg" path="res://skills/_offensive/poison_strike.tres" id="6_skill"]
+[ext_resource type="Resource" path="res://effect/_passive/evasive/evasive.tres" id="7_effect"]
 
 [resource]
 script = ExtResource("2_rrx6c")
 name = 4
+skills = Array[ExtResource("3_jxnid")]([ExtResource("6_skill")])
+effects = Array[ExtResource("1_8skjm")]([ExtResource("7_effect")])
 stat_level_growth = ExtResource("5_bwt3x")
 stat_attribute_growth = ExtResource("4_jxnid")
 metadata/_custom_type_script = "uid://yvsnknut00xd"

@@ -6,15 +6,26 @@
 [ext_resource type="Script" uid="uid://dq4acpkde276p" path="res://skills/Skill.gd" id="3_41lhm"]
 [ext_resource type="Resource" uid="uid://gf2lkrxi7gb1" path="res://characters/_class/class_knight/knight_attribute_contribution.tres" id="5_6og0i"]
 [ext_resource type="Resource" path="res://characters/_class/class_knight/knight_stat_growth_per_level.tres" id="6_ytt2g"]
+[ext_resource type="Resource" path="res://skills/_offensive/shield_bash.tres" id="7_skill"]
+[ext_resource type="Resource" path="res://effect/_passive/fortified/fortified.tres" id="8_effect"]
+[ext_resource type="Resource" path="res://effect/_passive/warded/warded.tres" id="9_effect"]
 
 [sub_resource type="Resource" id="Resource_v728n"]
 script = ExtResource("1_v728n")
+strength = 4
+piety = 4
+vitality = 4
+dexterity = 1
+speed = 1
+luck = 2
 metadata/_custom_type_script = "uid://blqk30gl013xc"
 
 [resource]
 script = ExtResource("2_ht54m")
 name = 1
 attributes = SubResource("Resource_v728n")
+skills = Array[ExtResource("3_41lhm")]([ExtResource("7_skill")])
+effects = Array[ExtResource("2_ihgra")]([ExtResource("8_effect"), ExtResource("9_effect")])
 stat_level_growth = ExtResource("6_ytt2g")
 stat_attribute_growth = ExtResource("5_6og0i")
 metadata/_custom_type_script = "uid://6gf11w4qa7j8"

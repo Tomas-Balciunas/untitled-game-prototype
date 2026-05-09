@@ -8,7 +8,6 @@ class_name ManaDrainEffect
 func listened_triggers() -> Array:
 	return [EffectTriggers.ON_APPLY_EFFECT]
 
-
 func get_scope() -> Effect.EffectScope:
 	return Effect.EffectScope.OWNER_IS_TARGET
 
@@ -25,3 +24,9 @@ func on_trigger(_stage: String, event: TriggerEvent) -> void:
 		"%s drains %s mana from %s!" %
 		[event.ctx.source.get_source_name(), current_mana - new_mana, event.target.resource.name]
 	)
+
+func _get_name() -> String:
+	return "Mana Drain"
+
+func get_description() -> String:
+	return "Drains a portion of mana"

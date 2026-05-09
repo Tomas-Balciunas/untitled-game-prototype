@@ -12,6 +12,9 @@ func _init(val: int) -> void:
 
 func execute(ctx: ActionContext) -> ActionContext:
 	for target in ctx.targets:
+		if not is_target_valid(target):
+			continue
+		
 		var event := HealTriggerEvent.new(ctx, target, heal)
 		run_pipeline(event)
 

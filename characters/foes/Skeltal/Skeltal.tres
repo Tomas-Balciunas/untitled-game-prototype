@@ -12,6 +12,7 @@
 [ext_resource type="Resource" uid="uid://lcgngc3c13fc" path="res://characters/_race/_Unknown.tres" id="7_gcpvx"]
 [ext_resource type="Resource" uid="uid://c5qyqcmwx0qfy" path="res://scripts/experience/ExperienceManager.tres" id="8_tl2ml"]
 [ext_resource type="Resource" uid="uid://d0teo8fy4hnlf" path="res://characters/foes/Skeltal/skeltal_interactions.tres" id="10_07eh6"]
+[ext_resource type="Resource" uid="uid://riijdkc770g2" path="res://stat/DefaultStatAttributeGrowth.tres" id="13_07eh6"]
 
 [sub_resource type="Resource" id="Resource_6he51"]
 script = ExtResource("5_6he51")
@@ -36,6 +37,7 @@ metadata/_custom_type_script = "uid://cuf03a6q4u1c6"
 [resource]
 script = ExtResource("1_km1me")
 default_effects = Array[ExtResource("1_73qgh")]([SubResource("Resource_6he51"), SubResource("Resource_smc4f"), SubResource("Resource_rmkt2")])
+stat_attribute_growth = ExtResource("13_07eh6")
 id = "0000"
 name = "Skeleton"
 character_body = ExtResource("3_tl2ml")

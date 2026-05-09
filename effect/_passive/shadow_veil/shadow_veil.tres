@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="StatBonusEffect" format=3]
+
+[ext_resource type="Script" uid="uid://blnamtlk5hc0q" path="res://effect/templates/stat_bonus_effect.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+stat = 11
+value = 20
+battle_only = false
+id = "shadow_veil"
+name = "Shadow Veil"
+description = "Mastery of shadow and movement makes the thief nearly impossible to strike."

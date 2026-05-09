@@ -27,9 +27,8 @@ enum EffectType {
 
 @export var battle_only: bool = true
 @export var expires_after_battle: bool = false
-@export var single_trigger: bool = false
+@export var immediate_trigger: bool = false
 @export var priority: int = 200
-@export var _should_append: bool = true
 @export var effect_type: Array[EffectType] = []
 
 var owner: CharacterInstance = null
@@ -53,9 +52,6 @@ func get_scope() -> EffectScope:
 
 func prepare_for_battle() -> void:
 	pass
-
-func should_append() -> bool:
-	return _should_append
 
 func on_trigger(_stage: String, _ctx: TriggerEvent) -> void:
 	pass

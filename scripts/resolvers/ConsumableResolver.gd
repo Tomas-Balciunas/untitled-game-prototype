@@ -10,6 +10,9 @@ func _init(c: Consumable) -> void:
 
 func execute(ctx: ActionContext) -> ActionContext:
 	for target in ctx.targets:
+		if not is_target_valid(target):
+			continue
+		
 		var event: ConsumableTriggerEvent = ConsumableTriggerEvent.new(ctx, target, consumable)
 		run_pipeline(event)
 	

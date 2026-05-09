@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="HealBoost" format=3]
+
+[ext_resource type="Script" uid="uid://ox6r65cjqnmt" path="res://effect/_passive/healing/heal_boost.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+modifier = 0.3
+battle_only = false
+id = "divine_favor"
+name = "Divine Favor"
+description = "The gods smile upon the devoted — all healing done is significantly amplified."
+category = 0
+duration_turns = -1

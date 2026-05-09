@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="AttackSkill" format=3]
+
+[ext_resource type="Script" uid="uid://4wkxp72a0kpc" path="res://skills/AttackSkill.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+modifier = 1.3
+id = "holy_strike"
+name = "Holy Strike"
+description = "A weapon strike empowered by holy energy, striking true against evil."

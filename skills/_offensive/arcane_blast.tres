@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="AttackSkill" format=3]
+
+[ext_resource type="Script" uid="uid://4wkxp72a0kpc" path="res://skills/AttackSkill.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+modifier = 0.75
+targeting_type = 3
+skill_range = 1
+id = "arcane_blast"
+name = "Arcane Blast"
+description = "An explosive burst of arcane force that tears through an entire enemy row."

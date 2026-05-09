@@ -6,6 +6,8 @@
 [ext_resource type="Script" uid="uid://dq4acpkde276p" path="res://skills/Skill.gd" id="4_76m6y"]
 [ext_resource type="Resource" uid="uid://dk6lc61n00vsh" path="res://characters/_class/class_fighter/fighter_attribute_contribution.tres" id="5_x8eud"]
 [ext_resource type="Resource" path="res://characters/_class/class_fighter/fighter_stat_growth_per_level.tres" id="6_qthq6"]
+[ext_resource type="Resource" path="res://skills/_offensive/power_strike.tres" id="7_skill"]
+[ext_resource type="Resource" path="res://effect/_passive/battle_hardened/battle_hardened.tres" id="8_effect"]
 
 [sub_resource type="Resource" id="Resource_jqe3r"]
 script = ExtResource("1_x8eud")
@@ -21,6 +23,8 @@ metadata/_custom_type_script = "uid://blqk30gl013xc"
 script = ExtResource("3_b7f2o")
 name = 0
 attributes = SubResource("Resource_jqe3r")
+skills = Array[ExtResource("4_76m6y")]([ExtResource("7_skill")])
+effects = Array[ExtResource("2_qthq6")]([ExtResource("8_effect")])
 stat_level_growth = ExtResource("6_qthq6")
 stat_attribute_growth = ExtResource("5_x8eud")
 metadata/_custom_type_script = "uid://vveuuqposlbr"

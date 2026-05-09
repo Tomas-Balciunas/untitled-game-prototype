@@ -11,3 +11,6 @@ class_name AttackSkill
 func get_resolver(ctx: ActionContext) -> DamageResolver:
 	var value: int = ctx.source.get_actor().stats.attack * modifier
 	return DamageResolver.new(value)
+
+func get_damage_type():
+	return damage_type

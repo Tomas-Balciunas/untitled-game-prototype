@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://cc4tchcma6k2f" path="res://characters/_race/Race.gd" id="1_da4rb"]
 [ext_resource type="Script" uid="uid://blqk30gl013xc" path="res://stat/_attribute/attributes.gd" id="1_pifk7"]
+[ext_resource type="Resource" uid="uid://riijdkc770g2" path="res://stat/DefaultStatAttributeGrowth.tres" id="3_224k0"]
 
 [sub_resource type="Resource" id="Resource_224k0"]
 script = ExtResource("1_pifk7")
@@ -10,4 +11,5 @@ metadata/_custom_type_script = "uid://blqk30gl013xc"
 [resource]
 script = ExtResource("1_da4rb")
 attributes = SubResource("Resource_224k0")
+stat_attribute_growth = ExtResource("3_224k0")
 metadata/_custom_type_script = "uid://cc4tchcma6k2f"

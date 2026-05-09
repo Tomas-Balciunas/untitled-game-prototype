@@ -21,6 +21,9 @@ func _on_enemy_died(dead: CharacterInstance) -> void:
 func get_enemy_instances(resources: Array[CharacterResource]) -> Array[CharacterInstance]:
 	var enemies: Array[CharacterInstance] = []
 	for r in resources:
+		##TODO: temporary enemy overflow guard
+		if len(enemies) >= MAX_SLOTS:
+			return enemies
 		var e := CharacterInstance.new(r)
 		enemies.append(e)
 	return enemies

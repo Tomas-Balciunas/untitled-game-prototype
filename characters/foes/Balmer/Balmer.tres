@@ -7,15 +7,15 @@
 [ext_resource type="Script" uid="uid://bp0biy0knxw2o" path="res://effect/Effect.gd" id="3_qj1j7"]
 [ext_resource type="Script" uid="uid://b06vmgrh4qa8i" path="res://gear/Item.gd" id="4_qj1j7"]
 [ext_resource type="Script" uid="uid://dq4acpkde276p" path="res://skills/Skill.gd" id="4_ta3bf"]
-[ext_resource type="Resource" uid="uid://ccd45ithmlluj" path="res://characters/_gender/_Unknown.tres" id="5_2p1x5"]
 [ext_resource type="Resource" uid="uid://cs2tci0dc3vvo" path="res://characters/_class/_Unknown.tres" id="6_0q48i"]
 [ext_resource type="Resource" uid="uid://lcgngc3c13fc" path="res://characters/_race/_Unknown.tres" id="7_mwqcq"]
 [ext_resource type="Resource" uid="uid://c5qyqcmwx0qfy" path="res://scripts/experience/ExperienceManager.tres" id="8_mwqcq"]
-[ext_resource type="Resource" uid="uid://s8gs3fa65s30" path="res://stat/_stats/DefaultStatGrowth.tres" id="12_mwqcq"]
+[ext_resource type="Resource" uid="uid://riijdkc770g2" path="res://stat/DefaultStatAttributeGrowth.tres" id="11_2p1x5"]
 
 [resource]
 script = ExtResource("1_l56jw")
 experience = 150
+stat_attribute_growth = ExtResource("11_2p1x5")
 id = "e_enemy_002"
 name = "Balmer"
 character_body = ExtResource("3_2p1x5")

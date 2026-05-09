@@ -3,6 +3,8 @@ class_name SkillSource
 
 
 func _init(c: CharacterInstance, s: Skill) -> void:
+	assert(c)
+	assert(s)
 	character = c
 	skill = s
 	

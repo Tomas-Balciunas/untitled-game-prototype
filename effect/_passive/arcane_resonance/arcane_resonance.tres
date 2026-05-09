@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="MpCostReduction" format=3]
+
+[ext_resource type="Script" path="res://effect/_passive/mp_cost/MpCostReduction.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+modifier = 0.2
+battle_only = false
+id = "arcane_resonance"
+name = "Arcane Resonance"
+description = "Deep attunement to the arcane weave reduces the mana cost of all spells."
+category = 0
+duration_turns = -1

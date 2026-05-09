@@ -3,9 +3,11 @@ class_name UISlotNumbers
 
 const DAMAGE_NUMBER_2D = preload("uid://burd322348idn")
 
-func display_damage(amt: int) -> void:
+func display_damage(damage_instance: DamageInstance) -> void:
 	var line: Label = DAMAGE_NUMBER_2D.instantiate()
-	line.set_notification(str(amt), 0.8)
+	if damage_instance.calculator.is_critical:
+		line.modulate = Color(0.84, 0.0, 0.123, 1.0)
+	line.set_notification(str(damage_instance.calculator.get_final_damage()), 0.8)
 	
 	self.add_child(line)
 

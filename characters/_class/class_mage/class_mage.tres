@@ -1,14 +1,24 @@
 [gd_resource type="Resource" script_class="MageClass" format=3 uid="uid://bn32gajodlfcr"]
 
 [ext_resource type="Script" uid="uid://bp0biy0knxw2o" path="res://effect/Effect.gd" id="1_0nc1p"]
+[ext_resource type="Script" uid="uid://blqk30gl013xc" path="res://stat/_attribute/attributes.gd" id="1_ptmqj"]
 [ext_resource type="Script" uid="uid://ccle2tts2drsa" path="res://characters/_class/class_mage/Mage.gd" id="2_1fpv6"]
 [ext_resource type="Script" uid="uid://dq4acpkde276p" path="res://skills/Skill.gd" id="3_1gkdg"]
 [ext_resource type="Resource" uid="uid://cmfrfdd4yc10y" path="res://characters/_class/class_mage/mage_attribute_contribution.tres" id="4_1gkdg"]
 [ext_resource type="Resource" path="res://characters/_class/class_mage/mage_stat_growth_per_level.tres" id="5_aw11a"]
+[ext_resource type="Resource" path="res://skills/_offensive/arcane_bolt.tres" id="6_skill"]
+[ext_resource type="Resource" path="res://effect/_passive/arcane_resonance/arcane_resonance.tres" id="7_effect"]
+
+[sub_resource type="Resource" id="Resource_661si"]
+script = ExtResource("1_ptmqj")
+metadata/_custom_type_script = "uid://blqk30gl013xc"
 
 [resource]
 script = ExtResource("2_1fpv6")
 name = 2
+attributes = SubResource("Resource_661si")
+skills = Array[ExtResource("3_1gkdg")]([ExtResource("6_skill")])
+effects = Array[ExtResource("1_0nc1p")]([ExtResource("7_effect")])
 stat_level_growth = ExtResource("5_aw11a")
 stat_attribute_growth = ExtResource("4_1gkdg")
 metadata/_custom_type_script = "uid://ccle2tts2drsa"

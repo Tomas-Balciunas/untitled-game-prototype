@@ -1,4 +1,4 @@
-extends RefCounted
+extends Entity
 
 class_name CharacterInstance
 
@@ -118,6 +118,15 @@ func _init(res: CharacterResource) -> void:
 	state.current_mana = stats.mana
 	state.current_sp = stats.sp
 
+func can_be_damaged() -> bool:
+	return true
+
+func can_be_healed() -> bool:
+	return true
+
+func can_receive_effects() -> bool:
+	return true
+
 func set_current_health(new_health: int, damage_event: DamageInstance = null) -> void:
 	var old: int = state.current_health
 	var new: float = clamp(new_health, 0, stats.health)
@@ -137,7 +146,7 @@ func set_current_health(new_health: int, damage_event: DamageInstance = null) ->
 		emit_signal("died", self)
 	
 	if damage_event:
-		CharacterBus.character_damaged.emit(self, damage_event.calculator.get_final_damage())
+		CharacterBus.character_damaged.emit(self, damage_event)
 		
 func get_body() -> CharacterBody:
 	if !body:
@@ -192,9 +201,6 @@ func apply_effect(effect: Effect, source: ContextSource) -> Effect:
 	inst.set_owner(self)
 	inst.set_source(source)
 	inst.on_apply()
-	
-	if not effect.should_append():
-		return inst
 	
 	effects.append(inst)
 	EffectRunner.subscribe(inst)

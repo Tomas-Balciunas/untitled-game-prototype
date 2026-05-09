@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="MpCostReduction" format=3]
+
+[ext_resource type="Script" path="res://effect/_passive/mp_cost/MpCostReduction.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+modifier = 0.35
+battle_only = false
+id = "spell_mastery"
+name = "Spell Mastery"
+description = "True mastery of the arcane arts, dramatically reducing the cost of all spells."
+category = 0
+duration_turns = -1

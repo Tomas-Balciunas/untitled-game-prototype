@@ -19,10 +19,6 @@ func get_contribution(stat: Stats.StatRef, attributes: Attributes) -> float:
 			continue
 		for mult: AttributeMultiplier in entry.contributions:
 			if mult.multiplier == 0.0:
-				push_error("AttributeMultiplier for attribute %s on stat %s has no multiplier set" % [
-					Attributes.AttributeRef.keys()[mult.attribute],
-					Stats.StatRef.keys()[stat]
-				])
 				continue
 			total += attributes.get_attribute(mult.attribute) * mult.multiplier
 

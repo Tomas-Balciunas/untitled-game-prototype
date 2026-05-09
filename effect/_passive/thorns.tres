@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="ThornsEffect" format=3 uid="uid://dc1m852hhuxcm"]
+
+[ext_resource type="Script" uid="uid://clerih25h632o" path="res://effect/_passive/thorns.gd" id="1_waj7d"]
+
+[resource]
+script = ExtResource("1_waj7d")
+name = "thorns"
+description = "damage attacker"
+battle_only = false
+metadata/_custom_type_script = "uid://clerih25h632o"

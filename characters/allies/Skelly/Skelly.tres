@@ -9,7 +9,6 @@
 [ext_resource type="PackedScene" uid="uid://cvja2deox1khy" path="res://characters/allies/Skelly/_body/Skelly.tscn" id="3_bv0l2"]
 [ext_resource type="Resource" uid="uid://eiwm6khdbjki" path="res://characters/_race/Human.tres" id="4_l3iqv"]
 [ext_resource type="Script" uid="uid://b06vmgrh4qa8i" path="res://gear/Item.gd" id="4_yu6ia"]
-[ext_resource type="Resource" uid="uid://cm3vin4wtxpjv" path="res://effect/_passive/counterattack/Counterattack.tres" id="5_g0fbc"]
 [ext_resource type="Script" uid="uid://1soxj0rvfy7j" path="res://stat/StatGrowthEntry.gd" id="13_ympyx"]
 [ext_resource type="Script" uid="uid://c3wbue0mr3cu6" path="res://stat/AttributeMultiplier.gd" id="14_4twd5"]
 [ext_resource type="Resource" uid="uid://c5qyqcmwx0qfy" path="res://scripts/experience/ExperienceManager.tres" id="14_tyjbr"]
@@ -32,7 +31,6 @@ script = ExtResource("1_s17id")
 race = ExtResource("4_l3iqv")
 job = ExtResource("16_tyjbr")
 attributes = SubResource("Resource_rhf32")
-default_effects = Array[ExtResource("1_l3iqv")]([ExtResource("5_g0fbc")])
 default_damage_type = 1
 stat_attribute_growth = SubResource("Resource_8uvd5")
 id = "a_skelly_1"

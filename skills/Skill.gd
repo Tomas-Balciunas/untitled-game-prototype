@@ -43,3 +43,6 @@ func compute_cost(c: CharacterInstance) -> SkillCost:
 			e.modify_skill_cost(self, sc)
 	
 	return sc
+
+func get_damage_type():
+	return null

@@ -32,10 +32,10 @@ func bind(character: CharacterInstance) -> void:
 	
 	show_info()
 	
-func _on_damaged(c: CharacterInstance, amt: int) -> void:
+func _on_damaged(c: CharacterInstance, damage_instance: DamageInstance) -> void:
 	if character_instance and c == character_instance:
 		play_damaged()
-		number_display.display_damage(amt)
+		number_display.display_damage(damage_instance)
 	
 func _on_healed(c: CharacterInstance, amt: int) -> void:
 	if character_instance and c == character_instance:

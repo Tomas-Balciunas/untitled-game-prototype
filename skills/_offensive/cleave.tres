@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="AttackSkill" format=3]
+
+[ext_resource type="Script" uid="uid://4wkxp72a0kpc" path="res://skills/AttackSkill.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+modifier = 0.8
+targeting_type = 3
+id = "cleave"
+name = "Cleave"
+description = "A sweeping strike that hits the entire enemy row."

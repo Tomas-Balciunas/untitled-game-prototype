@@ -48,12 +48,12 @@ _data = {
 &"damaged": SubResource("Animation_7gtfk")
 }
 
-[node name="PartyMemberSlot" type="Panel"]
+[node name="PartyMemberSlot" type="Panel" unique_id=846505463]
 custom_minimum_size = Vector2(130, 80)
 anchors_preset = -1
 anchor_right = 0.103
 anchor_bottom = 0.104
-offset_right = 6.4000015
+offset_right = 6.400009
 offset_bottom = -3.2000046
 grow_horizontal = 2
 grow_vertical = 2
@@ -63,7 +63,7 @@ mouse_default_cursor_shape = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_m4dhj")
 script = ExtResource("1_c0oo1")
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=208616910]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -76,19 +76,19 @@ theme_override_constants/margin_top = 5
 theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 5
 
-[node name="GridContainer" type="GridContainer" parent="MarginContainer"]
+[node name="GridContainer" type="GridContainer" parent="MarginContainer" unique_id=48873880]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 mouse_filter = 2
 
-[node name="NameContainer" type="GridContainer" parent="MarginContainer/GridContainer"]
+[node name="NameContainer" type="GridContainer" parent="MarginContainer/GridContainer" unique_id=1395233021]
 layout_mode = 2
 size_flags_horizontal = 6
 size_flags_vertical = 3
 mouse_filter = 2
 
-[node name="Name" type="Label" parent="MarginContainer/GridContainer/NameContainer"]
+[node name="Name" type="Label" parent="MarginContainer/GridContainer/NameContainer" unique_id=1552434072]
 z_index = 5
 layout_mode = 2
 theme_override_font_sizes/font_size = 14
@@ -96,120 +96,120 @@ text = "Unnamed"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="LabelValueContainer" type="GridContainer" parent="MarginContainer/GridContainer"]
+[node name="LabelValueContainer" type="GridContainer" parent="MarginContainer/GridContainer" unique_id=1078893254]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 mouse_filter = 2
 columns = 2
 
-[node name="Labels" type="GridContainer" parent="MarginContainer/GridContainer/LabelValueContainer"]
+[node name="Labels" type="GridContainer" parent="MarginContainer/GridContainer/LabelValueContainer" unique_id=1641250284]
 layout_mode = 2
 size_flags_horizontal = 6
 mouse_filter = 2
 theme_override_constants/h_separation = 4
 theme_override_constants/v_separation = 0
 
-[node name="HP" type="Label" parent="MarginContainer/GridContainer/LabelValueContainer/Labels"]
+[node name="HP" type="Label" parent="MarginContainer/GridContainer/LabelValueContainer/Labels" unique_id=78847740]
 z_index = 5
 layout_mode = 2
 theme_override_font_sizes/font_size = 12
 text = "HP"
 
-[node name="MP" type="Label" parent="MarginContainer/GridContainer/LabelValueContainer/Labels"]
+[node name="MP" type="Label" parent="MarginContainer/GridContainer/LabelValueContainer/Labels" unique_id=122152990]
 z_index = 5
 layout_mode = 2
 theme_override_font_sizes/font_size = 12
 text = "MP"
 
-[node name="SP" type="Label" parent="MarginContainer/GridContainer/LabelValueContainer/Labels"]
+[node name="SP" type="Label" parent="MarginContainer/GridContainer/LabelValueContainer/Labels" unique_id=696007241]
 layout_mode = 2
 theme_override_font_sizes/font_size = 12
 text = "SP"
 
-[node name="Values" type="GridContainer" parent="MarginContainer/GridContainer/LabelValueContainer"]
+[node name="Values" type="GridContainer" parent="MarginContainer/GridContainer/LabelValueContainer" unique_id=231892560]
 custom_minimum_size = Vector2(90, 0)
 layout_mode = 2
 size_flags_horizontal = 6
 mouse_filter = 2
 theme_override_constants/v_separation = 0
 
-[node name="HPContainer" type="GridContainer" parent="MarginContainer/GridContainer/LabelValueContainer/Values"]
+[node name="HPContainer" type="GridContainer" parent="MarginContainer/GridContainer/LabelValueContainer/Values" unique_id=909738901]
 layout_mode = 2
 size_flags_horizontal = 4
 mouse_filter = 2
 columns = 4
 
-[node name="CurrentHP" type="Label" parent="MarginContainer/GridContainer/LabelValueContainer/Values/HPContainer"]
+[node name="CurrentHP" type="Label" parent="MarginContainer/GridContainer/LabelValueContainer/Values/HPContainer" unique_id=1506257211]
 z_index = 5
 layout_mode = 2
 theme_override_font_sizes/font_size = 12
 text = "9999"
 horizontal_alignment = 2
 
-[node name="Slash" type="Label" parent="MarginContainer/GridContainer/LabelValueContainer/Values/HPContainer"]
+[node name="Slash" type="Label" parent="MarginContainer/GridContainer/LabelValueContainer/Values/HPContainer" unique_id=111037037]
 z_index = 5
 layout_mode = 2
 theme_override_font_sizes/font_size = 12
 text = "/"
 
-[node name="MaxHP" type="Label" parent="MarginContainer/GridContainer/LabelValueContainer/Values/HPContainer"]
+[node name="MaxHP" type="Label" parent="MarginContainer/GridContainer/LabelValueContainer/Values/HPContainer" unique_id=188436628]
 z_index = 5
 layout_mode = 2
 theme_override_font_sizes/font_size = 12
 text = "9999"
 
-[node name="MPContainer" type="GridContainer" parent="MarginContainer/GridContainer/LabelValueContainer/Values"]
+[node name="MPContainer" type="GridContainer" parent="MarginContainer/GridContainer/LabelValueContainer/Values" unique_id=554513502]
 layout_mode = 2
 size_flags_horizontal = 6
 size_flags_vertical = 3
 mouse_filter = 2
 columns = 4
 
-[node name="CurrentMP" type="Label" parent="MarginContainer/GridContainer/LabelValueContainer/Values/MPContainer"]
+[node name="CurrentMP" type="Label" parent="MarginContainer/GridContainer/LabelValueContainer/Values/MPContainer" unique_id=1531701373]
 z_index = 5
 layout_mode = 2
 theme_override_font_sizes/font_size = 12
 text = "50"
 
-[node name="Slash" type="Label" parent="MarginContainer/GridContainer/LabelValueContainer/Values/MPContainer"]
+[node name="Slash" type="Label" parent="MarginContainer/GridContainer/LabelValueContainer/Values/MPContainer" unique_id=885561261]
 z_index = 5
 layout_mode = 2
 theme_override_font_sizes/font_size = 12
 text = "/"
 
-[node name="MaxMP" type="Label" parent="MarginContainer/GridContainer/LabelValueContainer/Values/MPContainer"]
+[node name="MaxMP" type="Label" parent="MarginContainer/GridContainer/LabelValueContainer/Values/MPContainer" unique_id=262791161]
 z_index = 5
 layout_mode = 2
 theme_override_font_sizes/font_size = 12
 text = "80"
 
-[node name="SPContainer" type="GridContainer" parent="MarginContainer/GridContainer/LabelValueContainer/Values"]
+[node name="SPContainer" type="GridContainer" parent="MarginContainer/GridContainer/LabelValueContainer/Values" unique_id=750541369]
 layout_mode = 2
 size_flags_horizontal = 4
 mouse_filter = 2
 columns = 4
 
-[node name="CurrentSP" type="Label" parent="MarginContainer/GridContainer/LabelValueContainer/Values/SPContainer"]
+[node name="CurrentSP" type="Label" parent="MarginContainer/GridContainer/LabelValueContainer/Values/SPContainer" unique_id=670567245]
 z_index = 5
 layout_mode = 2
 theme_override_font_sizes/font_size = 12
 text = "9999"
 horizontal_alignment = 2
 
-[node name="Slash" type="Label" parent="MarginContainer/GridContainer/LabelValueContainer/Values/SPContainer"]
+[node name="Slash" type="Label" parent="MarginContainer/GridContainer/LabelValueContainer/Values/SPContainer" unique_id=551287109]
 z_index = 5
 layout_mode = 2
 theme_override_font_sizes/font_size = 12
 text = "/"
 
-[node name="MaxSP" type="Label" parent="MarginContainer/GridContainer/LabelValueContainer/Values/SPContainer"]
+[node name="MaxSP" type="Label" parent="MarginContainer/GridContainer/LabelValueContainer/Values/SPContainer" unique_id=124963270]
 z_index = 5
 layout_mode = 2
 theme_override_font_sizes/font_size = 12
 text = "9999"
 
-[node name="HoverOverlay" type="ColorRect" parent="."]
+[node name="HoverOverlay" type="ColorRect" parent="." unique_id=2008069768]
 visible = false
 z_index = 2
 layout_mode = 0
@@ -222,7 +222,7 @@ grow_vertical = 2
 mouse_filter = 2
 color = Color(0.737255, 0.364706, 0.364706, 0.337255)
 
-[node name="NumberDisplay" type="Control" parent="."]
+[node name="NumberDisplay" type="Control" parent="." unique_id=1939037336]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -232,10 +232,8 @@ grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("2_7gtfk")
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-libraries = {
-&"": SubResource("AnimationLibrary_0bwga")
-}
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1651510297]
+libraries/ = SubResource("AnimationLibrary_0bwga")
 
 [connection signal="gui_input" from="." to="." method="_on_gui_input"]
 [connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]

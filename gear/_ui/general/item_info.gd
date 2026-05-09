@@ -23,9 +23,9 @@ func show_item_info(item: ItemInstance) -> void:
 		var stat_lines: Array[String] = []
 
 		if item is Weapon:
+			stat_lines.append("Attack rate: x%s" % item.attack_rate)
 			stat_lines.append("Type: %s" % _weapon_type_str(item.weapon_type))
 			stat_lines.append("Range: %s" % _range_str(item.weapon_range))
-			stat_lines.append("Accuracy: +%d" % item.accuracy_range)
 
 		var stats: Stats = item.stats
 		for stat: Stats.StatRef in Stats.StatRef.values():

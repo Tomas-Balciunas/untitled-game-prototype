@@ -33,7 +33,7 @@ func process_trigger(stage: String, event: TriggerEvent) -> void:
 			if not e.can_process(stage, event):
 				continue
 			e.on_trigger(stage, event)
-			if e.single_trigger:
+			if e.immediate_trigger:
 				e.remove_self()
 
 	var subscribers: Array = _subscriptions.get(stage, []).duplicate()
@@ -49,7 +49,7 @@ func process_trigger(stage: String, event: TriggerEvent) -> void:
 		if not effect.can_process(stage, event):
 			continue
 		effect.on_trigger(stage, event)
-		if effect.single_trigger:
+		if effect.immediate_trigger:
 			effect.remove_self()
 
 

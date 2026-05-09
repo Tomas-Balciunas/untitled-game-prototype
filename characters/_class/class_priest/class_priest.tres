@@ -4,10 +4,11 @@
 [ext_resource type="Script" uid="uid://bp0biy0knxw2o" path="res://effect/Effect.gd" id="2_yla1s"]
 [ext_resource type="Script" uid="uid://krvcd4i0cl6r" path="res://characters/_class/class_priest/Priest.gd" id="3_65e7e"]
 [ext_resource type="Script" uid="uid://dq4acpkde276p" path="res://skills/Skill.gd" id="4_0w5it"]
-[ext_resource type="Resource" uid="uid://c5xohmycfkr5c" path="res://skills/_defensive/_heal/row heal.tres" id="5_bxk1o"]
-[ext_resource type="Resource" uid="uid://bk1ekpvjscjmg" path="res://skills/_defensive/_heal/single heal.tres" id="6_7kick"]
-[ext_resource type="Resource" uid="uid://do6wbjdno4olf" path="res://characters/_class/class_priest/priest_attribute_contribution.tres" id="7_yla1s"]
-[ext_resource type="Resource" path="res://characters/_class/class_priest/priest_stat_growth_per_level.tres" id="8_65e7e"]
+[ext_resource type="Resource" uid="uid://bk1ekpvjscjmg" path="res://skills/_defensive/_heal/single heal.tres" id="5_bxk1o"]
+[ext_resource type="Resource" uid="uid://do6wbjdno4olf" path="res://characters/_class/class_priest/priest_attribute_contribution.tres" id="6_yla1s"]
+[ext_resource type="Resource" path="res://characters/_class/class_priest/priest_stat_growth_per_level.tres" id="7_65e7e"]
+[ext_resource type="Resource" path="res://skills/_offensive/smite.tres" id="8_skill"]
+[ext_resource type="Resource" path="res://effect/_passive/divine_favor/divine_favor.tres" id="9_effect"]
 
 [sub_resource type="Resource" id="Resource_lyfav"]
 script = ExtResource("1_td5ge")
@@ -17,7 +18,8 @@ metadata/_custom_type_script = "uid://blqk30gl013xc"
 script = ExtResource("3_65e7e")
 name = 3
 attributes = SubResource("Resource_lyfav")
-skills = Array[ExtResource("4_0w5it")]([ExtResource("5_bxk1o"), ExtResource("6_7kick")])
-stat_level_growth = ExtResource("8_65e7e")
-stat_attribute_growth = ExtResource("7_yla1s")
+skills = Array[ExtResource("4_0w5it")]([ExtResource("5_bxk1o"), ExtResource("8_skill")])
+effects = Array[ExtResource("2_yla1s")]([ExtResource("9_effect")])
+stat_level_growth = ExtResource("7_65e7e")
+stat_attribute_growth = ExtResource("6_yla1s")
 metadata/_custom_type_script = "uid://krvcd4i0cl6r"

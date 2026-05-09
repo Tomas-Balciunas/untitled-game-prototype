@@ -106,27 +106,27 @@ func _setup_attribute_buttons() -> void:
 func _on_attribute_changed(attr_name: String, delta: int) -> void:
 	match attr_name:
 		"STR":
-			chosen_attributes.str = whatever(delta, chosen_attributes.str)
+			chosen_attributes.strength = whatever(delta, chosen_attributes.strength)
 		"IQ":
-			chosen_attributes.iq = whatever(delta, chosen_attributes.iq)
+			chosen_attributes.intelligence = whatever(delta, chosen_attributes.intelligence)
 		"PIE":
-			chosen_attributes.pie = whatever(delta, chosen_attributes.pie)
+			chosen_attributes.piety = whatever(delta, chosen_attributes.piety)
 		"VIT":
-			chosen_attributes.vit = whatever(delta, chosen_attributes.vit)
+			chosen_attributes.vitality = whatever(delta, chosen_attributes.vitality)
 		"DEX":
-			chosen_attributes.dex = whatever(delta, chosen_attributes.dex)
+			chosen_attributes.dexterity = whatever(delta, chosen_attributes.dexterity)
 		"SPD":
-			chosen_attributes.spd = whatever(delta, chosen_attributes.spd)
+			chosen_attributes.speed = whatever(delta, chosen_attributes.speed)
 		"LUK":
-			chosen_attributes.luk = whatever(delta, chosen_attributes.luk)
+			chosen_attributes.luck = whatever(delta, chosen_attributes.luck)
 
-	chosen_attributes.str = max(chosen_attributes.str, 0)
-	chosen_attributes.iq = max(chosen_attributes.iq, 0)
-	chosen_attributes.pie = max(chosen_attributes.pie, 0)
-	chosen_attributes.vit = max(chosen_attributes.vit, 0)
-	chosen_attributes.dex = max(chosen_attributes.dex, 0)
-	chosen_attributes.spd = max(chosen_attributes.spd, 0)
-	chosen_attributes.luk = max(chosen_attributes.luk, 0)
+	chosen_attributes.strength = max(chosen_attributes.strength, 0)
+	chosen_attributes.intelligence = max(chosen_attributes.intelligence, 0)
+	chosen_attributes.piety = max(chosen_attributes.piety, 0)
+	chosen_attributes.vitality = max(chosen_attributes.vitality, 0)
+	chosen_attributes.dexterity = max(chosen_attributes.dexterity, 0)
+	chosen_attributes.speed = max(chosen_attributes.speed, 0)
+	chosen_attributes.luck = max(chosen_attributes.luck, 0)
 	
 	update_attributes()
 	_update_attribute_labels()

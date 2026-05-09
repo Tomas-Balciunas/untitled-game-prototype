@@ -10,6 +10,9 @@ func _init(val: int) -> void:
 
 func execute(ctx: ActionContext) -> ActionContext:
 	for target in ctx.targets:
+		if not is_target_valid(target):
+			continue
+		
 		var event: DamageInstance = build_event(ctx, target)
 		run_pipeline(event)
 	
@@ -35,7 +38,8 @@ func run_pipeline(event: DamageInstance) -> void:
 		DamageTypes.to_str(event.calculator.type), 
 		event.target.resource.name
 		])
-		
+	
+	event.calculator.calculate_final_damage()
 	event.target.set_current_health(event.target.state.current_health - event.calculator.get_final_damage(), event)
 	
 	EffectRunner.process_trigger(EffectTriggers.ON_DAMAGE_APPLIED, event)

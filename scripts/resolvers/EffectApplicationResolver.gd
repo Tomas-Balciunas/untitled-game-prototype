@@ -15,6 +15,9 @@ func execute(ctx: ActionContext) -> EffectApplicationContext:
 		return
 	
 	for target in ctx.targets:
+		if not is_target_valid(target):
+			continue
+		
 		var event := EffectApplicationTriggerEvent.new(ctx, target, effect)
 		run_pipeline(event)
 
