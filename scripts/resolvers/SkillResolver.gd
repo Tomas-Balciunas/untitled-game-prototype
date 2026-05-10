@@ -10,8 +10,8 @@ func _init(s: Skill) -> void:
 
 
 func execute(ctx: ActionContext) -> ActionContext:
-	var event := SkillTriggerEvent.new(skill)
-	event.actor = ctx.source
+	var event := SkillTriggerEvent.new(skill, ctx.initial_target)
+	event.source = ctx.source
 	event.ctx = ctx
 	
 	EffectRunner.process_trigger(EffectTriggers.ON_BEFORE_SKILL_USE, event)
@@ -22,7 +22,7 @@ func execute(ctx: ActionContext) -> ActionContext:
 		push_error("resolver missing in skill resolver")
 		return ctx
 	
-	event.cost.consume(event.actor)
+	event.cost.consume(event.source)
 	
 	resolver.execute(ctx)
 	

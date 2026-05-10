@@ -40,7 +40,7 @@ func update_player_position(pos: Vector2i, facing: Vector3) -> void:
 	
 	for c in PartyManager.members:
 		var event: TriggerEvent = TriggerEvent.new()
-		event.actor = CharacterSource.new(c)
+		event.source = CharacterSource.new(c)
 		event.ctx = ActionContext.new()
 		EffectRunner.process_trigger(EffectTriggers.ON_TURN_END, event)
 		

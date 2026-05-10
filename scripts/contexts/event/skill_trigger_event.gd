@@ -6,8 +6,9 @@ var skill: Skill = null
 var cost: SkillCost = null
 
 
-func _init(s: Skill) -> void:
+func _init(s: Skill, t: CharacterInstance) -> void:
 	skill = s
+	target = t
 	
 	if skill.cost:
 		cost = skill.cost

@@ -85,3 +85,9 @@ func modify_skill_cost(_skill: Skill, _sc: SkillCost) -> SkillCost:
 
 func tick(_ctx: ActionContext) -> void:
 	pass
+
+func owner_is_target(event: TriggerEvent) -> bool:
+	return owner == event.target
+
+func owner_is_actor(event: TriggerEvent) -> bool:
+	return owner == event.source.get_actor()

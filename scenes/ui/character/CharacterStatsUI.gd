@@ -11,6 +11,8 @@ extends Node
 @onready var divine_power_value: Label  = $Stats/DivinePower/DivinePowerValue
 @onready var magic_defense_value: Label = $Stats/MagicDefense/MagicDefenseValue
 @onready var resistance_value: Label    = $Stats/Resistance/ResistanceValue
+@onready var accuracy_value: Label = $Stats/Accuracy/AccuracyValue
+@onready var evasion_value: Label = $Stats/Evasion/EvasionValue
 
 func bind_character(character: CharacterInstance) -> void:
 	var s := character.stats
@@ -28,3 +30,5 @@ func bind_character(character: CharacterInstance) -> void:
 	divine_power_value.text  = str(s.divine_power)
 	magic_defense_value.text = str(s.magic_defense)
 	resistance_value.text    = str(s.resistance)
+	accuracy_value.text = str(s.get_stat(Stats.StatRef.ACCURACY))
+	evasion_value.text = str(s.get_stat(Stats.StatRef.EVASION))

@@ -27,6 +27,8 @@ magic_power = 1.0
 divine_power = 1.0
 magic_defense = 2.0
 resistance = 2.0
+accuracy = 1.0
+evasion = 1.0
 metadata/_custom_type_script = "uid://bqln4xpkkidja"
 
 [resource]

@@ -20,7 +20,7 @@ func _init(event: DamageInstance) -> void:
 	context = event.ctx
 	base_damage = event.damage
 	final_damage = event.damage
-	source = event.actor
+	source = event.source
 	target = event.target
 	actor = source.get_actor()
 	
@@ -34,6 +34,12 @@ func _init(event: DamageInstance) -> void:
 
 func calculate_final_damage() -> void:
 	apply_accuracy_variance()
+	
+	final_damage = final_damage - target.stats.defense
+	
+	if is_critical:
+		final_damage = final_damage * critical_damage
+	
 
 
 func apply_accuracy_variance() -> void:
@@ -57,12 +63,7 @@ func apply_accuracy_variance() -> void:
 	final_damage = result
 
 func get_final_damage() -> int:
-	var result: float = final_damage
-	
-	if is_critical:
-		result = final_damage * critical_damage
-	
-	return max(0, round(result))
+	return max(0, round(final_damage))
 
 func set_damage_type() -> void:
 	if source.skill and source.skill.get_damage_type():

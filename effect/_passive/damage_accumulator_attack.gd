@@ -12,14 +12,9 @@ func _init() -> void:
 func listened_triggers() -> Array:
 	return [EffectTriggers.ON_DAMAGE_APPLIED]
 
-func get_scope() -> Effect.EffectScope:
-	return Effect.EffectScope.GLOBAL
 
 func can_process(_stage: String, event: TriggerEvent) -> bool:
-	if !event is DamageInstance:
-		return false
-	
-	return event.target == owner or (event.actor.get_actor() == owner and event.target != owner)
+	return owner_is_target(event) or (owner_is_actor(event) and !owner_is_target(event))
 
 func on_trigger(_stage: String, _event: TriggerEvent) -> void:
 	var event: DamageInstance = _event
@@ -31,7 +26,7 @@ func on_trigger(_stage: String, _event: TriggerEvent) -> void:
 			BattleTextLines.print_line("Lash will be unleashed!")
 		return
 	
-	if event.actor.get_actor() == owner and event.target != owner:
+	if event.source.get_actor() == owner and event.target != owner:
 		if _event.ctx.actively_cast == false:
 			return
 		

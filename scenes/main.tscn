@@ -491,6 +491,30 @@ text = "Resistance:"
 layout_mode = 2
 size_flags_horizontal = 3
 
+[node name="Accuracy" type="HBoxContainer" parent="UIRoot/OverworldInterface/CharacterMenu/StatsUI/Stats" unique_id=1724676713]
+layout_mode = 2
+
+[node name="AccuracyKey" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/StatsUI/Stats/Accuracy" unique_id=183512165]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Accuracy:"
+
+[node name="AccuracyValue" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/StatsUI/Stats/Accuracy" unique_id=688125767]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Evasion" type="HBoxContainer" parent="UIRoot/OverworldInterface/CharacterMenu/StatsUI/Stats" unique_id=1990453464]
+layout_mode = 2
+
+[node name="EvasionKey" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/StatsUI/Stats/Evasion" unique_id=1852242179]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Evasion:"
+
+[node name="EvasionValue" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/StatsUI/Stats/Evasion" unique_id=1830402756]
+layout_mode = 2
+size_flags_horizontal = 3
+
 [node name="EffectsUI" type="PanelContainer" parent="UIRoot/OverworldInterface/CharacterMenu" unique_id=1787143395]
 unique_name_in_owner = true
 visible = false

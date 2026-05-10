@@ -27,6 +27,6 @@ func execute(ctx: ActionContext) -> EffectApplicationContext:
 func run_pipeline(event: EffectApplicationTriggerEvent) -> void:
 	EffectRunner.process_trigger(EffectTriggers.ON_BEFORE_APPLY_EFFECT, event)
 	
-	event.target.apply_effect(effect, event.actor)
+	event.target.apply_effect(effect, event.source)
 	
 	EffectRunner.process_trigger(EffectTriggers.ON_APPLY_EFFECT, event)

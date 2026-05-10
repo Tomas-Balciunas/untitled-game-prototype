@@ -8,11 +8,8 @@ class_name ManaDrainEffect
 func listened_triggers() -> Array:
 	return [EffectTriggers.ON_APPLY_EFFECT]
 
-func get_scope() -> Effect.EffectScope:
-	return Effect.EffectScope.OWNER_IS_TARGET
-
-func can_process(_stage: String, _event: TriggerEvent) -> bool:
-	return true
+func can_process(_stage: String, event: TriggerEvent) -> bool:
+	return owner_is_target(event)
 
 
 func on_trigger(_stage: String, event: TriggerEvent) -> void:

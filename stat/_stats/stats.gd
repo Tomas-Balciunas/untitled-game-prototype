@@ -31,18 +31,18 @@ const STAT_NAMES := {
 	StatRef.EVASION:       "Evasion",
 }
 
-@export var attack: float = 0
-@export var health: float = 0
-@export var mana: float = 0
-@export var sp: float = 0
-@export var speed: float = 0
-@export var defense: float = 0
-@export var magic_power: float = 0
-@export var divine_power: float = 0
-@export var magic_defense: float = 0
-@export var resistance: float = 0
-@export var accuracy: float = 0
-@export var evasion: float = 0
+@export var attack: float = 0.0
+@export var health: float = 0.0
+@export var mana: float = 0.0
+@export var sp: float = 0.0
+@export var speed: float = 0.0
+@export var defense: float = 0.0
+@export var magic_power: float = 0.0
+@export var divine_power: float = 0.0
+@export var magic_defense: float = 0.0
+@export var resistance: float = 0.0
+@export var accuracy: float = 0.0
+@export var evasion: float = 0.0
 
 func add(other: Stats) -> void:
 	attack        += other.attack

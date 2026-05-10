@@ -28,4 +28,4 @@ func run_pipeline(event: HealTriggerEvent) -> void:
 
 	event.target.set_current_health(event.target.state.current_health + event.heal)
 
-	BattleTextLines.print_line("%s healed %s for %d" % [event.actor.get_source_name(), event.target.resource.name, event.heal])
+	BattleTextLines.print_line("%s healed %s for %d" % [event.source.get_source_name(), event.target.resource.name, event.heal])

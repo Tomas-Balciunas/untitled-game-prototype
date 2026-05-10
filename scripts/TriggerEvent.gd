@@ -1,5 +1,6 @@
 extends RefCounted
 class_name TriggerEvent
 
-var actor: ContextSource
+var source: ContextSource
+var target: CharacterInstance
 var ctx: ActionContext

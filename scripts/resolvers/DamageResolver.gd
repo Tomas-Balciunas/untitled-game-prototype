@@ -25,7 +25,6 @@ func execute(ctx: ActionContext) -> ActionContext:
 
 func run_pipeline(event: DamageInstance) -> void:
 	#TODO: refactor trigger flow
-	EffectRunner.process_trigger(EffectTriggers.ON_HIT, event)
 	EffectRunner.process_trigger(EffectTriggers.ON_BEFORE_RECEIVE_DAMAGE, event)
 	
 	#BattleEventBus.before_receive_damage.emit(ctx)

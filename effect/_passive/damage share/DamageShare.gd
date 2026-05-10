@@ -6,18 +6,12 @@ class_name DamageShare
 func listened_triggers() -> Array:
 	return [EffectTriggers.ON_DAMAGE_ABOUT_TO_BE_APPLIED]
 
-func get_scope() -> Effect.EffectScope:
-	return Effect.EffectScope.GLOBAL
-
 func can_process(_stage: String, event: TriggerEvent) -> bool:
-	if !event is DamageInstance:
-		return false
-	
 	if BattleContext.in_battle:
 		if not TargetingManager.same_side(owner, event.target):
 			return false
 	
-	return event.target != owner and not owner.is_dead
+	return !owner_is_target(event)
 
 func on_trigger(_stage: String, event: TriggerEvent) -> void:
 	var dmg: DamageInstance = event as DamageInstance

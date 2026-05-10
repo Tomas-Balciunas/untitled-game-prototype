@@ -25,6 +25,6 @@ func execute(ctx: ActionContext) -> ActionContext:
 func build_event(ctx: ActionContext) -> TriggerEvent:
 	var event: TriggerEvent = TriggerEvent.new()
 	event.ctx = ctx
-	event.actor = CharacterSource.new(actor)
+	event.source = CharacterSource.new(actor)
 	
 	return event
