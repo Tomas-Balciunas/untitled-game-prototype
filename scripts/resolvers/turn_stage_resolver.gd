@@ -3,10 +3,10 @@ extends EffectResolver
 class_name TurnStageResolver
 
 var stage: String
-var actor: CharacterInstance = null
+var actor: Character = null
 
 
-func _init(_stage: String, _actor: CharacterInstance) -> void:
+func _init(_stage: String, _actor: Character) -> void:
 	stage = _stage
 	actor = _actor
 

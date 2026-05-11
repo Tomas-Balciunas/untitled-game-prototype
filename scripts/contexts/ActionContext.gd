@@ -1,8 +1,8 @@
 class_name ActionContext
 
 var source: ContextSource
-var initial_target: CharacterInstance = null
-var targets: Array[CharacterInstance] = []
+var initial_target: Character = null
+var targets: Array[Character] = []
 var temporary_effects: Array[Effect] = []
 var options: Dictionary = {}
 var actively_cast: bool = false
@@ -22,7 +22,7 @@ var tick_power: float = 1.0
 var additional_procs: Array = []
 
 
-func set_targets(initial: CharacterInstance, all_targets: Array[CharacterInstance] = []) -> void:
+func set_targets(initial: Character, all_targets: Array[Character] = []) -> void:
 	initial_target = initial
 	targets = all_targets
 	

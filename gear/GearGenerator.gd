@@ -4,15 +4,15 @@ class_name GearGenerator
 
 const MAX_QUANTITY = 10
 
-const allowed_types: Array[Item.ItemType] = [
-		Item.ItemType.WEAPON, 
-		Item.ItemType.CHEST, 
-		Item.ItemType.HELMET,
-		Item.ItemType.BOOTS,
-		Item.ItemType.GLOVES,
-		Item.ItemType.RING,
-		Item.ItemType.AMULET,
-		#Item.ItemType.CONSUMABLE
+const allowed_types: Array[GearResource.Type] = [
+		GearResource.Type.WEAPON, 
+		GearResource.Type.CHEST, 
+		GearResource.Type.HELMET,
+		GearResource.Type.BOOTS,
+		GearResource.Type.GLOVES,
+		GearResource.Type.RING,
+		GearResource.Type.AMULET,
+		#ItemResource.ItemType.CONSUMABLE
 	]
 	
 var quantity: int:
@@ -22,17 +22,17 @@ var quantity: int:
 		else:
 			quantity = value
 	
-var requested_types: Array[Item.ItemType]:
+var requested_types: Array[GearResource.Type]:
 	set(value):
 		if !value is Array:
-			push_error("Types passed to generator must be an array of Item.ItemType!")
+			push_error("Types passed to generator must be an array of ItemResource.ItemType!")
 		
 		if value.is_empty():
 			requested_types = allowed_types
 			
 			return
 		
-		var filtered_types: Array[Item.ItemType] = []
+		var filtered_types: Array[GearResource.Type] = []
 		
 		for type in value:
 			if allowed_types.has(type):
@@ -40,24 +40,24 @@ var requested_types: Array[Item.ItemType]:
 		
 		requested_types = filtered_types
 
-func _init(qty: int, types: Array[Item.ItemType] = []) -> void:
+func _init(qty: int, types: Array[GearResource.Type] = []) -> void:
 	quantity = qty
 	requested_types = types
 
-func generate() -> Array[ItemInstance]:
+func generate() -> Array[Gear]:
 	var builder: GearBuilder = GearBuilder.new()
-	var generated_gear: Array[ItemInstance] = []
+	var generated_gear: Array[Gear] = []
 	var tiers: Array = MapInstance.available_tiers
 	
 	for i in range(quantity):
 		var tier := get_tier(tiers)
-		var type: Item.ItemType = requested_types[randi() % len(requested_types)]
-		var item: ItemInstance = builder.build_item(type, tier)
+		var type: GearResource.Type = requested_types[randi() % len(requested_types)]
+		var item: Gear = builder.build_item(type, tier)
 		
 		if item:
 			generated_gear.append(item)
 		else:
-			push_error("item could not be generated: %s %s" % [tier, Item.item_type_to_string(type)])
+			push_error("item could not be generated: %s %s" % [tier, type])
 		
 	return generated_gear
 

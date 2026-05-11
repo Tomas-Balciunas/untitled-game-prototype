@@ -54,7 +54,7 @@ func _on_interact_requested() -> void:
 		
 	character.interaction_controller.handle(character)
 
-func _on_party_member_added(member: CharacterInstance, _slot: int) -> void:
+func _on_party_member_added(member: Character, _slot: int) -> void:
 	if character:
 		if character.id == member.resource.id:
 			queue_free()

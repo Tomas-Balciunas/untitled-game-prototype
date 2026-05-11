@@ -6,5 +6,5 @@ class_name Trap
 @export var name: String = "Trap"
 @export var damage: int
 
-func trigger(_target: CharacterInstance) -> void:
+func trigger(_target: Character) -> void:
 	pass

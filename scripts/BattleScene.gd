@@ -26,8 +26,8 @@ func load_arena(arena_scene: PackedScene) -> void:
 	var arena_instance := arena_scene.instantiate()
 	arena_root.add_child(arena_instance)
 
-func load_enemies(enemies: Array[CharacterResource]) -> Array[CharacterInstance]:
-	var enemy_instances: Array[CharacterInstance] = enemy_grid.get_enemy_instances(enemies)
+func load_enemies(enemies: Array[CharacterResource]) -> Array[Character]:
+	var enemy_instances: Array[Character] = enemy_grid.get_enemy_instances(enemies)
 	enemy_grid.place_all_enemies(enemy_instances)
 	
 	return enemy_instances

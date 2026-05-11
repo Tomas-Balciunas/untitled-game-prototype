@@ -19,11 +19,11 @@ func _on_party_reloaded() -> void:
 		slot.hide_info()
 
 	for slot_index in range(PartyManager.formation.size()):
-		var member: CharacterInstance = PartyManager.formation[slot_index]
+		var member: Character = PartyManager.formation[slot_index]
 		if member:
 			_on_member_added(member, slot_index)
 
-func _on_member_added(character: CharacterInstance, slot_index: int) -> void:
+func _on_member_added(character: Character, slot_index: int) -> void:
 	var character_ui: PartyMemberSlot = formation[slot_index]
 	character_ui.bind(character)
 

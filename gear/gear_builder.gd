@@ -2,23 +2,23 @@ extends RefCounted
 class_name GearBuilder
 
 
-func build_item(type: Item.ItemType, tier: String) -> ItemInstance:
+func build_item(type: GearResource.Type, tier: String) -> Gear:
 	match type:
-		Item.ItemType.WEAPON:
+		GearResource.Type.WEAPON:
 			return build_weapon(tier)
-		Item.ItemType.CONSUMABLE, Item.ItemType.QUEST:
+		GearResource.ItemType.CONSUMABLE, ItemResource.ItemType.QUEST:
 			return null
 		_:
 			return build_armor(type, tier)
 
 
-func get_quality() -> Gear.Quality:
+func get_quality() -> GearResource.Quality:
 	var r: float = randf()
-	if r < 0.07:   return Gear.Quality.EXCEPTIONAL
-	elif r < 0.16: return Gear.Quality.RARE
-	elif r < 0.27: return Gear.Quality.UNCOMMON
-	elif r < 0.40: return Gear.Quality.COMMON
-	return Gear.Quality.POOR
+	if r < 0.07:   return GearResource.Quality.EXCEPTIONAL
+	elif r < 0.16: return GearResource.Quality.RARE
+	elif r < 0.27: return GearResource.Quality.UNCOMMON
+	elif r < 0.40: return GearResource.Quality.COMMON
+	return GearResource.Quality.POOR
 
 
 func get_stats(range_data: Dictionary) -> Stats:
@@ -32,7 +32,7 @@ func get_stats(range_data: Dictionary) -> Stats:
 	return stats
 
 
-func get_modifiers(tier: String, applicable: Array[Stats.StatRef], quality: Gear.Quality) -> Array[StatModifier]:
+func get_modifiers(tier: String, applicable: Array[Stats.StatRef], quality: GearResource.Quality) -> Array[StatModifier]:
 	var amt: int = ItemConfig.get_max_modifiers(tier)
 	if amt == 0:
 		return []
@@ -62,29 +62,29 @@ func get_modifiers(tier: String, applicable: Array[Stats.StatRef], quality: Gear
 	return mods
 
 
-func _create_instance(type: Item.ItemType) -> GearInstance:
+func _create_instance(type: GearResource.Type) -> Gear:
 	match type:
-		Item.ItemType.CHEST:  return Chestpiece.new()
-		Item.ItemType.HELMET: return Helmet.new()
-		Item.ItemType.BOOTS:  return Boots.new()
-		Item.ItemType.GLOVES: return Gloves.new()
-		Item.ItemType.RING:   return Ring.new()
-		Item.ItemType.AMULET: return Amulet.new()
+		GearResource.Type.CHEST:  return Chestpiece.new()
+		GearResource.Type.HELMET: return Helmet.new()
+		GearResource.Type.BOOTS:  return Boots.new()
+		GearResource.Type.GLOVES: return Gloves.new()
+		GearResource.Type.RING:   return Ring.new()
+		GearResource.Type.AMULET: return Amulet.new()
 	return null
 
 
-func build_armor(type: Item.ItemType, tier: String) -> GearInstance:
+func build_armor(type: GearResource.Type, tier: String) -> Gear:
 	var item := _create_instance(type)
 	if not item:
 		push_error("gear_builder: unknown armor type %s" % type)
 		return null
 
-	item.type = type
+	item.type = ItemResource.ItemType.GEAR
 	item.id = GameState.generate_id()
-	item.item_name = "%s %s" % [ItemConfig.get_item_name(tier), Item.item_type_to_string(type)]
+	item.item_name = "%s %s" % [ItemConfig.get_item_name(tier), "placeholder for gear type"]
 	item.quality = get_quality()
 
-	var stat_range := ItemConfig.get_stat_range(tier, type)
+	var stat_range := ItemConfig.get_stat_range(tier, item.get_gear_type())
 	item.stats = get_stats(stat_range)
 	item.base_stats = item.stats.duplicate(true)
 
@@ -95,20 +95,20 @@ func build_armor(type: Item.ItemType, tier: String) -> GearInstance:
 
 func build_weapon(tier: String) -> Weapon:
 	var item := Weapon.new()
-	item.type = Item.ItemType.WEAPON
+	item.type = ItemResource.ItemType.GEAR
 	item.id = GameState.generate_id()
-	item.weapon_type = WeaponResource.Type.values().pick_random()
+	item.weapon_type = WeaponResource.WeaponType.values().pick_random()
 	item.targeting = TargetingManager.TargetType.SINGLE
 	item.weapon_range = TargetingManager.RangeType.MELEE
 	item.accuracy_range = ItemConfig.get_accuracy(item.weapon_type)
 	item.attack_rate = 1
 	item.quality = get_quality()
-	item.item_name = "%s %s" % [ItemConfig.get_item_name(tier), Item.item_type_to_string(item.type)]
+	item.item_name = "%s %s" % [ItemConfig.get_item_name(tier), ItemResource.item_type_to_string(item.type)]
 
-	var stat_range := ItemConfig.get_stat_range_weapon(tier, item.type, item.weapon_type)
+	var stat_range := ItemConfig.get_stat_range_weapon(tier, item.get_gear_type(), item.weapon_type)
 	item.stats = get_stats(stat_range)
 	item.base_stats = item.stats.duplicate(true)
 
-	item.base_modifiers = get_modifiers(tier, ItemConfig.get_applicable_modifiers(item.type), item.quality)
+	item.base_modifiers = get_modifiers(tier, ItemConfig.get_applicable_modifiers(item.get_gear_type()), item.quality)
 
 	return item

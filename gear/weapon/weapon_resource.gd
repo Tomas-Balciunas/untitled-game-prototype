@@ -1,8 +1,8 @@
-extends Gear
+extends GearResource
 
 class_name WeaponResource
 
-enum Type {
+enum WeaponType {
 	SWORD,
 	AXE
 }
@@ -10,12 +10,12 @@ enum Type {
 @export var targeting: TargetingManager.TargetType = TargetingManager.TargetType.SINGLE
 @export var attack_rate: int = 1
 @export var weapon_range: TargetingManager.RangeType = TargetingManager.RangeType.MELEE
-@export var weapon_type: Type = Type.SWORD 
+@export var weapon_type: WeaponType = WeaponType.SWORD 
 @export var accuracy_range: int = 0
 
 
 func _init() -> void:
-	type = Item.ItemType.WEAPON
+	type = ItemResource.ItemType.GEAR
 	
 	if not base_stats:
 		base_stats = Stats.new()

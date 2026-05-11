@@ -1,11 +1,11 @@
-extends ItemInstance
+extends Item
 class_name Consumable
 
 var effects: Array[Effect] = []
 var targeting_type: TargetingManager.TargetType = TargetingManager.TargetType.SINGLE
 
 
-func use_item(user: CharacterInstance) -> void:
+func use_item(user: Character) -> void:
 	var ctx := ConsumableContext.new()
 	ctx.source = ItemSource.new(user, self)
 	ctx.set_targets(user)

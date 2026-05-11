@@ -1,10 +1,10 @@
 extends Button
 
-signal transfer_character_chosen(c: CharacterInstance)
+signal transfer_character_chosen(c: Character)
 
-var _character: CharacterInstance = null
+var _character: Character = null
 
-func bind(character: CharacterInstance) -> void:
+func bind(character: Character) -> void:
 	_character = character
 	var max_slots := character.inventory.max_slots
 	var current_slots := len(character.inventory.slots)

@@ -3,11 +3,11 @@ extends Node
 @onready var skills_container := $Skills
 @onready var use_skill: Button = $UseSkill
 const SKILL_BOX = preload("uid://bpkmimsr5asu2")
-var _owner: CharacterInstance = null
+var _owner: Character = null
 var selected_skill: Skill = null
 
 
-func bind_character(character: CharacterInstance) -> void:
+func bind_character(character: Character) -> void:
 	use_skill.visible = false
 	clear_skills()
 	_owner = character
@@ -45,7 +45,7 @@ func _on_skill_selected(skill: Skill) -> void:
 	use_skill.visible = true
 
 
-func target_selected(t: CharacterInstance) -> void:
+func target_selected(t: Character) -> void:
 	if not selected_skill:
 		return
 	

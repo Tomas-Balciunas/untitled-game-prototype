@@ -14,7 +14,7 @@ extends Node
 @onready var accuracy_value: Label = $Stats/Accuracy/AccuracyValue
 @onready var evasion_value: Label = $Stats/Evasion/EvasionValue
 
-func bind_character(character: CharacterInstance) -> void:
+func bind_character(character: Character) -> void:
 	var s := character.stats
 	exp_value.text = "%s/%s" % [
 		character.current_experience,

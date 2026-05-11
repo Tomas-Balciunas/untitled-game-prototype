@@ -8,19 +8,19 @@ extends Node
 @onready var ring := $Ring
 @onready var amulet := $Amulet
 
-func bind_equipped(character_instance: CharacterInstance, parent_ui: InventoryUI) -> void:
+func bind_equipped(character_instance: Character, parent_ui: InventoryUI) -> void:
 	var equipment := {
-	"weapon": weapon,
-	"chest": chest,
-	"helmet": helmet,
-	"boots": boots,
-	"gloves": gloves,
-	"ring": ring,
-	"amulet": amulet
+	GearResource.Type.WEAPON: weapon,
+	GearResource.Type.CHEST: chest,
+	GearResource.Type.HELMET: helmet,
+	GearResource.Type.BOOTS: boots,
+	GearResource.Type.GLOVES: gloves,
+	GearResource.Type.RING: ring,
+	GearResource.Type.AMULET: amulet
 }
-	for slot: String in character_instance.equipment.keys():
+	for slot: int in GearResource.Type.values():
 		var eq_slot: PanelContainer = equipment[slot]
-		eq_slot.bind(character_instance.equipment[slot])
+		eq_slot.bind(character_instance.equipment.get_equipment_by_type(slot))
 		
 		if not eq_slot.item_hovered.is_connected(parent_ui.item_info_panel.show_item_info):
 			eq_slot.item_hovered.connect(parent_ui.item_info_panel.show_item_info)

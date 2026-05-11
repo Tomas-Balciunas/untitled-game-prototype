@@ -22,7 +22,7 @@ var is_main: bool = false
 @export var default_effects: Array[Effect] = []
 @export var level_effects: Dictionary = {}
 @export var default_damage_type: DamageTypes.Type
-@export var default_items: Array[Item] = []
+@export var default_items: Array[ItemResource] = []
 
 @export var base_stats: Stats = DEFAULT_STATS
 @export var stat_level_growth: Stats

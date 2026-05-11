@@ -2,22 +2,22 @@ extends Node
 class_name StatCalculator
 
 
-static func recalculate_all_stats(c: CharacterInstance) -> void:
+static func recalculate_all_stats(c: Character) -> void:
 	for s: Stats.StatRef in Stats.StatRef.values():
 		recalculate_stat(c, s)
 	
 
-static func recalculate_stat(c: CharacterInstance, s: Stats.StatRef) -> void:
+static func recalculate_stat(c: Character, s: Stats.StatRef) -> void:
 	var base_value: float = c.base_stats.get_stat(s)
 	var computed_stat: float = base_value + get_attribute_contribution(s, c) + get_level_contribution(s, c)
 	c.computed_stats.set_stat(s, computed_stat)
 	
 	var gear_value: float = 0.0
 	
-	for slot: ItemInstance in c.equipment.values():
+	for slot: Gear in c.equipment.get_all_equipment():
 		if slot == null:
 			continue
-		if slot is GearInstance:
+		if slot is Gear:
 			gear_value += slot.stats.get_stat(s)
 		else:
 			push_error("Non gear item is equipped: %s" % slot.get_item_name())
@@ -44,7 +44,7 @@ static func recalculate_stat(c: CharacterInstance, s: Stats.StatRef) -> void:
 	CharacterBus.stat_changed.emit(c, s)
 
 
-static func get_attribute_contribution(stat: Stats.StatRef, c: CharacterInstance) -> float:
+static func get_attribute_contribution(stat: Stats.StatRef, c: Character) -> float:
 	var total: float = 0.0
 
 	var sources: Array = [
@@ -62,5 +62,5 @@ static func get_attribute_contribution(stat: Stats.StatRef, c: CharacterInstance
 
 	return total
 	
-static func get_level_contribution(stat: Stats.StatRef, c: CharacterInstance) -> float:
+static func get_level_contribution(stat: Stats.StatRef, c: Character) -> float:
 	return c.job.get_stat_level_growth().get_stat(stat) * (c.level - 1) + c.resource.get_stat_level_growth().get_stat(stat) * (c.level - 1)

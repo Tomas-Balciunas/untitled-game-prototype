@@ -1,17 +1,17 @@
 extends Control
 
-signal item_hovered(item: ItemInstance)
+signal item_hovered(item: Item)
 signal item_unhovered()
-signal equipped_item_selected(item: ItemInstance)
+signal equipped_item_selected(item: Item)
 
-var item: ItemInstance = null
+var item: Item = null
 
 func _ready() -> void:
 	self.connect("mouse_entered", Callable(self, "_on_mouse_entered"))
 	self.connect("mouse_exited", Callable(self, "_on_mouse_exited"))
 	self.connect("gui_input", Callable(self, "_on_gui_input"))
 
-func bind(item_instance: ItemInstance) -> void:
+func bind(item_instance: Item) -> void:
 	item = item_instance
 	
 	if not item:

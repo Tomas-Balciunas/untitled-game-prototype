@@ -1,7 +1,7 @@
 extends Control
 
 
-var current_battler: CharacterInstance = null
+var current_battler: Character = null
 
 @onready var attack_button: Button = %AttackButton
 @onready var defend_button: Button = %DefendButton
@@ -36,14 +36,14 @@ func _ready() -> void:
 	BattleBus.ally_turn_started.connect(_on_ally_turn_started)
 	BattleBus.turn_ended.connect(_on_turn_ended)
 
-func _on_queue_processed(queue: Array[CharacterInstance]) -> void:
+func _on_queue_processed(queue: Array[Character]) -> void:
 	for child in v_box_container_2.get_children():
 		child.queue_free()
 	var index := 1
 	var label2 := Label.new()
 	label2.text = "Current. %s av: %s" % [BattleContext.manager.current_battler.resource.name if current_battler else "", BattleContext.manager.current_battler.action_value if current_battler else ""]
 	v_box_container_2.add_child(label2)
-	for c: CharacterInstance in queue:
+	for c: Character in queue:
 		var label := Label.new()
 		label.text = "%s. %s - action val.: %s" % [index if index > 1 else "Next", c.resource.name, c.action_value]
 		index += 1
@@ -58,7 +58,7 @@ func _on_battle_end() -> void:
 	hide()
 
 
-func _on_ally_turn_started(battler: CharacterInstance) -> void:
+func _on_ally_turn_started(battler: Character) -> void:
 	current_battler = battler
 	_populate_skill_list()
 	_populate_item_list()

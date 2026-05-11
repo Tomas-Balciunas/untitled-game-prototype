@@ -4,7 +4,7 @@ class_name TestBattleEvent
 
 var times = 1
 
-func prepare(owner: CharacterInstance):
+func prepare(owner: Character):
 	BattleEventBus.before_receive_damage.connect(before_receive_damage)
 	ConversationBus.conversation_finished.connect(conclude_conversation)
 	_owner = owner

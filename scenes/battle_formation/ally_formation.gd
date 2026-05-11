@@ -20,7 +20,7 @@ func place_all_allies() -> void:
 	clear_slots()
 
 	var allies := []
-	for a: CharacterInstance in PartyManager.formation:
+	for a: Character in PartyManager.formation:
 		if allies.size() < MAX_SLOTS:
 			allies.append(a)
 		else:
@@ -28,7 +28,7 @@ func place_all_allies() -> void:
 
 	var start := int((MAX_SLOTS - allies.size()) * 0.5)
 	for i in range(allies.size()):
-		var inst: CharacterInstance = allies[i]
+		var inst: Character = allies[i]
 		if inst:
 			var slot := FORMATION_SLOT.instantiate() as FormationSlot
 			add_child(slot)

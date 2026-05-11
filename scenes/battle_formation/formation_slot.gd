@@ -5,7 +5,7 @@ class_name FormationSlot
 @onready var targeting_area: Area3D = $Area3D
 var is_slot_targeting_enabled: bool = true
 
-var character_instance: CharacterInstance
+var character_instance: Character
 var body_instance: CharacterBody
 var fallback: CharacterResource = load("res://characters/foes/_fallback/boo.tres")
 var home_global: Vector3
@@ -17,7 +17,7 @@ func _ready() -> void:
 		targeting_area.mouse_exited.connect(_on_mouse_exited)
 		targeting_area.input_event.connect(_on_input_event)
 
-func bind(character: CharacterInstance) -> void:
+func bind(character: Character) -> void:
 	character_instance = character
 	
 	for child in get_children():

@@ -5,7 +5,7 @@ class_name PartyMemberSlot
 @onready var number_display: UISlotNumbers = $NumberDisplay
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
 
-var character_instance: CharacterInstance
+var character_instance: Character
 var targeting_enabled := false
 
 func _ready() -> void:
@@ -18,7 +18,7 @@ func _ready() -> void:
 	BattleBus.battle_end.connect(unhighlight)
 	hide_info()
 
-func bind(character: CharacterInstance) -> void:
+func bind(character: Character) -> void:
 	character_instance = character
 
 	#$Portrait.texture = character.resource.portrait
@@ -32,12 +32,12 @@ func bind(character: CharacterInstance) -> void:
 	
 	show_info()
 	
-func _on_damaged(c: CharacterInstance, damage_instance: DamageInstance) -> void:
+func _on_damaged(c: Character, damage_instance: DamageInstance) -> void:
 	if character_instance and c == character_instance:
 		play_damaged()
 		number_display.display_damage(damage_instance)
 	
-func _on_healed(c: CharacterInstance, amt: int) -> void:
+func _on_healed(c: Character, amt: int) -> void:
 	if character_instance and c == character_instance:
 		number_display.display_heal(amt)
 
@@ -53,7 +53,7 @@ func hide_info() -> void:
 	cont.visible = false
 
 
-func _on_stat_changed(who: CharacterInstance, stat: Stats.StatRef) -> void:
+func _on_stat_changed(who: Character, stat: Stats.StatRef) -> void:
 	if not character_instance == who:
 		return
 	
@@ -106,7 +106,7 @@ func _on_mouse_entered() -> void:
 func _on_mouse_exited() -> void:
 	$HoverOverlay.visible = false
 
-func highlight(battler: CharacterInstance) -> void:
+func highlight(battler: Character) -> void:
 	if !character_instance == battler:
 		return
 	

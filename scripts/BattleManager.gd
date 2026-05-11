@@ -23,26 +23,26 @@ enum BattleState {
 
 var current_state := BattleState.IDLE
 
-var party: Array[CharacterInstance] = []
-var enemies: Array[CharacterInstance] = []
-var battlers: Array[CharacterInstance] = []
-var turn_queue: Array[CharacterInstance] = []
+var party: Array[Character] = []
+var enemies: Array[Character] = []
+var battlers: Array[Character] = []
+var turn_queue: Array[Character] = []
 var enemy_slots: Array[Node] = []
-var _to_cleanup: Array[CharacterInstance] = []
+var _to_cleanup: Array[Character] = []
 var _pending_action: String = ""
 var _pending_entity: Variant = null
-var _pending_target: CharacterInstance = null
-var current_battler: CharacterInstance = null
+var _pending_target: Character = null
+var current_battler: Character = null
 var action_queue: Array[ActionEvent] = []
 
-func begin(_enemies: Array[CharacterInstance]) -> void:
+func begin(_enemies: Array[Character]) -> void:
 	BattleEventBus.event_concluded.connect(Callable(self, "_on_event_concluded"))
 	TargetingManager.battle_target_selected.connect(_on_target_selected)
 	BattleBus.action_selected.connect(_on_player_action_selected)
 	
 	var party_members := PartyManager.members
 	
-	for b: CharacterInstance in party_members + _enemies:
+	for b: Character in party_members + _enemies:
 		b.action_value = 10000 / (100 + b.stats.speed)
 		_register_battler(b)
 		b.prepare_for_battle()
@@ -89,9 +89,9 @@ func _process(_delta: float) -> void:
 			_handle_end("lose")
 
 func _process_turn_queue() -> void:
-	var alive_battlers := battlers.filter(func(b: CharacterInstance) -> bool: return not b.is_dead)
+	var alive_battlers := battlers.filter(func(b: Character) -> bool: return not b.is_dead)
 		
-	alive_battlers.sort_custom(func(a: CharacterInstance, b: CharacterInstance) -> bool:
+	alive_battlers.sort_custom(func(a: Character, b: Character) -> bool:
 		return a.action_value < b.action_value
 	)
 
@@ -177,7 +177,7 @@ func _on_player_action_selected(action: String, entity: Variant) -> void:
 			enable_all_targeting()
 			return
 
-func _on_target_selected(target: CharacterInstance) -> void:
+func _on_target_selected(target: Character) -> void:
 	disable_all_targeting()
 	_pending_target = target
 	_resolve_player_action()
@@ -206,7 +206,7 @@ func await_action_queue() -> void:
 	current_state = BattleState.TURN_END
 
 
-func _perform_player_action(action: String, target: CharacterInstance, attacker_slot: FormationSlot) -> void:
+func _perform_player_action(action: String, target: Character, attacker_slot: FormationSlot) -> void:
 	var target_slot := get_slot(target)
 	var weapon: Weapon = current_battler.equipment["weapon"] if current_battler.equipment["weapon"] else null
 	
@@ -319,7 +319,7 @@ func _process_enemy_turn(ctx: ActionContext) -> void:
 		targeting_range = TargetingManager.RangeType.MELEE
 		attack_rate = 1
 	
-	var target: CharacterInstance = null
+	var target: Character = null
 	
 	if ctx.force_action:
 		if !ctx.initial_target:
@@ -330,7 +330,7 @@ func _process_enemy_turn(ctx: ActionContext) -> void:
 		target = ctx.initial_target
 
 	if !target:
-		var valid_targets := party.filter(func(p: CharacterInstance) -> bool: return p.is_dead == false)
+		var valid_targets := party.filter(func(p: Character) -> bool: return p.is_dead == false)
 		if valid_targets.is_empty():
 			current_state = BattleState.CHECK_END
 			return
@@ -378,7 +378,7 @@ func _handle_defend() -> void:
 	print(current_battler.resource.name, " is defending!")
 
 func _check_end_conditions() -> void:
-	if party.all(func(p: CharacterInstance) -> bool: return p.is_dead):
+	if party.all(func(p: Character) -> bool: return p.is_dead):
 		current_state = BattleState.LOSE
 	elif enemies.is_empty():
 		current_state = BattleState.WIN
@@ -395,14 +395,14 @@ func _handle_end(result: String) -> void:
 			_handle_flee()
 
 func _handle_win() -> void:
-	for member: CharacterInstance in party:
+	for member: Character in party:
 		member.cleanup_after_battle()
 	BattleBus.battle_end.emit()
 	EncounterBus.encounter_ended.emit("win", BattleContext.encounter_data)
 	current_state = BattleState.IDLE
 
 func _handle_lose() -> void:
-	for member: CharacterInstance in party:
+	for member: Character in party:
 		member.cleanup_after_battle()
 	BattleBus.battle_end.emit()
 	EncounterBus.encounter_ended.emit("lose", BattleContext.encounter_data)
@@ -412,7 +412,7 @@ func _handle_flee() -> void:
 	var success := randf() < 1
 	if success:
 		print("Party flees successfully!")
-		for member: CharacterInstance in party:
+		for member: Character in party:
 			member.cleanup_after_battle()
 		BattleBus.battle_end.emit()
 		EncounterBus.encounter_ended.emit("flee", BattleContext.encounter_data)
@@ -420,7 +420,7 @@ func _handle_flee() -> void:
 	else:
 		print("Failed to flee!")
 	
-func _register_battler(battler: CharacterInstance) -> void:
+func _register_battler(battler: Character) -> void:
 	battlers.append(battler)
 	
 	if battler in PartyManager.members:
@@ -430,7 +430,7 @@ func _register_battler(battler: CharacterInstance) -> void:
 		
 	battler.died.connect(Callable(self, "_on_battler_died"))
 	
-func _on_battler_died(rip: CharacterInstance) -> void:
+func _on_battler_died(rip: Character) -> void:
 	if rip not in party:
 		_to_cleanup.append(rip)
 	
@@ -494,7 +494,7 @@ func process_queue() -> void:
 		#await attacker.position_back()
 		#action_queue.pop_front()
 		
-func get_slot(chara: CharacterInstance) -> FormationSlot:
+func get_slot(chara: Character) -> FormationSlot:
 	if enemies.has(chara):
 		return enemy_grid.get_slot_for(chara)
 	if party.has(chara):

@@ -6,9 +6,9 @@ class_name BattleEvent
 signal event_resolved()
 
 var _is_connected: bool = false
-var _owner: CharacterInstance = null
+var _owner: Character = null
 
-func prepare(_own: CharacterInstance) -> void:
+func prepare(_own: Character) -> void:
 	if !_owner:
 		return
 	if !_is_connected:

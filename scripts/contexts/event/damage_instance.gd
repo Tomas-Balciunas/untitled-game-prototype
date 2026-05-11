@@ -7,7 +7,7 @@ signal hit_confirmed
 var calculator: DamageCalculator
 var damage: int
 
-func _init(c: ActionContext, t: CharacterInstance, amount: int) -> void:
+func _init(c: ActionContext, t: Character, amount: int) -> void:
 	ctx = c
 	source = c.source
 	target = t

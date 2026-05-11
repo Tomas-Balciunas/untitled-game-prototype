@@ -2,7 +2,7 @@ extends Interactable
 
 class_name CharacterInteractable
 
-var character: CharacterInstance = null
+var character: Character = null
 
 func _interact() -> void:
 	if !character:
@@ -10,6 +10,6 @@ func _interact() -> void:
 	
 	RestBus.rest_character_interaction_requested.emit(character)
 
-func set_character(chara: CharacterInstance) -> void:
+func set_character(chara: Character) -> void:
 	character = chara
 	

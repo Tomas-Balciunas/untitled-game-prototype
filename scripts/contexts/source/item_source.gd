@@ -2,7 +2,7 @@ extends ContextSource
 class_name ItemSource
 
 
-func _init(c: CharacterInstance, i: ItemInstance) -> void:
+func _init(c: Character, i: Item) -> void:
 	character = c
 	item = i
 	

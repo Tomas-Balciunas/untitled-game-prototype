@@ -1,45 +1,26 @@
 @abstract
-extends Resource
-
 class_name Item
 
-enum ItemType {
-	WEAPON,
-	CHEST,
-	HELMET,
-	BOOTS,
-	GLOVES,
-	RING,
-	AMULET,
-	CONSUMABLE,
-	QUEST
-}
-
-@export var id: String
-@export var name: String
-@export var type: ItemType
-@export var description: String
-@export var icon: Texture2D
+var id: String
+var item_name: String
+var item_description: String
+var type: ItemResource.ItemType
 
 
-@abstract
-func _init() -> void
+func get_item_name() -> String:
+	return item_name
 
 
-@abstract
-func _build_instance() -> Variant
-
-
-static func item_type_to_string(item_type: Item.ItemType) -> String:
+func item_type_to_string(item_type: ItemResource.ItemType) -> String:
 	var names := {
-		Item.ItemType.WEAPON: "Weapon",
-		Item.ItemType.CHEST: "Chest Armor",
-		Item.ItemType.HELMET: "Helmet",
-		Item.ItemType.BOOTS: "Boots",
-		Item.ItemType.GLOVES: "Gloves",
-		Item.ItemType.RING: "Ring",
-		Item.ItemType.AMULET: "Amulet",
-		Item.ItemType.CONSUMABLE: "Consumable",
-		Item.ItemType.QUEST: "Quest Item"
+		ItemResource.ItemType.GEAR: "Equipment",
+		ItemResource.ItemType.CONSUMABLE: "Consumable",
+		ItemResource.ItemType.QUEST: "Quest ItemResource"
 	}
 	return names.get(item_type, "Unknown")
+
+@abstract
+func game_save() -> Dictionary
+
+@abstract
+func game_load(data: Dictionary) -> void

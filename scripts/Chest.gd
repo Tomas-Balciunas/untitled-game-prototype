@@ -6,10 +6,10 @@ class_name Chest
 @export var trapped: bool = false
 @export var was_opened: bool = false
 @export var trap: Trap = null
-@export var custom_items: Array[Item] = []
-var items: Array[ItemInstance] = []
+@export var custom_items: Array[ItemResource] = []
+var items: Array[Gear] = []
 
-func remove_item(_item: ItemInstance) -> bool:
+func remove_item(_item: Item) -> bool:
 	for item in items:
 		if item == _item:
 			items.erase(item)

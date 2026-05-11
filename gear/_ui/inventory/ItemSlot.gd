@@ -2,15 +2,15 @@ extends Node
 
 class_name ItemSlot
 
-signal item_hovered(item: ItemInstance)
+signal item_hovered(item: Item)
 signal item_unhovered()
-signal item_selected(item: ItemInstance)
+signal item_selected(item: Item)
 
 @onready var item_name: Label = $Container/Name
 
-var item: ItemInstance = null
+var item: Item = null
 
-func bind(item_instance: ItemInstance) -> void:
+func bind(item_instance: Item) -> void:
 	item = item_instance
 	item_name.text = item.get_item_name()
 

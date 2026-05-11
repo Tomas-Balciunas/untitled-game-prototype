@@ -2,7 +2,7 @@ extends ContextSource
 class_name CharacterSource
 
 
-func _init(c: CharacterInstance) -> void:
+func _init(c: Character) -> void:
 	character = c
 	
 func get_type() -> SourceType:

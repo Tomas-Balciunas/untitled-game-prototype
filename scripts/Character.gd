@@ -1,10 +1,10 @@
 extends Entity
 
-class_name CharacterInstance
+class_name Character
 
-signal mana_consumed(amount: int, source: CharacterInstance)
-signal mana_restored(amount: int, source: CharacterInstance)
-signal died(ded: CharacterInstance)
+signal mana_consumed(amount: int, source: Character)
+signal mana_restored(amount: int, source: Character)
+signal died(ded: Character)
 
 var is_dead: bool = false
 var is_main: bool = false
@@ -34,15 +34,7 @@ var battle_events: Array[BattleEvent]
 var interactions: CharacterInteraction
 var interaction_controller: InteractionController
 
-var equipment := {
-	"weapon": null,
-	"chest": null,
-	"helmet": null,
-	"boots": null,
-	"gloves": null,
-	"ring": null,
-	"amulet": null
-}
+var equipment: Equipment = null
 
 func _init(res: CharacterResource) -> void:
 	resource = res
@@ -70,11 +62,12 @@ func _init(res: CharacterResource) -> void:
 	is_main = res.is_main
 	current_experience = 5000
 	
+	equipment = Equipment.new(self)
 	inventory = Inventory.new()
 	inventory.owner = self
 	
 	for item in res.default_items:
-		if item is Gear:
+		if item is GearResource:
 			var gear = item._build_instance()
 			inventory.add_item(gear)
 			
@@ -86,7 +79,7 @@ func _init(res: CharacterResource) -> void:
 			
 			continue
 		
-		#var inst := ItemInstance.new()
+		#var inst := Item.new()
 		#inst.template = item
 		#inventory.add_item(inst)
 	
@@ -244,26 +237,26 @@ func increase_attribute(attr: String) -> bool:
 	stats.recalculate_stats(true, true)
 	return true
 
-func equip_item(item: GearInstance) -> bool:
-	var slot_name := get_slot_name_for_item(item)
-
-	if not slot_name:
-		return false
-		
+func equip_item(item: Gear) -> bool:
+	var equipped_item: Gear = equipment.get_equipment_by_type(item.get_gear_type())
+	
 	if inventory.has_item(item):
 		inventory.remove_item(item)
+	else:
+		push_error("Equipping non existent item")
+		return false
 	
-	if equipment[slot_name]:
-		unequip_slot(slot_name)
+	if equipped_item:
+		equipment.unset_equipment(equipped_item.get_gear_type())
 		
-	equipment[slot_name] = item
+	equipment.set_equipment(item)
 	var insts: Array = []
 	
 	for e in item.get_all_effects():
 		var inst := apply_effect(e, ItemSource.new(self, item))
 		insts.append(inst)
 		
-	gear_effects[slot_name] = insts
+	gear_effects[item.get_gear_type()] = insts
 	
 	for m in item.get_all_modifiers():
 		state.add_modifier(m)
@@ -272,47 +265,38 @@ func equip_item(item: GearInstance) -> bool:
 	
 	return true
 
-func unequip_slot(slot_name: String) -> bool:
-	var item: GearInstance = equipment[slot_name]
+func unequip_slot(type: GearResource.Type) -> bool:
+	var item: Gear = equipment.get_equipment_by_type(type)
 	
 	if not item:
+		push_error("Trying to unequip non existent item")
+		
 		return false
 
-	for inst: Effect in gear_effects.get(slot_name, []):
+	for inst: Effect in gear_effects.get(type, []):
 		remove_effect(inst)
 	
-	gear_effects.erase(slot_name)
+	gear_effects.erase(type)
 		
 	for m in item.get_all_modifiers():
 		state.remove_modifier(m)
 	
-	equipment[slot_name] = null
+	equipment.unset_equipment(type)
 	inventory.add_item(item)
 	StatCalculator.recalculate_all_stats(self)
 	
 	return true
 
-func get_slot_name_for_item(item: GearInstance) -> String:
-	match item.type:
-		Item.ItemType.WEAPON: return "weapon"
-		Item.ItemType.CHEST: return "chest"
-		Item.ItemType.HELMET: return "helmet"
-		Item.ItemType.BOOTS: return "boots"
-		Item.ItemType.GLOVES: return "gloves"
-		Item.ItemType.RING: return "ring"
-		Item.ItemType.AMULET: return "amulet"
-		_: return ""
-
 func to_dict() -> Dictionary:
 	var equip_dict := {}
 	for slot: String in equipment.keys():
-		var item: GearInstance = equipment[slot]
+		var item: Gear = equipment[slot]
 		if item:
 			equip_dict[slot] = item.game_save()
 
 	var inventory_arr := []
-	for item: ItemInstance in inventory.get_all_items():
-		if item is GearInstance:
+	for item: Item in inventory.get_all_items():
+		if item is Gear:
 			inventory_arr.append(item.game_save())
 		
 	var effect_arr := []
@@ -352,7 +336,7 @@ func to_dict() -> Dictionary:
 	}
 
 
-static func from_dict(data: Dictionary) -> CharacterInstance:
+static func from_dict(data: Dictionary) -> Character:
 	var res: CharacterResource = CharacterRegistry.get_character(data["id"])
 	if res == null:
 		push_error("Character resource not found for id %s" % data["id"])
@@ -360,7 +344,7 @@ static func from_dict(data: Dictionary) -> CharacterInstance:
 
 	res.race = RaceRegistry.get_by_name(RaceRegistry.type_to_string(data["race"])) 
 	res.job = JobRegistry.get_by_name(JobRegistry.type_to_string(data["job"])) 
-	var inst := CharacterInstance.new(res)
+	var inst := Character.new(res)
 	
 	if data["main"]:
 		inst.is_main = data["main"]
@@ -387,7 +371,7 @@ static func from_dict(data: Dictionary) -> CharacterInstance:
 	if data.has("inventory"):
 		inst.inventory.slots = []
 		for item_data: Dictionary in data["inventory"]:
-			var gear := GearInstance.from_dict(item_data)
+			var gear := Gear.from_dict(item_data)
 			if gear:
 				inst.inventory.add_item(gear)
 				
@@ -412,7 +396,7 @@ static func from_dict(data: Dictionary) -> CharacterInstance:
 	if data.has("equipment"):
 		for slot: String in data["equipment"].keys():
 			var item_dict: Dictionary = data["equipment"][slot]
-			var gear_inst := GearInstance.from_dict(item_dict)
+			var gear_inst := Gear.from_dict(item_dict)
 			if gear_inst:
 				inst.equip_item(gear_inst)
 

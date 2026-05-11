@@ -1,9 +1,9 @@
-extends Gear
+extends GearResource
 class_name GlovesResource
 
 
 func _init() -> void:
-	type = Item.ItemType.GLOVES
+	type = ItemResource.ItemType.GLOVES
 	
 	if not base_stats:
 		base_stats = Stats.new()

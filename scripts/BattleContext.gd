@@ -38,7 +38,7 @@ func new_action(event: ActionEvent) -> void:
 		manager.action_queue.append(event)
 
 
-func get_enemies_all() -> Array[CharacterInstance]:
+func get_enemies_all() -> Array[Character]:
 	if !manager:
 		push_error("Trying to get all enemies on null manager")
 		return []
@@ -46,7 +46,7 @@ func get_enemies_all() -> Array[CharacterInstance]:
 	return manager.enemies
 
 
-func get_allies_all() -> Array[CharacterInstance]:
+func get_allies_all() -> Array[Character]:
 	if !manager:
 		push_error("Trying to get all allies on null manager")
 		return []
@@ -54,7 +54,7 @@ func get_allies_all() -> Array[CharacterInstance]:
 	return manager.party
 
 
-func get_battlers_all() -> Array[CharacterInstance]:
+func get_battlers_all() -> Array[Character]:
 	if !manager:
 		push_error("Trying to get all battlers on null manager")
 		return []
@@ -97,7 +97,7 @@ func get_valid_slots(is_ally: bool) -> Array[FormationSlot]:
 	return slots
 	
 	
-func get_slot(character: CharacterInstance) -> FormationSlot:
+func get_slot(character: Character) -> FormationSlot:
 	if !ally_formation or !enemy_formation:
 		push_error("Trying to get slot on null formations")
 		return null

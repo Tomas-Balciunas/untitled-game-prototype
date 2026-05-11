@@ -15,7 +15,7 @@ func get_sp_cost() -> int:
 
 
 func consume(source: ContextSource) -> void:
-	var caster: CharacterInstance = source.get_actor()
+	var caster: Character = source.get_actor()
 	
 	if !caster:
 		return

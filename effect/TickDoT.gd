@@ -3,13 +3,13 @@ extends RefCounted
 class_name TickDoT
 
 
-var target: CharacterInstance = null
+var target: Character = null
 var tick_power: float = 1.0
 var should_consume_duration: bool = true
 var ctx: ActionContext = null
 
 
-func _init(_target: CharacterInstance, _ctx: ActionContext) -> void:
+func _init(_target: Character, _ctx: ActionContext) -> void:
 	target = _target
 	ctx = _ctx
 

@@ -31,9 +31,9 @@ extends Node
 
 @onready var points_display: Label = $Points
 
-var character: CharacterInstance
+var character: Character
 #TODO: fix this garbage holy shit
-func bind_character(chara: CharacterInstance) -> void:
+func bind_character(chara: Character) -> void:
 	character = chara
 	_setup_attribute_buttons()
 	_update_attribute_labels()

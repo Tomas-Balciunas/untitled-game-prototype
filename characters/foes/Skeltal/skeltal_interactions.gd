@@ -31,7 +31,7 @@ func get_damaged_line(key: String, _amt: int, _ctx: ActionContext = null) -> Str
 	
 	return ""
 	
-func get_attacking_line(key: String, _source: CharacterInstance, _targets: Array) -> String:
+func get_attacking_line(key: String, _source: Character, _targets: Array) -> String:
 	var lines: Dictionary = chatter.get(key, {})
 	var default: Array = lines.get("default", [])
 	

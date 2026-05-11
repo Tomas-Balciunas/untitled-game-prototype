@@ -15,7 +15,7 @@ func init() -> void:
 		btn.pressed.connect(on_opener_clicked.bind(member))
 		v_box_container.add_child(btn)
 		
-func on_opener_clicked(c: CharacterInstance) -> void:
+func on_opener_clicked(c: Character) -> void:
 	close_chest_opener_choice.emit()
 	ChestBus.chest_opener_chosen.emit(c)
 

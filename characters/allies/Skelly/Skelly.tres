@@ -8,7 +8,7 @@
 [ext_resource type="Resource" uid="uid://57fo0cycgjne" path="res://stat/_stats/DefaultStats.tres" id="2_jtp86"]
 [ext_resource type="PackedScene" uid="uid://cvja2deox1khy" path="res://characters/allies/Skelly/_body/Skelly.tscn" id="3_bv0l2"]
 [ext_resource type="Resource" uid="uid://eiwm6khdbjki" path="res://characters/_race/Human.tres" id="4_l3iqv"]
-[ext_resource type="Script" uid="uid://b06vmgrh4qa8i" path="res://gear/Item.gd" id="4_yu6ia"]
+[ext_resource type="Script" uid="uid://b06vmgrh4qa8i" path="res://gear/ItemResource.gd" id="4_yu6ia"]
 [ext_resource type="Script" uid="uid://1soxj0rvfy7j" path="res://stat/StatGrowthEntry.gd" id="13_ympyx"]
 [ext_resource type="Script" uid="uid://c3wbue0mr3cu6" path="res://stat/AttributeMultiplier.gd" id="14_4twd5"]
 [ext_resource type="Resource" uid="uid://c5qyqcmwx0qfy" path="res://scripts/experience/ExperienceManager.tres" id="14_tyjbr"]

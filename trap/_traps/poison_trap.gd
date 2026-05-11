@@ -5,7 +5,7 @@ class_name PoisonTrap
 @export var duration: int = 3
 @export var damage_per_turn: int = 7
 
-func trigger(target: CharacterInstance) -> void:
+func trigger(target: Character) -> void:
 	var poison := PoisonOnHit.new()
 	poison.duration_turns = duration
 	poison.damage_per_turn = damage_per_turn

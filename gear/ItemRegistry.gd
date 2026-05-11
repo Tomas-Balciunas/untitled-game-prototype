@@ -19,12 +19,12 @@ func _register_all() -> void:
 		if res:
 			register_item(res)
 
-func register_item(item: Item) -> void:
+func register_item(item: ItemResource) -> void:
 	if item.id in items:
 		push_warning("Duplicate item id: %s" % item.id)
 	items[item.id] = item
 
-func get_item(id: String) -> Item:
+func get_item(id: String) -> ItemResource:
 	if items.has(id):
 		return items[id]
 	return null
@@ -32,7 +32,7 @@ func get_item(id: String) -> Item:
 func get_all_items() -> Array:
 	return items.values()
 
-func get_rand_template(tier: String, type: Item.ItemType) -> Gear:
+func get_rand_template(tier: String, type: ItemResource.ItemType) -> GearResource:
 	#if !templates.has(tier):
 		#return null
 		#
@@ -45,8 +45,8 @@ func get_rand_template(tier: String, type: Item.ItemType) -> Gear:
 	#return gear[rand]
 	
 	var candidates := []
-	for item: Item in items.values():
-		if item is Gear and item.tier == tier and item.type == type:
+	for item: ItemResource in items.values():
+		if item is GearResource and item.tier == tier and item.type == type:
 			candidates.append(item)
 	
 	if candidates.is_empty():

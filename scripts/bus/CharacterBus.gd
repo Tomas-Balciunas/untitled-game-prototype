@@ -1,10 +1,10 @@
 extends Node
 
-signal character_damaged(c: CharacterInstance, damage_instance: DamageInstance)
-signal character_healed(c: CharacterInstance, amt: int)
-signal health_changed(c: CharacterInstance, old: int, new: int)
-signal stat_changed(c: CharacterInstance, stat: Stats.StatRef)
+signal character_damaged(c: Character, damage_instance: DamageInstance)
+signal character_healed(c: Character, amt: int)
+signal health_changed(c: Character, old: int, new: int)
+signal stat_changed(c: Character, stat: Stats.StatRef)
 
 ## UI
-signal display_character_menu(c: CharacterInstance)
+signal display_character_menu(c: Character)
 signal skill_use_requested(skill: Skill)

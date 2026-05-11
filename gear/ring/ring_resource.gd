@@ -1,9 +1,9 @@
-extends Gear
+extends GearResource
 class_name RingResource
 
 
 func _init() -> void:
-	type = Item.ItemType.RING
+	type = ItemResource.ItemType.RING
 	
 	if not base_stats:
 		base_stats = Stats.new()

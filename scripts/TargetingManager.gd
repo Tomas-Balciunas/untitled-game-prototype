@@ -1,7 +1,7 @@
 extends Node
 
-signal battle_target_selected(target: CharacterInstance)
-signal menu_skill_target_selected(target: CharacterInstance)
+signal battle_target_selected(target: Character)
+signal menu_skill_target_selected(target: Character)
 
 enum TargetType {
 	SINGLE,
@@ -40,7 +40,7 @@ func set_mode(_mode: Mode) -> void:
 	mode = _mode
 
 
-func emit_selection(target: CharacterInstance) -> void:
+func emit_selection(target: Character) -> void:
 	match mode:
 		Mode.BATTLE:
 			battle_target_selected.emit(target)
@@ -49,7 +49,7 @@ func emit_selection(target: CharacterInstance) -> void:
 	end()
 	
 
-func get_applicable_targets(target: CharacterInstance, type: TargetType) -> Array[CharacterInstance]:
+func get_applicable_targets(target: Character, type: TargetType) -> Array[Character]:
 	var is_party_member: bool = PartyManager.has_member(target.resource.id)
 	var enemy_grid: EnemyFormation = BattleContext.enemy_formation
 	var in_battle: bool = BattleContext.in_battle and enemy_grid != null
@@ -87,7 +87,7 @@ func get_applicable_targets(target: CharacterInstance, type: TargetType) -> Arra
 	return [target]
 
 
-func same_side(a: CharacterInstance, b: CharacterInstance) -> bool:
-	var party: Array[CharacterInstance] = PartyManager.members
+func same_side(a: Character, b: Character) -> bool:
+	var party: Array[Character] = PartyManager.members
 	
 	return (a in party) == (b in party)

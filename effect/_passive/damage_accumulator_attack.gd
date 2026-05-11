@@ -33,7 +33,7 @@ func on_trigger(_stage: String, _event: TriggerEvent) -> void:
 		if accumulator <= THRESHOLD:
 			return
 		
-		var tgt: CharacterInstance = event.target
+		var tgt: Character = event.target
 		var adjacent := TargetingManager.get_applicable_targets(tgt, TargetingManager.TargetType.ADJACENT)
 		
 		BattleTextLines.print_line("Lash activated!")

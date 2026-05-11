@@ -2,7 +2,7 @@ extends Button
 class_name SkillEntryInterface
 
 
-func bind(skill: Skill, c: CharacterInstance) -> Skill:
+func bind(skill: Skill, c: Character) -> Skill:
 	var cost: SkillCost = skill.compute_cost(c)
 	
 	var skill_name: String = skill._get_name()

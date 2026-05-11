@@ -7,7 +7,7 @@ var ctx: ActionContext = null
 var resolver: EffectResolver = null
 
 
-func _init(_performer: CharacterInstance, _ctx: ActionContext, _resolver: EffectResolver) -> void:
+func _init(_performer: Character, _ctx: ActionContext, _resolver: EffectResolver) -> void:
 	ctx = _ctx
 	resolver = _resolver
 

@@ -4,7 +4,7 @@
 [ext_resource type="Script" uid="uid://cbelvg2fndssu" path="res://scripts/BattleEvent.gd" id="2_2usx5"]
 [ext_resource type="PackedScene" uid="uid://bbixalnsv3np6" path="res://characters/allies/MC/_body/MC.tscn" id="3_2usx5"]
 [ext_resource type="Script" uid="uid://bp0biy0knxw2o" path="res://effect/Effect.gd" id="4_2usx5"]
-[ext_resource type="Script" uid="uid://b06vmgrh4qa8i" path="res://gear/Item.gd" id="4_jti2u"]
+[ext_resource type="Script" uid="uid://b06vmgrh4qa8i" path="res://gear/ItemResource.gd" id="4_jti2u"]
 [ext_resource type="Resource" uid="uid://dc1m852hhuxcm" path="res://effect/_passive/thorns.tres" id="5_uxndi"]
 [ext_resource type="Resource" uid="uid://b2movrdrkxno7" path="res://characters/allies/MC/test_sword.tres" id="6_jti2u"]
 [ext_resource type="Resource" uid="uid://c5qyqcmwx0qfy" path="res://scripts/experience/ExperienceManager.tres" id="6_l36pt"]

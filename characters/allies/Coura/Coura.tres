@@ -5,7 +5,7 @@
 [ext_resource type="Resource" uid="uid://57fo0cycgjne" path="res://stat/_stats/DefaultStats.tres" id="2_nkkwp"]
 [ext_resource type="Script" uid="uid://dq4acpkde276p" path="res://skills/Skill.gd" id="3_ma71o"]
 [ext_resource type="Script" uid="uid://cgllfcpvodqsg" path="res://scripts/experience/ExperienceManager.gd" id="4_g8tir"]
-[ext_resource type="Script" uid="uid://b06vmgrh4qa8i" path="res://gear/Item.gd" id="6_nka8l"]
+[ext_resource type="Script" uid="uid://b06vmgrh4qa8i" path="res://gear/ItemResource.gd" id="6_nka8l"]
 [ext_resource type="Resource" uid="uid://cdu3c36ji1mmg" path="res://characters/_class/class_knight/class_knight.tres" id="7_8dd4x"]
 [ext_resource type="Script" uid="uid://bp0biy0knxw2o" path="res://effect/Effect.gd" id="7_klpoy"]
 [ext_resource type="Resource" uid="uid://eiwm6khdbjki" path="res://characters/_race/Human.tres" id="8_3lheu"]

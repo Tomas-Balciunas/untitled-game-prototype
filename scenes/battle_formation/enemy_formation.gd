@@ -15,20 +15,20 @@ func _ready() -> void:
 	positions = get_centered_positions(MAX_SLOTS, ROW_Z)
 	BattleBus.enemy_died.connect(_on_enemy_died)
 
-func _on_enemy_died(dead: CharacterInstance) -> void:
+func _on_enemy_died(dead: Character) -> void:
 	remove_slot_for(dead)
 
-func get_enemy_instances(resources: Array[CharacterResource]) -> Array[CharacterInstance]:
-	var enemies: Array[CharacterInstance] = []
+func get_enemy_instances(resources: Array[CharacterResource]) -> Array[Character]:
+	var enemies: Array[Character] = []
 	for r in resources:
 		##TODO: temporary enemy overflow guard
 		if len(enemies) >= MAX_SLOTS:
 			return enemies
-		var e := CharacterInstance.new(r)
+		var e := Character.new(r)
 		enemies.append(e)
 	return enemies
 
-func place_all_enemies(enemies: Array[CharacterInstance]) -> void:
+func place_all_enemies(enemies: Array[Character]) -> void:
 	clear_slots()
 
 	var to_place := []

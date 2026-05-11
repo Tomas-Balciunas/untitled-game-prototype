@@ -1,7 +1,7 @@
 extends StatModifier
 class_name atktohp
 
-func compute_value(c: CharacterInstance, _ds: float) -> float:
+func compute_value(c: Character, _ds: float) -> float:
 	return c.computed_stats.attack * value
 
 func get_description() -> String:

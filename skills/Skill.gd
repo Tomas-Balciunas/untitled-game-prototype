@@ -23,15 +23,15 @@ func get_description() -> String:
 func get_resolver(_ctx: ActionContext) -> EffectResolver:
 	return
 
-func can_select(c: CharacterInstance) -> bool:
+func can_select(c: Character) -> bool:
 	var computed_cost: SkillCost = compute_cost(c)
 	
 	return computed_cost.get_mana_cost() <= c.state.current_mana and computed_cost.get_sp_cost() <= c.state.current_sp
 
-func can_use(c: CharacterInstance) -> bool:
+func can_use(c: Character) -> bool:
 	return can_select(c)
 
-func compute_cost(c: CharacterInstance) -> SkillCost:
+func compute_cost(c: Character) -> SkillCost:
 	if !cost:
 		cost = SkillCost.new()
 		push_error('%s skill is missing cost!' % name)

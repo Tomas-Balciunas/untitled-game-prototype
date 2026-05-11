@@ -4,7 +4,7 @@ class_name ManaDrainTrap
 
 @export var amount: float = 0.2
 
-func trigger(target: CharacterInstance) -> void:
+func trigger(target: Character) -> void:
 	var drain := ManaDrainEffect.new()
 	drain.amount = amount
 	drain.immediate_trigger = true

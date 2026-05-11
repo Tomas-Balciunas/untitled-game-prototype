@@ -1,9 +1,9 @@
-extends Gear
+extends GearResource
 class_name AmuletResource
 
 
 func _init() -> void:
-	type = Item.ItemType.AMULET
+	type = ItemResource.ItemType.AMULET
 	
 	if not base_stats:
 		base_stats = Stats.new()

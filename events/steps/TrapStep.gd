@@ -3,7 +3,7 @@ class_name TrapStep
 
 var id: String
 var trap: Trap
-var target: CharacterInstance
+var target: Character
 
 func _init(data: Dictionary) -> void:
 	trap = data.get("trap")

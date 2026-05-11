@@ -7,7 +7,7 @@ class_name EffectResolver
 func execute(_ctx: ActionContext) -> ActionContext
 
 func is_target_valid(target: Variant) -> bool:
-	if !target or !target is CharacterInstance:
+	if !target or !target is Character:
 		push_error("Provided target is not character")
 		
 		return false

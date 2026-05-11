@@ -21,9 +21,9 @@ func attack(targeting: TargetingManager.TargetType, targeting_range: TargetingMa
 	if !attacker_slot or !target_slot:
 		return
 	
-	var attacker: CharacterInstance = ctx.source.get_actor()
+	var attacker: Character = ctx.source.get_actor()
 	
-	if !attacker is CharacterInstance:
+	if !attacker is Character:
 		return
 	
 	var resolver: DamageResolver = DamageResolver.new(attacker.stats.attack)
@@ -44,7 +44,7 @@ func attack(targeting: TargetingManager.TargetType, targeting_range: TargetingMa
 				await BattleContext.wait(0.4)
 
 
-func melee(resolver: DamageResolver, attacker: CharacterInstance) -> void:
+func melee(resolver: DamageResolver, attacker: Character) -> void:
 	var orcherstrator: ActionOrchestrator = ActionOrchestrator.new(attacker, ctx, resolver)
 	
 	await orcherstrator.execute_action(

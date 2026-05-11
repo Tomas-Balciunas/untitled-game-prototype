@@ -31,6 +31,6 @@ func _on_chest_display_content(c: Chest) -> void:
 	_set_mode(Mode.CHEST)
 
 
-func _on_character_menu_display(c: CharacterInstance) -> void:
+func _on_character_menu_display(c: Character) -> void:
 	character_menu.bind(c)
 	_set_mode(Mode.CHARACTER_MENU)

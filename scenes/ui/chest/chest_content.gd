@@ -11,9 +11,9 @@ const CHEST_ITEM_TRANSFER_SELECT = preload("uid://b6obrmkrwcd6e")
 @onready var label: Label = $Label
 @onready var members_select: HBoxContainer = $MembersSelect
 
-var items: Array[ItemInstance] = []
+var items: Array[Item] = []
 var chest: Chest
-var selected_item: ItemInstance = null
+var selected_item: Item = null
 
 func _ready() -> void:
 	InteractableBus.interactable_area_left.connect(on_interactable_area_left)
@@ -44,13 +44,13 @@ func init(_chest: Chest) -> void:
 	
 	on_item_selected(items[0])
 
-func on_item_selected(item: ItemInstance) -> void:
+func on_item_selected(item: Item) -> void:
 	selected_item = item
 	label.text = "Selected item: %s" % item.get_item_name()
 	item_info_panel.show_item_info(item)
 	item_info_panel.visible = true
 
-func on_character_selected(character: CharacterInstance) -> void:
+func on_character_selected(character: Character) -> void:
 	if !selected_item:
 		push_error("Selected item is null in chest!")
 	
@@ -62,9 +62,9 @@ func on_character_selected(character: CharacterInstance) -> void:
 		NotificationBus.notification_requested.emit("%s has received %s" % [character.resource.name, selected_item.get_item_name()])
 		remove_item(selected_item)
 	else:
-		push_error("Item was not removed from chest")
+		push_error("ItemResource was not removed from chest")
 	
-func remove_item_from_chest(item: ItemInstance) -> bool:
+func remove_item_from_chest(item: Item) -> bool:
 	var success: bool = chest.remove_item(item)
 	
 	if not success:
@@ -75,7 +75,7 @@ func remove_item_from_chest(item: ItemInstance) -> bool:
 	return true
 
 
-func remove_item(item: ItemInstance) -> void:
+func remove_item(item: Item) -> void:
 	for child in v_box_container.get_children():
 		if child.get_item_instance() == item:
 			child.queue_free()

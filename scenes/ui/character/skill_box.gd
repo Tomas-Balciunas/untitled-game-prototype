@@ -6,7 +6,7 @@ signal skill_selected(skill: Skill)
 
 var skill: Skill = null
 
-func init(_skill: Skill, _owner: CharacterInstance) -> void:
+func init(_skill: Skill, _owner: Character) -> void:
 	var costs: SkillCost = _skill.compute_cost(_owner)
 	skill = _skill
 	skill_label.text = "%s: %s MP/%s SP" % [skill._get_name(), costs.get_mana_cost(), costs.get_sp_cost()]

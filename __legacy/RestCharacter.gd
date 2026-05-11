@@ -4,7 +4,7 @@ extends Node
 @onready var anim_player: AnimationPlayer = $AnimationPlayer
 @onready var interactable: CharacterInteractable = $Interactable
 
-func set_character(char: CharacterInstance):
+func set_character(char: Character):
 	if !char.resource.character_body:
 		push_error("Rest character creation error: character %s has no body" % char.resource.name)
 	

@@ -28,14 +28,15 @@ enum EffectType {
 @export var battle_only: bool = true
 @export var expires_after_battle: bool = false
 @export var immediate_trigger: bool = false
+@export var process_when_dead: bool = false
 @export var priority: int = 200
 @export var effect_type: Array[EffectType] = []
 
-var owner: CharacterInstance = null
+var owner: Character = null
 var source: ContextSource = null
 
 
-func set_owner(_owner: CharacterInstance) -> void:
+func set_owner(_owner: Character) -> void:
 	owner = _owner
 
 func set_source(_source: ContextSource) -> void:
@@ -91,3 +92,6 @@ func owner_is_target(event: TriggerEvent) -> bool:
 
 func owner_is_actor(event: TriggerEvent) -> bool:
 	return owner == event.source.get_actor()
+
+func can_process_when_dead() -> bool:
+	return process_when_dead

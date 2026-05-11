@@ -25,13 +25,13 @@ func enter_rest_area() -> void:
 	player.global_transform = entry_spot.global_transform
 
 	var spots: Array = rest_area.get_node("PartySpots").get_children()
-	var members: Array[CharacterInstance] = PartyManager.members.duplicate()
+	var members: Array[Character] = PartyManager.members.duplicate()
 	
 	spots.shuffle()
 	var interactable_scene := load("res://scripts/interactables/CharacterInteractable.tscn")
 	
 	for i in range(members.size()):
-		var chara: CharacterInstance = members[i]
+		var chara: Character = members[i]
 		
 		if chara.is_main:
 			continue
@@ -69,5 +69,5 @@ func exit_rest_area() -> void:
 
 # TODO: game state managing to prevent transition while player is tweening
 
-func _on_rest_character_interaction_requested(chara: CharacterInstance) -> void:
+func _on_rest_character_interaction_requested(chara: Character) -> void:
 	CharacterBus.display_character_menu.emit(chara)

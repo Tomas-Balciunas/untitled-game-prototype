@@ -15,7 +15,7 @@ func _on_chatter_event_received(e: String, data: Dictionary) -> void:
 
 func _on_damaged_event(data: Dictionary) -> void:
 	var amount: int = data.get("amount", null)
-	var target: CharacterInstance = data.get("target", null)
+	var target: Character = data.get("target", null)
 	var ctx: ActionContext = data.get("ctx", null)
 	
 	if target == null:
@@ -34,7 +34,7 @@ func _on_damaged_event(data: Dictionary) -> void:
 		ChatEventBus.chat.emit(target, line)
 
 func _on_attacking_event(data: Dictionary) -> void:
-	var source: CharacterInstance = data.get("source", null)
+	var source: Character = data.get("source", null)
 	var targets: Array = data.get("target", [])
 	
 	if !source:

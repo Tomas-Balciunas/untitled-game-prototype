@@ -1,4 +1,4 @@
-extends Item
+extends ItemResource
 class_name ConsumableItem
 
 @export var effects: Array[Effect] = []
@@ -6,7 +6,7 @@ class_name ConsumableItem
 
 
 func _init() -> void:
-	type = Item.ItemType.CONSUMABLE
+	type = ItemResource.ItemType.CONSUMABLE
 	
 	if not id:
 		id = GameState.generate_id()

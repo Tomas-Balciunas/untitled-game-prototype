@@ -8,7 +8,7 @@ var max_slots: int
 var slots: Array[FormationSlot] = []
 var positions := []
 
-func remove_slot_for(character: CharacterInstance) -> void:
+func remove_slot_for(character: Character) -> void:
 	for i in range(max_slots):
 		var slot: FormationSlot = slots[i]
 		if slot and slot.character_instance == character:
@@ -16,7 +16,7 @@ func remove_slot_for(character: CharacterInstance) -> void:
 			slots[i] = null
 			return
 
-func get_slot_for(who: CharacterInstance) -> FormationSlot:
+func get_slot_for(who: Character) -> FormationSlot:
 	for i in range(max_slots):
 		var slot: FormationSlot = slots[i]
 		if slot and slot.character_instance == who:
@@ -39,29 +39,29 @@ func get_centered_positions(count: int, z: float) -> Array:
 		pos.append(Vector3(x, 0, z))
 	return pos
 
-func get_column(target: CharacterInstance) -> Array[CharacterInstance]:
+func get_column(target: Character) -> Array[Character]:
 	return [target]
 
-func get_blast(target: CharacterInstance) -> Array[CharacterInstance]:
+func get_blast(target: Character) -> Array[Character]:
 	for i in range(max_slots):
 		if slots[i] and slots[i].character_instance == target:
 			return get_adjacent_in_row(slots, i)
 	push_error("Blast Targeting: Target not found!")
 	return [target]
 
-func get_row(_target: CharacterInstance) -> Array[CharacterInstance]:
+func get_row(_target: Character) -> Array[Character]:
 	return get_mass()
 
-func get_adjacent(target: CharacterInstance) -> Array[CharacterInstance]:
-	var blast: Array[CharacterInstance] = get_blast(target)
+func get_adjacent(target: Character) -> Array[Character]:
+	var blast: Array[Character] = get_blast(target)
 	blast.erase(target)
 	return blast
 
-func get_mass() -> Array[CharacterInstance]:
+func get_mass() -> Array[Character]:
 	var filled: Array[FormationSlot] = slots.filter(func(slot: FormationSlot) -> bool: return slot != null)
 	return slots_to_character_instances(filled)
 
-func get_adjacent_in_row(row: Array[FormationSlot], index: int) -> Array[CharacterInstance]:
+func get_adjacent_in_row(row: Array[FormationSlot], index: int) -> Array[Character]:
 	var adjacent: Array[FormationSlot] = []
 	adjacent.append(row[index])
 
@@ -73,8 +73,8 @@ func get_adjacent_in_row(row: Array[FormationSlot], index: int) -> Array[Charact
 
 	return slots_to_character_instances(adjacent)
 
-func slots_to_character_instances(s: Array[FormationSlot]) -> Array[CharacterInstance]:
-	var result: Array[CharacterInstance] = []
+func slots_to_character_instances(s: Array[FormationSlot]) -> Array[Character]:
+	var result: Array[Character] = []
 	for slot in s:
 		if slot:
 			result.append(slot.character_instance)

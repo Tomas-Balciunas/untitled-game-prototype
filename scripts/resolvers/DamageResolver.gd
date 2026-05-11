@@ -50,5 +50,5 @@ func run_pipeline(event: DamageInstance) -> void:
 	
 
 
-func build_event(ctx: ActionContext, target: CharacterInstance) -> DamageInstance:
+func build_event(ctx: ActionContext, target: Character) -> DamageInstance:
 	return DamageInstance.new(ctx, target, damage)

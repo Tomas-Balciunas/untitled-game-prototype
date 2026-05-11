@@ -61,5 +61,5 @@ func get_interactions() -> Array
 #func get_damaged_line(_key: String, _amt: int, _ctx: DamageContext = null) -> String:
 	#return ""
 #
-#func get_attacking_line(_key: String, _source: CharacterInstance, _targets: Array) -> String:
+#func get_attacking_line(_key: String, _source: Character, _targets: Array) -> String:
 	#return ""

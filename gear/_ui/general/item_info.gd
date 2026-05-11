@@ -7,7 +7,7 @@ extends Node
 @onready var effects_label: Label = $EffectsLabel
 @onready var modifiers_label: Label = $ModifiersLabel
 
-func show_item_info(item: ItemInstance) -> void:
+func show_item_info(item: Item) -> void:
 	clear_info()
 	if item == null:
 		self.visible = false
@@ -17,8 +17,8 @@ func show_item_info(item: ItemInstance) -> void:
 	item_name_label.text = item.get_item_name()
 	item_type_label.text = item.item_type_to_string(item.type)
 
-	if item is GearInstance:
-		item_quality.text = "Quality: %s" % Gear.quality_to_string(item.quality as Gear.Quality)
+	if item is Gear:
+		item_quality.text = "Quality: %s" % GearResource.quality_to_string(item.quality as GearResource.Quality)
 
 		var stat_lines: Array[String] = []
 
@@ -43,7 +43,7 @@ func show_item_info(item: ItemInstance) -> void:
 	else:
 		stats_label.text = ""
 
-	if item is Consumable or item is GearInstance:
+	if item is Consumable or item is Gear:
 		if item.get_all_effects().size() > 0:
 			var effect_lines: Array[String] = []
 			for e: Effect in item.get_all_effects():
@@ -66,8 +66,8 @@ func hide_item_info() -> void:
 
 func _weapon_type_str(t: WeaponResource.Type) -> String:
 	match t:
-		WeaponResource.Type.SWORD: return "Sword"
-		WeaponResource.Type.AXE:   return "Axe"
+		WeaponResource.WeaponType.SWORD: return "Sword"
+		WeaponResource.WeaponType.AXE:   return "Axe"
 	return "Unknown"
 
 

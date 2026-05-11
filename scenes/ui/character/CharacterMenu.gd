@@ -13,14 +13,14 @@ class_name CharacterMenu
 
 @onready var name_label: Label = $Name
 
-var character_instance: CharacterInstance
+var character_instance: Character
 
 
 func _ready() -> void:
 	visible = false
 
 
-func bind(character: CharacterInstance) -> void:
+func bind(character: Character) -> void:
 	if BattleContext.in_battle:
 		return
 		

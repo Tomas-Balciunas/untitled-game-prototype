@@ -5,7 +5,7 @@ const EFFECT_LABEL = preload("uid://buyertqp85xfq")
 @onready var effects_container := $Effects
 
 
-func bind_character(character: CharacterInstance) -> void:
+func bind_character(character: Character) -> void:
 	clear_effects()
 	for effect: Effect in character.effects:
 		add_effect(effect)

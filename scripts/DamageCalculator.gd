@@ -4,8 +4,8 @@ class_name DamageCalculator
 
 var context: ActionContext = null
 var source: ContextSource = null
-var actor: CharacterInstance = null
-var target: CharacterInstance = null
+var actor: Character = null
+var target: Character = null
 
 var type: DamageTypes.Type = DamageTypes.Type.PHYSICAL
 var final_damage: float = 0.0

@@ -2,7 +2,7 @@ extends ContextSource
 class_name SkillSource
 
 
-func _init(c: CharacterInstance, s: Skill) -> void:
+func _init(c: Character, s: Skill) -> void:
 	assert(c)
 	assert(s)
 	character = c

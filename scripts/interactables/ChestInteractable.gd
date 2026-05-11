@@ -25,7 +25,7 @@ func on_map_loaded(_map_data: Dictionary) -> void:
 		return
 	
 	if not chest.custom_items.is_empty() and not chest.was_opened:
-		for item: Item in chest.custom_items:
+		for item: ItemResource in chest.custom_items:
 			chest.items.append(item._build_instance())
 	
 	chest.custom_items.clear()
@@ -39,7 +39,7 @@ func _interact() -> void:
 	
 	ChestBus.open_chest_requested.emit(chest)
 
-func build_items(_map_data: Dictionary) -> Array[ItemInstance]:
+func build_items(_map_data: Dictionary) -> Array[Gear]:
 	var generator := GearGenerator.new(quantity)
 	return generator.generate()
 
@@ -62,7 +62,7 @@ func on_chest_state_changed(_chest: Chest) -> void:
 func to_dict() -> Dictionary:
 	var items := []
 	
-	for item: ItemInstance in chest.items:
+	for item: Item in chest.items:
 		items.append(item.game_save())
 	
 	return {
@@ -78,11 +78,11 @@ func from_dict(data: Dictionary) -> Chest:
 	if !data:
 		return null
 		
-	var items: Array[ItemInstance] = []
+	var items: Array[Gear] = []
 	
 	for item: Dictionary in data.get("items", {}):
 		var item_class: String = item.get("class")
-		var cls: ItemInstance = ClassDB.instantiate(item_class)
+		var cls: Item = ClassDB.instantiate(item_class)
 		cls.game_load(item)
 		items.append(cls)
 		

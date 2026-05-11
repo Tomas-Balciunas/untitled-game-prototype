@@ -11,7 +11,7 @@ const DEFAULT_PROJECTILE = preload("uid://ixevorw37712")
 @onready var number_display: FormationSlotNumbers = $NumberDisplay
 @onready var projectile_spawn: Node3D
 
-var body_owner: CharacterInstance = null
+var body_owner: Character = null
 var death_shader = preload("uid://crlilwavkuu5u")
 var blood_particle_material = null
 
@@ -22,17 +22,17 @@ func _ready() -> void:
 	CharacterBus.character_healed.connect(_on_healed)
 	ChatEventBus.chat.connect(_on_chat)
 	
-func _on_damaged(c: CharacterInstance, damage_instance: DamageInstance) -> void:
+func _on_damaged(c: Character, damage_instance: DamageInstance) -> void:
 	if body_owner and c == body_owner:
 		animation_player.stop()
 		play_damaged()
 		number_display.display_damage(damage_instance)
 	
-func _on_healed(c: CharacterInstance, amt: int) -> void:
+func _on_healed(c: Character, amt: int) -> void:
 	if body_owner and c == body_owner:
 		number_display.display_heal(amt)
 		
-func _on_chat(c: CharacterInstance, text: String) -> void:
+func _on_chat(c: Character, text: String) -> void:
 	if c == body_owner and has_node("SmallChatter"):
 		get_node("SmallChatter").chatter(text)
 

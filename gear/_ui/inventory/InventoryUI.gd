@@ -1,7 +1,7 @@
 extends Panel
 class_name InventoryUI
 
-var bound_character: CharacterInstance = null
+var bound_character: Character = null
 
 const ITEM_SLOT = preload("uid://bdksl8u0q4sv0")
 const ITEM_TRANSFER_SCENE = preload("uid://csn5t1mi03evw")
@@ -15,12 +15,12 @@ const ITEM_TRANSFER_SCENE = preload("uid://csn5t1mi03evw")
 @onready var unequip_button: Button = $Inventory/UnequipButton
 @onready var item_info_panel: VBoxContainer = $ItemInfoPanel
 
-var _selected_item: ItemInstance = null
+var _selected_item: Item = null
 
 func _ready() -> void:
 	InventoryBus.request_inventory_refresh.connect(_on_request_inventory_refresh)
 
-func bind_character(character: CharacterInstance) -> void:
+func bind_character(character: Character) -> void:
 	bound_character = character
 	refresh_lists()
 
@@ -41,13 +41,13 @@ func refresh_lists() -> void:
 	unequip_button.visible = false
 	transfer_button.visible = false
 
-func _on_inventory_item_selected(item: ItemInstance) -> void:
+func _on_inventory_item_selected(item: Item) -> void:
 	unequip_button.visible = false
 	_selected_item = item
 	
 	transfer_button.visible = true
 	
-	if item is GearInstance:
+	if item is Gear:
 		action_button.text = "Equip"
 		action_button.visible = true
 	elif item is Consumable:
@@ -56,7 +56,7 @@ func _on_inventory_item_selected(item: ItemInstance) -> void:
 	else:
 		action_button.visible = false
 		
-func _on_equipped_item_selected(item: GearInstance) -> void:
+func _on_equipped_item_selected(item: Gear) -> void:
 	action_button.visible = false
 	_selected_item = item
 
@@ -69,7 +69,7 @@ func _on_action_button_pressed() -> void:
 	if not _selected_item:
 		push_error("Trying to equip/use null selected item")
 
-	if _selected_item is GearInstance:
+	if _selected_item is Gear:
 		bound_character.equip_item(_selected_item)
 	elif _selected_item is Consumable:
 		_selected_item.use_item(bound_character)
@@ -79,9 +79,10 @@ func _on_action_button_pressed() -> void:
 func _on_unequip_button_pressed() -> void:
 	if not _selected_item:
 		push_error("Trying to unequip null selected item")
+	
+	var item: Gear = _selected_item
 
-	var slot_name := bound_character.get_slot_name_for_item(_selected_item)
-	bound_character.unequip_slot(slot_name)
+	bound_character.unequip_slot(item.get_gear_type())
 
 	refresh_lists()
 

@@ -14,7 +14,7 @@ func on_open_chest_requested(c: Chest) -> void:
 	else:
 		ChestBus.display_chest_content.emit(chest)
 	
-func on_chest_opener_chosen(character: CharacterInstance) -> void:
+func on_chest_opener_chosen(character: Character) -> void:
 	var line_1 := "%s attempts to open the chest..." % character.resource.name
 	var event := [
 			{

@@ -2,38 +2,38 @@ extends Resource
 class_name Inventory
 
 @export var max_slots: int = 20
-var owner: CharacterInstance = null
-var slots: Array[ItemInstance] = []
+var owner: Character = null
+var slots: Array[Item] = []
 
-func add_item(item: ItemInstance) -> bool:
+func add_item(item: Item) -> bool:
 	if max_slots > 0 and slots.size() >= max_slots:
 		return false
 	slots.append(item)
 	InventoryBus.character_slots_changed.emit(owner, len(slots))
 	return true
 
-func remove_item(item: ItemInstance) -> bool:
+func remove_item(item: Item) -> bool:
 	if item in slots:
 		slots.erase(item)
 		InventoryBus.character_slots_changed.emit(owner, len(slots))
 		return true
 		
-	push_error("Item %s not found" % item.name)
+	push_error("ItemResource %s not found" % item.name)
 	return false
 
-func has_item(item: ItemInstance) -> bool:
+func has_item(item: Item) -> bool:
 	return item in slots
 
-func get_all_items() -> Array[ItemInstance]:
+func get_all_items() -> Array[Item]:
 	return slots.duplicate()
 
-func find_by_type(type: int) -> Array[ItemInstance]:
-	return slots.filter(func(i: ItemInstance) -> bool: return i.type == type)
+func find_by_type(type: int) -> Array[Item]:
+	return slots.filter(func(i: Item) -> bool: return i.type == type)
 
 func has_free_slot() -> bool:
 	return max_slots > len(slots)
 
-func transfer_item(from: CharacterInstance, to: CharacterInstance, item: ItemInstance) -> void:
+func transfer_item(from: Character, to: Character, item: Item) -> void:
 	if !to.inventory.has_free_slot():
 		NotificationBus.notification_requested.emit("%s's inventory is full!" % to.resource.name)
 		return;

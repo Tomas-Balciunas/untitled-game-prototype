@@ -53,7 +53,7 @@ static func _passes_filters(effect: Effect, event: TriggerEvent) -> bool:
 	if not BattleContext.in_battle and effect.battle_only:
 		return false
 	
-	if effect.owner.is_dead:
+	if !effect.can_process_when_dead():
 		return false
 	
 	return true
