@@ -4,14 +4,14 @@ class_name GearGenerator
 
 const MAX_QUANTITY = 10
 
-const allowed_types: Array[GearResource.Type] = [
-		GearResource.Type.WEAPON, 
-		GearResource.Type.CHEST, 
-		GearResource.Type.HELMET,
-		GearResource.Type.BOOTS,
-		GearResource.Type.GLOVES,
-		GearResource.Type.RING,
-		GearResource.Type.AMULET,
+const allowed_types: Array[ItemTypes.GearType] = [
+		ItemTypes.GearType.WEAPON, 
+		ItemTypes.GearType.CHEST, 
+		ItemTypes.GearType.HELMET,
+		ItemTypes.GearType.BOOTS,
+		ItemTypes.GearType.GLOVES,
+		ItemTypes.GearType.RING,
+		ItemTypes.GearType.AMULET,
 		#ItemResource.ItemType.CONSUMABLE
 	]
 	
@@ -22,7 +22,7 @@ var quantity: int:
 		else:
 			quantity = value
 	
-var requested_types: Array[GearResource.Type]:
+var requested_types: Array[ItemTypes.GearType]:
 	set(value):
 		if !value is Array:
 			push_error("Types passed to generator must be an array of ItemResource.ItemType!")
@@ -32,7 +32,7 @@ var requested_types: Array[GearResource.Type]:
 			
 			return
 		
-		var filtered_types: Array[GearResource.Type] = []
+		var filtered_types: Array[ItemTypes.GearType] = []
 		
 		for type in value:
 			if allowed_types.has(type):
@@ -40,7 +40,7 @@ var requested_types: Array[GearResource.Type]:
 		
 		requested_types = filtered_types
 
-func _init(qty: int, types: Array[GearResource.Type] = []) -> void:
+func _init(qty: int, types: Array[ItemTypes.GearType] = []) -> void:
 	quantity = qty
 	requested_types = types
 
@@ -51,7 +51,7 @@ func generate() -> Array[Gear]:
 	
 	for i in range(quantity):
 		var tier := get_tier(tiers)
-		var type: GearResource.Type = requested_types[randi() % len(requested_types)]
+		var type: ItemTypes.GearType = requested_types[randi() % len(requested_types)]
 		var item: Gear = builder.build_item(type, tier)
 		
 		if item:

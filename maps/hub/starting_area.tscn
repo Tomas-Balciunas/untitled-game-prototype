@@ -67,13 +67,13 @@ script = ExtResource("2_uvgea")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.7453785, 0.5260688, -7.930229)
 id = "starting_area_chest_01"
 random = true
-quantity = 10
+quantity = 5
 
 [node name="ChestBasic2" parent="StartingArea/Chests" unique_id=517250672 instance=ExtResource("9_lk5gk")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.0930414, 0.5260688, -7.930229)
 id = "starting_area_chest_02"
 random = true
-quantity = 6
+quantity = 3
 
 [node name="Transitions" type="Node" parent="StartingArea" unique_id=1602761208]
 

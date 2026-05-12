@@ -3,7 +3,7 @@ class_name AmuletResource
 
 
 func _init() -> void:
-	type = ItemResource.ItemType.AMULET
+	type = ItemTypes.ItemType.EQUIPMENT
 	
 	if not base_stats:
 		base_stats = Stats.new()

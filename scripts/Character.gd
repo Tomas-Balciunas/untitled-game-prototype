@@ -237,56 +237,6 @@ func increase_attribute(attr: String) -> bool:
 	stats.recalculate_stats(true, true)
 	return true
 
-func equip_item(item: Gear) -> bool:
-	var equipped_item: Gear = equipment.get_equipment_by_type(item.get_gear_type())
-	
-	if inventory.has_item(item):
-		inventory.remove_item(item)
-	else:
-		push_error("Equipping non existent item")
-		return false
-	
-	if equipped_item:
-		equipment.unset_equipment(equipped_item.get_gear_type())
-		
-	equipment.set_equipment(item)
-	var insts: Array = []
-	
-	for e in item.get_all_effects():
-		var inst := apply_effect(e, ItemSource.new(self, item))
-		insts.append(inst)
-		
-	gear_effects[item.get_gear_type()] = insts
-	
-	for m in item.get_all_modifiers():
-		state.add_modifier(m)
-		
-	StatCalculator.recalculate_all_stats(self)
-	
-	return true
-
-func unequip_slot(type: GearResource.Type) -> bool:
-	var item: Gear = equipment.get_equipment_by_type(type)
-	
-	if not item:
-		push_error("Trying to unequip non existent item")
-		
-		return false
-
-	for inst: Effect in gear_effects.get(type, []):
-		remove_effect(inst)
-	
-	gear_effects.erase(type)
-		
-	for m in item.get_all_modifiers():
-		state.remove_modifier(m)
-	
-	equipment.unset_equipment(type)
-	inventory.add_item(item)
-	StatCalculator.recalculate_all_stats(self)
-	
-	return true
-
 func to_dict() -> Dictionary:
 	var equip_dict := {}
 	for slot: String in equipment.keys():

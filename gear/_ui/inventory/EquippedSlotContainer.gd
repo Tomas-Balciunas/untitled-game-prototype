@@ -10,15 +10,15 @@ extends Node
 
 func bind_equipped(character_instance: Character, parent_ui: InventoryUI) -> void:
 	var equipment := {
-	GearResource.Type.WEAPON: weapon,
-	GearResource.Type.CHEST: chest,
-	GearResource.Type.HELMET: helmet,
-	GearResource.Type.BOOTS: boots,
-	GearResource.Type.GLOVES: gloves,
-	GearResource.Type.RING: ring,
-	GearResource.Type.AMULET: amulet
+	ItemTypes.GearType.WEAPON: weapon,
+	ItemTypes.GearType.CHEST: chest,
+	ItemTypes.GearType.HELMET: helmet,
+	ItemTypes.GearType.BOOTS: boots,
+	ItemTypes.GearType.GLOVES: gloves,
+	ItemTypes.GearType.RING: ring,
+	ItemTypes.GearType.AMULET: amulet
 }
-	for slot: int in GearResource.Type.values():
+	for slot: int in ItemTypes.GearType.values():
 		var eq_slot: PanelContainer = equipment[slot]
 		eq_slot.bind(character_instance.equipment.get_equipment_by_type(slot))
 		

@@ -7,7 +7,7 @@ class_name Chest
 @export var was_opened: bool = false
 @export var trap: Trap = null
 @export var custom_items: Array[ItemResource] = []
-var items: Array[Gear] = []
+var items: Array[Item] = []
 
 func remove_item(_item: Item) -> bool:
 	for item in items:

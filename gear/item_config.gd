@@ -22,14 +22,14 @@ static func get_tier_multiplier(tier: String) -> float:
 	return TIER_DATA[tier]["mult"]
 
 
-static func get_accuracy(weapon_type: WeaponResource.WeaponType) -> int:
+static func get_accuracy(weapon_type: ItemTypes.WeaponType) -> int:
 	if not ACCURACY.has(weapon_type):
 		push_error("item config: accuracy not found for weapon type")
 		return 0
 	return ACCURACY[weapon_type]
 
 
-static func get_stat_range(tier: String, type: GearResource.Type) -> Dictionary:
+static func get_stat_range(tier: String, type: ItemTypes.GearType) -> Dictionary:
 	if not BASE_STAT_RANGES.has(type):
 		push_error("item config: stat range not found for type %s" % type)
 		return {}
@@ -41,7 +41,7 @@ static func get_stat_range(tier: String, type: GearResource.Type) -> Dictionary:
 	return result
 
 
-static func get_stat_range_weapon(tier: String, type: GearResource.Type, weapon_type: WeaponResource.WeaponType) -> Dictionary:
+static func get_stat_range_weapon(tier: String, type: ItemTypes.GearType, weapon_type: ItemTypes.WeaponType) -> Dictionary:
 	if not BASE_STAT_RANGES.has(type) or not BASE_STAT_RANGES[type].has(weapon_type):
 		push_error("item config: weapon stat range not found for %s %s" % [tier, weapon_type])
 		return {}
@@ -53,15 +53,15 @@ static func get_stat_range_weapon(tier: String, type: GearResource.Type, weapon_
 	return result
 
 
-static func get_applicable_modifiers(type: GearResource.Type) -> Array[Stats.StatRef]:
+static func get_applicable_modifiers(type: ItemTypes.GearType) -> Array[Stats.StatRef]:
 	match type:
-		GearResource.Type.WEAPON: return [Stats.StatRef.ATTACK, Stats.StatRef.MAGIC_POWER, Stats.StatRef.DIVINE_POWER]
-		GearResource.Type.CHEST:  return [Stats.StatRef.HEALTH, Stats.StatRef.DEFENSE, Stats.StatRef.MAGIC_DEFENSE]
-		GearResource.Type.HELMET: return [Stats.StatRef.HEALTH, Stats.StatRef.DEFENSE, Stats.StatRef.MAGIC_DEFENSE]
-		GearResource.Type.BOOTS:  return [Stats.StatRef.HEALTH, Stats.StatRef.DEFENSE, Stats.StatRef.MAGIC_DEFENSE, Stats.StatRef.EVASION]
-		GearResource.Type.GLOVES: return [Stats.StatRef.HEALTH, Stats.StatRef.DEFENSE, Stats.StatRef.MAGIC_DEFENSE, Stats.StatRef.ACCURACY]
-		GearResource.Type.RING:   return [Stats.StatRef.SP, Stats.StatRef.DEFENSE, Stats.StatRef.MAGIC_DEFENSE]
-		GearResource.Type.AMULET: return [Stats.StatRef.HEALTH, Stats.StatRef.MANA, Stats.StatRef.SP]
+		ItemTypes.GearType.WEAPON: return [Stats.StatRef.ATTACK, Stats.StatRef.MAGIC_POWER, Stats.StatRef.DIVINE_POWER]
+		ItemTypes.GearType.CHEST:  return [Stats.StatRef.HEALTH, Stats.StatRef.DEFENSE, Stats.StatRef.MAGIC_DEFENSE]
+		ItemTypes.GearType.HELMET: return [Stats.StatRef.HEALTH, Stats.StatRef.DEFENSE, Stats.StatRef.MAGIC_DEFENSE]
+		ItemTypes.GearType.BOOTS:  return [Stats.StatRef.HEALTH, Stats.StatRef.DEFENSE, Stats.StatRef.MAGIC_DEFENSE, Stats.StatRef.EVASION]
+		ItemTypes.GearType.GLOVES: return [Stats.StatRef.HEALTH, Stats.StatRef.DEFENSE, Stats.StatRef.MAGIC_DEFENSE, Stats.StatRef.ACCURACY]
+		ItemTypes.GearType.RING:   return [Stats.StatRef.SP, Stats.StatRef.DEFENSE, Stats.StatRef.MAGIC_DEFENSE]
+		ItemTypes.GearType.AMULET: return [Stats.StatRef.HEALTH, Stats.StatRef.MANA, Stats.StatRef.SP]
 	push_error("item config: applicable modifiers not found for type %s" % type)
 	return []
 
@@ -72,36 +72,36 @@ const TIER_DATA: Dictionary = {
 }
 
 const ACCURACY: Dictionary = {
-	WeaponResource.WeaponType.SWORD: 5,
-	WeaponResource.WeaponType.AXE:   8,
+	ItemTypes.WeaponType.SWORD: 5,
+	ItemTypes.WeaponType.AXE:   8,
 }
 
 const BASE_STAT_RANGES: Dictionary = {
-	GearResource.Type.WEAPON: {
-		WeaponResource.WeaponType.SWORD: { Stats.StatRef.ATTACK: [5, 8] },
-		WeaponResource.WeaponType.AXE:   { Stats.StatRef.ATTACK: [8, 12] },
+	ItemTypes.GearType.WEAPON: {
+		ItemTypes.WeaponType.SWORD: { Stats.StatRef.ATTACK: [5, 8] },
+		ItemTypes.WeaponType.AXE:   { Stats.StatRef.ATTACK: [8, 12] },
 	},
-	GearResource.Type.CHEST: {
+	ItemTypes.GearType.CHEST: {
 		Stats.StatRef.HEALTH:       [1, 3],
 		Stats.StatRef.DEFENSE:      [1, 3],
 		Stats.StatRef.MAGIC_DEFENSE:[1, 1],
 	},
-	GearResource.Type.HELMET: {
+	ItemTypes.GearType.HELMET: {
 		Stats.StatRef.DEFENSE: [1, 3],
 	},
-	GearResource.Type.BOOTS: {
+	ItemTypes.GearType.BOOTS: {
 		Stats.StatRef.DEFENSE:  [1, 3],
 		Stats.StatRef.SPEED:    [1, 2],
 		Stats.StatRef.EVASION:  [1, 2],
 	},
-	GearResource.Type.GLOVES: {
+	ItemTypes.GearType.GLOVES: {
 		Stats.StatRef.DEFENSE:   [1, 3],
 		Stats.StatRef.ACCURACY:  [1, 2],
 	},
-	GearResource.Type.RING: {
+	ItemTypes.GearType.RING: {
 		Stats.StatRef.MAGIC_DEFENSE: [1, 3],
 	},
-	GearResource.Type.AMULET: {
+	ItemTypes.GearType.AMULET: {
 		Stats.StatRef.MAGIC_DEFENSE: [1, 3],
 	},
 }

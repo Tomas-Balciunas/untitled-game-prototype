@@ -46,4 +46,6 @@ func get_effects_for_level(lvl: int) -> Array:
 		return entries
 	
 	return []
-	
+
+func get_equippable_weapons() -> Array[ItemTypes.WeaponType]:
+	return []

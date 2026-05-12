@@ -13,7 +13,7 @@ enum Type {
 @export var type: Type = Type.ADDITIVE
 @export var value: float = 0.0
 @export var priority: int = 0
-@export var applicable_items: Array[GearResource.ItemType] = []
+@export var applicable_items: Array[ItemTypes.GearType] = []
 
 func compute_value(_character: Character, _derived_stat: float) -> float:
 	if type == Type.ADDITIVE:

@@ -32,7 +32,7 @@ func get_item(id: String) -> ItemResource:
 func get_all_items() -> Array:
 	return items.values()
 
-func get_rand_template(tier: String, type: ItemResource.ItemType) -> GearResource:
+func get_rand_template(tier: String, type: ItemTypes.ItemType) -> GearResource:
 	#if !templates.has(tier):
 		#return null
 		#

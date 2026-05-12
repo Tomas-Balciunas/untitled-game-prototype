@@ -70,7 +70,7 @@ func _on_action_button_pressed() -> void:
 		push_error("Trying to equip/use null selected item")
 
 	if _selected_item is Gear:
-		bound_character.equip_item(_selected_item)
+		bound_character.equipment.equip_item(_selected_item)
 	elif _selected_item is Consumable:
 		_selected_item.use_item(bound_character)
 
@@ -82,7 +82,7 @@ func _on_unequip_button_pressed() -> void:
 	
 	var item: Gear = _selected_item
 
-	bound_character.unequip_slot(item.get_gear_type())
+	bound_character.equipment.unequip_slot(item.get_gear_type())
 
 	refresh_lists()
 

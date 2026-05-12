@@ -4,7 +4,7 @@ class_name Gear
 
 var enhancement_level: int = 0
 
-var quality: int = 1
+var quality: ItemTypes.Quality = ItemTypes.Quality.COMMON
 
 var stats: Stats
 var base_stats: Stats
@@ -44,7 +44,7 @@ func game_save() -> Dictionary:
 func game_load(data: Dictionary) -> void:
 	id        = data.get("id", "")
 	item_name = data.get("name", "")
-	type      = data.get("type", 0) as ItemResource.ItemType
+	type      = data.get("type", 0) as ItemTypes.ItemType
 	quality   = data.get("quality", 0)
 
 	stats = Stats.new()
@@ -78,4 +78,4 @@ static func from_dict(data: Dictionary) -> Gear:
 	return item
 
 @abstract
-func get_gear_type() -> GearResource.Type
+func get_gear_type() -> ItemTypes.GearType

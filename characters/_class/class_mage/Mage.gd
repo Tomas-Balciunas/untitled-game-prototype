@@ -16,3 +16,6 @@ func get_effects_for_level(lvl: int) -> Array:
 	match lvl:
 		5: return [SPELL_MASTERY]
 	return []
+
+func get_equippable_weapons() -> Array[ItemTypes.WeaponType]:
+	return []

@@ -3,7 +3,7 @@ class_name GlovesResource
 
 
 func _init() -> void:
-	type = ItemResource.ItemType.GLOVES
+	type = ItemTypes.ItemType.EQUIPMENT
 	
 	if not base_stats:
 		base_stats = Stats.new()

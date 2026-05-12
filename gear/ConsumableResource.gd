@@ -6,7 +6,7 @@ class_name ConsumableItem
 
 
 func _init() -> void:
-	type = ItemResource.ItemType.CONSUMABLE
+	type = ItemTypes.ItemType.CONSUMABLE
 	
 	if not id:
 		id = GameState.generate_id()

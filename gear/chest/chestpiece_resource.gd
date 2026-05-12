@@ -3,7 +3,7 @@ class_name ChestpieceResource
 
 
 func _init() -> void:
-	type = ItemResource.ItemType.CHEST
+	type = ItemTypes.ItemType.EQUIPMENT
 	
 	if not base_stats:
 		base_stats = Stats.new()

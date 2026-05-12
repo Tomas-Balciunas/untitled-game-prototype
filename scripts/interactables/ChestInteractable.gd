@@ -12,36 +12,39 @@ func on_map_loaded(_map_data: Dictionary) -> void:
 		ChestBus.chest_state_changed.connect(on_chest_state_changed)
 
 	var data: Dictionary = MapInstance.chest_state.get(id, {})
-	
+
 	if !data.is_empty():
 		chest = from_dict(data)
-		
 		return
-	
-	if !chest:
+
+	if chest and not chest.custom_items.is_empty():
+		_instantiate_custom_items()
+	else:
 		build_chest(_map_data)
-		update_chest_state()
-		
-		return
-	
-	if not chest.custom_items.is_empty() and not chest.was_opened:
-		for item: ItemResource in chest.custom_items:
-			chest.items.append(item._build_instance())
-	
-	chest.custom_items.clear()
+
 	update_chest_state()
+
+func _instantiate_custom_items() -> void:
+	for resource: ItemResource in chest.custom_items:
+		chest.items.append(resource._build_instance())
+	chest.custom_items.clear()
 
 func _interact() -> void:
 	if !chest:
 		push_error("Chest was not built!")
-		
 		return
-	
+
 	ChestBus.open_chest_requested.emit(chest)
 
-func build_items(_map_data: Dictionary) -> Array[Gear]:
-	var generator := GearGenerator.new(quantity)
-	return generator.generate()
+func build_items(_map_data: Dictionary) -> Array[Item]:
+	var items: Array[Item] = []
+
+	var gear: Array[Gear] = GearGenerator.new(quantity).generate()
+	items.assign(gear)
+
+	# TODO: generate consumables and mix into items
+
+	return items
 
 func build_chest(map_data: Dictionary) -> void:
 	var inst := Chest.new()
@@ -49,7 +52,6 @@ func build_chest(map_data: Dictionary) -> void:
 	inst.trapped = randf() > 0
 	inst.items = build_items(map_data)
 
-	
 	chest = inst
 	
 func update_chest_state() -> void:
@@ -77,9 +79,9 @@ func to_dict() -> Dictionary:
 func from_dict(data: Dictionary) -> Chest:
 	if !data:
 		return null
-		
-	var items: Array[Gear] = []
-	
+
+	var items: Array[Item] = []
+
 	for item: Dictionary in data.get("items", {}):
 		var item_class: String = item.get("class")
 		var cls: Item = ClassDB.instantiate(item_class)

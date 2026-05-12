@@ -9,3 +9,6 @@ func get_skills_for_level(lvl: int) -> Array:
 	match lvl:
 		3: return [ROW_HEAL]
 	return []
+
+func get_equippable_weapons() -> Array[ItemTypes.WeaponType]:
+	return []

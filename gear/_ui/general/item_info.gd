@@ -18,7 +18,7 @@ func show_item_info(item: Item) -> void:
 	item_type_label.text = item.item_type_to_string(item.type)
 
 	if item is Gear:
-		item_quality.text = "Quality: %s" % GearResource.quality_to_string(item.quality as GearResource.Quality)
+		item_quality.text = "Quality: %s" % ItemTypes.quality_to_string(item.quality as ItemTypes.Quality)
 
 		var stat_lines: Array[String] = []
 
@@ -64,10 +64,10 @@ func hide_item_info() -> void:
 	self.visible = false
 
 
-func _weapon_type_str(t: WeaponResource.Type) -> String:
+func _weapon_type_str(t: ItemTypes.WeaponType) -> String:
 	match t:
-		WeaponResource.WeaponType.SWORD: return "Sword"
-		WeaponResource.WeaponType.AXE:   return "Axe"
+		ItemTypes.WeaponType.SWORD: return "Sword"
+		ItemTypes.WeaponType.AXE:   return "Axe"
 	return "Unknown"
 
 

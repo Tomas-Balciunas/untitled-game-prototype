@@ -3,7 +3,7 @@ class_name RingResource
 
 
 func _init() -> void:
-	type = ItemResource.ItemType.RING
+	type = ItemTypes.ItemType.EQUIPMENT
 	
 	if not base_stats:
 		base_stats = Stats.new()
