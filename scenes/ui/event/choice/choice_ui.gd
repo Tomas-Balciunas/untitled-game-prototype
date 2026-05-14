@@ -4,12 +4,12 @@ extends Node
 @onready var choice_text: Label = $ChoiceText
 
 func bind(text: String, choices: Array) -> void:
-	for c in choices:
+	for c: ChoiceOption in choices:
 		var btn := Button.new()
-		btn.text = c["btn_text"]
+		btn.text = c.btn_text
 		choices_container.add_child(btn)
-		btn.pressed.connect(_on_choice_made.bind(c["id"]), CONNECT_ONE_SHOT)
-	
+		btn.pressed.connect(_on_choice_made.bind(c.id), CONNECT_ONE_SHOT)
+
 	choice_text.text = text
 
 

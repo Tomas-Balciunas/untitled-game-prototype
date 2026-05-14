@@ -2,9 +2,12 @@ extends Interactable
 
 class_name ChestInteractable
 
+enum Contents { GEAR_ONLY, CONSUMABLES_ONLY, BOTH }
+
 @export var id: String
 @export var random: bool = false
 @export var quantity: int = 2
+@export var contents: Contents = Contents.GEAR_ONLY
 @export var chest: Chest
 
 func on_map_loaded(_map_data: Dictionary) -> void:
@@ -39,10 +42,26 @@ func _interact() -> void:
 func build_items(_map_data: Dictionary) -> Array[Item]:
 	var items: Array[Item] = []
 
-	var gear: Array[Gear] = GearGenerator.new(quantity).generate()
-	items.assign(gear)
+	match contents:
+		Contents.GEAR_ONLY:
+			for g: Gear in GearGenerator.new(quantity).generate():
+				items.append(g)
+		Contents.CONSUMABLES_ONLY:
+			for c: Consumable in ConsumableGenerator.new(quantity).generate():
+				items.append(c)
+		Contents.BOTH:
+			var gear_qty := 0
+			for i in range(quantity):
+				if randi() % 2 == 0:
+					gear_qty += 1
+			var cons_qty := quantity - gear_qty
 
-	# TODO: generate consumables and mix into items
+			if gear_qty > 0:
+				for g: Gear in GearGenerator.new(gear_qty).generate():
+					items.append(g)
+			if cons_qty > 0:
+				for c: Consumable in ConsumableGenerator.new(cons_qty).generate():
+					items.append(c)
 
 	return items
 

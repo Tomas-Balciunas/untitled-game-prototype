@@ -1,13 +1,20 @@
 extends EventStep
 class_name TrapStep
 
-var id: String
-var trap: Trap
+@export var trap: Trap
+
 var target: Character
 
-func _init(data: Dictionary) -> void:
-	trap = data.get("trap")
-	target = data.get("target")
 
 func run(_manager: EventManager) -> void:
+	if trap == null:
+		push_error("TrapStep has no trap set")
+		return
 	trap.trigger(target)
+
+
+static func against(p_trap: Trap, p_target: Character) -> TrapStep:
+	var s := TrapStep.new()
+	s.trap = p_trap
+	s.target = p_target
+	return s

@@ -15,10 +15,7 @@ func run():
 
 func before_receive_damage(ctx: DamageContext):
 	if ctx.target == _owner and ctx.final_value >= _owner.stats.current_health and times > 0:
-		BattleFlow.pause()
-		var interaction: CharacterInteraction = _owner.resource.interactions
-		var lines = _owner.resource.interactions.get_dialogue(interaction.BATTLE_EVENT, interaction.FATAL_HIT)
-		ConversationBus.request_conversation.emit(_owner.resource.name, lines["text"])
+		push_warning("TestBattleEvent fatal-hit dialogue path is not wired to the new interaction system")
 		ctx.final_value = 0
 		times -= 1
 

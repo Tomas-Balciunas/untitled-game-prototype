@@ -1,17 +1,18 @@
 extends EventStep
 class_name ChoiceStep
 
-const CHOICES = CharacterInteraction.CHOICES
-const BTN_TEXT = CharacterInteraction.BTN_TEXT
+@export var text: String = ""
+@export var choices: Array[ChoiceOption] = []
 
-var text: String
-var choices: Array
 
-func _init(data: Dictionary) -> void:
-	choices = data.get(CHOICES, "")
-	text = data.get(EventManager.TEXT, "")
-
-func run(_manager: EventManager) -> void:
+func run(manager: EventManager) -> void:
 	ConversationBus.request_choice.emit(text, choices)
 	var choice: String = await ConversationBus.choice_made
-	_manager.choices.append(choice)
+	manager.choices.append(choice)
+
+
+static func prompt(p_text: String, p_choices: Array[ChoiceOption]) -> ChoiceStep:
+	var s := ChoiceStep.new()
+	s.text = p_text
+	s.choices = p_choices
+	return s

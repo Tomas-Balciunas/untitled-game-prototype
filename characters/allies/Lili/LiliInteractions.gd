@@ -3,235 +3,148 @@ extends CharacterInteraction
 class_name LiliInteractions
 
 
+const PARTY_FULL_MARKER = "party_full_marker"
+
+const FIRST_ENCOUNTER = "first_encounter"
 const FIRST_ENCOUNTER_SECOND = "first_encounter_continued"
-const RECRUIT_PARTY_FULL = "recruit_party_full"
 const RECRUIT_LILI_AGAIN = "recruit_lili_again"
 
 const ALLOWED_TO_JOIN = "allowed_to_join"
 const DISALLOWED_TO_JOIN = "disallowed_to_join"
 
 
-var interactions := [
-	{
-		ID: FIRST_ENCOUNTER,
-		PRIORITY: 10,
-		EVENT: [
-			{
-				TYPE: TEXT,
-				TEXT: ["Greetings dungeon delver", "My name is Lili", "Pleasure to meet you"]
-			}
-		],
-		CONDITIONS: [
-			{
-				TYPE: SELF,
-				STATE: AVAILABLE,
-				CONTAINS: true,
-				TAGS: [FIRST_ENCOUNTER]
-			},
-		],
-		ON_COMPLETED: {
-			MARK_COMPLETED: [ {ID: FIRST_ENCOUNTER }],
-			MARK_AVAILABLE: [{ ID: FIRST_ENCOUNTER_SECOND }]
-		}
-	},
-	{
-		ID: FIRST_ENCOUNTER_SECOND,
-		PRIORITY: 10,
-		CONDITIONS: [
-			{
-				TYPE: SELF,
-				STATE: AVAILABLE,
-				CONTAINS: true,
-				TAGS: [FIRST_ENCOUNTER_SECOND]
-			},
-		],
-		EVENT: [
-			{
-				TYPE: TEXT,
-				TEXT: ["My party's been..", "Perhaps I could join you?"]
-			},
-			{
-				TYPE: CHOICE,
-				CHOICES: [
-					{
-						ID: ALLOWED_TO_JOIN, 
-						BTN_TEXT: "accept"
-					}, 
-					{
-						ID: DISALLOWED_TO_JOIN, 
-						BTN_TEXT: "refuse"
-					}
-				],
-				TEXT: "Allow Lili to join the party?"
-			},
-			{
-				CONDITIONS: [DISALLOWED_TO_JOIN],
-				TYPE: TEXT,
-				TEXT: ["Okay..."]
-			},
-		],
-		ON_COMPLETED: {
-			MARK_COMPLETED: [{ 
-				ID: FIRST_ENCOUNTER_SECOND, 
-				CONDITIONS: {
-					CHOICES: [ALLOWED_TO_JOIN]
-				} 
-			}]
-		},
-		CALLBACK: {
-			FUNC: LiliController.RECRUIT_LILI,
-			CONDITIONS: {
-				CHOICES: [ALLOWED_TO_JOIN]
-			}
-		}
-	},
-	{
-		ID: RECRUIT_PARTY_FULL,
-		PRIORITY: 50,
-		RECURRING: true,
-		EVENT: [{
-			TYPE: TEXT,
-			TEXT: ["It seems like there's no place for me.."]
-		}],
-		ON_COMPLETED: {
-			MARK_COMPLETED: [{ ID: RECRUIT_PARTY_FULL }],
-			MARK_AVAILABLE: [{ ID: RECRUIT_LILI_AGAIN }]
-		},
-		CONDITIONS: [{
-			TYPE: SELF, 
-			STATE: AVAILABLE,
-			CONTAINS: true,
-			TAGS: [RECRUIT_PARTY_FULL]
-		}]
-	},
-	{
-		ID: RECRUIT_LILI_AGAIN,
-		PRIORITY: 50,
-		RECURRING: true,
-		CONDITIONS: [
-			{
-				TYPE: SELF,
-				STATE: AVAILABLE,
-				CONTAINS: true,
-				TAGS: [RECRUIT_LILI_AGAIN]
-			},
-		],
-		EVENT: [
-			{
-				TYPE: TEXT,
-				TEXT: ["Hey", "Have you found space for me?"]
-			},
-			{
-				TYPE: CHOICE,
-				CHOICES: [
-					{
-						ID: ALLOWED_TO_JOIN, 
-						BTN_TEXT: "yes"
-					}, 
-					{
-						ID: DISALLOWED_TO_JOIN, 
-						BTN_TEXT: "no"
-					}
-				],
-				TEXT: "Allow Lili to join the party?"
-			},
-			{
-				CONDITIONS: [DISALLOWED_TO_JOIN],
-				TYPE: TEXT,
-				TEXT: ["Just kill someone"]
-			},
-		],
-		ON_COMPLETED: {
-			MARK_COMPLETED: [{
-				ID: RECRUIT_LILI_AGAIN,
-				CONDITIONS: {
-					CHOICES: [ALLOWED_TO_JOIN]
-				}
-			}]
-		},
-		CALLBACK: {
-			FUNC: LiliController.RECRUIT_LILI,
-			CONDITIONS: {
-				CHOICES: [ALLOWED_TO_JOIN]
-			}
-		}
-	},
-	
-	# ----- DEFAULT -----
-	{
-		PRIORITY: 1,
-		PERSISTENT: true,
-		RANDOM: true,
-		EVENT: [
-			{
-				TYPE: TEXT,
-				TEXT: ["Oh!"]
-			},
-			{
-				TYPE: TEXT,
-				TEXT: ["What's up?"]
-			},
-			{
-				TYPE: TEXT,
-				TEXT: ["Hey"]
-			}
-		],
-	}
-]
-
-var battle_events := {
-	
-}
-
-var chatter := {
-	"damaged": {
-		"default": ["owch", "ugh"],
-		"special": {}
-	},
-	"attacking": {
-		"default": ["Hiyah!", "Die!"],
-		"special": {}
-	}
-}
+var _entries: Array[InteractionEntry] = []
 
 
-func _get_default_tags() -> Array:
+func _init() -> void:
+	_entries = _build_entries()
+
+
+func get_entries() -> Array[InteractionEntry]:
+	return _entries
+
+
+func _get_default_tags() -> Array[String]:
 	return [FIRST_ENCOUNTER]
 
 
-func get_chatter(topic: String) -> String:
-	if chatter.has(topic):
-		return chatter.topic
-	
-	return ""
+func _build_entries() -> Array[InteractionEntry]:
+	var out: Array[InteractionEntry] = []
+
+	out.append(_first_encounter())
+	out.append(_recruit_offer())
+	out.append(_recruit_lili_again())
+	out.append(_idle_default())
+
+	return out
 
 
-func get_interactions() -> Array:
-	return interactions
+func _first_encounter() -> InteractionEntry:
+	var e := InteractionEntry.new()
+	e.id = FIRST_ENCOUNTER
+	e.priority = 10
+	e.conditions = [TagCondition.self_available(FIRST_ENCOUNTER)]
+	var steps: Array[EventStep] = [
+		DialogueStep.say("", ["Greetings dungeon delver", "My name is Lili", "Pleasure to meet you"]),
+		MarkTagStep.self_completed(FIRST_ENCOUNTER),
+		MarkTagStep.self_available(FIRST_ENCOUNTER_SECOND),
+	]
+	e.steps = steps
+	return e
 
 
-func get_battle_event(_id: String) -> Array:
-	if battle_events.has(_id):
-		return battle_events[_id]
-	
-	return []
+func _recruit_offer() -> InteractionEntry:
+	var e := InteractionEntry.new()
+	e.id = FIRST_ENCOUNTER_SECOND
+	e.priority = 10
+	e.conditions = [
+		TagCondition.self_available(FIRST_ENCOUNTER_SECOND),
+		PartyCondition.missing_self(),
+	]
+
+	var refused := DialogueStep.say("", ["Okay..."])
+	refused.conditions = [DISALLOWED_TO_JOIN]
+
+	var mark_done := MarkTagStep.self_completed(FIRST_ENCOUNTER_SECOND)
+	mark_done.conditions = [ALLOWED_TO_JOIN]
+
+	var recruit := RecruitCharacterStep.with_party_full_tag(PARTY_FULL_MARKER)
+	recruit.conditions = [ALLOWED_TO_JOIN]
+
+	var no_place := DialogueStep.say("", ["It seems like there's no place for me.."])
+	no_place.conditions = [ALLOWED_TO_JOIN, RecruitCharacterStep.PARTY_FULL]
+
+	var unlock_retry := MarkTagStep.self_available(RECRUIT_LILI_AGAIN)
+	unlock_retry.conditions = [ALLOWED_TO_JOIN, RecruitCharacterStep.PARTY_FULL]
+
+	var steps: Array[EventStep] = [
+		DialogueStep.say("", ["My party's been..", "Perhaps I could join you?"]),
+		ChoiceStep.prompt("Allow Lili to join the party?", [
+			ChoiceOption.make(ALLOWED_TO_JOIN, "accept"),
+			ChoiceOption.make(DISALLOWED_TO_JOIN, "refuse"),
+		]),
+		refused,
+		mark_done,
+		recruit,
+		no_place,
+		unlock_retry,
+	]
+	e.steps = steps
+
+	return e
 
 
-func get_damaged_line(key: String, _amt: int, _ctx: ActionContext = null) -> String:
-	var lines: Dictionary = chatter.get(key, {})
-	var default: Array = lines.get("default", [])
-	
-	if !lines.is_empty():
-		return default.pick_random()
-	
-	return ""
+func _recruit_lili_again() -> InteractionEntry:
+	var e := InteractionEntry.new()
+	e.id = RECRUIT_LILI_AGAIN
+	e.priority = 50
+	e.conditions = [
+		TagCondition.self_available(RECRUIT_LILI_AGAIN),
+		PartyCondition.missing_self(),
+	]
+
+	var refused := DialogueStep.say("", ["Just kill someone"])
+	refused.conditions = [DISALLOWED_TO_JOIN]
+
+	var mark_done := MarkTagStep.self_completed(RECRUIT_LILI_AGAIN)
+	mark_done.conditions = [ALLOWED_TO_JOIN]
+
+	var recruit := RecruitCharacterStep.with_party_full_tag(PARTY_FULL_MARKER)
+	recruit.conditions = [ALLOWED_TO_JOIN]
+
+	var no_place := DialogueStep.say("", ["It seems like there's no place for me.."])
+	no_place.conditions = [ALLOWED_TO_JOIN, RecruitCharacterStep.PARTY_FULL]
+
+	var unlock_retry := MarkTagStep.self_available(RECRUIT_LILI_AGAIN)
+	unlock_retry.conditions = [ALLOWED_TO_JOIN, RecruitCharacterStep.PARTY_FULL]
+
+	var steps: Array[EventStep] = [
+		DialogueStep.say("", ["Hey", "Have you found space for me?"]),
+		ChoiceStep.prompt("Allow Lili to join the party?", [
+			ChoiceOption.make(ALLOWED_TO_JOIN, "yes"),
+			ChoiceOption.make(DISALLOWED_TO_JOIN, "no"),
+		]),
+		refused,
+		mark_done,
+		recruit,
+		no_place,
+		unlock_retry,
+	]
+	e.steps = steps
+
+	return e
 
 
-func get_attacking_line(key: String, _source: Character, _targets: Array) -> String:
-	var lines: Dictionary = chatter.get(key, {})
-	var default: Array = lines.get("default", [])
-	
-	if !lines.is_empty():
-		return default.pick_random()
-		
-	return ""
+func _idle_default() -> InteractionEntry:
+	var e := InteractionEntry.new()
+	e.id = "idle_default"
+	e.priority = 1
+	e.idle = true
+	e.random_pick = true
+	var steps: Array[EventStep] = [
+		DialogueStep.say("", ["Oh!"]),
+		DialogueStep.say("", ["What's up?"]),
+		DialogueStep.say("", ["Hey"]),
+	]
+	e.steps = steps
+	return e

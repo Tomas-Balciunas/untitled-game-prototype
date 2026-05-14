@@ -33,6 +33,7 @@ var inventory: Inventory
 var battle_events: Array[BattleEvent]
 var interactions: CharacterInteraction
 var interaction_controller: InteractionController
+var chatter: CharacterChatter
 
 var equipment: Equipment = null
 
@@ -48,6 +49,9 @@ func _init(res: CharacterResource) -> void:
 		
 	if resource.interaction_controller:
 		interaction_controller = resource.interaction_controller
+
+	if resource.chatter:
+		chatter = resource.chatter
 	
 	level_up_attributes = Attributes.new()
 	starting_attributes = res.attributes.duplicate(true)

@@ -1,48 +1,31 @@
 extends Node
 
-var events: Dictionary = {
-	# eventually events will move into their separate files i think
-	"test_event_000": [
-		{
-			"type": "text",
-			"speaker": "Unknown Entity",
-			"text": [
-				"Abandon all hope",
-				"Ye who enter here"
-			]
-		},
-		{
-			"type": "text",
-			"speaker": "Someone Else",
-			"text": [
-				"Test",
-			]
-		},
-		{
-			"type": "text",
-			"speaker": "Unknown Entity",
-			"text": [
-				"Whatever",
-			]
-		},
-		{
-			"type": "encounter",
-			"arena": "arena_default_00", 
-			"enemies": ["e_enemy_002", "0000"]
-		},
-		{
-			"type": "text",
-			"speaker": "Unknown Entity",
-			"text": [
-				"Well done",
-				"You may pass"
-			]
-		}
-	]
-}
+var _events: Dictionary = {}
 
-func get_event(id: String) -> Array:
-	if events.has(id):
-		return events[id]
-	print("Event not found")
-	return []
+
+func _ready() -> void:
+	_register(TestEvent000.build())
+
+
+func get_event(id: String) -> EventResource:
+	if not _events.has(id):
+		push_warning("Event not found: %s" % id)
+		return null
+	return _events[id]
+
+
+func has_event(id: String) -> bool:
+	return _events.has(id)
+
+
+func _register(event: EventResource) -> void:
+	if event == null:
+		push_error("EventRegistry._register received null")
+		return
+	if event.id == "":
+		push_error("EventRegistry._register received event with empty id")
+		return
+	if _events.has(event.id):
+		push_error("EventRegistry: duplicate event id %s" % event.id)
+		return
+	_events[event.id] = event

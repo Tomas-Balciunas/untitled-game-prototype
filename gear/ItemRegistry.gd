@@ -12,8 +12,9 @@ func _ready() -> void:
 
 func _register_all() -> void:
 	var res_paths: Array[String] = [
+		"res://gear/consumable/hp pot minor/hp_pot.tres",
 	]
-	
+
 	for path in res_paths:
 		var res := ResourceLoader.load(path)
 		if res:
