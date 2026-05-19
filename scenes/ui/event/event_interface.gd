@@ -7,6 +7,7 @@ enum Mode { CONVERSATION, CHOICE }
 
 
 func _ready() -> void:
+	process_mode = Node.PROCESS_MODE_ALWAYS
 	ConversationBus.request_conversation.connect(_on_request_conversation)
 	ConversationBus.request_choice.connect(_on_request_choice)
 

@@ -4,6 +4,7 @@ class_name GiveItemStep
 
 @export var item: ItemResource
 @export var target_member_id: String = ""
+@export var notify: bool = true
 
 
 func run(_manager: EventManager) -> void:
@@ -25,7 +26,8 @@ func run(_manager: EventManager) -> void:
 		NotificationBus.notification_requested.emit("%s's inventory is full!" % receiver.resource.name)
 		return
 
-	NotificationBus.notification_requested.emit("%s received %s" % [receiver.resource.name, instance.get_item_name()])
+	if notify:
+		NotificationBus.notification_requested.emit("%s received %s" % [receiver.resource.name, instance.get_item_name()])
 
 
 func _resolve_receiver() -> Character:
@@ -41,16 +43,3 @@ func _resolve_receiver() -> Character:
 
 	push_warning("GiveItemStep: party member %s not found" % target_member_id)
 	return null
-
-
-static func to_first(p_item: ItemResource) -> GiveItemStep:
-	var s := GiveItemStep.new()
-	s.item = p_item
-	return s
-
-
-static func to_member(p_member_id: String, p_item: ItemResource) -> GiveItemStep:
-	var s := GiveItemStep.new()
-	s.item = p_item
-	s.target_member_id = p_member_id
-	return s

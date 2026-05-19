@@ -70,6 +70,17 @@ func get_mass_allies() -> Array[Character]:
 			mass.append(slot)
 	return mass
 
+func grant_experience_to_all(amount: int) -> void:
+	if amount <= 0:
+		return
+	for member: Character in members:
+		member.resource.experience_manager.grant_experience_to_character(member, amount)
+
+func grant_experience_to(member: Character, amount: int) -> void:
+	if member == null or amount <= 0:
+		return
+	member.resource.experience_manager.grant_experience_to_character(member, amount)
+
 func to_dict() -> Dictionary:
 	var members_data := []
 	for member in members:

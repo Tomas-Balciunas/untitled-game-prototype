@@ -12,7 +12,8 @@ metadata/_custom_type_script = "uid://bqln4xpkkidja"
 
 [resource]
 script = ExtResource("3_57sea")
-attack_rate = 5
+targeting = 3
+attack_rate = 7
 accuracy_range = 5
 base_stats = SubResource("Resource_57sea")
 name = "test sword"

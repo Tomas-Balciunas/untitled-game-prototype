@@ -2,6 +2,8 @@
 
 [ext_resource type="Script" uid="uid://bwn4gpkaijqsg" path="res://scripts/CharacterResource.gd" id="1_0cmg2"]
 [ext_resource type="Resource" uid="uid://dq6o86j5axtjb" path="res://characters/foes/Balmer/Balmer.tres" id="2_mecwj"]
+[ext_resource type="Script" uid="uid://b06vmgrh4qa8i" path="res://gear/ItemResource.gd" id="3_mecwj"]
+[ext_resource type="Resource" uid="uid://cakblj60r6ir" path="res://gear/weapon/cheat_sword.tres" id="4_4cdrg"]
 [ext_resource type="Script" uid="uid://bsiblcov0noq8" path="res://maps/_encounter/EncounterData.gd" id="4_dop40"]
 
 [resource]
@@ -10,4 +12,6 @@ id = "starting_area_02"
 description = "whatever"
 enemies = Array[ExtResource("1_0cmg2")]([ExtResource("2_mecwj"), ExtResource("2_mecwj"), ExtResource("2_mecwj"), ExtResource("2_mecwj"), ExtResource("2_mecwj")])
 experience_reward = 5000
+gold_reward = 500
+item_rewards = Array[ExtResource("3_mecwj")]([ExtResource("4_4cdrg")])
 metadata/_custom_type_script = "uid://bsiblcov0noq8"

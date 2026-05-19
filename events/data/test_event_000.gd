@@ -4,13 +4,11 @@ class_name TestEvent000
 static func build() -> EventResource:
 	var ev := EventResource.new()
 	ev.id = "test_event_000"
-
-	var steps: Array[EventStep] = [
-		DialogueStep.say("Unknown Entity", ["Abandon all hope", "Ye who enter here"]),
-		DialogueStep.say("Someone Else", ["Test"]),
-		DialogueStep.say("Unknown Entity", ["Whatever"]),
-		EncounterStep.against("arena_default_00", ["e_enemy_002", "0000"]),
-		DialogueStep.say("Unknown Entity", ["Well done", "You may pass"]),
-	]
-	ev.steps = steps
+	ev.steps = EventBuilder.new() \
+		.say("Unknown Entity", ["Abandon all hope", "Ye who enter here"]) \
+		.say("Someone Else", ["Test"]) \
+		.say("Unknown Entity", ["Whatever"]) \
+		.encounter("arena_default_00", ["e_enemy_002", "0000"]) \
+		.say("Unknown Entity", ["Well done", "You may pass"]) \
+		.build()
 	return ev

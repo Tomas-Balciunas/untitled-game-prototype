@@ -32,16 +32,3 @@ func _resolve_receiver() -> Character:
 
 	push_warning("ApplyEffectStep: party member %s not found" % target_member_id)
 	return null
-
-
-static func to_first(p_effect: Effect) -> ApplyEffectStep:
-	var s := ApplyEffectStep.new()
-	s.effect = p_effect
-	return s
-
-
-static func to_member(p_member_id: String, p_effect: Effect) -> ApplyEffectStep:
-	var s := ApplyEffectStep.new()
-	s.effect = p_effect
-	s.target_member_id = p_member_id
-	return s

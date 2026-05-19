@@ -44,35 +44,3 @@ func _resolve_id(manager: EventManager) -> String:
 			return target_id
 
 	return ""
-
-
-static func self_completed(p_tag: String) -> MarkTagStep:
-	var s := MarkTagStep.new()
-	s.state = State.COMPLETED
-	s.tag = p_tag
-	return s
-
-
-static func self_available(p_tag: String) -> MarkTagStep:
-	var s := MarkTagStep.new()
-	s.state = State.AVAILABLE
-	s.tag = p_tag
-	return s
-
-
-static func other_completed(p_other_id: String, p_tag: String) -> MarkTagStep:
-	var s := MarkTagStep.new()
-	s.state = State.COMPLETED
-	s.target = Target.OTHER
-	s.target_id = p_other_id
-	s.tag = p_tag
-	return s
-
-
-static func other_available(p_other_id: String, p_tag: String) -> MarkTagStep:
-	var s := MarkTagStep.new()
-	s.state = State.AVAILABLE
-	s.target = Target.OTHER
-	s.target_id = p_other_id
-	s.tag = p_tag
-	return s

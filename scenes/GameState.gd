@@ -25,9 +25,22 @@ func set_menu() -> void:
 func set_event() -> void:
 	current_state = States.EVENT
 
+func add_gold(amount: int) -> void:
+	if amount <= 0:
+		return
+	gold += amount
+	CurrencyBus.gold_changed.emit(gold)
+
+func spend_gold(amount: int) -> bool:
+	if amount <= 0 or gold < amount:
+		return false
+	gold -= amount
+	CurrencyBus.gold_changed.emit(gold)
+	return true
+
 func game_save() -> int:
 	return gold
-	
+
 func game_load(data: Dictionary) -> void:
 	gold = data["gold"]
 

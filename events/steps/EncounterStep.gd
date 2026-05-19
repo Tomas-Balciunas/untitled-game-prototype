@@ -17,13 +17,3 @@ func run(_manager: EventManager) -> void:
 
 	EncounterBus.encounter_started.emit(data)
 	await EncounterBus.encounter_ended
-
-
-static func against(p_arena: String, p_enemies: Array) -> EncounterStep:
-	var s := EncounterStep.new()
-	s.arena = p_arena
-	var typed: Array[String] = []
-	for e in p_enemies:
-		typed.append(e)
-	s.enemies = typed
-	return s

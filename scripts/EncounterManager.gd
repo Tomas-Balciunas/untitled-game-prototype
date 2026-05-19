@@ -41,15 +41,36 @@ func start_encounter(data: EncounterData) -> void:
 func end_encounter(result: String, data: EncounterData) -> void:
 	if result == "win":
 		MapInstance.mark_encounter_cleared(data.id)
-		
-		#TODO find a better place
-		for member in PartyManager.members:
-			member.resource.experience_manager.grant_experience_to_character(member, data.experience_reward)
-	
+
 	current_battle_scene.queue_free()
 	get_tree().get_root().get_node("Main").remove_child(current_battle_scene)
 	current_battle_scene = null
 	print("EncounterManager: Ending encounter with result:", result)
 	BattleContext.clear_context()
 	print(data)
+
+	if result == "win":
+		if data.reward_event != null:
+			await EventManager.process_event(data.reward_event)
+		else:
+			var default_steps := _build_default_reward_steps(data)
+			if not default_steps.is_empty():
+				await EventManager.process_event(default_steps)
+
+		PartyManager.grant_experience_to_all(data.experience_reward)
+
 	GameState.current_state = GameState.States.IDLE
+
+
+func _build_default_reward_steps(data: EncounterData) -> Array[EventStep]:
+	var b := EventBuilder.new()
+
+	if data.gold_reward > 0:
+		b.say("", ["Obtained %d gold." % data.gold_reward]).give_gold(data.gold_reward, false)
+
+	for item_resource: ItemResource in data.item_rewards:
+		if item_resource == null:
+			continue
+		b.say("", ["Obtained %s." % item_resource.name]).give_item(item_resource, false)
+
+	return b.build()

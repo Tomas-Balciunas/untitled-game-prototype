@@ -54,22 +54,19 @@ func _build_entries() -> Array[InteractionEntry]:
 	return out
 
 
-# Priority 100 — fires exactly once (default tag FIRST_GREET is available at setup).
 func _greet() -> InteractionEntry:
 	var e := InteractionEntry.new()
 	e.id = FIRST_GREET
 	e.priority = 100
 	e.conditions = [TagCondition.self_available(FIRST_GREET)]
-	var steps: Array[EventStep] = [
-		DialogueStep.say("", ["Oh, a traveler!", "I'm the test dummy.", "Talk to me again — I do a lot of things."]),
-		MarkTagStep.self_completed(FIRST_GREET),
-		MarkTagStep.self_available(MAIN_CHATTER),
-	]
-	e.steps = steps
+	e.steps = EventBuilder.new() \
+		.say("", ["Oh, a traveler!", "I'm the test dummy.", "Talk to me again — I do a lot of things."]) \
+		.mark_self(FIRST_GREET) \
+		.mark_self(MAIN_CHATTER, false) \
+		.build()
 	return e
 
 
-# Priority 90 — quest turn-in beats the offer once you actually have the item.
 func _quest_turn_in() -> InteractionEntry:
 	var e := InteractionEntry.new()
 	e.id = "quest_turn_in"
@@ -79,23 +76,19 @@ func _quest_turn_in() -> InteractionEntry:
 		TagCondition.self_not_completed(QUEST_DONE),
 		InventoryCondition.any_has("hp pot"),
 	]
-	var lili_chime := DialogueStep.say("Lili", ["Generous of him.", "Don't say I never bring you anywhere good."])
-	lili_chime.world_conditions = [PartyCondition.has(LILI_ID)]
-
-	var steps: Array[EventStep] = [
-		DialogueStep.say("", ["You brought it!", "Here, take this in return."]),
-		GiveItemStep.to_first(CHEAT_SWORD),
-		ApplyEffectStep.to_first(ARCANE_RESONANCE),
-		LearnSkillStep.to_first(ARCANE_BOLT),
-		MarkTagStep.self_completed(QUEST_DONE),
-		DialogueStep.say("", ["A sword, a blessing, and a new spell.", "Use them well."]),
-		lili_chime,
-	]
-	e.steps = steps
+	var lili_only: Array[InteractionCondition] = [PartyCondition.has(LILI_ID)]
+	e.steps = EventBuilder.new() \
+		.say("", ["You brought it!", "Here, take this in return."]) \
+		.give_item(CHEAT_SWORD) \
+		.apply_effect(ARCANE_RESONANCE) \
+		.learn_skill(ARCANE_BOLT) \
+		.mark_self(QUEST_DONE) \
+		.say("", ["A sword, a blessing, and a new spell.", "Use them well."]) \
+		.only_if(lili_only).say("Lili", ["Generous of him.", "Don't say I never bring you anywhere good."]) \
+		.build()
 	return e
 
 
-# Priority 80 — nag if quest offered but no item brought yet.
 func _quest_nag() -> InteractionEntry:
 	var e := InteractionEntry.new()
 	e.id = "quest_nag"
@@ -105,14 +98,12 @@ func _quest_nag() -> InteractionEntry:
 		TagCondition.self_not_completed(QUEST_DONE),
 		NotCondition.of(InventoryCondition.any_has("hp pot")),
 	]
-	var steps: Array[EventStep] = [
-		DialogueStep.say("", ["Still thirsty.", "Find me an hp pot if you would."]),
-	]
-	e.steps = steps
+	e.steps = EventBuilder.new() \
+		.say("", ["Still thirsty.", "Find me an hp pot if you would."]) \
+		.build()
 	return e
 
 
-# Priority 70 — first offer of the quest.
 func _quest_offer() -> InteractionEntry:
 	var e := InteractionEntry.new()
 	e.id = "quest_offer"
@@ -121,33 +112,21 @@ func _quest_offer() -> InteractionEntry:
 		TagCondition.self_available(MAIN_CHATTER),
 		TagCondition.self_not_completed(QUEST_OFFERED),
 		TagCondition.self_not_completed(QUEST_DONE),
-		PartyCondition.has_free_slot(),  # arbitrary extra condition exercising party check
+		PartyCondition.has_free_slot(),
 	]
-
-	var thanks := DialogueStep.say("", ["Bless you, traveler."])
-	thanks.conditions = [ACCEPT]
-
-	var bummer := DialogueStep.say("", ["Suit yourself."])
-	bummer.conditions = [DECLINE]
-
-	var mark := MarkTagStep.self_completed(QUEST_OFFERED)
-	mark.conditions = [ACCEPT]
-
-	var steps: Array[EventStep] = [
-		DialogueStep.say("", ["I've a parched throat.", "Bring me an hp pot — I'll make it worth your while."]),
-		ChoiceStep.prompt("Take the request?", [
+	e.steps = EventBuilder.new() \
+		.say("", ["I've a parched throat.", "Bring me an hp pot — I'll make it worth your while."]) \
+		.choose("Take the request?", [
 			ChoiceOption.make(ACCEPT, "Accept"),
 			ChoiceOption.make(DECLINE, "Decline"),
-		]),
-		thanks,
-		bummer,
-		mark,
-	]
-	e.steps = steps
+		]) \
+		.when([ACCEPT]).say("", ["Bless you, traveler."]) \
+		.when([DECLINE]).say("", ["Suit yourself."]) \
+		.when([ACCEPT]).mark_self(QUEST_OFFERED) \
+		.build()
 	return e
 
 
-# Themed idle once the quest is done; wins over the generic idle but loses to anything non-idle.
 func _post_quest() -> InteractionEntry:
 	var e := InteractionEntry.new()
 	e.id = "post_quest"
@@ -155,16 +134,14 @@ func _post_quest() -> InteractionEntry:
 	e.idle = true
 	e.conditions = [TagCondition.self_completed(QUEST_DONE)]
 	e.random_pick = true
-	var steps: Array[EventStep] = [
-		DialogueStep.say("", ["Thanks again for the hp pot."]),
-		DialogueStep.say("", ["May your blade stay sharp."]),
-		DialogueStep.say("", ["The resonance suits you."]),
-	]
-	e.steps = steps
+	e.steps = EventBuilder.new() \
+		.say("", ["Thanks again for the hp pot."]) \
+		.say("", ["May your blade stay sharp."]) \
+		.say("", ["The resonance suits you."]) \
+		.build()
 	return e
 
 
-# Priority 60 — acknowledges a granted skill anywhere in the party.
 func _skill_ack() -> InteractionEntry:
 	var e := InteractionEntry.new()
 	e.id = "skill_ack"
@@ -174,15 +151,13 @@ func _skill_ack() -> InteractionEntry:
 		HasSkillCondition.any_knows("arcane_bolt"),
 		TagCondition.self_not_completed("skill_ack_done"),
 	]
-	var steps: Array[EventStep] = [
-		DialogueStep.say("", ["Arcane bolt, eh?", "Decent pick."]),
-		MarkTagStep.self_completed("skill_ack_done"),
-	]
-	e.steps = steps
+	e.steps = EventBuilder.new() \
+		.say("", ["Arcane bolt, eh?", "Decent pick."]) \
+		.mark_self("skill_ack_done") \
+		.build()
 	return e
 
 
-# Priority 55 — acknowledges a granted effect anywhere in the party.
 func _effect_ack() -> InteractionEntry:
 	var e := InteractionEntry.new()
 	e.id = "effect_ack"
@@ -192,15 +167,13 @@ func _effect_ack() -> InteractionEntry:
 		HasEffectCondition.any_has("arcane_resonance"),
 		TagCondition.self_not_completed("effect_ack_done"),
 	]
-	var steps: Array[EventStep] = [
-		DialogueStep.say("", ["I feel the weave humming around you.", "Arcane resonance — nice."]),
-		MarkTagStep.self_completed("effect_ack_done"),
-	]
-	e.steps = steps
+	e.steps = EventBuilder.new() \
+		.say("", ["I feel the weave humming around you.", "Arcane resonance — nice."]) \
+		.mark_self("effect_ack_done") \
+		.build()
 	return e
 
 
-# Priority 50 — Lili is currently in the party.
 func _lili_in_party() -> InteractionEntry:
 	var e := InteractionEntry.new()
 	e.id = "lili_in_party"
@@ -210,15 +183,13 @@ func _lili_in_party() -> InteractionEntry:
 		PartyCondition.has(LILI_ID),
 		TagCondition.self_not_completed("lili_party_ack"),
 	]
-	var steps: Array[EventStep] = [
-		DialogueStep.say("", ["Lili made it onto your team — well done.", "Tell her I said hi."]),
-		MarkTagStep.self_completed("lili_party_ack"),
-	]
-	e.steps = steps
+	e.steps = EventBuilder.new() \
+		.say("", ["Lili made it onto your team — well done.", "Tell her I said hi."]) \
+		.mark_self("lili_party_ack") \
+		.build()
 	return e
 
 
-# Priority 45 — Lili was met but isn't in the party.
 func _lili_met_elsewhere() -> InteractionEntry:
 	var e := InteractionEntry.new()
 	e.id = "lili_met_elsewhere"
@@ -229,15 +200,13 @@ func _lili_met_elsewhere() -> InteractionEntry:
 		PartyCondition.missing(LILI_ID),
 		TagCondition.self_not_completed("lili_seen_ack"),
 	]
-	var steps: Array[EventStep] = [
-		DialogueStep.say("", ["You've met Lili, but she's not with you?", "Strange days."]),
-		MarkTagStep.self_completed("lili_seen_ack"),
-	]
-	e.steps = steps
+	e.steps = EventBuilder.new() \
+		.say("", ["You've met Lili, but she's not with you?", "Strange days."]) \
+		.mark_self("lili_seen_ack") \
+		.build()
 	return e
 
 
-# Priority 40 — OR-condition across systems: party of 3+, OR you've cleared the test event.
 func _secret_combo() -> InteractionEntry:
 	var e := InteractionEntry.new()
 	e.id = "secret_combo"
@@ -253,15 +222,13 @@ func _secret_combo() -> InteractionEntry:
 		]),
 		TagCondition.self_not_completed("secret_done"),
 	]
-	var steps: Array[EventStep] = [
-		DialogueStep.say("", ["Few make it this far.", "Whether by numbers or by deed — well met."]),
-		MarkTagStep.self_completed("secret_done"),
-	]
-	e.steps = steps
+	e.steps = EventBuilder.new() \
+		.say("", ["Few make it this far.", "Whether by numbers or by deed — well met."]) \
+		.mark_self("secret_done") \
+		.build()
 	return e
 
 
-# Priority 35 — combat challenge launched from dialogue.
 func _combat_challenge() -> InteractionEntry:
 	var e := InteractionEntry.new()
 	e.id = "combat_challenge"
@@ -269,41 +236,23 @@ func _combat_challenge() -> InteractionEntry:
 	e.conditions = [
 		TagCondition.self_available(MAIN_CHATTER),
 		TagCondition.self_not_completed("combat_done"),
-		PartyCondition.has_free_slot(),  # don't pick a fight with a full party? arbitrary
+		PartyCondition.has_free_slot(),
 	]
-
-	var coward := DialogueStep.say("", ["Coward."])
-	coward.conditions = [DECLINE]
-
-	var pre_fight := DialogueStep.say("", ["Then have at thee!"])
-	pre_fight.conditions = [ACCEPT]
-
-	var fight := EncounterStep.against("arena_default_00", ["0000"])
-	fight.conditions = [ACCEPT]
-
-	var post := DialogueStep.say("", ["Well struck.", "I yield."])
-	post.conditions = [ACCEPT]
-
-	var done := MarkTagStep.self_completed("combat_done")
-	done.conditions = [ACCEPT]
-
-	var steps: Array[EventStep] = [
-		DialogueStep.say("", ["Fancy a scrap?"]),
-		ChoiceStep.prompt("Fight the test dummy?", [
+	e.steps = EventBuilder.new() \
+		.say("", ["Fancy a scrap?"]) \
+		.choose("Fight the test dummy?", [
 			ChoiceOption.make(ACCEPT, "Bring it"),
 			ChoiceOption.make(DECLINE, "Pass"),
-		]),
-		pre_fight,
-		fight,
-		post,
-		done,
-		coward,
-	]
-	e.steps = steps
+		]) \
+		.when([ACCEPT]).say("", ["Then have at thee!"]) \
+		.when([ACCEPT]).encounter("arena_default_00", ["0000"]) \
+		.when([ACCEPT]).say("", ["Well struck.", "I yield."]) \
+		.when([ACCEPT]).mark_self("combat_done") \
+		.when([DECLINE]).say("", ["Coward."]) \
+		.build()
 	return e
 
 
-# Priority 30 — fires when no companions have joined the MC yet.
 func _party_alone() -> InteractionEntry:
 	var e := InteractionEntry.new()
 	e.id = "party_alone"
@@ -315,25 +264,22 @@ func _party_alone() -> InteractionEntry:
 		TagCondition.self_available(MAIN_CHATTER),
 		size_1,
 	]
-	var steps: Array[EventStep] = [
-		DialogueStep.say("", ["No companions?", "Brave. Or foolish."]),
-	]
-	e.steps = steps
+	e.steps = EventBuilder.new() \
+		.say("", ["No companions?", "Brave. Or foolish."]) \
+		.build()
 	return e
 
 
-# Generic idle fallback — random one-liner when nothing else (idle or otherwise) matches.
 func _idle_default() -> InteractionEntry:
 	var e := InteractionEntry.new()
 	e.id = "idle_default"
 	e.priority = 1
 	e.idle = true
 	e.random_pick = true
-	var steps: Array[EventStep] = [
-		DialogueStep.say("", ["Oh!"]),
-		DialogueStep.say("", ["Hey there."]),
-		DialogueStep.say("", ["Hm?"]),
-		DialogueStep.say("", ["..."]),
-	]
-	e.steps = steps
+	e.steps = EventBuilder.new() \
+		.say("", ["Oh!"]) \
+		.say("", ["Hey there."]) \
+		.say("", ["Hm?"]) \
+		.say("", ["..."]) \
+		.build()
 	return e

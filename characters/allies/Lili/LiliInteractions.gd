@@ -44,12 +44,11 @@ func _first_encounter() -> InteractionEntry:
 	e.id = FIRST_ENCOUNTER
 	e.priority = 10
 	e.conditions = [TagCondition.self_available(FIRST_ENCOUNTER)]
-	var steps: Array[EventStep] = [
-		DialogueStep.say("", ["Greetings dungeon delver", "My name is Lili", "Pleasure to meet you"]),
-		MarkTagStep.self_completed(FIRST_ENCOUNTER),
-		MarkTagStep.self_available(FIRST_ENCOUNTER_SECOND),
-	]
-	e.steps = steps
+	e.steps = EventBuilder.new() \
+		.say("", ["Greetings dungeon delver", "My name is Lili", "Pleasure to meet you"]) \
+		.mark_self(FIRST_ENCOUNTER) \
+		.mark_self(FIRST_ENCOUNTER_SECOND, false) \
+		.build()
 	return e
 
 
@@ -61,36 +60,18 @@ func _recruit_offer() -> InteractionEntry:
 		TagCondition.self_available(FIRST_ENCOUNTER_SECOND),
 		PartyCondition.missing_self(),
 	]
-
-	var refused := DialogueStep.say("", ["Okay..."])
-	refused.conditions = [DISALLOWED_TO_JOIN]
-
-	var mark_done := MarkTagStep.self_completed(FIRST_ENCOUNTER_SECOND)
-	mark_done.conditions = [ALLOWED_TO_JOIN]
-
-	var recruit := RecruitCharacterStep.with_party_full_tag(PARTY_FULL_MARKER)
-	recruit.conditions = [ALLOWED_TO_JOIN]
-
-	var no_place := DialogueStep.say("", ["It seems like there's no place for me.."])
-	no_place.conditions = [ALLOWED_TO_JOIN, RecruitCharacterStep.PARTY_FULL]
-
-	var unlock_retry := MarkTagStep.self_available(RECRUIT_LILI_AGAIN)
-	unlock_retry.conditions = [ALLOWED_TO_JOIN, RecruitCharacterStep.PARTY_FULL]
-
-	var steps: Array[EventStep] = [
-		DialogueStep.say("", ["My party's been..", "Perhaps I could join you?"]),
-		ChoiceStep.prompt("Allow Lili to join the party?", [
+	e.steps = EventBuilder.new() \
+		.say("", ["My party's been..", "Perhaps I could join you?"]) \
+		.choose("Allow Lili to join the party?", [
 			ChoiceOption.make(ALLOWED_TO_JOIN, "accept"),
 			ChoiceOption.make(DISALLOWED_TO_JOIN, "refuse"),
-		]),
-		refused,
-		mark_done,
-		recruit,
-		no_place,
-		unlock_retry,
-	]
-	e.steps = steps
-
+		]) \
+		.when([DISALLOWED_TO_JOIN]).say("", ["Okay..."]) \
+		.when([ALLOWED_TO_JOIN]).mark_self(FIRST_ENCOUNTER_SECOND) \
+		.when([ALLOWED_TO_JOIN]).recruit(PARTY_FULL_MARKER) \
+		.when([ALLOWED_TO_JOIN, RecruitCharacterStep.PARTY_FULL]).say("", ["It seems like there's no place for me.."]) \
+		.when([ALLOWED_TO_JOIN, RecruitCharacterStep.PARTY_FULL]).mark_self(RECRUIT_LILI_AGAIN, false) \
+		.build()
 	return e
 
 
@@ -102,36 +83,18 @@ func _recruit_lili_again() -> InteractionEntry:
 		TagCondition.self_available(RECRUIT_LILI_AGAIN),
 		PartyCondition.missing_self(),
 	]
-
-	var refused := DialogueStep.say("", ["Just kill someone"])
-	refused.conditions = [DISALLOWED_TO_JOIN]
-
-	var mark_done := MarkTagStep.self_completed(RECRUIT_LILI_AGAIN)
-	mark_done.conditions = [ALLOWED_TO_JOIN]
-
-	var recruit := RecruitCharacterStep.with_party_full_tag(PARTY_FULL_MARKER)
-	recruit.conditions = [ALLOWED_TO_JOIN]
-
-	var no_place := DialogueStep.say("", ["It seems like there's no place for me.."])
-	no_place.conditions = [ALLOWED_TO_JOIN, RecruitCharacterStep.PARTY_FULL]
-
-	var unlock_retry := MarkTagStep.self_available(RECRUIT_LILI_AGAIN)
-	unlock_retry.conditions = [ALLOWED_TO_JOIN, RecruitCharacterStep.PARTY_FULL]
-
-	var steps: Array[EventStep] = [
-		DialogueStep.say("", ["Hey", "Have you found space for me?"]),
-		ChoiceStep.prompt("Allow Lili to join the party?", [
+	e.steps = EventBuilder.new() \
+		.say("", ["Hey", "Have you found space for me?"]) \
+		.choose("Allow Lili to join the party?", [
 			ChoiceOption.make(ALLOWED_TO_JOIN, "yes"),
 			ChoiceOption.make(DISALLOWED_TO_JOIN, "no"),
-		]),
-		refused,
-		mark_done,
-		recruit,
-		no_place,
-		unlock_retry,
-	]
-	e.steps = steps
-
+		]) \
+		.when([DISALLOWED_TO_JOIN]).say("", ["Just kill someone"]) \
+		.when([ALLOWED_TO_JOIN]).mark_self(RECRUIT_LILI_AGAIN) \
+		.when([ALLOWED_TO_JOIN]).recruit(PARTY_FULL_MARKER) \
+		.when([ALLOWED_TO_JOIN, RecruitCharacterStep.PARTY_FULL]).say("", ["It seems like there's no place for me.."]) \
+		.when([ALLOWED_TO_JOIN, RecruitCharacterStep.PARTY_FULL]).mark_self(RECRUIT_LILI_AGAIN, false) \
+		.build()
 	return e
 
 
@@ -141,10 +104,9 @@ func _idle_default() -> InteractionEntry:
 	e.priority = 1
 	e.idle = true
 	e.random_pick = true
-	var steps: Array[EventStep] = [
-		DialogueStep.say("", ["Oh!"]),
-		DialogueStep.say("", ["What's up?"]),
-		DialogueStep.say("", ["Hey"]),
-	]
-	e.steps = steps
+	e.steps = EventBuilder.new() \
+		.say("", ["Oh!"]) \
+		.say("", ["What's up?"]) \
+		.say("", ["Hey"]) \
+		.build()
 	return e

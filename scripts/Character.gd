@@ -243,9 +243,9 @@ func increase_attribute(attr: String) -> bool:
 
 func to_dict() -> Dictionary:
 	var equip_dict := {}
-	for slot: String in equipment.keys():
-		var item: Gear = equipment[slot]
+	for item: Gear in equipment.get_all_equipment():
 		if item:
+			var slot := ItemTypes.gear_type_to_string(item.get_gear_type())
 			equip_dict[slot] = item.game_save()
 
 	var inventory_arr := []
@@ -254,14 +254,14 @@ func to_dict() -> Dictionary:
 			inventory_arr.append(item.game_save())
 		
 	var effect_arr := []
-	for effect: Effect in effects:
-		var is_gear_effect := false
-		for key: String in gear_effects.keys():
-			for gear_effect: Effect in gear_effects[key]:
-				if effect == gear_effect:
-					is_gear_effect = true
-		if not is_gear_effect:
-			effect_arr.append(effect.id)
+	#for effect: Effect in effects:
+		#var is_gear_effect := false
+		#for key: String in gear_effects.keys():
+			#for gear_effect: Effect in gear_effects[key]:
+				#if effect == gear_effect:
+					#is_gear_effect = true
+		#if not is_gear_effect:
+			#effect_arr.append(effect.id)
 			
 	var skills_arr := []
 	for skill: Skill in learnt_skills:

@@ -22,14 +22,11 @@ func run(manager: EventManager) -> void:
 	if PartyManager.is_party_full():
 		manager.choices.append(PARTY_FULL)
 		if party_full_tag != "":
-			MarkTagStep.self_available(party_full_tag).run(manager)
+			var m := MarkTagStep.new()
+			m.state = MarkTagStep.State.AVAILABLE
+			m.tag = party_full_tag
+			m.run(manager)
 		return
 
 	PartyManager.add_member(res)
 	manager.choices.append(RECRUITED)
-
-
-static func with_party_full_tag(p_tag: String) -> RecruitCharacterStep:
-	var s := RecruitCharacterStep.new()
-	s.party_full_tag = p_tag
-	return s

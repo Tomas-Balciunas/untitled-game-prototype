@@ -16,22 +16,18 @@ func on_open_chest_requested(c: Chest) -> void:
 
 func on_chest_opener_chosen(character: Character) -> void:
 	var line_1 := "%s attempts to open the chest..." % character.resource.name
-	var steps: Array[EventStep] = [
-		DialogueStep.say("", [line_1]),
-	]
-
 	var trap: Trap
 	if chest.trap:
 		trap = chest.trap
 	else:
 		trap = TrapRegistry.get_random_trap()
 
+	var b := EventBuilder.new().say("", [line_1])
 	if randf() > 0:
-		steps.append(DialogueStep.say("", ["Oops! %s" % trap.name]))
-		steps.append(TrapStep.against(trap, character))
+		b.say("", ["Oops! %s" % trap.name]).trap(trap, character)
 	else:
-		steps.append(DialogueStep.say("", ["Open!"]))
+		b.say("", ["Open!"])
 
-	await EventManager.process_event(steps)
+	await EventManager.process_event(b.build())
 	chest.set_trapped(false)
 	ChestBus.display_chest_content.emit(chest)
