@@ -241,7 +241,7 @@ func increase_attribute(attr: String) -> bool:
 	stats.recalculate_stats(true, true)
 	return true
 
-func to_dict() -> Dictionary:
+func game_save() -> Dictionary:
 	var equip_dict := {}
 	for item: Gear in equipment.get_all_equipment():
 		if item:
@@ -250,19 +250,21 @@ func to_dict() -> Dictionary:
 
 	var inventory_arr := []
 	for item: Item in inventory.get_all_items():
-		if item is Gear:
-			inventory_arr.append(item.game_save())
-		
+		inventory_arr.append(item.game_save())
+
+	# Skip effects that came from equipped gear — they'll be re-applied
+	# when equipment is re-equipped on load.
+	var gear_effect_set := {}
+	for key: int in gear_effects.keys():
+		for ge: Effect in gear_effects[key]:
+			gear_effect_set[ge.get_instance_id()] = true
+
 	var effect_arr := []
-	#for effect: Effect in effects:
-		#var is_gear_effect := false
-		#for key: String in gear_effects.keys():
-			#for gear_effect: Effect in gear_effects[key]:
-				#if effect == gear_effect:
-					#is_gear_effect = true
-		#if not is_gear_effect:
-			#effect_arr.append(effect.id)
-			
+	for effect: Effect in effects:
+		if gear_effect_set.has(effect.get_instance_id()):
+			continue
+		effect_arr.append(effect.game_save())
+
 	var skills_arr := []
 	for skill: Skill in learnt_skills:
 		if !skill.id:
@@ -276,6 +278,8 @@ func to_dict() -> Dictionary:
 		"xp": current_experience,
 		"hp": state.current_health,
 		"mp": state.current_mana,
+		"sp": state.current_sp,
+		"damage_type": damage_type,
 		"race": race.name,
 		"job": job.name,
 		"main": is_main,
@@ -290,69 +294,89 @@ func to_dict() -> Dictionary:
 	}
 
 
-static func from_dict(data: Dictionary) -> Character:
+static func create_from_save(data: Dictionary) -> Character:
 	var res: CharacterResource = CharacterRegistry.get_character(data["id"])
 	if res == null:
 		push_error("Character resource not found for id %s" % data["id"])
 		return null
 
-	res.race = RaceRegistry.get_by_name(RaceRegistry.type_to_string(data["race"])) 
-	res.job = JobRegistry.get_by_name(JobRegistry.type_to_string(data["job"])) 
+	res.race = RaceRegistry.get_by_name(RaceRegistry.type_to_string(data["race"]))
+	res.job = JobRegistry.get_by_name(JobRegistry.type_to_string(data["job"]))
 	var inst := Character.new(res)
-	
-	if data["main"]:
-		inst.is_main = data["main"]
-	
-	inst.level = data.get("level", 1)
-	inst.current_experience = data.get("xp", 0)
-	inst.unspent_attribute_points = data.get("unspent_points", 0)
+	inst.game_load(data)
+	return inst
+
+
+func game_load(data: Dictionary) -> void:
+	if data.has("main"):
+		is_main = data["main"]
+
+	level = data.get("level", 1)
+	current_experience = data.get("xp", 0)
+	unspent_attribute_points = data.get("unspent_points", 0)
+	damage_type = data.get("damage_type", damage_type) as DamageTypes.Type
 
 	if data.has("level_up_attributes"):
-		var a: Dictionary = data["level_up_attributes"]
-		inst.level_up_attributes.game_load(a)
-		
+		level_up_attributes.game_load(data["level_up_attributes"])
+
 	if data.has("attributes"):
-		var a: Dictionary = data["attributes"]
-		inst.attributes.game_load(a)
-	
+		attributes.game_load(data["attributes"])
+
 	if data.has("starting_attributes"):
-		var a: Dictionary = data["starting_attributes"]
-		inst.starting_attributes.game_load(a)
+		starting_attributes.game_load(data["starting_attributes"])
 
-	inst.state.current_health = data.get("hp", inst.stats.health)
-	inst.state.current_mana = data.get("mp", inst.stats.mana)
+	# Reset effects gathered during _init — saved effects are the source of truth.
+	for e: Effect in effects.duplicate():
+		EffectRunner.unsubscribe(e)
+	effects = []
+	gear_effects = {}
 
-	if data.has("inventory"):
-		inst.inventory.slots = []
-		for item_data: Dictionary in data["inventory"]:
-			var gear := Gear.from_dict(item_data)
-			if gear:
-				inst.inventory.add_item(gear)
-				
-	if data.has("effects"):
-		inst.effects = []
-		for effect_id: String in data["effects"]:
-			var effect := EffectRegistry.get_effect(effect_id)
-			if not effect:
-				push_error("Effect not found: %s" % effect_id)
-				continue
-			inst.apply_effect(effect, CharacterSource.new(inst))
-			
 	if data.has("skills"):
-		inst.learnt_skills = []
+		learnt_skills = []
 		for skill_id: String in data["skills"]:
 			var skill := SkillRegistry.get_skill(skill_id)
 			if not skill:
 				push_error("Skill not found: %s" % skill_id)
 				continue
-			inst.learnt_skills.append(skill)
+			learnt_skills.append(skill)
+
+	if data.has("inventory"):
+		inventory.slots = []
+		for item_data: Dictionary in data["inventory"]:
+			var item := Item.create_from_save(item_data)
+			if item:
+				inventory.add_item(item)
 
 	if data.has("equipment"):
 		for slot: String in data["equipment"].keys():
 			var item_dict: Dictionary = data["equipment"][slot]
-			var gear_inst := Gear.from_dict(item_dict)
+			var gear_inst := Gear.create_from_save(item_dict)
 			if gear_inst:
-				inst.equip_item(gear_inst)
+				inventory.add_item(gear_inst)
+				equipment.equip_item(gear_inst)
 
-	StatCalculator.recalculate_all_stats(inst)
-	return inst
+	StatCalculator.recalculate_all_stats(self)
+	state.current_health = data.get("hp", stats.health)
+	state.current_mana = data.get("mp", stats.mana)
+	state.current_sp = data.get("sp", stats.sp)
+
+
+# Two-phase load: effects are restored *after* all party characters exist,
+# so cross-character source references (e.g. ally A's skill poisons ally B)
+# can resolve via PartyManager.
+func game_load_effects(data: Dictionary) -> void:
+	if not data.has("effects"):
+		return
+	for entry: Dictionary in data["effects"]:
+		var eff := Effect.create_from_save(entry)
+		if not eff:
+			continue
+		# Wire up the effect as if it were already applied — no on_apply.
+		# Owner must be set before game_load so subclasses can use it to
+		# re-wire side effects (e.g. StatBonusEffect re-adds its modifier).
+		eff.set_owner(self)
+		eff.set_source(CharacterSource.new(self))
+		effects.append(eff)
+		EffectRunner.subscribe(eff)
+		# game_load may override source with the persisted one (TrapSource, etc.)
+		eff.game_load(entry)

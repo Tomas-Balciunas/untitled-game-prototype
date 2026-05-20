@@ -9,6 +9,7 @@ var _should_refresh_duration: bool = true
 
 func _init() -> void:
 	battle_only = false
+	expires_after_battle = false
 
 
 func _is_stackable() -> bool:
@@ -59,14 +60,18 @@ func tick(ctx: ActionContext) -> void:
 	tick_ctx.options = tick_ctx.options.duplicate() if tick_ctx.options else {}
 	var resolver = DamageResolver.new((damage_per_turn * stacks) * ctx.tick_power)
 	
+	#TODO: play for allies too
 	if BattleContext.in_battle:
 		var slot = BattleContext.enemy_formation.get_slot_for(owner)
-		var orchestrator = ActionOrchestrator.new(owner, tick_ctx, resolver)
-		orchestrator.execute_action(
-			func (e: ActionEvent) -> void:
-				slot.body_instance.play_poison(e),
-			"poison"
-		)
+		if slot:
+			var orchestrator = ActionOrchestrator.new(owner, tick_ctx, resolver)
+			orchestrator.execute_action(
+				func (e: ActionEvent) -> void:
+					slot.body_instance.play_poison(e),
+				"poison"
+			)
+		else:
+			resolver.execute(tick_ctx)
 	else:
 		resolver.execute(tick_ctx)
 
@@ -78,3 +83,16 @@ func tick(ctx: ActionContext) -> void:
 	if _remaining <= 0:
 		print("Poison expired on %s" % owner.resource.name)
 		on_expire()
+
+
+func game_save() -> Dictionary:
+	var data := super.game_save()
+	data["stacks"] = stacks
+	data["remaining"] = _remaining
+	return data
+
+
+func game_load(data: Dictionary) -> void:
+	super.game_load(data)
+	stacks = data.get("stacks", 1)
+	_remaining = data.get("remaining", duration_turns)

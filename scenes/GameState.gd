@@ -38,11 +38,14 @@ func spend_gold(amount: int) -> bool:
 	CurrencyBus.gold_changed.emit(gold)
 	return true
 
-func game_save() -> int:
-	return gold
+func game_save() -> Dictionary:
+	return {
+		"gold": gold,
+	}
 
 func game_load(data: Dictionary) -> void:
-	gold = data["gold"]
+	gold = data.get("gold", 0)
+	CurrencyBus.gold_changed.emit(gold)
 
 func generate_id() -> String:
 	var a: float = randi()

@@ -95,3 +95,48 @@ func owner_is_actor(event: TriggerEvent) -> bool:
 
 func can_process_when_dead() -> bool:
 	return process_when_dead
+
+
+func game_save() -> Dictionary:
+	var script_path: String = ""
+	var script: Script = get_script()
+	if script:
+		script_path = script.resource_path
+
+	var props: Dictionary = {}
+	for prop in get_property_list():
+		var usage: int = prop.usage
+		if usage & PROPERTY_USAGE_STORAGE and usage & PROPERTY_USAGE_SCRIPT_VARIABLE:
+			var prop_name: String = prop.name
+			props[prop_name] = get(prop_name)
+
+	var data := {
+		"script": script_path,
+		"props": props,
+	}
+	if source:
+		data["source"] = source.game_save()
+	return data
+
+
+func game_load(data: Dictionary) -> void:
+	var props: Dictionary = data.get("props", {})
+	for prop_name: String in props.keys():
+		set(prop_name, props[prop_name])
+
+	if data.has("source"):
+		var restored := ContextSource.create_from_save(data["source"])
+		if restored:
+			source = restored
+
+
+static func create_from_save(data: Dictionary) -> Effect:
+	var script_path: String = data.get("script", "")
+	if script_path.is_empty():
+		push_error("Effect.create_from_save: missing script path")
+		return null
+	var script: Script = load(script_path)
+	if script == null:
+		push_error("Effect.create_from_save: failed to load script '%s'" % script_path)
+		return null
+	return script.new()

@@ -3,6 +3,8 @@ extends Node
 const ON_TURN_END := "on_turn_end"
 const ON_TURN_START := "on_turn_start"
 
+const ON_MOVEMENT := "on_movement"
+
 const ON_DAMAGE_ABOUT_TO_BE_APPLIED := "damage_about_to_be_applied"
 const ON_BEFORE_RECEIVE_DAMAGE := "on_before_receive_damage"
 const ON_DAMAGE_APPLIED := "damage_applied"

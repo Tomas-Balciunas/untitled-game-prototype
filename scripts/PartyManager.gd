@@ -81,20 +81,24 @@ func grant_experience_to(member: Character, amount: int) -> void:
 		return
 	member.resource.experience_manager.grant_experience_to_character(member, amount)
 
-func to_dict() -> Dictionary:
+func game_save() -> Dictionary:
 	var members_data := []
 	for member in members:
-		members_data.append(member.to_dict())
+		members_data.append(member.game_save())
 	return {"party": members_data}
 
-func from_dict(data: Dictionary) -> void:
+func game_load(data: Dictionary) -> void:
 	members.clear()
 	formation = [null, null, null, null]
 
 	if not data.has("party"): return
 
-	for char_data: Dictionary in data["party"]:
-		var inst := Character.from_dict(char_data)
+	var party_data: Array = data["party"]
+
+	# Pass 1: instantiate all characters (sans effects) so cross-references
+	# (e.g. an effect's source pointing at another party member) can resolve in pass 2.
+	for char_data: Dictionary in party_data:
+		var inst := Character.create_from_save(char_data)
 		if inst:
 			members.append(inst)
 			var slot_i := add_member_to_formation(inst)
@@ -102,3 +106,8 @@ func from_dict(data: Dictionary) -> void:
 				print("Character added to party: %s" % inst.resource.name)
 			else:
 				push_error("Adding character to formation error: no free slots")
+
+	# Pass 2: restore effects now that every member is in PartyManager.members.
+	for i: int in range(members.size()):
+		if i < party_data.size():
+			members[i].game_load_effects(party_data[i])

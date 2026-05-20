@@ -51,6 +51,8 @@ func enter_rest_area() -> void:
 		var manager: ExperienceManager = member.resource.experience_manager
 		manager.level_up_character(member)
 
+	SaveManager.save_game(0)
+
 func exit_rest_area() -> void:
 	var dungeon := get_tree().get_root().get_node("Main/Dungeon")
 	var player := get_tree().get_root().get_node("Main/Player")

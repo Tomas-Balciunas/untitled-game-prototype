@@ -19,3 +19,12 @@ func game_save() -> Dictionary
 
 @abstract
 func game_load(data: Dictionary) -> void
+
+
+static func create_from_save(data: Dictionary) -> Item:
+	var cls_name: String = data.get("class", "")
+	if cls_name == "Consumable":
+		var c := Consumable.new()
+		c.game_load(data)
+		return c
+	return Gear.create_from_save(data)

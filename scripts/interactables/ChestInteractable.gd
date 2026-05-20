@@ -17,7 +17,7 @@ func on_map_loaded(_map_data: Dictionary) -> void:
 	var data: Dictionary = MapInstance.chest_state.get(id, {})
 
 	if !data.is_empty():
-		chest = from_dict(data)
+		chest = game_load(data)
 		return
 
 	if chest and not chest.custom_items.is_empty():
@@ -74,18 +74,18 @@ func build_chest(map_data: Dictionary) -> void:
 	chest = inst
 	
 func update_chest_state() -> void:
-	MapInstance.chest_state[id] = to_dict()
+	MapInstance.chest_state[id] = game_save()
 	
 func on_chest_state_changed(_chest: Chest) -> void:
 	if chest and chest.id == _chest.id:
 		update_chest_state()
 
-func to_dict() -> Dictionary:
+func game_save() -> Dictionary:
 	var items := []
-	
+
 	for item: Item in chest.items:
 		items.append(item.game_save())
-	
+
 	return {
 		"id": id,
 		"items": items,
@@ -94,24 +94,23 @@ func to_dict() -> Dictionary:
 		"was_opened": chest.was_opened,
 		"random": random
 	}
-	
-func from_dict(data: Dictionary) -> Chest:
+
+func game_load(data: Dictionary) -> Chest:
 	if !data:
 		return null
 
 	var items: Array[Item] = []
 
-	for item: Dictionary in data.get("items", {}):
-		var item_class: String = item.get("class")
-		var cls: Item = ClassDB.instantiate(item_class)
-		cls.game_load(item)
-		items.append(cls)
-		
+	for item_data: Dictionary in data.get("items", []):
+		var item := Item.create_from_save(item_data)
+		if item:
+			items.append(item)
+
 	var updated_chest := Chest.new()
 	updated_chest.id = data.get("id")
 	updated_chest.locked = data.get("locked")
 	updated_chest.trapped = data.get("trapped")
 	updated_chest.was_opened = data.get("was_opened")
 	updated_chest.items = items
-	
+
 	return updated_chest

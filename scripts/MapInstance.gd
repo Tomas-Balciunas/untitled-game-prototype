@@ -37,12 +37,17 @@ func update_player_position(pos: Vector2i, facing: Vector3) -> void:
 	player_previous_position = player_position
 	player_position = pos
 	player_facing = facing
-	
-	for c in PartyManager.members:
+
+	for c: Character in PartyManager.members:
+		var ctx := ActionContext.new()
+		ctx.source = CharacterSource.new(c)
+
 		var event: TriggerEvent = TriggerEvent.new()
-		event.source = CharacterSource.new(c)
-		event.ctx = ActionContext.new()
-		EffectRunner.process_trigger(EffectTriggers.ON_TURN_END, event)
+		event.source = ctx.source
+		event.ctx = ctx
+		EffectRunner.process_trigger(EffectTriggers.ON_MOVEMENT, event)
+
+		TickDoT.new(c, ctx).execute()
 		
 func add_encounter(data: EncounterData) -> void:
 	if not encounters.has(map_id):
@@ -82,23 +87,30 @@ func is_encounter_cleared(encounter_id: String) -> bool:
 		return false
 	return cleared_encounters[map_id].has(encounter_id)
 
-func to_dict() -> Dictionary:
-	var dungeon_data := {
+func game_save() -> Dictionary:
+	return {
 		"id": map_id,
+		"name": current_map_name,
+		"theme": theme,
 		"player_position": player_position,
+		"player_previous_position": player_previous_position,
 		"player_facing": player_facing,
+		"triggered_events": triggered_events,
 		"cleared_encounters": cleared_encounters,
 		"encounters": encounters,
-		"chest_state": chest_state
+		"chest_state": chest_state,
 	}
-	
-	return dungeon_data
-	
-func from_dict(data: Dictionary) -> void:
+
+func game_load(data: Dictionary) -> void:
 	var dungeon: Dictionary = data.duplicate(true)
+	map_id = dungeon.get("id", "")
+	current_map_name = dungeon.get("name", "")
+	theme = dungeon.get("theme", "")
 	player_position = dungeon["player_position"]
+	player_previous_position = dungeon.get("player_previous_position", player_position)
 	player_facing = dungeon["player_facing"]
+	triggered_events = dungeon.get("triggered_events", {})
 	cleared_encounters = dungeon["cleared_encounters"]
 	encounters = dungeon["encounters"]
 	chest_state = dungeon["chest_state"]
-	LoadBus.loaded.emit(dungeon["id"])
+	LoadBus.loaded.emit(map_id)
