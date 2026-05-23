@@ -9,4 +9,5 @@ script = ExtResource("2_hvdxq")
 effects = Array[ExtResource("1_243j4")]([ExtResource("2_sw2gc")])
 name = "hp pot"
 type = 7
+value = 10
 metadata/_custom_type_script = "uid://q28sbqe2d2mq"

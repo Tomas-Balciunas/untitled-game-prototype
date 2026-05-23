@@ -53,6 +53,12 @@ static func get_stat_range_weapon(tier: String, type: ItemTypes.GearType, weapon
 	return result
 
 
+static func compute_gear_value(tier: String, quality: ItemTypes.Quality, modifier_count: int) -> int:
+	var mult := get_tier_multiplier(tier)
+	var q_mult: float = QUALITY_VALUE_MULT.get(quality, 1.0)
+	return roundi(BASE_GEAR_VALUE * mult * q_mult + modifier_count * PER_MODIFIER_VALUE * mult)
+
+
 static func get_applicable_modifiers(type: ItemTypes.GearType) -> Array[Stats.StatRef]:
 	match type:
 		ItemTypes.GearType.WEAPON: return [Stats.StatRef.ATTACK, Stats.StatRef.MAGIC_POWER, Stats.StatRef.DIVINE_POWER]
@@ -65,6 +71,16 @@ static func get_applicable_modifiers(type: ItemTypes.GearType) -> Array[Stats.St
 	push_error("item config: applicable modifiers not found for type %s" % type)
 	return []
 
+
+const BASE_GEAR_VALUE: int = 10
+const PER_MODIFIER_VALUE: int = 5
+const QUALITY_VALUE_MULT: Dictionary = {
+	ItemTypes.Quality.POOR:        0.5,
+	ItemTypes.Quality.COMMON:      1.0,
+	ItemTypes.Quality.UNCOMMON:    1.5,
+	ItemTypes.Quality.RARE:        2.5,
+	ItemTypes.Quality.EXCEPTIONAL: 4.0,
+}
 
 const TIER_DATA: Dictionary = {
 	"tier_1": { "name": "Crude", "mult": 1.0, "max_modifiers": 1 },

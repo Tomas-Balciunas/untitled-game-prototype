@@ -5,6 +5,7 @@ var id: String
 var item_name: String
 var item_description: String
 var type: ItemTypes.ItemType
+var value: int = 0
 
 
 func get_item_name() -> String:

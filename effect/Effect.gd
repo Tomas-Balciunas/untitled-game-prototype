@@ -84,6 +84,12 @@ func _modifies_skill_cost() -> bool:
 func modify_skill_cost(_skill: Skill, _sc: SkillCost) -> SkillCost:
 	return _sc
 
+func _modifies_shop_price() -> bool:
+	return false
+
+func modify_shop_price(_item: Item, _is_buy: bool, price: int) -> int:
+	return price
+
 func tick(_ctx: ActionContext) -> void:
 	pass
 

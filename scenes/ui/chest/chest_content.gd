@@ -20,6 +20,7 @@ func _ready() -> void:
 
 func init(_chest: Chest) -> void:
 	_clear()
+	item_info_panel.hide_item_info()
 	chest = _chest
 	
 	if chest.items.is_empty():
@@ -103,6 +104,9 @@ func on_interactable_area_left(interactable: Interactable) -> void:
 func _clear() -> void:
 	for child in v_box_container.get_children():
 		child.queue_free()
-	
+
 	for child in members_select.get_children():
 		child.queue_free()
+
+	items.clear()
+	selected_item = null

@@ -30,6 +30,7 @@ func game_save() -> Dictionary:
 		"name": item_name,
 		"description": item_description,
 		"type": type,
+		"value": value,
 		"targeting_type": targeting_type,
 		"effects": effect_arr,
 	}
@@ -40,6 +41,7 @@ func game_load(data: Dictionary) -> void:
 	item_name = data.get("name", "")
 	item_description = data.get("description", "")
 	type = data.get("type", ItemTypes.ItemType.CONSUMABLE) as ItemTypes.ItemType
+	value = data.get("value", 0)
 	targeting_type = data.get("targeting_type", TargetingManager.TargetType.SINGLE) as TargetingManager.TargetType
 
 	effects = []

@@ -18,6 +18,7 @@ func _build_instance() -> Consumable:
 	consumable.item_name = name
 	consumable.type = type
 	consumable.item_description = description
+	consumable.value = value
 	consumable.targeting_type = targeting_type
 	consumable.effects = effects
 	

@@ -81,6 +81,7 @@ func game_save() -> Dictionary:
 		"name":              item_name,
 		"description":       item_description,
 		"type":              type,
+		"value":             value,
 		"quality":           quality,
 		"enhancement_level": enhancement_level,
 		"stats":             stats.game_save() if stats else {},
@@ -96,6 +97,7 @@ func game_load(data: Dictionary) -> void:
 	item_name         = data.get("name", "")
 	item_description  = data.get("description", "")
 	type              = data.get("type", 0) as ItemTypes.ItemType
+	value             = data.get("value", 0)
 	quality           = data.get("quality", 0)
 	enhancement_level = data.get("enhancement_level", 0)
 

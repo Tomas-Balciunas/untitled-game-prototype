@@ -135,6 +135,12 @@ func recruit(party_full_tag: String = "") -> EventBuilder:
 	return _push(s)
 
 
+func open_shop(shop: ShopData) -> EventBuilder:
+	var s := OpenShopStep.new()
+	s.shop = shop
+	return _push(s)
+
+
 # --- internal ---
 
 func _push(step: EventStep) -> EventBuilder:

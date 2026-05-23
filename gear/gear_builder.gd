@@ -87,6 +87,7 @@ func build_armor(type: ItemTypes.GearType, tier: String) -> Gear:
 	item.base_stats = item.stats.duplicate(true)
 
 	item.base_modifiers = get_modifiers(tier, ItemConfig.get_applicable_modifiers(type), item.quality)
+	item.value = ItemConfig.compute_gear_value(tier, item.quality, item.base_modifiers.size())
 
 	return item
 
@@ -108,5 +109,6 @@ func build_weapon(tier: String) -> Weapon:
 	item.base_stats = item.stats.duplicate(true)
 
 	item.base_modifiers = get_modifiers(tier, ItemConfig.get_applicable_modifiers(item.get_gear_type()), item.quality)
+	item.value = ItemConfig.compute_gear_value(tier, item.quality, item.base_modifiers.size())
 
 	return item

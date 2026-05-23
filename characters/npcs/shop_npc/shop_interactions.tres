@@ -1,0 +1,7 @@
+[gd_resource type="Resource" script_class="ShopTestInteractions" format=3 uid="uid://ccdei0mxooued"]
+
+[ext_resource type="Script" uid="uid://1essw83o8oiw" path="res://characters/npcs/shop_npc/shop_interactions.gd" id="1_wrtqa"]
+
+[resource]
+script = ExtResource("1_wrtqa")
+metadata/_custom_type_script = "uid://1essw83o8oiw"

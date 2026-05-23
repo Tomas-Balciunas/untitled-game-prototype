@@ -12,6 +12,8 @@
 [ext_resource type="PackedScene" uid="uid://cxxgmoys7ineo" path="res://scenes/ChestBasic.tscn" id="9_lk5gk"]
 [ext_resource type="PackedScene" uid="uid://bg5f2e2nphlkl" path="res://scripts/interactables/Interactable.tscn" id="10_lk5gk"]
 [ext_resource type="Script" uid="uid://b656vk4s4jm03" path="res://scripts/triggerables/EventTriggerable.gd" id="11_bgo3i"]
+[ext_resource type="PackedScene" uid="uid://beexken8w1l8r" path="res://characters/npcs/shop_npc/ShopNPC.tscn" id="15_q33ho"]
+[ext_resource type="Resource" uid="uid://cmm8upbpy7vln" path="res://characters/npcs/shop_npc/shop_npc.tres" id="16_p4hwn"]
 [ext_resource type="Script" uid="uid://bep2fyftkjcsr" path="res://characters/npc_controller.gd" id="16_q33ho"]
 [ext_resource type="PackedScene" uid="uid://sln6ve4lf8c2" path="res://characters/OverworldNPC.tscn" id="17_p4hwn"]
 [ext_resource type="PackedScene" uid="uid://c8fyl6fq4crr0" path="res://maps/_encounter/OverworldEnemy.tscn" id="18_bko6l"]
@@ -127,7 +129,12 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, -2)
 script = ExtResource("18_y3577")
 character = ExtResource("19_l6obu")
 
-[node name="TestNPC" parent="StartingArea/NPC" unique_id=864089884 instance=ExtResource("17_p4hwn")]
+[node name="ShopNPC" parent="StartingArea/NPC" unique_id=1789976715 instance=ExtResource("15_q33ho")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, -6)
+script = ExtResource("18_y3577")
+character = ExtResource("16_p4hwn")
+
+[node name="OverworldNpc" parent="StartingArea/NPC" unique_id=2024008060 instance=ExtResource("17_p4hwn")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, -2)
 script = ExtResource("18_y3577")
 character = ExtResource("20_rna72")

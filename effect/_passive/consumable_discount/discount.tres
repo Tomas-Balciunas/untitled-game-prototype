@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="ConsumableDiscount" format=3 uid="uid://c7nmidhbqovfy"]
+
+[ext_resource type="Script" uid="uid://07ia1jenk3fu" path="res://effect/_passive/consumable_discount/ConsumableDiscount.gd" id="1_30jxg"]
+
+[resource]
+script = ExtResource("1_30jxg")
+name = "Discount"
+description = "discount"
+battle_only = false
+metadata/_custom_type_script = "uid://07ia1jenk3fu"

@@ -8,6 +8,7 @@ class_name ItemResource
 @export var type: ItemTypes.ItemType
 @export var description: String
 @export var icon: Texture2D
+@export var value: int = 0
 
 
 @abstract

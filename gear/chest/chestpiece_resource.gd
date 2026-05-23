@@ -19,6 +19,7 @@ func _build_instance() -> Chestpiece:
 	chestpiece.type = type
 	chestpiece.quality = quality
 	chestpiece.item_description = description
+	chestpiece.value = value
 	chestpiece.stats = base_stats.duplicate(true)
 	chestpiece.base_stats = chestpiece.stats.duplicate(true)
 	chestpiece.base_effects = effects.duplicate(true)

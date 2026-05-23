@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="BaseCharacterResource" format=3 uid="uid://cmm8upbpy7vln"]
+
+[ext_resource type="Script" uid="uid://bvhj0nj366nfo" path="res://scripts/BaseCharacterResource.gd" id="1_4vww1"]
+[ext_resource type="PackedScene" uid="uid://c33n1fuukxdxp" path="res://characters/npcs/shop_npc/body.tscn" id="1_cwhvs"]
+[ext_resource type="Resource" uid="uid://ccdei0mxooued" path="res://characters/npcs/shop_npc/shop_interactions.tres" id="2_n82vg"]
+[ext_resource type="Resource" uid="uid://b0wtndc76olfd" path="res://characters/npcs/test/test_controller.tres" id="2_oeok8"]
+
+[resource]
+script = ExtResource("1_4vww1")
+id = "shop_npc_00"
+name = "Merchant"
+character_body = ExtResource("1_cwhvs")
+interactions = ExtResource("2_n82vg")
+interaction_controller = ExtResource("2_oeok8")
+metadata/_custom_type_script = "uid://bvhj0nj366nfo"
