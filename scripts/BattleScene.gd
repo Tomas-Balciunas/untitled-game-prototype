@@ -13,6 +13,16 @@ func _ready() -> void:
 
 func initiate(arena: PackedScene, enemies: Array[CharacterResource], data: EncounterData) -> void:
 	load_arena(arena)
+	var duplicated_enemies: Array[CharacterResource] = enemies.duplicate(true)
+	
+	if !data.level_range.is_empty():
+		assert(data.level_range[0] is int)
+		assert(data.level_range[1] is int)
+		assert(data.level_range[0] < data.level_range[1])
+		
+		for enemy in duplicated_enemies:
+			enemy.level = range(data.level_range[0], data.level_range[1] + 1).pick_random()
+	
 	var enemy_instances := load_enemies(enemies)
 	ally_grid.place_all_allies()
 	BattleContext.fill_context(battle_manager, enemy_grid, ally_grid, data)

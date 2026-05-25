@@ -10,3 +10,4 @@ class_name EncounterData
 @export var gold_reward: int = 0
 @export var item_rewards: Array[ItemResource] = []
 @export var reward_event: EventResource
+@export var level_range: Array = []

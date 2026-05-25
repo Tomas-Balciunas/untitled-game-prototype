@@ -34,12 +34,16 @@ func _init(event: DamageInstance) -> void:
 
 func calculate_final_damage() -> void:
 	apply_accuracy_variance()
-	
-	final_damage = final_damage - target.stats.defense
-	
+
+	var defense: float = max(0.0, target.stats.defense)
+	var defense_constant: float = 200.0
+
+	var multiplier := defense_constant / (defense_constant + defense)
+
+	final_damage *= multiplier
+
 	if is_critical:
-		final_damage = final_damage * critical_damage
-	
+		final_damage *= critical_damage
 
 
 func apply_accuracy_variance() -> void:

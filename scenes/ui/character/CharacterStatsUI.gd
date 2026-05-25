@@ -18,7 +18,7 @@ func bind_character(character: Character) -> void:
 	var s := character.stats
 	exp_value.text = "%s/%s" % [
 		character.current_experience,
-		character.resource.experience_manager.exp_needed_to_next_level(character)
+		character.experience_manager.exp_for_level(character.level + 1)
 	]
 
 	hp_value.text            = str(s.health)

@@ -5,6 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://cvlg8i4oihok1" path="res://scenes/damage_numbers/3d/number_display_3d.tscn" id="3_vcoio"]
 [ext_resource type="PackedScene" uid="uid://og1hkm7bn07c" path="res://scenes/ui/chatter/ChatterInterface.tscn" id="4_jg5hc"]
 [ext_resource type="PackedScene" uid="uid://l8b2sorte2wn" path="res://scenes/StatusEffectAnimations.tscn" id="5_7w4jd"]
+[ext_resource type="PackedScene" uid="uid://dor542xt7xq0o" path="res://characters/Healthbar.tscn" id="6_n82df"]
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_8j8tm"]
 
@@ -133,3 +134,9 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.85, 0)
 
 [node name="StatusEffectAnimations" parent="." unique_id=24062440 instance=ExtResource("5_7w4jd")]
+
+[node name="Healthbar" parent="." unique_id=457487545 instance=ExtResource("6_n82df")]
+
+[node name="Name" type="Label3D" parent="." unique_id=693949295]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.2175388, 0)
+billboard = 2

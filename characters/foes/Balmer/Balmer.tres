@@ -10,11 +10,14 @@
 [ext_resource type="Resource" uid="uid://cs2tci0dc3vvo" path="res://characters/_class/_Unknown.tres" id="6_0q48i"]
 [ext_resource type="Resource" uid="uid://lcgngc3c13fc" path="res://characters/_race/_Unknown.tres" id="7_mwqcq"]
 [ext_resource type="Resource" uid="uid://c5qyqcmwx0qfy" path="res://scripts/experience/ExperienceManager.tres" id="8_mwqcq"]
-[ext_resource type="Resource" uid="uid://riijdkc770g2" path="res://stat/DefaultStatAttributeGrowth.tres" id="11_2p1x5"]
+[ext_resource type="Resource" uid="uid://gul73mp3xo8s" path="res://characters/foes/Balmer/stat_attribute_growth.tres" id="11_2p1x5"]
+[ext_resource type="Resource" uid="uid://b1balmera001x" path="res://characters/foes/Balmer/attributes.tres" id="12_balm1"]
+[ext_resource type="Resource" uid="uid://b1balmerlvl01" path="res://characters/foes/Balmer/stat_level_growth.tres" id="13_balm2"]
 
 [resource]
 script = ExtResource("1_l56jw")
-experience = 150
+attributes = ExtResource("12_balm1")
+stat_level_growth = ExtResource("13_balm2")
 stat_attribute_growth = ExtResource("11_2p1x5")
 id = "e_enemy_002"
 name = "Balmer"

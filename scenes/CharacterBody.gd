@@ -10,6 +10,7 @@ const DEFAULT_PROJECTILE = preload("uid://ixevorw37712")
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
 @onready var number_display: FormationSlotNumbers = $NumberDisplay
 @onready var projectile_spawn: Node3D
+@export var health_bar: HealthBar
 
 var body_owner: Character = null
 var death_shader = preload("uid://crlilwavkuu5u")
@@ -18,10 +19,22 @@ var blood_particle_material = null
 func _ready() -> void:
 	set_projectile_spawn_point()
 	play_idle()
+	
 	CharacterBus.character_damaged.connect(_on_damaged)
 	CharacterBus.character_healed.connect(_on_healed)
+	CharacterBus.health_changed.connect(on_health_changed)
 	ChatEventBus.chat.connect(_on_chat)
 	
+	if body_owner and has_node("Healthbar"):
+		var health_bar = get_node("Healthbar") as HealthBar
+		health_bar.set_max_value(body_owner.stats.health)
+		health_bar.set_value(body_owner.state.current_health)
+	
+	if body_owner and has_node("Name"):
+		var level_and_name: Label3D = get_node("Name")
+		level_and_name.text = "Lvl. %s %s" % [body_owner.level, body_owner.resource.name]
+
+
 func _on_damaged(c: Character, damage_instance: DamageInstance) -> void:
 	if body_owner and c == body_owner:
 		animation_player.stop()
@@ -31,7 +44,13 @@ func _on_damaged(c: Character, damage_instance: DamageInstance) -> void:
 func _on_healed(c: Character, amt: int) -> void:
 	if body_owner and c == body_owner:
 		number_display.display_heal(amt)
-		
+
+func on_health_changed(c: Character, old: int, new: int) -> void:
+	if body_owner and has_node("Healthbar"):
+		var health_bar = get_node("Healthbar") as HealthBar
+		health_bar.set_max_value(body_owner.stats.health)
+		health_bar.set_value(body_owner.state.current_health)
+
 func _on_chat(c: Character, text: String) -> void:
 	if c == body_owner and has_node("SmallChatter"):
 		get_node("SmallChatter").chatter(text)

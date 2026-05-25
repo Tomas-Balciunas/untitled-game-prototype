@@ -2,11 +2,20 @@ extends Resource
 
 class_name ExperienceManager
 
+
 func can_level_up(character: Character) -> bool:
-	return character.current_experience >= exp_needed_to_next_level(character)
+	return character.current_experience >= exp_for_level(character.level + 1)
 	
-func exp_needed_to_next_level(character: Character) -> int:
-	return 1000 * character.level
+func exp_for_level(lvl: int) -> int:
+	if lvl <= 1:
+		return 0
+	
+	var total: int = 0
+	
+	for i in range(1, lvl):
+		total += round(100 * pow(1.45, min(max(0, i - 1), 50)))
+	
+	return total
 
 func level_up_character(character: Character) -> void:
 	while can_level_up(character):
@@ -35,3 +44,13 @@ func level_up_character(character: Character) -> void:
 
 func grant_experience_to_character(character: Character, amount: int) -> void:
 	character.current_experience += amount
+
+func set_character_level(character: Character, level: int) -> void:
+	for skill in character.job.get_effects_until_level(level):
+		character.learnt_skills.append(skill)
+	
+	for effect in character.job.get_effects_until_level(level):
+		character.apply_effect(effect, CharacterSource.new(character))
+	
+	character.current_experience = exp_for_level(level)
+	character.unspent_attribute_points = (level - 1) * 2

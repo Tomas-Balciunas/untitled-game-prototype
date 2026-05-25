@@ -34,12 +34,16 @@ var battle_events: Array[BattleEvent]
 var interactions: CharacterInteraction
 var interaction_controller: InteractionController
 var chatter: CharacterChatter
+var experience_manager: ExperienceManager = null
 
 var equipment: Equipment = null
 
-func _init(res: CharacterResource) -> void:
+func _init(res: CharacterResource, override_level: int = 0) -> void:
 	resource = res
 	resource._setup_character()
+	
+	job = res.job.duplicate(true)
+	race = res.race.duplicate(true)
 	
 	if resource.character_body:
 		body = resource.character_body
@@ -64,7 +68,14 @@ func _init(res: CharacterResource) -> void:
 	state = CharacterState.new(stats)
 	
 	is_main = res.is_main
-	current_experience = 5000
+	
+	if override_level > 0:
+		level = override_level
+	else:
+		level = max(1, res.level)
+	
+	experience_manager = res.experience_manager
+	experience_manager.set_character_level(self, level)
 	
 	equipment = Equipment.new(self)
 	inventory = Inventory.new()
@@ -88,9 +99,6 @@ func _init(res: CharacterResource) -> void:
 		#inventory.add_item(inst)
 	
 	damage_type = res.default_damage_type
-	
-	job = res.job.duplicate(true)
-	race = res.race.duplicate(true)
 	
 	for skill in res.default_skills:
 		if learnt_skills.has(skill):
@@ -144,6 +152,8 @@ func set_current_health(new_health: int, damage_event: DamageInstance = null) ->
 	
 	if damage_event:
 		CharacterBus.character_damaged.emit(self, damage_event)
+	
+	CharacterBus.health_changed.emit(self, old, new)
 		
 func get_body() -> CharacterBody:
 	if !body:

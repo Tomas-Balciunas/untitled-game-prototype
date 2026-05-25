@@ -4,6 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://derbgmwdiip8f" path="res://characters/foes/Balmer/219247-6cdde8c35dac084c38e70faab7ba7f2a.png" id="2_y3csi"]
 [ext_resource type="PackedScene" uid="uid://cvlg8i4oihok1" path="res://scenes/damage_numbers/3d/number_display_3d.tscn" id="3_d5n0v"]
 [ext_resource type="PackedScene" uid="uid://og1hkm7bn07c" path="res://scenes/ui/chatter/ChatterInterface.tscn" id="4_cfoa8"]
+[ext_resource type="PackedScene" uid="uid://dor542xt7xq0o" path="res://characters/Healthbar.tscn" id="5_4vnbg"]
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_8j8tm"]
 
@@ -216,3 +217,9 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
 
 [node name="ProjectileSpawn" type="Node3D" parent="." unique_id=274462983]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.85, 0)
+
+[node name="Healthbar" parent="." unique_id=457487545 instance=ExtResource("5_4vnbg")]
+
+[node name="Name" type="Label3D" parent="." unique_id=1798242594]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.2691185, 0)
+billboard = 2

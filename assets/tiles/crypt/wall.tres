@@ -1,0 +1,15 @@
+[gd_resource type="BoxMesh" format=3 uid="uid://cluj1ejiwf6bt"]
+
+[ext_resource type="Texture2D" uid="uid://cff4kakketrhx" path="res://assets/tiles/crypt/wall.png" id="1_6lr8v"]
+[ext_resource type="Texture2D" uid="uid://c6g005jkcrpum" path="res://assets/tiles/crypt/wall_n.png" id="2_wgcit"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_p6u6r"]
+albedo_color = Color(0.7666196, 0.76661956, 0.76661956, 1)
+albedo_texture = ExtResource("1_6lr8v")
+normal_enabled = true
+normal_texture = ExtResource("2_wgcit")
+uv1_scale = Vector3(6, 6, 6)
+
+[resource]
+material = SubResource("StandardMaterial3D_p6u6r")
+size = Vector3(1, 2, 1)

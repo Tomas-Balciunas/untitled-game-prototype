@@ -32,8 +32,8 @@ func equip_item(item: Gear) -> bool:
 		return false
 	
 	if equipped_item:
-		unset_equipment(equipped_item.get_gear_type())
-		
+		unequip_slot(equipped_item.get_gear_type())
+
 	set_equipment(item)
 	var insts: Array = []
 	
@@ -73,10 +73,7 @@ func unequip_slot(type: ItemTypes.GearType) -> bool:
 	return true
 
 func can_equip(item: Gear) -> bool:
-	if owner.job.get_equippable_weapons().has(item.get_gear_type()):
-		return true
-	
-	return false
+	return not owner.job.get_unequippable_gear().has(item.get_gear_type())
 
 func set_equipment(item: Gear) -> void:
 	match item.get_gear_type():

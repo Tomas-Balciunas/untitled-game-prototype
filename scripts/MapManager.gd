@@ -9,10 +9,15 @@ var arenas: Dictionary = {
 	"arena_default_00": load("res://maps/_arena/default/arena_default_00.tscn")
 }
 
+var blueprint: PackedScene = preload("uid://bx8jewu2yxunq")
+
 func get_map(id: String) -> Resource:
 	if maps.has(id):
 		return maps[id]
 	return null
+
+func get_blueprint() -> PackedScene:
+	return blueprint
 
 func get_arena(id: String) -> PackedScene:
 	if arenas.has(id):

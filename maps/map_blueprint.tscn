@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3 uid="uid://bx8jewu2yxunq"]
+[gd_scene format=3 uid="uid://bx8jewu2yxunq"]
 
 [ext_resource type="MeshLibrary" uid="uid://uso6cfmk5r51" path="res://tileset white.tres" id="1_vbrp5"]
 [ext_resource type="Script" uid="uid://qwci85k0novh" path="res://scripts/ChestManager.gd" id="2_31cuy"]
@@ -13,29 +13,29 @@ fog_light_energy = 0.85
 fog_density = 0.0283
 fog_sky_affect = 0.0
 
-[node name="NavigationRegion3D" type="NavigationRegion3D"]
+[node name="NavigationRegion3D" type="NavigationRegion3D" unique_id=1243644443]
 
-[node name="Blueprint" type="GridMap" parent="."]
+[node name="Blueprint" type="GridMap" parent="." unique_id=751614911]
 mesh_library = ExtResource("1_vbrp5")
 cell_size = Vector3(1, 1, 1)
 cell_center_y = false
 metadata/_editor_floor_ = Vector3(0, 0, 0)
 
-[node name="Chests" type="Node" parent="Blueprint"]
+[node name="Chests" type="Node" parent="Blueprint" unique_id=1123812426]
 script = ExtResource("2_31cuy")
 
-[node name="Transitions" type="Node" parent="Blueprint"]
+[node name="Transitions" type="Node" parent="Blueprint" unique_id=1423151545]
 
-[node name="Rest" type="Node" parent="Blueprint"]
+[node name="Rest" type="Node" parent="Blueprint" unique_id=558564527]
 
-[node name="Interactable" type="Node" parent="Blueprint"]
+[node name="Interactable" type="Node" parent="Blueprint" unique_id=325124676]
 
-[node name="Events" type="Node" parent="Blueprint"]
+[node name="Events" type="Node" parent="Blueprint" unique_id=132555464]
 
-[node name="WorldEnvironment" type="WorldEnvironment" parent="Blueprint"]
+[node name="WorldEnvironment" type="WorldEnvironment" parent="Blueprint" unique_id=1077364392]
 environment = SubResource("Environment_kjsaj")
 
-[node name="EnemiesCustom" type="Node" parent="."]
+[node name="EnemiesCustom" type="Node" parent="." unique_id=280642065]
 
-[node name="Enemies" type="Node" parent="."]
+[node name="Enemies" type="Node" parent="." unique_id=1230767109]
 script = ExtResource("9_gbhr8")

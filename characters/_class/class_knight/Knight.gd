@@ -10,5 +10,5 @@ func get_skills_for_level(lvl: int) -> Array:
 		3: return [HOLY_STRIKE]
 	return []
 
-func get_equippable_weapons() -> Array[ItemTypes.WeaponType]:
-	return [ItemTypes.WeaponType.AXE]
+func get_unequippable_gear() -> Array[ItemTypes.GearType]:
+	return []

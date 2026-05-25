@@ -1,7 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://sln6ve4lf8c2"]
+[gd_scene format=3 uid="uid://sln6ve4lf8c2"]
 
 [ext_resource type="PackedScene" uid="uid://bywxd2vdl2sug" path="res://scripts/interactables/OverworldNPCInteractable.tscn" id="2_qs3cq"]
 
-[node name="OverworldNpc" type="Node3D"]
+[node name="OverworldNpc" type="Node3D" unique_id=2014724225]
 
-[node name="OverworldNpcInteractable" parent="." instance=ExtResource("2_qs3cq")]
+[node name="OverworldNpcInteractable" parent="." unique_id=1587018494 instance=ExtResource("2_qs3cq")]

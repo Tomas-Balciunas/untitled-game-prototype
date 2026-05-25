@@ -1,0 +1,14 @@
+[gd_resource type="PlaneMesh" format=3 uid="uid://2bixhe3qmibd"]
+
+[ext_resource type="Texture2D" uid="uid://c4bvte713n42i" path="res://assets/tiles/crypt/floor.png" id="1_klsvn"]
+[ext_resource type="Texture2D" uid="uid://bvpbetgk34u5q" path="res://assets/tiles/crypt/floor_n.png" id="2_pwnau"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_xh1kc"]
+albedo_texture = ExtResource("1_klsvn")
+normal_enabled = true
+normal_texture = ExtResource("2_pwnau")
+uv1_scale = Vector3(1, 1.5, 1)
+
+[resource]
+material = SubResource("StandardMaterial3D_xh1kc")
+size = Vector2(1, 1)

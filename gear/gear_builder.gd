@@ -102,7 +102,7 @@ func build_weapon(tier: String) -> Weapon:
 	item.accuracy_range = ItemConfig.get_accuracy(item.weapon_type)
 	item.attack_rate = 1
 	item.quality = get_quality()
-	item.item_name = "%s %s" % [ItemConfig.get_item_name(tier), ItemTypes.item_type_to_string(item.type)]
+	item.item_name = "%s %s" % [ItemConfig.get_item_name(tier), ItemTypes.weapon_type_to_string(item.weapon_type)]
 
 	var stat_range := ItemConfig.get_stat_range_weapon(tier, item.get_gear_type(), item.weapon_type)
 	item.stats = get_stats(stat_range)

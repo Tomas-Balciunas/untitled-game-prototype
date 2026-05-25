@@ -15,7 +15,7 @@ var is_main: bool = false
 
 @export var attributes: Attributes
 
-@export var experience: int = 0
+@export var level: int = 1
 @export var slot_width: int = 1
 @export var default_skills: Array[Skill] = []
 @export var level_skills: Dictionary = {}

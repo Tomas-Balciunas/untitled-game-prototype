@@ -47,6 +47,14 @@ static func item_type_to_string(item_type: ItemTypes.ItemType) -> String:
 	return names.get(item_type, "Unknown")
 
 
+static func weapon_type_to_string(weapon_type: ItemTypes.WeaponType) -> String:
+	var names := {
+		ItemTypes.WeaponType.SWORD: "Sword",
+		ItemTypes.WeaponType.AXE:   "Axe",
+	}
+	return names.get(weapon_type, "Weapon")
+
+
 static func quality_to_string(q: ItemTypes.Quality) -> String:
 	match q:
 		ItemTypes.Quality.POOR:        return "Poor"

@@ -13,16 +13,28 @@ var transitions := {}
 var available_enemies: Array[CharacterResource] = []
 var available_tiers: Array = []
 var chest_state: Dictionary = {}
+var seeds: Dictionary = {}
 
 func hydrate_from_resource(map_data: Dictionary) -> void:
 	map_id = map_data.id
 	current_map_name = map_data.name
 	#TODO: more safety checks
-	player_position = str_to_var("Vector2i" + map_data.starting_position)
+	var start_str: String = map_data.get("starting_position", "(0, 0)")
+	player_position = str_to_var("Vector2i" + start_str)
 	player_previous_position = player_position
 	cleared_encounters[map_id] = []
 	available_enemies = CharacterRegistry.get_characters(map_data.available_enemies)
 	available_tiers = map_data.gear_tiers
+
+func get_or_create_seed(id: String) -> int:
+	if not seeds.has(id):
+		seeds[id] = randi() + 1
+	return seeds[id]
+
+func set_player_spawn(pos: Vector2i, facing: Vector3 = Vector3.FORWARD) -> void:
+	player_position = pos
+	player_previous_position = pos
+	player_facing = facing
 	
 func hydrate_from_load(load_data: Dictionary) -> void:
 	if load_data.has("dungeon"):
@@ -99,6 +111,7 @@ func game_save() -> Dictionary:
 		"cleared_encounters": cleared_encounters,
 		"encounters": encounters,
 		"chest_state": chest_state,
+		"seeds": seeds,
 	}
 
 func game_load(data: Dictionary) -> void:
@@ -113,4 +126,5 @@ func game_load(data: Dictionary) -> void:
 	cleared_encounters = dungeon["cleared_encounters"]
 	encounters = dungeon["encounters"]
 	chest_state = dungeon["chest_state"]
+	seeds = dungeon.get("seeds", {})
 	LoadBus.loaded.emit(map_id)

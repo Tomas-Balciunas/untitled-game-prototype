@@ -24,7 +24,7 @@ func populate_enemy_spawn_points() -> void:
 		var saved_encounter := MapInstance.get_encounter(point.spawn_id)
 		
 		if !saved_encounter:
-			encounter_data = build_encounter(point.spawn_id)
+			encounter_data = build_encounter(point.spawn_id, point.level_range)
 		else:
 			encounter_data = saved_encounter
 
@@ -34,10 +34,11 @@ func populate_enemy_spawn_points() -> void:
 		spawner.enemy_scene = encounter_data.enemies[0].character_body
 		add_child(spawner)
 
-func build_encounter(spawn_id: String) -> EncounterData:
+func build_encounter(spawn_id: String, level_range: Array) -> EncounterData:
 	var data := EncounterData.new()
 	data.id = spawn_id
 	data.arena = "arena_default_00"
+	data.level_range = level_range
 
 	var pool := MapInstance.available_enemies
 	var enemy_count := randi_range(min_group_size, max_group_size)

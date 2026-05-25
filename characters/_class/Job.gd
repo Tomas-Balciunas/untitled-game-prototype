@@ -39,6 +39,22 @@ func get_skills_for_level(lvl: int) -> Array:
 		
 	return []
 
+func get_skills_until_level(lvl: int) -> Array:
+	var entries = []
+	
+	for i in range(1, lvl + 1):
+		var lvl_entries: Array = level_skills.get(i, [])
+		
+		if lvl_entries.is_empty():
+			continue
+		
+		entries.append_array(lvl_entries)
+	
+	if entries.is_empty():
+		return []
+		
+	return entries
+
 func get_effects_for_level(lvl: int) -> Array:
 	var entries = level_effects.get(lvl, null)
 	
@@ -47,5 +63,21 @@ func get_effects_for_level(lvl: int) -> Array:
 	
 	return []
 
-func get_equippable_weapons() -> Array[ItemTypes.WeaponType]:
+func get_unequippable_gear() -> Array[ItemTypes.GearType]:
 	return []
+
+func get_effects_until_level(lvl: int) -> Array:
+	var entries = []
+	
+	for i in range(1, lvl + 1):
+		var lvl_entries: Array = level_effects.get(i, [])
+		
+		if lvl_entries.is_empty():
+			continue
+		
+		entries.append_array(lvl_entries)
+	
+	if entries.is_empty():
+		return []
+		
+	return entries

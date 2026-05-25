@@ -1,6 +1,7 @@
 {
 	"beginning_area_01": {
 		"id": "beginning_area_01",
+		"generation": "handcrafted",
 		"random": "true",
 		"name": "Beginning Area",
 		"starting_position": "(0, 0)",
@@ -9,6 +10,7 @@
 	},
 	"crypt_00": {
 		"id": "crypt_00",
+		"generation": "handcrafted",
 		"random": "true",
 		"name": "Crypt",
 		"starting_position": "(0, 0)",
@@ -17,10 +19,36 @@
 	},
 	"beginning_area_02": {
 		"id": "beginning_area_02",
+		"generation": "handcrafted",
 		"random": "true",
 		"name": "Beginning Area",
 		"starting_position": "(0, -1.5)",
 		"available_enemies": ["0000", "e_enemy_002", "e_enemy_001"],
 		"gear_tiers": ["tier_1"]
 	},
+	"random_crypt_01": {
+		"id": "random_crypt_01",
+		"generation": "procedural",
+		"name": "Random Crypt",
+		"tileset": "crypt",
+		"return_map": "beginning_area_01",
+		"end_map": "beginning_area_01",
+		"config": {
+			"width": 300,
+			"height": 300,
+			"layout": "linear",
+			"density": 1.0,
+			"corridor_curviness": 1.0,
+			"room_count": [20, 30],
+			"room_size": [4, 8],
+			"chest_count": [8, 15],
+			"enemy_group_count": [30, 45],
+			"corridor_enemy_chance" : 0.5,
+			"enemy_level_range": [1, 2],
+			"branch_count": [5, 10],
+			"ceiling": true
+		},
+		"available_enemies": ["0000", "e_enemy_002", "e_enemy_001"],
+		"gear_tiers": ["tier_1", "tier_2"]
+	}
 }

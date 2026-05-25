@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://dr1sxm5h6jdqr" path="res://scenes/CharacterBody.gd" id="1_2mlou"]
 [ext_resource type="Texture2D" uid="uid://hyelqwalee3g" path="res://characters/foes/Skeltal/219169-f863df69f4ba01ca40a9ae2d1d3b0209.png" id="2_afkie"]
 [ext_resource type="PackedScene" uid="uid://cvlg8i4oihok1" path="res://scenes/damage_numbers/3d/number_display_3d.tscn" id="3_mkxmg"]
+[ext_resource type="PackedScene" uid="uid://dor542xt7xq0o" path="res://characters/Healthbar.tscn" id="4_ushka"]
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_8j8tm"]
 
@@ -213,3 +214,9 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
 
 [node name="ProjectileSpawn" type="Node3D" parent="." unique_id=718878794]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.85, 0)
+
+[node name="Healthbar" parent="." unique_id=457487545 instance=ExtResource("4_ushka")]
+
+[node name="Name" type="Label3D" parent="." unique_id=472795497]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.025795, 0)
+billboard = 2

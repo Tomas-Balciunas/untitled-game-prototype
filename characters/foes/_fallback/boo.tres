@@ -10,11 +10,14 @@
 [ext_resource type="Resource" uid="uid://cs2tci0dc3vvo" path="res://characters/_class/_Unknown.tres" id="6_7mwlc"]
 [ext_resource type="Resource" uid="uid://c5qyqcmwx0qfy" path="res://scripts/experience/ExperienceManager.tres" id="7_d1mbr"]
 [ext_resource type="Resource" uid="uid://lcgngc3c13fc" path="res://characters/_race/_Unknown.tres" id="7_rbf6s"]
-[ext_resource type="Resource" uid="uid://riijdkc770g2" path="res://stat/DefaultStatAttributeGrowth.tres" id="11_d1mbr"]
+[ext_resource type="Resource" uid="uid://tgnewt42jjbw" path="res://characters/foes/_fallback/stat_attribute_growth.tres" id="11_d1mbr"]
+[ext_resource type="Resource" uid="uid://d1booattr0001" path="res://characters/foes/_fallback/attributes.tres" id="12_boo1"]
+[ext_resource type="Resource" uid="uid://d1boolvl00001" path="res://characters/foes/_fallback/stat_level_growth.tres" id="13_boo2"]
 
 [resource]
 script = ExtResource("1_04kyn")
-experience = 100
+attributes = ExtResource("12_boo1")
+stat_level_growth = ExtResource("13_boo2")
 stat_attribute_growth = ExtResource("11_d1mbr")
 id = "e_enemy_001"
 name = "Boo"
