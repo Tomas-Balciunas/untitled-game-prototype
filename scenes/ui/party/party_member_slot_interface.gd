@@ -24,11 +24,11 @@ func bind(character: Character) -> void:
 	#$Portrait.texture = character.resource.portrait
 	$MarginContainer/GridContainer/NameContainer/Name.text = character.resource.name
 	$MarginContainer/GridContainer/LabelValueContainer/Values/HPContainer/CurrentHP.text = str(character.state.current_health)
-	$MarginContainer/GridContainer/LabelValueContainer/Values/HPContainer/MaxHP.text = str(character.stats.health)
+	$MarginContainer/GridContainer/LabelValueContainer/Values/HPContainer/MaxHP.text = str(character.stats.get_stat(Stats.StatRef.HEALTH))
 	$MarginContainer/GridContainer/LabelValueContainer/Values/MPContainer/CurrentMP.text = str(character.state.current_mana)
-	$MarginContainer/GridContainer/LabelValueContainer/Values/MPContainer/MaxMP.text = str(character.stats.mana)
+	$MarginContainer/GridContainer/LabelValueContainer/Values/MPContainer/MaxMP.text = str(character.stats.get_stat(Stats.StatRef.MANA))
 	$MarginContainer/GridContainer/LabelValueContainer/Values/SPContainer/CurrentSP.text = str(character.state.current_sp)
-	$MarginContainer/GridContainer/LabelValueContainer/Values/SPContainer/MaxSP.text = str(character.stats.sp)
+	$MarginContainer/GridContainer/LabelValueContainer/Values/SPContainer/MaxSP.text = str(character.stats.get_stat(Stats.StatRef.SP))
 	
 	show_info()
 	

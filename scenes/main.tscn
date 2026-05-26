@@ -515,6 +515,30 @@ text = "Evasion:"
 layout_mode = 2
 size_flags_horizontal = 3
 
+[node name="HealingDone" type="HBoxContainer" parent="UIRoot/OverworldInterface/CharacterMenu/StatsUI/Stats" unique_id=1490011001]
+layout_mode = 2
+
+[node name="HealingDoneKey" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/StatsUI/Stats/HealingDone" unique_id=1490011002]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Healing Done:"
+
+[node name="HealingDoneValue" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/StatsUI/Stats/HealingDone" unique_id=1490011003]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="HealingReceived" type="HBoxContainer" parent="UIRoot/OverworldInterface/CharacterMenu/StatsUI/Stats" unique_id=1490011004]
+layout_mode = 2
+
+[node name="HealingReceivedKey" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/StatsUI/Stats/HealingReceived" unique_id=1490011005]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Healing Received:"
+
+[node name="HealingReceivedValue" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/StatsUI/Stats/HealingReceived" unique_id=1490011006]
+layout_mode = 2
+size_flags_horizontal = 3
+
 [node name="EffectsUI" type="PanelContainer" parent="UIRoot/OverworldInterface/CharacterMenu" unique_id=1787143395]
 unique_name_in_owner = true
 visible = false

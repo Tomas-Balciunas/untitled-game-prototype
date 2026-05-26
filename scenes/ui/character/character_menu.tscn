@@ -1,0 +1,688 @@
+[gd_scene format=3 uid="uid://bnhvwp81yfql1"]
+
+[ext_resource type="Script" uid="uid://ilm5qu0yhhaa" path="res://scenes/ui/character/CharacterMenu.gd" id="1_tti22"]
+[ext_resource type="Script" uid="uid://df1gmeiyv6avc" path="res://gear/_ui/inventory/InventoryUI.gd" id="2_e4rlm"]
+[ext_resource type="Script" uid="uid://b2sfqqh521u6d" path="res://gear/_ui/inventory/EquippedSlotContainer.gd" id="3_2ppc3"]
+[ext_resource type="Script" uid="uid://c4besodi2o6y8" path="res://gear/_ui/inventory/EquippedItemSlot.gd" id="4_sstho"]
+[ext_resource type="PackedScene" uid="uid://bh3nykch4838a" path="res://gear/_ui/general/ItemInfoScene.tscn" id="5_6wa6b"]
+[ext_resource type="Script" uid="uid://dahxd5g0u3kcy" path="res://scenes/ui/character/CharacterStatsUI.gd" id="6_41oo2"]
+[ext_resource type="Script" uid="uid://buitthkb5usu" path="res://scenes/ui/character/CharacterEffectsUI.gd" id="7_wuabd"]
+[ext_resource type="Script" uid="uid://dmcb1v1d6ac3" path="res://scenes/ui/character/CharacterSkillsUI.gd" id="8_ktti2"]
+[ext_resource type="Script" uid="uid://bfewgc370mbue" path="res://scenes/ui/character/CharacterLevelUpUI.gd" id="9_mf5x5"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tel4y"]
+bg_color = Color(0.6, 0.6, 0.6, 0.105)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_c7bw8"]
+bg_color = Color(0, 0, 0, 1)
+
+[sub_resource type="Theme" id="Theme_qkpxi"]
+Panel/styles/panel = SubResource("StyleBoxFlat_c7bw8")
+
+[node name="CharacterMenu" type="Panel" unique_id=744879590]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_bottom = -185.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_tel4y")
+script = ExtResource("1_tti22")
+
+[node name="Name" type="Label" parent="." unique_id=1823249626]
+layout_mode = 0
+offset_left = 505.0
+offset_top = 26.0
+offset_right = 640.0
+offset_bottom = 67.0
+size_flags_horizontal = 4
+
+[node name="CharacterMenuButtons" type="PanelContainer" parent="." unique_id=1017785767]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -316.0
+offset_top = -31.0
+grow_horizontal = 0
+grow_vertical = 0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CharacterMenuButtons" unique_id=845345741]
+layout_mode = 2
+
+[node name="Stats" type="Button" parent="CharacterMenuButtons/HBoxContainer" unique_id=80312678]
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+text = "Stats"
+
+[node name="Inventory" type="Button" parent="CharacterMenuButtons/HBoxContainer" unique_id=1677955020]
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+text = "Inventory"
+
+[node name="Skills" type="Button" parent="CharacterMenuButtons/HBoxContainer" unique_id=1002512660]
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+text = "Skills"
+
+[node name="Effects" type="Button" parent="CharacterMenuButtons/HBoxContainer" unique_id=1942925944]
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+text = "Effects"
+
+[node name="Talk" type="Button" parent="CharacterMenuButtons/HBoxContainer" unique_id=397193475]
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+keep_pressed_outside = true
+text = "Talk"
+
+[node name="LevelUp" type="Button" parent="CharacterMenuButtons/HBoxContainer" unique_id=209811035]
+unique_name_in_owner = true
+layout_mode = 2
+focus_mode = 0
+text = "Level Up"
+
+[node name="Close" type="Button" parent="CharacterMenuButtons/HBoxContainer" unique_id=364331442]
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+text = "X"
+
+[node name="InventoryUI" type="Panel" parent="." unique_id=1679364547]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_right = 320.0
+grow_vertical = 2
+theme = SubResource("Theme_qkpxi")
+script = ExtResource("2_e4rlm")
+
+[node name="Inventory" type="VBoxContainer" parent="InventoryUI" unique_id=2132634538]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_right = 320.0
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Equipped" type="Label" parent="InventoryUI/Inventory" unique_id=44762380]
+layout_mode = 2
+text = "Equipped"
+
+[node name="EquippedList" type="VBoxContainer" parent="InventoryUI/Inventory" unique_id=996621712]
+layout_mode = 2
+size_flags_vertical = 3
+script = ExtResource("3_2ppc3")
+
+[node name="Weapon" type="PanelContainer" parent="InventoryUI/Inventory/EquippedList" unique_id=492469528]
+layout_mode = 2
+size_flags_vertical = 3
+script = ExtResource("4_sstho")
+
+[node name="Container" type="HBoxContainer" parent="InventoryUI/Inventory/EquippedList/Weapon" unique_id=1704729882]
+layout_mode = 2
+
+[node name="Key" type="Label" parent="InventoryUI/Inventory/EquippedList/Weapon/Container" unique_id=1472233]
+layout_mode = 2
+text = "Weapon: "
+
+[node name="Value" type="Label" parent="InventoryUI/Inventory/EquippedList/Weapon/Container" unique_id=674681713]
+layout_mode = 2
+text = "<empty>"
+
+[node name="Helmet" type="PanelContainer" parent="InventoryUI/Inventory/EquippedList" unique_id=908431417]
+layout_mode = 2
+size_flags_vertical = 3
+script = ExtResource("4_sstho")
+
+[node name="Container" type="HBoxContainer" parent="InventoryUI/Inventory/EquippedList/Helmet" unique_id=89659299]
+layout_mode = 2
+
+[node name="Key" type="Label" parent="InventoryUI/Inventory/EquippedList/Helmet/Container" unique_id=543684806]
+layout_mode = 2
+text = "Helmet: "
+
+[node name="Value" type="Label" parent="InventoryUI/Inventory/EquippedList/Helmet/Container" unique_id=1621604207]
+layout_mode = 2
+text = "<empty>"
+
+[node name="Chest" type="PanelContainer" parent="InventoryUI/Inventory/EquippedList" unique_id=321834094]
+layout_mode = 2
+size_flags_vertical = 3
+script = ExtResource("4_sstho")
+
+[node name="Container" type="HBoxContainer" parent="InventoryUI/Inventory/EquippedList/Chest" unique_id=1201921603]
+layout_mode = 2
+
+[node name="Key" type="Label" parent="InventoryUI/Inventory/EquippedList/Chest/Container" unique_id=1292839808]
+layout_mode = 2
+text = "Chest: "
+
+[node name="Value" type="Label" parent="InventoryUI/Inventory/EquippedList/Chest/Container" unique_id=580923417]
+layout_mode = 2
+text = "<empty>"
+
+[node name="Gloves" type="PanelContainer" parent="InventoryUI/Inventory/EquippedList" unique_id=1604164856]
+layout_mode = 2
+size_flags_vertical = 3
+script = ExtResource("4_sstho")
+
+[node name="Container" type="HBoxContainer" parent="InventoryUI/Inventory/EquippedList/Gloves" unique_id=1569757769]
+layout_mode = 2
+
+[node name="Key" type="Label" parent="InventoryUI/Inventory/EquippedList/Gloves/Container" unique_id=400663163]
+layout_mode = 2
+text = "Gloves: "
+
+[node name="Value" type="Label" parent="InventoryUI/Inventory/EquippedList/Gloves/Container" unique_id=581282986]
+layout_mode = 2
+text = "<empty>"
+
+[node name="Boots" type="PanelContainer" parent="InventoryUI/Inventory/EquippedList" unique_id=1665139851]
+layout_mode = 2
+size_flags_vertical = 3
+script = ExtResource("4_sstho")
+
+[node name="Container" type="HBoxContainer" parent="InventoryUI/Inventory/EquippedList/Boots" unique_id=862955034]
+layout_mode = 2
+
+[node name="Key" type="Label" parent="InventoryUI/Inventory/EquippedList/Boots/Container" unique_id=439277959]
+layout_mode = 2
+text = "Boots: "
+
+[node name="Value" type="Label" parent="InventoryUI/Inventory/EquippedList/Boots/Container" unique_id=359161006]
+layout_mode = 2
+text = "<empty>"
+
+[node name="Ring" type="PanelContainer" parent="InventoryUI/Inventory/EquippedList" unique_id=1104362872]
+layout_mode = 2
+size_flags_vertical = 3
+script = ExtResource("4_sstho")
+
+[node name="Container" type="HBoxContainer" parent="InventoryUI/Inventory/EquippedList/Ring" unique_id=173967637]
+layout_mode = 2
+
+[node name="Key" type="Label" parent="InventoryUI/Inventory/EquippedList/Ring/Container" unique_id=1736078863]
+layout_mode = 2
+text = "Ring: "
+
+[node name="Value" type="Label" parent="InventoryUI/Inventory/EquippedList/Ring/Container" unique_id=1387893527]
+layout_mode = 2
+text = "<empty>"
+
+[node name="Amulet" type="PanelContainer" parent="InventoryUI/Inventory/EquippedList" unique_id=1868436583]
+layout_mode = 2
+size_flags_vertical = 3
+script = ExtResource("4_sstho")
+
+[node name="Container" type="HBoxContainer" parent="InventoryUI/Inventory/EquippedList/Amulet" unique_id=805019831]
+layout_mode = 2
+
+[node name="Key" type="Label" parent="InventoryUI/Inventory/EquippedList/Amulet/Container" unique_id=1860849905]
+layout_mode = 2
+text = "Amulet: "
+
+[node name="Value" type="Label" parent="InventoryUI/Inventory/EquippedList/Amulet/Container" unique_id=1942736397]
+layout_mode = 2
+text = "<empty>"
+
+[node name="Inventory" type="Label" parent="InventoryUI/Inventory" unique_id=887786457]
+layout_mode = 2
+text = "Inventory"
+
+[node name="InventoryList" type="VBoxContainer" parent="InventoryUI/Inventory" unique_id=1971652131]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+mouse_filter = 2
+
+[node name="ActionButton" type="Button" parent="InventoryUI/Inventory" unique_id=1209112668]
+layout_mode = 2
+text = "Equip"
+
+[node name="UnequipButton" type="Button" parent="InventoryUI/Inventory" unique_id=1678515887]
+layout_mode = 2
+text = "Unequip"
+
+[node name="TransferButton" type="Button" parent="InventoryUI/Inventory" unique_id=1030786746]
+layout_mode = 2
+text = "Transfer"
+
+[node name="ItemInfoPanel" parent="InventoryUI" unique_id=2146935418 instance=ExtResource("5_6wa6b")]
+unique_name_in_owner = true
+layout_mode = 0
+anchors_preset = 0
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 352.0
+offset_top = 128.0
+offset_right = 672.0
+offset_bottom = 384.0
+grow_horizontal = 1
+grow_vertical = 1
+
+[node name="StatsUI" type="PanelContainer" parent="." unique_id=433406166]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_right = 320.0
+grow_vertical = 2
+script = ExtResource("6_41oo2")
+
+[node name="Stats" type="VBoxContainer" parent="StatsUI" unique_id=2041384235]
+layout_mode = 2
+
+[node name="Exp" type="HBoxContainer" parent="StatsUI/Stats" unique_id=450131631]
+layout_mode = 2
+
+[node name="ExpKey" type="Label" parent="StatsUI/Stats/Exp" unique_id=2086401771]
+layout_mode = 2
+text = "Experience: "
+
+[node name="ExpValue" type="Label" parent="StatsUI/Stats/Exp" unique_id=1649737597]
+layout_mode = 2
+
+[node name="HP" type="HBoxContainer" parent="StatsUI/Stats" unique_id=723686212]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="HpKey" type="Label" parent="StatsUI/Stats/HP" unique_id=1328610194]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "HP:"
+
+[node name="HpValue" type="Label" parent="StatsUI/Stats/HP" unique_id=310709790]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="MP" type="HBoxContainer" parent="StatsUI/Stats" unique_id=1411943479]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="MpKey" type="Label" parent="StatsUI/Stats/MP" unique_id=1132248539]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "MP:"
+
+[node name="MpValue" type="Label" parent="StatsUI/Stats/MP" unique_id=1783132060]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="SP" type="HBoxContainer" parent="StatsUI/Stats" unique_id=35777712]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="SpKey" type="Label" parent="StatsUI/Stats/SP" unique_id=1898914135]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "SP:"
+
+[node name="SpValue" type="Label" parent="StatsUI/Stats/SP" unique_id=1510047209]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Attack" type="HBoxContainer" parent="StatsUI/Stats" unique_id=294727222]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="AttackKey" type="Label" parent="StatsUI/Stats/Attack" unique_id=329365132]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Attack:"
+
+[node name="AttackValue" type="Label" parent="StatsUI/Stats/Attack" unique_id=1650056200]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="MagicPower" type="HBoxContainer" parent="StatsUI/Stats" unique_id=1905236141]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="MagicPowerKey" type="Label" parent="StatsUI/Stats/MagicPower" unique_id=11590311]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Magic Power:"
+
+[node name="MagicPowerValue" type="Label" parent="StatsUI/Stats/MagicPower" unique_id=430778852]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="DivinePower" type="HBoxContainer" parent="StatsUI/Stats" unique_id=1448647058]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="DivinePowerKey" type="Label" parent="StatsUI/Stats/DivinePower" unique_id=615712164]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Divine Power:"
+
+[node name="DivinePowerValue" type="Label" parent="StatsUI/Stats/DivinePower" unique_id=1640220242]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Speed" type="HBoxContainer" parent="StatsUI/Stats" unique_id=2133006410]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="SpeedKey" type="Label" parent="StatsUI/Stats/Speed" unique_id=557048399]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Speed:"
+
+[node name="SpeedValue" type="Label" parent="StatsUI/Stats/Speed" unique_id=1414066739]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Defense" type="HBoxContainer" parent="StatsUI/Stats" unique_id=1859163395]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="DefenseKey" type="Label" parent="StatsUI/Stats/Defense" unique_id=1283414457]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Defense:"
+
+[node name="DefenseValue" type="Label" parent="StatsUI/Stats/Defense" unique_id=876257647]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="MagicDefense" type="HBoxContainer" parent="StatsUI/Stats" unique_id=1515439875]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="MagicDefenseKey" type="Label" parent="StatsUI/Stats/MagicDefense" unique_id=2066849200]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Magic Defense:"
+
+[node name="MagicDefenseValue" type="Label" parent="StatsUI/Stats/MagicDefense" unique_id=1507050456]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Resistance" type="HBoxContainer" parent="StatsUI/Stats" unique_id=1577562047]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ResistanceKey" type="Label" parent="StatsUI/Stats/Resistance" unique_id=1540528116]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Resistance:"
+
+[node name="ResistanceValue" type="Label" parent="StatsUI/Stats/Resistance" unique_id=1448622648]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Accuracy" type="HBoxContainer" parent="StatsUI/Stats" unique_id=285672759]
+layout_mode = 2
+
+[node name="AccuracyKey" type="Label" parent="StatsUI/Stats/Accuracy" unique_id=285834052]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Accuracy:"
+
+[node name="AccuracyValue" type="Label" parent="StatsUI/Stats/Accuracy" unique_id=618541186]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Evasion" type="HBoxContainer" parent="StatsUI/Stats" unique_id=1988068718]
+layout_mode = 2
+
+[node name="EvasionKey" type="Label" parent="StatsUI/Stats/Evasion" unique_id=602506816]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Evasion:"
+
+[node name="EvasionValue" type="Label" parent="StatsUI/Stats/Evasion" unique_id=1893177808]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="HealingDone" type="HBoxContainer" parent="StatsUI/Stats" unique_id=1941044721]
+layout_mode = 2
+
+[node name="HealingDoneKey" type="Label" parent="StatsUI/Stats/HealingDone" unique_id=1891518839]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Healing Done:"
+
+[node name="HealingDoneValue" type="Label" parent="StatsUI/Stats/HealingDone" unique_id=1373901796]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="HealingReceived" type="HBoxContainer" parent="StatsUI/Stats" unique_id=1473303315]
+layout_mode = 2
+
+[node name="HealingReceivedKey" type="Label" parent="StatsUI/Stats/HealingReceived" unique_id=1403912248]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Healing Received:"
+
+[node name="HealingReceivedValue" type="Label" parent="StatsUI/Stats/HealingReceived" unique_id=1468925889]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="EffectsUI" type="PanelContainer" parent="." unique_id=110768152]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 0.2
+anchor_bottom = 1.0
+offset_right = 64.0
+grow_vertical = 2
+script = ExtResource("7_wuabd")
+
+[node name="Effects" type="VBoxContainer" parent="EffectsUI" unique_id=2138515626]
+layout_mode = 2
+
+[node name="SkillsUI" type="PanelContainer" parent="." unique_id=1050647723]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_right = 320.0
+grow_vertical = 2
+script = ExtResource("8_ktti2")
+
+[node name="Skills" type="VBoxContainer" parent="SkillsUI" unique_id=651412299]
+layout_mode = 2
+
+[node name="UseSkill" type="Button" parent="SkillsUI" unique_id=1864130105]
+z_index = 6
+layout_mode = 2
+size_flags_vertical = 8
+text = "Use"
+
+[node name="LevelUpUI" type="Panel" parent="." unique_id=1695956276]
+unique_name_in_owner = true
+visible = false
+layout_mode = 0
+offset_right = 304.0
+offset_bottom = 264.0
+script = ExtResource("9_mf5x5")
+
+[node name="Attributes" type="GridContainer" parent="LevelUpUI" unique_id=226804987]
+layout_mode = 0
+offset_left = 8.0
+offset_right = 143.0
+offset_bottom = 241.0
+columns = 2
+
+[node name="Labels" type="VBoxContainer" parent="LevelUpUI/Attributes" unique_id=1153375279]
+layout_mode = 2
+
+[node name="STR" type="Label" parent="LevelUpUI/Attributes/Labels" unique_id=110096508]
+layout_mode = 2
+size_flags_vertical = 6
+text = "Strength"
+
+[node name="IQ" type="Label" parent="LevelUpUI/Attributes/Labels" unique_id=2087700804]
+layout_mode = 2
+size_flags_vertical = 6
+text = "Intelligence"
+
+[node name="PIE" type="Label" parent="LevelUpUI/Attributes/Labels" unique_id=776336087]
+layout_mode = 2
+size_flags_vertical = 6
+text = "Piety"
+
+[node name="VIT" type="Label" parent="LevelUpUI/Attributes/Labels" unique_id=1567484769]
+layout_mode = 2
+size_flags_vertical = 6
+text = "Vitality"
+
+[node name="DEX" type="Label" parent="LevelUpUI/Attributes/Labels" unique_id=1660768276]
+layout_mode = 2
+size_flags_vertical = 6
+text = "Dexterity"
+
+[node name="SPD" type="Label" parent="LevelUpUI/Attributes/Labels" unique_id=1515937979]
+layout_mode = 2
+size_flags_vertical = 6
+text = "Speed"
+
+[node name="LUK" type="Label" parent="LevelUpUI/Attributes/Labels" unique_id=2034159697]
+layout_mode = 2
+size_flags_vertical = 6
+text = "Luck"
+
+[node name="Values" type="VBoxContainer" parent="LevelUpUI/Attributes" unique_id=620626470]
+layout_mode = 2
+
+[node name="STR" type="HBoxContainer" parent="LevelUpUI/Attributes/Values" unique_id=852534796]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Dec" type="Button" parent="LevelUpUI/Attributes/Values/STR" unique_id=777775465]
+layout_mode = 2
+text = "-"
+
+[node name="Value" type="Label" parent="LevelUpUI/Attributes/Values/STR" unique_id=1312407845]
+layout_mode = 2
+
+[node name="Inc" type="Button" parent="LevelUpUI/Attributes/Values/STR" unique_id=2145201329]
+layout_mode = 2
+text = "+"
+
+[node name="IQ" type="HBoxContainer" parent="LevelUpUI/Attributes/Values" unique_id=12737281]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Dec" type="Button" parent="LevelUpUI/Attributes/Values/IQ" unique_id=1007767942]
+layout_mode = 2
+text = "-"
+
+[node name="Value" type="Label" parent="LevelUpUI/Attributes/Values/IQ" unique_id=1809452915]
+layout_mode = 2
+
+[node name="Inc" type="Button" parent="LevelUpUI/Attributes/Values/IQ" unique_id=507329615]
+layout_mode = 2
+text = "+"
+
+[node name="PIE" type="HBoxContainer" parent="LevelUpUI/Attributes/Values" unique_id=1199155695]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Dec" type="Button" parent="LevelUpUI/Attributes/Values/PIE" unique_id=1877824680]
+layout_mode = 2
+text = "-"
+
+[node name="Value" type="Label" parent="LevelUpUI/Attributes/Values/PIE" unique_id=410005907]
+layout_mode = 2
+
+[node name="Inc" type="Button" parent="LevelUpUI/Attributes/Values/PIE" unique_id=1229838895]
+layout_mode = 2
+text = "+"
+
+[node name="VIT" type="HBoxContainer" parent="LevelUpUI/Attributes/Values" unique_id=1246525879]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Dec" type="Button" parent="LevelUpUI/Attributes/Values/VIT" unique_id=1483712511]
+layout_mode = 2
+text = "-"
+
+[node name="Value" type="Label" parent="LevelUpUI/Attributes/Values/VIT" unique_id=1096118732]
+layout_mode = 2
+
+[node name="Inc" type="Button" parent="LevelUpUI/Attributes/Values/VIT" unique_id=1480361599]
+layout_mode = 2
+text = "+"
+
+[node name="DEX" type="HBoxContainer" parent="LevelUpUI/Attributes/Values" unique_id=916057167]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Dec" type="Button" parent="LevelUpUI/Attributes/Values/DEX" unique_id=259736267]
+layout_mode = 2
+text = "-"
+
+[node name="Value" type="Label" parent="LevelUpUI/Attributes/Values/DEX" unique_id=1118206749]
+layout_mode = 2
+
+[node name="Inc" type="Button" parent="LevelUpUI/Attributes/Values/DEX" unique_id=571622100]
+layout_mode = 2
+text = "+"
+
+[node name="SPD" type="HBoxContainer" parent="LevelUpUI/Attributes/Values" unique_id=965473300]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Dec" type="Button" parent="LevelUpUI/Attributes/Values/SPD" unique_id=275814571]
+layout_mode = 2
+text = "-"
+
+[node name="Value" type="Label" parent="LevelUpUI/Attributes/Values/SPD" unique_id=1913909986]
+layout_mode = 2
+
+[node name="Inc" type="Button" parent="LevelUpUI/Attributes/Values/SPD" unique_id=1436409893]
+layout_mode = 2
+text = "+"
+
+[node name="LUK" type="HBoxContainer" parent="LevelUpUI/Attributes/Values" unique_id=1804395546]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Dec" type="Button" parent="LevelUpUI/Attributes/Values/LUK" unique_id=12483946]
+layout_mode = 2
+text = "-"
+
+[node name="Value" type="Label" parent="LevelUpUI/Attributes/Values/LUK" unique_id=418732398]
+layout_mode = 2
+
+[node name="Inc" type="Button" parent="LevelUpUI/Attributes/Values/LUK" unique_id=1377553076]
+layout_mode = 2
+text = "+"
+
+[node name="Points" type="Label" parent="LevelUpUI" unique_id=765919570]
+layout_mode = 0
+offset_left = 160.0
+offset_top = 216.0
+offset_right = 295.0
+offset_bottom = 239.0
+
+[connection signal="pressed" from="CharacterMenuButtons/HBoxContainer/Stats" to="." method="_on_stats_pressed"]
+[connection signal="pressed" from="CharacterMenuButtons/HBoxContainer/Inventory" to="." method="_on_inventory_pressed"]
+[connection signal="pressed" from="CharacterMenuButtons/HBoxContainer/Skills" to="." method="_on_skills_pressed"]
+[connection signal="pressed" from="CharacterMenuButtons/HBoxContainer/Effects" to="." method="_on_effects_pressed"]
+[connection signal="pressed" from="CharacterMenuButtons/HBoxContainer/Talk" to="." method="_on_talk_pressed"]
+[connection signal="pressed" from="CharacterMenuButtons/HBoxContainer/LevelUp" to="." method="_on_level_up_pressed"]
+[connection signal="pressed" from="CharacterMenuButtons/HBoxContainer/Close" to="." method="_on_close_pressed"]
+[connection signal="pressed" from="InventoryUI/Inventory/ActionButton" to="InventoryUI" method="_on_action_button_pressed"]
+[connection signal="pressed" from="InventoryUI/Inventory/UnequipButton" to="InventoryUI" method="_on_unequip_button_pressed"]
+[connection signal="pressed" from="InventoryUI/Inventory/TransferButton" to="InventoryUI" method="_on_transfer_button_pressed"]
+[connection signal="pressed" from="SkillsUI/UseSkill" to="SkillsUI" method="_on_use_skill_pressed"]

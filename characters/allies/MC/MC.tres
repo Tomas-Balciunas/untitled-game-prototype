@@ -34,7 +34,6 @@ metadata/_custom_type_script = "uid://bqln4xpkkidja"
 
 [resource]
 script = ExtResource("10_fb0jw")
-level = 3
 default_effects = Array[ExtResource("4_2usx5")]([ExtResource("5_uxndi"), ExtResource("6_up1d2")])
 default_items = Array[ExtResource("4_jti2u")]([ExtResource("6_jti2u")])
 base_stats = ExtResource("1_lkn2v")

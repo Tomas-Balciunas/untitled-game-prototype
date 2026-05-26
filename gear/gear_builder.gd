@@ -43,7 +43,11 @@ func get_modifiers(tier: String, applicable: Array[Stats.StatRef], quality: Item
 		if _applicable.is_empty():
 			break
 		var stat: Stats.StatRef = _applicable.pick_random()
-		var mod_type: StatModifier.Type = [StatModifier.Type.ADDITIVE, StatModifier.Type.MULTIPLICATIVE].pick_random()
+		var mod_type: StatModifier.Type
+		if Stats.is_percentage_stat(stat):
+			mod_type = StatModifier.Type.MULTIPLICATIVE
+		else:
+			mod_type = [StatModifier.Type.ADDITIVE, StatModifier.Type.MULTIPLICATIVE].pick_random()
 		var range: Array = StatModifierConfig.get_range(stat, mod_type, quality)
 		var value: Variant
 		if mod_type == StatModifier.Type.ADDITIVE:

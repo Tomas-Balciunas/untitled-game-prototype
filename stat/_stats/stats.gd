@@ -14,7 +14,19 @@ enum StatRef {
 	RESISTANCE,
 	ACCURACY,
 	EVASION,
+	HEALING_DONE,
+	HEALING_RECEIVED
 }
+
+const PERCENTAGE_BASE := 100.0
+
+const PERCENTAGE_STATS: Array[StatRef] = [
+	StatRef.HEALING_DONE,
+	StatRef.HEALING_RECEIVED,
+]
+
+static func is_percentage_stat(stat: StatRef) -> bool:
+	return stat in PERCENTAGE_STATS
 
 const STAT_NAMES := {
 	StatRef.ATTACK:        "Attack",
@@ -29,6 +41,8 @@ const STAT_NAMES := {
 	StatRef.RESISTANCE:    "Resistance",
 	StatRef.ACCURACY:      "Accuracy",
 	StatRef.EVASION:       "Evasion",
+	StatRef.HEALING_DONE:  "Healing Done",
+	StatRef.HEALING_RECEIVED: "Healing Received"
 }
 
 @export var attack: float = 0.0
@@ -43,35 +57,41 @@ const STAT_NAMES := {
 @export var resistance: float = 0.0
 @export var accuracy: float = 0.0
 @export var evasion: float = 0.0
+@export var healing_done: float = 0.0
+@export var healing_received: float = 0.0
 
 func add(other: Stats) -> void:
-	attack        += other.attack
-	health        += other.health
-	mana          += other.mana
-	sp            += other.sp
-	speed         += other.speed
-	defense       += other.defense
-	magic_power   += other.magic_power
-	divine_power  += other.divine_power
-	magic_defense += other.magic_defense
-	resistance    += other.resistance
-	accuracy      += other.accuracy
-	evasion       += other.evasion
+	attack            += other.attack
+	health            += other.health
+	mana              += other.mana
+	sp                += other.sp
+	speed             += other.speed
+	defense           += other.defense
+	magic_power       += other.magic_power
+	divine_power      += other.divine_power
+	magic_defense     += other.magic_defense
+	resistance        += other.resistance
+	accuracy          += other.accuracy
+	evasion           += other.evasion
+	healing_done      += other.healing_done
+	healing_received  += other.healing_received
 
 func get_stat(stat: StatRef) -> int:
 	match stat:
-		StatRef.ATTACK:        return round(attack)
-		StatRef.HEALTH:        return round(health)
-		StatRef.MANA:          return round(mana)
-		StatRef.SP:            return round(sp)
-		StatRef.SPEED:         return round(speed)
-		StatRef.DEFENSE:       return round(defense)
-		StatRef.MAGIC_POWER:   return round(magic_power)
-		StatRef.DIVINE_POWER:  return round(divine_power)
-		StatRef.MAGIC_DEFENSE: return round(magic_defense)
-		StatRef.RESISTANCE:    return round(resistance)
-		StatRef.ACCURACY:      return round(accuracy)
-		StatRef.EVASION:       return round(evasion)
+		StatRef.ATTACK:        return roundi(attack)
+		StatRef.HEALTH:        return roundi(health)
+		StatRef.MANA:          return roundi(mana)
+		StatRef.SP:            return roundi(sp)
+		StatRef.SPEED:         return roundi(speed)
+		StatRef.DEFENSE:       return roundi(defense)
+		StatRef.MAGIC_POWER:   return roundi(magic_power)
+		StatRef.DIVINE_POWER:  return roundi(divine_power)
+		StatRef.MAGIC_DEFENSE: return roundi(magic_defense)
+		StatRef.RESISTANCE:    return roundi(resistance)
+		StatRef.ACCURACY:      return roundi(accuracy)
+		StatRef.EVASION:       return roundi(evasion)
+		StatRef.HEALING_DONE:     return roundi(healing_done)
+		StatRef.HEALING_RECEIVED: return roundi(healing_received)
 		_:                     return 0
 
 func set_stat(stat: StatRef, value: float) -> void:
@@ -88,6 +108,8 @@ func set_stat(stat: StatRef, value: float) -> void:
 		StatRef.RESISTANCE:    resistance    = value
 		StatRef.ACCURACY:      accuracy      = value
 		StatRef.EVASION:       evasion       = value
+		StatRef.HEALING_DONE:     healing_done     = value
+		StatRef.HEALING_RECEIVED: healing_received = value
 
 func add_stat(stat: StatRef, value: float) -> void:
 	match stat:
@@ -103,6 +125,8 @@ func add_stat(stat: StatRef, value: float) -> void:
 		StatRef.RESISTANCE:    resistance    += value
 		StatRef.ACCURACY:      accuracy      += value
 		StatRef.EVASION:       evasion       += value
+		StatRef.HEALING_DONE:     healing_done     += value
+		StatRef.HEALING_RECEIVED: healing_received += value
 
 static func get_stat_name(stat: StatRef) -> String:
 	return STAT_NAMES[stat]
@@ -115,6 +139,7 @@ func game_save() -> Dictionary:
 		"magic_power": magic_power, "divine_power": divine_power,
 		"magic_defense": magic_defense, "resistance": resistance,
 		"accuracy": accuracy, "evasion": evasion,
+		"healing_done": healing_done, "healing_received": healing_received,
 	}
 
 
@@ -131,3 +156,5 @@ func game_load(data: Dictionary) -> void:
 	resistance    = data.get("resistance", 0)
 	accuracy      = data.get("accuracy", 0)
 	evasion       = data.get("evasion", 0)
+	healing_done     = data.get("healing_done", 0.0)
+	healing_received = data.get("healing_received", 0.0)

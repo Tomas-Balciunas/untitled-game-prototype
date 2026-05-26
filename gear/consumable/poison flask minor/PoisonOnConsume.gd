@@ -7,16 +7,15 @@ func listened_triggers() -> Array:
 	return [EffectTriggers.ON_USE_CONSUMABLE]
 	
 func can_process(_stage: String, event: TriggerEvent) -> bool:
-	return event.actor == owner
+	return event.source.get_actor() == owner
 
 func on_trigger(_stage: String, event: TriggerEvent) -> void:
 	var poison: PoisonEffect = PoisonEffect.new()
 	poison.duration_turns = duration_turns
 	poison.damage_per_turn = damage_per_turn
-	poison._source = event.actor
-	poison._is_instance = true
+	poison.set_source(event.source)
 	var app := EffectApplicationContext.new()
-	app.source = event.actor
+	app.source = event.source
 	app.set_targets(event.target)
 	EffectApplicationResolver.new(poison).execute(app)
 

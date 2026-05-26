@@ -13,6 +13,8 @@ extends Node
 @onready var resistance_value: Label    = $Stats/Resistance/ResistanceValue
 @onready var accuracy_value: Label = $Stats/Accuracy/AccuracyValue
 @onready var evasion_value: Label = $Stats/Evasion/EvasionValue
+@onready var healing_done_value: Label     = $Stats/HealingDone/HealingDoneValue
+@onready var healing_received_value: Label = $Stats/HealingReceived/HealingReceivedValue
 
 func bind_character(character: Character) -> void:
 	var s := character.stats
@@ -21,14 +23,16 @@ func bind_character(character: Character) -> void:
 		character.experience_manager.exp_for_level(character.level + 1)
 	]
 
-	hp_value.text            = str(s.health)
-	mp_value.text            = str(s.mana)
-	attack_value.text        = str(s.attack)
-	speed_value.text         = str(s.speed)
-	defense_value.text       = str(s.defense)
-	magic_power_value.text   = str(s.magic_power)
-	divine_power_value.text  = str(s.divine_power)
-	magic_defense_value.text = str(s.magic_defense)
-	resistance_value.text    = str(s.resistance)
+	hp_value.text            = str(s.get_stat(Stats.StatRef.HEALTH))
+	mp_value.text            = str(s.get_stat(Stats.StatRef.MANA))
+	attack_value.text        = str(s.get_stat(Stats.StatRef.ATTACK))
+	speed_value.text         = str(s.get_stat(Stats.StatRef.SPEED))
+	defense_value.text       = str(s.get_stat(Stats.StatRef.DEFENSE))
+	magic_power_value.text   = str(s.get_stat(Stats.StatRef.MAGIC_POWER))
+	divine_power_value.text  = str(s.get_stat(Stats.StatRef.DIVINE_POWER))
+	magic_defense_value.text = str(s.get_stat(Stats.StatRef.MAGIC_DEFENSE))
+	resistance_value.text    = str(s.get_stat(Stats.StatRef.RESISTANCE))
 	accuracy_value.text = str(s.get_stat(Stats.StatRef.ACCURACY))
 	evasion_value.text = str(s.get_stat(Stats.StatRef.EVASION))
+	healing_done_value.text     = "%d%%" % s.get_stat(Stats.StatRef.HEALING_DONE)
+	healing_received_value.text = "%d%%" % s.get_stat(Stats.StatRef.HEALING_RECEIVED)
