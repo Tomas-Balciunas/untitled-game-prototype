@@ -7,8 +7,6 @@ class_name ManaDrainTrap
 func trigger(target: Character) -> void:
 	var drain := ManaDrainEffect.new()
 	drain.amount = amount
-	drain.immediate_trigger = true
-	drain.battle_only = false
 	
 	var act := ActionContext.new()
 	act.actively_cast = false

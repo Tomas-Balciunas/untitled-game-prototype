@@ -25,6 +25,7 @@ GameState="*res://scenes/GameState.gd"
 EffectTriggers="*res://effect/EffectTriggers.gd"
 MapInstance="*res://scripts/MapInstance.gd"
 MapManager="*res://scripts/MapManager.gd"
+TilesetRegistry="*res://scripts/TilesetRegistry.gd"
 CharacterRegistry="*res://scripts/CharacterRegistry.gd"
 PartyManager="*res://scripts/PartyManager.gd"
 EventManager="*res://events/EventManager.gd"
@@ -58,6 +59,9 @@ ChatterManager="*res://scripts/ChatterManager.gd"
 ChatEventBus="*res://scripts/bus/ChatEventBus.gd"
 InteractionTagManager="*res://scripts/InteractionTagManager.gd"
 PartyBus="*res://scripts/bus/PartyBus.gd"
+CurrencyBus="*res://scripts/bus/CurrencyBus.gd"
+ShopBus="*res://shop/ShopBus.gd"
+ShopInterface="*res://shop/ui/ShopInterface.tscn"
 
 [debug]
 

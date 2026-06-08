@@ -3,11 +3,23 @@ class_name StatCalculator
 
 
 static func recalculate_all_stats(c: Character) -> void:
+	# Pass 1: compute every stat normally (no weapon scaling).
 	for s: Stats.StatRef in Stats.StatRef.values():
-		recalculate_stat(c, s)
-	
+		_recalculate_stat_base(c, s)
+
+	# Pass 2: apply weapon scaling to power stats AFTER everything else is
+	# finalized, so scaling can safely read from other stats (health, speed...).
+	for s: Stats.StatRef in WeaponScaling.ALLOWED_TARGET_STATS:
+		_apply_weapon_scaling(c, s)
+
 
 static func recalculate_stat(c: Character, s: Stats.StatRef) -> void:
+	_recalculate_stat_base(c, s)
+	if s in WeaponScaling.ALLOWED_TARGET_STATS:
+		_apply_weapon_scaling(c, s)
+
+
+static func _recalculate_stat_base(c: Character, s: Stats.StatRef) -> void:
 	# Percentage stats start from a fixed baseline and only take multiplicative
 	# modifiers — they ignore base/attribute/level/gear contributions entirely.
 	if Stats.is_percentage_stat(s):
@@ -47,6 +59,24 @@ static func recalculate_stat(c: Character, s: Stats.StatRef) -> void:
 
 	c.stats.set_stat(s, final)
 
+	CharacterBus.stat_changed.emit(c, s)
+
+
+static func _apply_weapon_scaling(c: Character, s: Stats.StatRef) -> void:
+	var scaling_total: float = 0.0
+
+	for slot: Gear in c.equipment.get_all_equipment():
+		if slot == null or not (slot is Weapon):
+			continue
+		var weapon := slot as Weapon
+		if weapon.scaling == null:
+			continue
+		scaling_total += weapon.scaling.compute_contribution(s, c)
+
+	if scaling_total == 0.0:
+		return
+
+	c.stats.set_stat(s, round(c.stats.get_stat(s) + scaling_total))
 	CharacterBus.stat_changed.emit(c, s)
 
 

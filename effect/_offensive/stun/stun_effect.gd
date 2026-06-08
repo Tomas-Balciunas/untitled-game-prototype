@@ -5,6 +5,11 @@ class_name StunEffect
 var turns_lasted: int = 0
 
 
+func _init() -> void:
+	super()
+	expire_phase = TurnPhase.CUSTOM
+
+
 func listened_triggers() -> Array:
 	return [EffectTriggers.ON_TURN_START, EffectTriggers.ON_TURN_END]
 

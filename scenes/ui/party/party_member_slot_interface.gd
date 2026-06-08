@@ -80,6 +80,11 @@ func _on_sp_changed() -> void:
 
 
 func _on_gui_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and event.pressed:
+		if character_instance:
+			CharacterBus.display_status_effects.emit(character_instance)
+		return
+
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
 		if TargetingManager.mode == TargetingManager.Mode.DISABLED:
 			return

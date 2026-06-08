@@ -5,11 +5,11 @@
 [ext_resource type="PackedScene" uid="uid://bbixalnsv3np6" path="res://characters/allies/MC/_body/MC.tscn" id="3_2usx5"]
 [ext_resource type="Script" uid="uid://bp0biy0knxw2o" path="res://effect/Effect.gd" id="4_2usx5"]
 [ext_resource type="Script" uid="uid://b06vmgrh4qa8i" path="res://gear/ItemResource.gd" id="4_jti2u"]
-[ext_resource type="Resource" uid="uid://dc1m852hhuxcm" path="res://effect/_passive/thorns.tres" id="5_uxndi"]
 [ext_resource type="Resource" uid="uid://b2movrdrkxno7" path="res://characters/allies/MC/test_sword.tres" id="6_jti2u"]
 [ext_resource type="Resource" uid="uid://c5qyqcmwx0qfy" path="res://scripts/experience/ExperienceManager.tres" id="6_l36pt"]
 [ext_resource type="Script" uid="uid://dq4acpkde276p" path="res://skills/Skill.gd" id="6_lkn2v"]
 [ext_resource type="Resource" uid="uid://c7nmidhbqovfy" path="res://effect/_passive/consumable_discount/discount.tres" id="6_up1d2"]
+[ext_resource type="Resource" uid="uid://by4pf2vg22quv" path="res://effect/bleed/bleed_test.tres" id="6_xghbj"]
 [ext_resource type="Resource" uid="uid://cs2tci0dc3vvo" path="res://characters/_class/_Unknown.tres" id="8_xghbj"]
 [ext_resource type="Resource" uid="uid://lcgngc3c13fc" path="res://characters/_race/_Unknown.tres" id="9_ghhp2"]
 [ext_resource type="Script" uid="uid://bwn4gpkaijqsg" path="res://scripts/CharacterResource.gd" id="10_fb0jw"]
@@ -34,7 +34,7 @@ metadata/_custom_type_script = "uid://bqln4xpkkidja"
 
 [resource]
 script = ExtResource("10_fb0jw")
-default_effects = Array[ExtResource("4_2usx5")]([ExtResource("5_uxndi"), ExtResource("6_up1d2")])
+default_effects = Array[ExtResource("4_2usx5")]([ExtResource("6_up1d2"), ExtResource("6_xghbj")])
 default_items = Array[ExtResource("4_jti2u")]([ExtResource("6_jti2u")])
 base_stats = ExtResource("1_lkn2v")
 stat_level_growth = SubResource("Resource_uxndi")

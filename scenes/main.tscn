@@ -29,6 +29,7 @@
 [ext_resource type="Script" uid="uid://rkotit4vkflf" path="res://scenes/ui/chest/chest_content.gd" id="15_2f3dj"]
 [ext_resource type="Script" uid="uid://b4kodgy0qo0cl" path="res://scenes/ui/battle/battle_controls/battle_controls_interface.gd" id="18_2f3dj"]
 [ext_resource type="PackedScene" uid="uid://c1geh2y2biany" path="res://scenes/battle_text_lines.tscn" id="25_yq6so"]
+[ext_resource type="PackedScene" path="res://scenes/ui/status_effects/StatusEffectsWindow.tscn" id="31_sew0"]
 [ext_resource type="Script" uid="uid://dd5ranljoqy48" path="res://scenes/fps.gd" id="30_fv21b"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tel4y"]
@@ -1090,6 +1091,8 @@ mouse_filter = 2
 [node name="BattleTextLines" parent="UIRoot/PartyInterface" unique_id=166178460 instance=ExtResource("25_yq6so")]
 layout_mode = 1
 offset_top = -181.0
+
+[node name="StatusEffectsWindow" parent="UIRoot" instance=ExtResource("31_sew0")]
 
 [node name="Managers" type="Node" parent="." unique_id=1152471153]
 

@@ -19,32 +19,30 @@ func unsubscribe(effect: Effect) -> void:
 
 func process_trigger(stage: String, event: TriggerEvent) -> void:
 	var ctx: ActionContext = event.ctx
+	var pending: Array[Effect] = []
 
-	if ctx.temporary_effects:
-		for e: Effect in ctx.temporary_effects:
-			e.set_owner(ctx.source.get_actor())
-			e.set_source(ctx.source)
-			if not _passes_filters(e, event):
-				continue
-			if stage not in e.listened_triggers():
-				continue
-			if not e.can_process(stage, event):
-				continue
-			e.on_trigger(stage, event)
-			if e.immediate_trigger:
-				e.remove_self()
+	for e: Effect in ctx.temporary_effects:
+		if stage not in e.listened_triggers():
+			continue
+		e.set_owner(ctx.source.get_actor())
+		e.set_source(ctx.source)
+		pending.append(e)
 
-	var subscribers: Array = _subscriptions.get(stage, []).duplicate()
-	subscribers.sort_custom(_sort_by_priority)
+	for e: Effect in _subscriptions.get(stage, []):
+		pending.append(e)
 
-	for effect: Effect in subscribers:
+	pending.sort_custom(_sort_by_priority)
+
+	for effect: Effect in pending:
 		if ctx.stop_processing:
 			break
 		if not _passes_filters(effect, event):
 			continue
 		if not effect.can_process(stage, event):
 			continue
+
 		effect.on_trigger(stage, event)
+
 		if effect.immediate_trigger:
 			effect.remove_self()
 
@@ -53,7 +51,7 @@ static func _passes_filters(effect: Effect, event: TriggerEvent) -> bool:
 	if not BattleContext.in_battle and effect.battle_only:
 		return false
 	
-	if !effect.can_process_when_dead():
+	if effect.owner.is_dead and !effect.can_process_when_dead():
 		return false
 	
 	return true

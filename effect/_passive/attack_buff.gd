@@ -5,8 +5,6 @@ class_name AttackBuff
 @export var modifier: StatModifier
 @export var value: int = 10
 
-var remaining_turns: int
-
 
 func on_apply() -> void:
 	if !modifier:
@@ -15,23 +13,23 @@ func on_apply() -> void:
 		mod.description = "Increases attack power"
 		mod.type = StatModifier.Type.ADDITIVE
 		mod.value = value
-		
+
 		modifier = mod
-	
+
 	owner.state.add_temporary_modifier(modifier)
-	remaining_turns = duration_turns
 	StatCalculator.recalculate_stat(owner, modifier.stat)
 	BattleTextLines.print_line("applied att buff to %s" % owner.resource.name)
-	
+
+## Duration is handled by the base lifecycle (counts down at expire_phase,
+## TURN_END by default). We only need to undo the stat modifier on expiry.
+func on_expire() -> void:
+	if owner and modifier:
+		owner.state.remove_temporary_modifier(modifier)
+		StatCalculator.recalculate_stat(owner, modifier.stat)
+	super()
+
 func listened_triggers() -> Array:
-	return [EffectTriggers.ON_TURN_END]
+	return []
 
-func can_process(_stage: String, event: TriggerEvent) -> bool:
-	return owner_is_actor(event)
-
-func on_trigger(_stage: String, _event: TriggerEvent) -> void:
-	remaining_turns -= 1
-	
-	if remaining_turns <= 0:
-		owner.stats.remove_temporary_modifier(modifier)
-		owner.remove_effect(self)
+func can_process(_stage: String, _event: TriggerEvent) -> bool:
+	return false

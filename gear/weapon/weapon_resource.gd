@@ -7,6 +7,7 @@ class_name WeaponResource
 @export var weapon_range: TargetingManager.RangeType = TargetingManager.RangeType.MELEE
 @export var weapon_type: ItemTypes.WeaponType = ItemTypes.WeaponType.SWORD
 @export var accuracy_range: int = 0
+@export var scaling: WeaponScaling
 
 
 func _init() -> void:
@@ -36,7 +37,8 @@ func _build_instance() -> Weapon:
 	weapon.weapon_range = weapon_range
 	weapon.accuracy_range = accuracy_range
 	weapon.attack_rate = attack_rate
-	
+	weapon.scaling = scaling.duplicate(true) if scaling else WeaponScaling.new()
+
 	return weapon
 
 

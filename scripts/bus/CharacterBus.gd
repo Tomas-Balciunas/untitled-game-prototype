@@ -7,4 +7,5 @@ signal stat_changed(c: Character, stat: Stats.StatRef)
 
 ## UI
 signal display_character_menu(c: Character)
+signal display_status_effects(c: Character)
 signal skill_use_requested(skill: Skill)

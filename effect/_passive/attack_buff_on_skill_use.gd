@@ -6,6 +6,7 @@ var mod: StatModifier
 var active_mod: StatModifier = null
 
 func _init() -> void:
+	super()
 	mod = StatModifier.new()
 	mod.value = 5
 	mod.stat = Stats.StatRef.ATTACK

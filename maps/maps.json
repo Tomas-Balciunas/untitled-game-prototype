@@ -34,8 +34,8 @@
 		"return_map": "beginning_area_01",
 		"end_map": "beginning_area_01",
 		"config": {
-			"width": 300,
-			"height": 300,
+			"width": 100,
+			"height": 100,
 			"layout": "linear",
 			"density": 1.0,
 			"corridor_curviness": 1.0,

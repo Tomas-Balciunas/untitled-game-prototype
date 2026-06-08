@@ -6,24 +6,17 @@ enum TargetType { PATROL, PLAYER }
 @onready var player: CharacterBody3D = get_tree().get_root().get_node("Main/Player")
 @onready var chase_timer: Timer = $ChaseTimer
 @onready var idle_timer: Timer = $IdleTimer
+@onready var flee_grace_timer: Timer = $FleeGraceTimer
 
 @export var encounter_data: EncounterData
 @export var enemy_scene: PackedScene
 @export var speed := 1.2
 @export var chase_duration := 2
 @export var idle_duration := 2
+@export var flee_grace_duration := 3
 
-# Idle enemies further than this from the player don't run physics at all —
-# huge perf win on large maps where most spawners are off-screen and doing
-# nothing of consequence. They re-activate the moment the player comes within
-# range of their Detection Area3D (radius 5 by default), so this just has to
-# be safely larger than the detection radius.
+
 const ACTIVATION_DISTANCE: float = 12.0
-
-# NavigationAgent.target_position writes trigger a full A* re-path. Doing it
-# every physics frame for every chaser is the dominant cost when enemy count
-# scales. Throttling to ~3 Hz is plenty since the player only moves in
-# discrete tile hops (~0.3s per hop).
 const TARGET_UPDATE_INTERVAL: float = 0.3
 
 var visual: CharacterBody3D
@@ -32,6 +25,7 @@ var origin: Vector3
 var current_target_type := TargetType.PATROL
 var player_detected: bool = false
 var can_move := true
+var can_trigger_battle := true
 var _target_update_timer: float = 0.0
 
 
@@ -87,6 +81,9 @@ func _on_encounter_ended(_res: String, data: EncounterData) -> void:
 		if MapInstance.is_encounter_cleared(data.id):
 			self.queue_free()
 		else:
+			can_trigger_battle = false
+			flee_grace_timer.start(flee_grace_duration)
+			
 			if player_detected:
 				can_move = false
 				idle_timer.start(idle_duration)
@@ -109,9 +106,12 @@ func _on_detection_body_exited(body: Node3D) -> void:
 
 
 func _on_target_reached() -> void:
+	if not can_trigger_battle:
+		return
+
 	if not player_detected:
 		return
-		
+
 	if not current_target_type == TargetType.PLAYER:
 		return
 	
@@ -130,3 +130,7 @@ func _on_chase_timer_timeout() -> void:
 
 func _on_idle_timer_timeout() -> void:
 	can_move = true
+
+
+func _on_flee_grace_timer_timeout() -> void:
+	can_trigger_battle = true

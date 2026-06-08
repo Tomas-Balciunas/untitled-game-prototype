@@ -12,25 +12,52 @@ enum EffectCategory {
 }
 
 enum EffectScope {
-	OWNER_IS_ACTOR,   # owner is the source of the triggering event
-	OWNER_IS_TARGET,  # owner is being targeted (checks event.target then ctx.targets)
-	GLOBAL            # fires for all events of this stage; scope handled in can_process
+	OWNER_IS_ACTOR,
+	OWNER_IS_TARGET,
+	GLOBAL
 }
 
 enum EffectType {
 	BASIC_ATTACK
 }
 
+## Which point in a turn an effect's duration countdown / expiry is evaluated.
+## CUSTOM means the effect manages its own removal (e.g. a random recovery
+## roll) and is skipped by the automatic countdown and the turn display.
+enum TurnPhase {
+	TURN_START,
+	TURN_END,
+	CUSTOM
+}
+
 @export var id: String
 @export var name: String = "Unnamed Effect"
 @export var description: String = "Unnamed Effect"
+@export var icon: Texture2D
 
+@export var native: bool = false
+@export var show_in_status: bool = true
+
+## effective in battle only
 @export var battle_only: bool = true
+
+## ephemeral effects like stun which doesnt persist after battle ends
+## if true, will be removed after battle
 @export var expires_after_battle: bool = false
+
+## triggered immediately and removed during the same state
 @export var immediate_trigger: bool = false
+
 @export var process_when_dead: bool = false
 @export var priority: int = 200
 @export var effect_type: Array[EffectType] = []
+
+@export var duration_turns: int = -1
+
+## if custom, should override and implement custom logic
+@export var expire_phase: TurnPhase = TurnPhase.TURN_END
+
+var remaining_turns: int = -1
 
 var owner: Character = null
 var source: ContextSource = null
@@ -63,8 +90,50 @@ func _get_name() -> String:
 func get_description() -> String:
 	return description
 
+func show_in_status_screen() -> bool:
+	return show_in_status
+
+func show_in_character_menu() -> bool:
+	return native
+
+func get_icon() -> Texture2D:
+	return icon
+
+func get_display_turns() -> int:
+	if not is_turn_based() or expire_phase == TurnPhase.CUSTOM:
+		return -1
+	return remaining_turns
+
+func get_display_stacks() -> int:
+	return -1
+
 @abstract
 func get_category() -> EffectCategory
+
+func is_turn_based() -> bool:
+	return duration_turns >= 0
+
+func on_turn_start() -> void:
+	_tick_duration(TurnPhase.TURN_START)
+
+func on_turn_end() -> void:
+	_tick_duration(TurnPhase.TURN_END)
+
+func _tick_duration(phase: TurnPhase) -> void:
+	if not is_turn_based():
+		return
+	
+	if phase != expire_phase:
+		return
+	
+	consume_duration()
+
+func consume_duration(amount: int = 1) -> void:
+	if not is_turn_based():
+		return
+	remaining_turns -= amount
+	if remaining_turns <= 0:
+		on_expire()
 
 func on_apply() -> void:
 	pass

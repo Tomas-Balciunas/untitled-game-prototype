@@ -192,6 +192,14 @@ func prepare_for_battle() -> void:
 	for e: Effect in effects:
 		e.prepare_for_battle()
 
+func on_turn_start() -> void:
+	for e: Effect in effects.duplicate():
+		e.on_turn_start()
+
+func on_turn_end() -> void:
+	for e: Effect in effects.duplicate():
+		e.on_turn_end()
+
 func cleanup_after_battle() -> void:
 	for effect in effects.duplicate():
 		if effect.expires_after_battle:
@@ -207,6 +215,7 @@ func apply_effect(effect: Effect, source: ContextSource) -> Effect:
 	var inst: Effect = effect.duplicate(true)
 	inst.set_owner(self)
 	inst.set_source(source)
+	inst.remaining_turns = inst.duration_turns
 	inst.on_apply()
 	
 	effects.append(inst)

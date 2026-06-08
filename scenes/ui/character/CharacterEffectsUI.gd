@@ -8,6 +8,8 @@ const EFFECT_LABEL = preload("uid://buyertqp85xfq")
 func bind_character(character: Character) -> void:
 	clear_effects()
 	for effect: Effect in character.effects:
+		if not effect.show_in_character_menu():
+			continue
 		add_effect(effect)
 
 func clear_effects() -> void:

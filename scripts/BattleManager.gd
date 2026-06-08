@@ -115,7 +115,9 @@ func _on_turn_start() -> void:
 	var ctx: ActionContext = ActionContext.new()
 	var resolver: TurnStageResolver = TurnStageResolver.new(EffectTriggers.ON_TURN_START, current_battler)
 	resolver.execute(ctx)
-	
+
+	current_battler.on_turn_start()
+
 	if is_party_member:
 		current_state = BattleState.PLAYER_TURN
 		_on_player_turn(ctx) ## handle cases like checking for hard CC
@@ -125,10 +127,11 @@ func _on_turn_start() -> void:
 
 func _on_turn_end() -> void:
 	var ctx: ActionContext = ActionContext.new()
-	ctx.should_tick = true
 	var resolver: TurnStageResolver = TurnStageResolver.new(EffectTriggers.ON_TURN_END, current_battler)
 	resolver.execute(ctx)
-	
+
+	current_battler.on_turn_end()
+
 	current_battler.action_value += 1000 / (100 + current_battler.stats.speed)
 	BattleBus.turn_ended.emit()
 	current_battler = null

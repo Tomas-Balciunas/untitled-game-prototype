@@ -30,7 +30,11 @@ shape = SubResource("CapsuleShape3D_0p10e")
 
 [node name="IdleTimer" type="Timer" parent="." unique_id=1357898847]
 
+[node name="FleeGraceTimer" type="Timer" parent="." unique_id=1357898848]
+one_shot = true
+
 [connection signal="body_entered" from="Detection" to="." method="_on_detection_body_entered"]
 [connection signal="body_exited" from="Detection" to="." method="_on_detection_body_exited"]
 [connection signal="timeout" from="ChaseTimer" to="." method="_on_chase_timer_timeout"]
 [connection signal="timeout" from="IdleTimer" to="." method="_on_idle_timer_timeout"]
+[connection signal="timeout" from="FleeGraceTimer" to="." method="_on_flee_grace_timer_timeout"]

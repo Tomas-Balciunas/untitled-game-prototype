@@ -6,6 +6,7 @@ var accumulator: int = 0
 const THRESHOLD: int = 10 
 
 func _init() -> void:
+	super()
 	name = "Lash"
 	description = "Damage is accumulated, upon reaching a certain threshold the next attack unleashes the accumulated damage"
 

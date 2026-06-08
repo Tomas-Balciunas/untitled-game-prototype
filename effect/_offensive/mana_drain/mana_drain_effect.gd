@@ -1,8 +1,14 @@
-extends PassiveEffect
+extends DebuffEffect
 
 class_name ManaDrainEffect
 
 @export var amount: float = 0.1
+
+
+func _init() -> void:
+	super()
+	immediate_trigger = true
+	battle_only = false
 
 
 func listened_triggers() -> Array:

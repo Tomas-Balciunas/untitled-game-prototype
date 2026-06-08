@@ -7,5 +7,4 @@ script = ExtResource("1_38n0h")
 id = "mana_drain_01"
 name = "Mana Drain"
 description = "Drain a portion of mana from the target"
-single_trigger = true
 metadata/_custom_type_script = "uid://c7sgcxgykkrno"
