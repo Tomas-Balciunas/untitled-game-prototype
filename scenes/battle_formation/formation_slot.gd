@@ -168,6 +168,11 @@ func _on_mouse_exited() -> void:
 func _on_input_event(_camera: Camera3D, event: InputEvent, _position: Vector3, _normal: Vector3, _shape_idx: int) -> void:
 	if not is_slot_targeting_enabled:
 		return
+	
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and event.pressed:
+		if character_instance:
+			CharacterBus.display_status_effects.emit(character_instance)
+		return
 
 	var is_ally := character_instance != null and PartyManager.has_member(character_instance.resource.id)
 	var targeting_enabled := BattleContext.ally_targeting_enabled if is_ally else BattleContext.enemy_targeting_enabled

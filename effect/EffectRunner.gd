@@ -31,7 +31,7 @@ func process_trigger(stage: String, event: TriggerEvent) -> void:
 	for e: Effect in _subscriptions.get(stage, []):
 		pending.append(e)
 
-	pending.sort_custom(_sort_by_priority)
+	pending.sort_custom(_sort_by_priority.bind(stage))
 
 	for effect: Effect in pending:
 		if ctx.stop_processing:
@@ -47,7 +47,7 @@ func process_trigger(stage: String, event: TriggerEvent) -> void:
 			effect.remove_self()
 
 
-static func _passes_filters(effect: Effect, event: TriggerEvent) -> bool:
+static func _passes_filters(effect: Effect, _event: TriggerEvent) -> bool:
 	if not BattleContext.in_battle and effect.battle_only:
 		return false
 	
@@ -56,5 +56,5 @@ static func _passes_filters(effect: Effect, event: TriggerEvent) -> bool:
 	
 	return true
 
-static func _sort_by_priority(a: Effect, b: Effect) -> bool:
-	return a.priority > b.priority
+static func _sort_by_priority(a: Effect, b: Effect, stage: String) -> bool:
+	return a.get_priority(stage) > b.get_priority(stage)

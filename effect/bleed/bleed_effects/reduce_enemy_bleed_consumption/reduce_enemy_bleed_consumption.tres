@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="ReduceEnemyBleedConsumption" format=3 uid="uid://beawinixonrnb"]
+
+[ext_resource type="Script" uid="uid://cq6svtfppv5ur" path="res://effect/bleed/bleed_effects/reduce_enemy_bleed_consumption/reduce_enemy_bleed_consumption.gd" id="1_ng8jb"]
+
+[resource]
+script = ExtResource("1_ng8jb")
+name = "Bloodletting"
+description = "Reduce bleed stack loss"
+native = true
+show_in_status = false
+expire_phase = 3
+metadata/_custom_type_script = "uid://cq6svtfppv5ur"

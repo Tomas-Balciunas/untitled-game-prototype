@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="ActiveAttacksIncreaseBleedStacks" format=3 uid="uid://ddltekb7f2a12"]
+
+[ext_resource type="Script" uid="uid://cgvmak352orex" path="res://effect/bleed/bleed_effects/active_attacks_increase_bleed_stacks/active_attacks_increase_bleed_stacks.gd" id="1_j6u55"]
+
+[resource]
+script = ExtResource("1_j6u55")
+name = "Wound aggravation"
+description = "Active attacks increase bleed"
+native = true
+show_in_status = false
+expire_phase = 3
+metadata/_custom_type_script = "uid://cgvmak352orex"

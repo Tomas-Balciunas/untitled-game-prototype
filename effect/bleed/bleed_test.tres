@@ -1,5 +1,6 @@
 [gd_resource type="Resource" script_class="Bleed" format=3 uid="uid://by4pf2vg22quv"]
 
+[ext_resource type="Texture2D" uid="uid://de670aejqylm4" path="res://effect/bleed/bleed_icon.png" id="1_32e7r"]
 [ext_resource type="Script" uid="uid://vvojr13yf45l" path="res://effect/bleed/Bleed.gd" id="1_fit4h"]
 
 [resource]
@@ -8,5 +9,6 @@ stacks = 100
 damage_per_stack = 0.05
 name = "Bleed"
 description = "Bleed status"
+icon = ExtResource("1_32e7r")
 expires_after_battle = true
 metadata/_custom_type_script = "uid://vvojr13yf45l"

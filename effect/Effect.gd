@@ -27,7 +27,8 @@ enum EffectType {
 enum TurnPhase {
 	TURN_START,
 	TURN_END,
-	CUSTOM
+	CUSTOM,
+	NONE
 }
 
 @export var id: String
@@ -100,7 +101,7 @@ func get_icon() -> Texture2D:
 	return icon
 
 func get_display_turns() -> int:
-	if not is_turn_based() or expire_phase == TurnPhase.CUSTOM:
+	if not is_turn_based() or [TurnPhase.CUSTOM, TurnPhase.NONE].has(expire_phase):
 		return -1
 	return remaining_turns
 
@@ -171,6 +172,8 @@ func owner_is_actor(event: TriggerEvent) -> bool:
 func can_process_when_dead() -> bool:
 	return process_when_dead
 
+func get_priority(_stage: String) -> int:
+	return priority
 
 func game_save() -> Dictionary:
 	var script_path: String = ""
