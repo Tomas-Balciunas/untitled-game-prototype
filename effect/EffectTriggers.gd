@@ -17,6 +17,11 @@ const ON_APPLY_EFFECT := "on_apply_effect"
 const ON_POST_APPLY_EFFECT := "on_post_apply_effect"
 const ON_EXPIRE := "on_expire"
 
+## Fired by Effect.consume_duration before a turn-based effect loses duration.
+## Subscribers receive a DurationConsumeEvent and may modify the consumed amount
+## (0 = freeze, partial = slow, >1 = accelerate).
+const ON_DURATION_CONSUME := "on_duration_consume"
+
 const ON_BEFORE_USE_CONSUMABLE = "on_before_use_consumable"
 const ON_USE_CONSUMABLE = "on_use_consumable"
 const ON_POST_USE_CONSUMABLE = "on_post_use_consumable"

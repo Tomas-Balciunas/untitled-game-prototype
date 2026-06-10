@@ -1,11 +1,12 @@
 [gd_resource type="Resource" script_class="CharacterResource" format=3 uid="uid://dk7pc5rr0xhbs"]
 
 [ext_resource type="Script" uid="uid://blqk30gl013xc" path="res://stat/_attribute/attributes.gd" id="1_klpoy"]
+[ext_resource type="Script" uid="uid://bqln4xpkkidja" path="res://stat/_stats/stats.gd" id="2_3lheu"]
 [ext_resource type="PackedScene" uid="uid://dqjihmjf45spx" path="res://characters/allies/Coura/_body/Coura.tscn" id="2_klpoy"]
-[ext_resource type="Resource" uid="uid://57fo0cycgjne" path="res://stat/_stats/DefaultStats.tres" id="2_nkkwp"]
 [ext_resource type="Script" uid="uid://dq4acpkde276p" path="res://skills/Skill.gd" id="3_ma71o"]
 [ext_resource type="Script" uid="uid://cgllfcpvodqsg" path="res://scripts/experience/ExperienceManager.gd" id="4_g8tir"]
 [ext_resource type="Script" uid="uid://b06vmgrh4qa8i" path="res://gear/ItemResource.gd" id="6_nka8l"]
+[ext_resource type="Resource" uid="uid://dwkrtdgmmacpv" path="res://skills/_offensive/row_attack_buff.tres" id="7_3lheu"]
 [ext_resource type="Resource" uid="uid://cdu3c36ji1mmg" path="res://characters/_class/class_knight/class_knight.tres" id="7_8dd4x"]
 [ext_resource type="Script" uid="uid://bp0biy0knxw2o" path="res://effect/Effect.gd" id="7_klpoy"]
 [ext_resource type="Resource" uid="uid://eiwm6khdbjki" path="res://characters/_race/Human.tres" id="8_3lheu"]
@@ -16,6 +17,20 @@
 script = ExtResource("1_klpoy")
 metadata/_custom_type_script = "uid://blqk30gl013xc"
 
+[sub_resource type="Resource" id="Resource_yxfip"]
+script = ExtResource("2_3lheu")
+attack = 3.0
+health = 20.0
+mana = 10.0
+sp = 10.0
+speed = 8.0
+defense = 10
+magic_power = 10
+divine_power = 10
+magic_defense = 10
+resistance = 10
+metadata/_custom_type_script = "uid://bqln4xpkkidja"
+
 [sub_resource type="Resource" id="Resource_klpoy"]
 script = ExtResource("4_g8tir")
 metadata/_custom_type_script = "uid://cgllfcpvodqsg"
@@ -25,9 +40,10 @@ script = ExtResource("9_0ou40")
 race = ExtResource("8_3lheu")
 job = ExtResource("7_8dd4x")
 attributes = SubResource("Resource_ci8co")
-experience = 400
 slot_width = null
+default_skills = Array[ExtResource("3_ma71o")]([ExtResource("7_3lheu")])
 default_damage_type = null
+base_stats = SubResource("Resource_yxfip")
 stat_attribute_growth = ExtResource("14_yxfip")
 battle_events = null
 experience_manager = SubResource("Resource_klpoy")

@@ -57,9 +57,8 @@ func update_player_position(pos: Vector2i, facing: Vector3) -> void:
 		var event: TriggerEvent = TriggerEvent.new()
 		event.source = ctx.source
 		event.ctx = ctx
+		# DoTs (poison) subscribe to ON_MOVEMENT and resolve themselves per step.
 		EffectRunner.process_trigger(EffectTriggers.ON_MOVEMENT, event)
-
-		TickDoT.new(c, ctx).execute()
 		
 func add_encounter(data: EncounterData) -> void:
 	if not encounters.has(map_id):

@@ -1,3 +1,6 @@
 # Godot 4+ specific ignores
 .godot/
 /android/
+.vscode/settings.json
+run_tests.ps1
+test/README.md

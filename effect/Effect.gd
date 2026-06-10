@@ -21,9 +21,6 @@ enum EffectType {
 	BASIC_ATTACK
 }
 
-## Which point in a turn an effect's duration countdown / expiry is evaluated.
-## CUSTOM means the effect manages its own removal (e.g. a random recovery
-## roll) and is skipped by the automatic countdown and the turn display.
 enum TurnPhase {
 	TURN_START,
 	TURN_END,
@@ -62,7 +59,6 @@ var remaining_turns: int = -1
 
 var owner: Character = null
 var source: ContextSource = null
-
 
 func set_owner(_owner: Character) -> void:
 	owner = _owner
@@ -132,7 +128,21 @@ func _tick_duration(phase: TurnPhase) -> void:
 func consume_duration(amount: int = 1) -> void:
 	if not is_turn_based():
 		return
-	remaining_turns -= amount
+
+	var ev: DurationConsumeEvent = DurationConsumeEvent.new(self)
+	ev.source = CharacterSource.new(owner)
+	ev.amount = amount
+	
+	ev.ctx = ActionContext.new()
+	ev.ctx.source = ev.source
+	
+	EffectRunner.process_trigger(EffectTriggers.ON_DURATION_CONSUME, ev)
+
+	if ev.amount <= 0:
+		return
+
+	remaining_turns -= ev.amount
+	
 	if remaining_turns <= 0:
 		on_expire()
 
@@ -172,7 +182,7 @@ func owner_is_actor(event: TriggerEvent) -> bool:
 func can_process_when_dead() -> bool:
 	return process_when_dead
 
-func get_priority(_stage: String) -> int:
+func get_priority(_stage: String = "") -> int:
 	return priority
 
 func game_save() -> Dictionary:

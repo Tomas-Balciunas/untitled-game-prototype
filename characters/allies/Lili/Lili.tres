@@ -10,6 +10,8 @@
 [ext_resource type="Resource" uid="uid://by14sh5h8t7hf" path="res://characters/allies/Lili/lili_controller.tres" id="4_tttne"]
 [ext_resource type="Script" uid="uid://b06vmgrh4qa8i" path="res://gear/ItemResource.gd" id="6_7lkq3"]
 [ext_resource type="Resource" uid="uid://br55c33pop4ux" path="res://characters/_class/class_priest/class_priest.tres" id="8_23xqr"]
+[ext_resource type="Resource" uid="uid://c5sam3tilqaj1" path="res://effect/_passive/prevent_duration_loss/prevent_duration_loss.tres" id="8_tttne"]
+[ext_resource type="Script" uid="uid://dyfab3mccm3i2" path="res://skills/CastSkill.gd" id="9_vfxq6"]
 [ext_resource type="Resource" uid="uid://coilrntx01n8m" path="res://characters/allies/Lili/new_resource.tres" id="10_pwtr7"]
 [ext_resource type="Script" uid="uid://dq4acpkde276p" path="res://skills/Skill.gd" id="10_tttne"]
 [ext_resource type="Resource" uid="uid://c5qyqcmwx0qfy" path="res://scripts/experience/ExperienceManager.tres" id="11_tttne"]
@@ -26,11 +28,19 @@ speed = 2
 luck = 2
 metadata/_custom_type_script = "uid://blqk30gl013xc"
 
+[sub_resource type="Resource" id="Resource_wayk2"]
+script = ExtResource("9_vfxq6")
+effect = ExtResource("8_tttne")
+name = "Temporal lock"
+skill_range = 1
+metadata/_custom_type_script = "uid://dyfab3mccm3i2"
+
 [resource]
 script = ExtResource("1_tuon3")
 race = ExtResource("2_gmj68")
 job = ExtResource("8_23xqr")
 attributes = SubResource("Resource_n7wih")
+default_skills = Array[ExtResource("10_tttne")]([SubResource("Resource_wayk2")])
 stat_attribute_growth = ExtResource("21_52sjl")
 id = "a_lili_1"
 name = "Lili"

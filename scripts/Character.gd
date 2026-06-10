@@ -193,15 +193,21 @@ func prepare_for_battle() -> void:
 		e.prepare_for_battle()
 
 func on_turn_start() -> void:
-	for e: Effect in effects.duplicate():
+	var sorted: Array[Effect] = effects.duplicate()
+	sorted.sort_custom(EffectRunner._sort_by_priority)
+	
+	for e: Effect in sorted:
 		e.on_turn_start()
 
 func on_turn_end() -> void:
-	for e: Effect in effects.duplicate():
+	var sorted: Array[Effect] = effects.duplicate()
+	sorted.sort_custom(EffectRunner._sort_by_priority)
+	
+	for e: Effect in sorted:
 		e.on_turn_end()
 
 func cleanup_after_battle() -> void:
-	for effect in effects.duplicate():
+	for effect: Effect in effects.duplicate():
 		if effect.expires_after_battle:
 			effects.erase(effect)
 

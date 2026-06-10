@@ -56,5 +56,5 @@ static func _passes_filters(effect: Effect, _event: TriggerEvent) -> bool:
 	
 	return true
 
-static func _sort_by_priority(a: Effect, b: Effect, stage: String) -> bool:
+static func _sort_by_priority(a: Effect, b: Effect, stage: String = "") -> bool:
 	return a.get_priority(stage) > b.get_priority(stage)

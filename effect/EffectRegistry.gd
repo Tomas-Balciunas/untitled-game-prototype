@@ -9,7 +9,7 @@ func _register_all() -> void:
 	var res_paths := [
 		# existing
 		"res://effect/_offensive/armor_pierce/ArmorPierce.tres",
-		"res://effect/_offensive/poison/poison on hit.tres",
+		"res://effect/poison/poison on hit.tres",
 		"res://effect/_passive/counterattack/Counterattack.tres",
 		"res://effect/_passive/damage share/DamageShare.tres",
 		"res://effect/_passive/healing/HealBoost.tres",

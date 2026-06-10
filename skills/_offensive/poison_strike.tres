@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://bp0biy0knxw2o" path="res://effect/Effect.gd" id="1_0r7am"]
 [ext_resource type="Script" uid="uid://4wkxp72a0kpc" path="res://skills/AttackSkill.gd" id="2_lo8x4"]
-[ext_resource type="Resource" uid="uid://dv5v4ee1tl03q" path="res://effect/_offensive/poison/poison on hit.tres" id="3_x1gih"]
+[ext_resource type="Resource" uid="uid://dv5v4ee1tl03q" path="res://effect/poison/poison on hit.tres" id="3_x1gih"]
 
 [resource]
 script = ExtResource("2_lo8x4")

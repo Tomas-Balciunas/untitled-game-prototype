@@ -33,11 +33,9 @@ func can_process(stage: String, event: TriggerEvent) -> bool:
 				
 				return false
 			
-			var dmg_inst: DamageInstance = event as DamageInstance
-			
-			return dmg_inst.target == owner and event.ctx.actively_cast == true
+			return owner_is_target(event) and event.ctx.actively_cast == true
 		EffectTriggers.ON_TURN_END:
-			return event.source.get_actor() == owner
+			return owner_is_actor(event)
 		_:
 			return false
 	
@@ -81,7 +79,7 @@ func _get_name() -> String:
 func get_description() -> String:
 	return "Bleed status"
 
-func get_priority(stage: String) -> int:
+func get_priority(stage: String = "") -> int:
 	match stage:
 		EffectTriggers.ON_TURN_END:
 			return turn_end_priority
