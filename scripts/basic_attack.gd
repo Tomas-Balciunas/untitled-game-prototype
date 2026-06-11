@@ -28,17 +28,17 @@ func attack(targeting: TargetingManager.TargetType, targeting_range: TargetingMa
 	
 	var resolver: DamageResolver = DamageResolver.new(attacker.stats.attack)
 	
-	if attacker.is_main:
-		await attacker_slot.look_at_target(target_slot)
+	#if attacker.is_main:
+		#await attacker_slot.look_at_target(target_slot)
 	
-	if targeting_range == TargetingManager.RangeType.MELEE:
-		await attacker_slot.perform_run_towards_target(target_slot)
+	#if targeting_range == TargetingManager.RangeType.MELEE:
+		#await attacker_slot.perform_run_towards_target(target_slot)
 		
 	for i in range(ctx.attack_rate):
 		match targeting_range:
 			TargetingManager.RangeType.MELEE:
 				await melee(resolver, attacker)
-				await BattleContext.wait(0.1)
+				await BattleContext.wait(0.2)
 			TargetingManager.RangeType.RANGED:
 				await ranged(resolver, targeting)
 				await BattleContext.wait(0.4)

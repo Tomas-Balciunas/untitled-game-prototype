@@ -12,6 +12,7 @@ enum Mode { OVERWORLD, BATTLE, EVENT }
 
 func _ready() -> void:
 	show_overworld()
+	add_child(HitFlashOverlay.new())
 	BattleBus.battle_start.connect(show_battle)
 	BattleBus.battle_end.connect(show_overworld)
 	

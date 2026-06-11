@@ -259,11 +259,11 @@ func _perform_player_action(action: String, target: Character, attacker_slot: Fo
 			var resolver: SkillResolver = SkillResolver.new(skill)
 			current_state = BattleState.ANIMATING
 			
-			if current_battler.is_main:
-				await attacker_slot.look_at_target(target_slot)
+			#if current_battler.is_main:
+				#await attacker_slot.look_at_target(target_slot)
 			
-			if targeting_range == TargetingManager.RangeType.MELEE:
-				await attacker_slot.perform_run_towards_target(target_slot)
+			#if targeting_range == TargetingManager.RangeType.MELEE:
+				#await attacker_slot.perform_run_towards_target(target_slot)
 			
 			var orchestrator: ActionOrchestrator = ActionOrchestrator.new(current_battler, ctx, resolver)
 			await orchestrator.execute_action(
@@ -356,10 +356,10 @@ func _process_enemy_turn(ctx: ActionContext) -> void:
 	
 	current_state = BattleState.ANIMATING
 	
-	if targeting_range == TargetingManager.RangeType.MELEE:
-		await attacker_slot.perform_run_towards_target(target_slot)
-	else:
-		await get_tree().create_timer(0.6).timeout
+	#if targeting_range == TargetingManager.RangeType.MELEE:
+		#await attacker_slot.perform_run_towards_target(target_slot)
+	#else:
+	await get_tree().create_timer(0.6).timeout
 		
 	for i in range(attack_rate):
 		

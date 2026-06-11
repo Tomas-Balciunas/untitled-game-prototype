@@ -2,6 +2,8 @@ extends Node3D
 
 class_name FormationSlot
 
+const TURN_INDICATOR_COLOR := Color(0.85, 0.1, 0.1)
+
 @onready var targeting_area: Area3D = $Area3D
 var is_slot_targeting_enabled: bool = true
 
@@ -10,12 +12,18 @@ var body_instance: CharacterBody
 var fallback: CharacterResource = load("res://characters/foes/_fallback/boo.tres")
 var home_global: Vector3
 var animation_player: AnimationPlayer
+var turn_indicator: MeshInstance3D
+var _indicator_tween: Tween
 
 func _ready() -> void:
 	if targeting_area:
 		targeting_area.mouse_entered.connect(_on_mouse_entered)
 		targeting_area.mouse_exited.connect(_on_mouse_exited)
 		targeting_area.input_event.connect(_on_input_event)
+
+	_create_turn_indicator()
+	BattleBus.turn_started.connect(_on_turn_started)
+	BattleBus.turn_ended.connect(_on_turn_ended)
 
 func bind(character: Character) -> void:
 	character_instance = character
@@ -43,6 +51,46 @@ func bind(character: Character) -> void:
 			cam.rotation_degrees.y = 180
 
 
+func _create_turn_indicator() -> void:
+	turn_indicator = MeshInstance3D.new()
+	var ring := TorusMesh.new()
+	ring.inner_radius = 0.45
+	ring.outer_radius = 0.6
+	var mat := StandardMaterial3D.new()
+	mat.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+	mat.albedo_color = TURN_INDICATOR_COLOR
+	ring.material = mat
+	turn_indicator.mesh = ring
+	turn_indicator.position.y = 0.02
+	turn_indicator.visible = false
+	add_child(turn_indicator)
+
+
+func _on_turn_started(battler: Character, is_party_member: bool) -> void:
+	if is_party_member or battler != character_instance:
+		_hide_turn_indicator()
+		return
+
+	turn_indicator.visible = true
+	_indicator_tween = create_tween().set_loops()
+	_indicator_tween.tween_property(turn_indicator, "scale", Vector3.ONE * 1.15, 0.4)\
+		.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+	_indicator_tween.tween_property(turn_indicator, "scale", Vector3.ONE, 0.4)\
+		.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+
+
+func _on_turn_ended() -> void:
+	_hide_turn_indicator()
+
+
+func _hide_turn_indicator() -> void:
+	if _indicator_tween:
+		_indicator_tween.kill()
+		_indicator_tween = null
+	turn_indicator.visible = false
+	turn_indicator.scale = Vector3.ONE
+
+
 func getName() -> String:
 	return character_instance.resource.name
 
@@ -54,6 +102,7 @@ func unhover() -> void:
 
 func clear() -> void:
 	character_instance = null
+	_hide_turn_indicator()
 	unhover()
 	#$Portrait.texture = null
 	$NameLabel.text = ""
@@ -153,6 +202,7 @@ func capture_home() -> void:
 
 func perform_death() -> void:
 	is_slot_targeting_enabled = false
+	_hide_turn_indicator()
 	body_instance.play_dead()
 
 func _on_mouse_entered() -> void:

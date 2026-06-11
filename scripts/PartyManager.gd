@@ -29,6 +29,12 @@ func has_member(id: String) -> bool:
 
 	return false
 
+func has_member_by_object(c: Character) -> bool:
+	for m: Character in members:
+		if m == c:
+			return true
+
+	return false
 
 func is_party_full() -> bool:
 	return len(members) >= 4

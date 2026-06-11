@@ -1,6 +1,5 @@
 [gd_resource type="Resource" script_class="CharacterResource" format=3 uid="uid://dvky7cvffgf22"]
 
-[ext_resource type="Resource" uid="uid://jj60dk764c5i" path="res://characters/allies/MC/BaseStats.tres" id="1_lkn2v"]
 [ext_resource type="Script" uid="uid://cbelvg2fndssu" path="res://scripts/BattleEvent.gd" id="2_2usx5"]
 [ext_resource type="PackedScene" uid="uid://bbixalnsv3np6" path="res://characters/allies/MC/_body/MC.tscn" id="3_2usx5"]
 [ext_resource type="Script" uid="uid://bp0biy0knxw2o" path="res://effect/Effect.gd" id="4_2usx5"]
@@ -17,6 +16,20 @@
 [ext_resource type="Script" uid="uid://bwn4gpkaijqsg" path="res://scripts/CharacterResource.gd" id="10_fb0jw"]
 [ext_resource type="Script" uid="uid://bqln4xpkkidja" path="res://stat/_stats/stats.gd" id="12_jti2u"]
 [ext_resource type="Resource" uid="uid://riijdkc770g2" path="res://stat/DefaultStatAttributeGrowth.tres" id="16_up1d2"]
+
+[sub_resource type="Resource" id="Resource_up1d2"]
+script = ExtResource("12_jti2u")
+attack = 10.0
+health = 50.0
+mana = 10.0
+sp = 10.0
+speed = 5.0
+defense = 10.0
+magic_power = 10.0
+divine_power = 10.0
+magic_defense = 10.0
+resistance = 10.0
+metadata/_custom_type_script = "uid://bqln4xpkkidja"
 
 [sub_resource type="Resource" id="Resource_uxndi"]
 script = ExtResource("12_jti2u")
@@ -38,7 +51,7 @@ metadata/_custom_type_script = "uid://bqln4xpkkidja"
 script = ExtResource("10_fb0jw")
 default_effects = Array[ExtResource("4_2usx5")]([ExtResource("6_up1d2"), ExtResource("6_xghbj"), ExtResource("7_up1d2"), ExtResource("8_ghhp2")])
 default_items = Array[ExtResource("4_jti2u")]([ExtResource("6_jti2u")])
-base_stats = ExtResource("1_lkn2v")
+base_stats = SubResource("Resource_up1d2")
 stat_level_growth = SubResource("Resource_uxndi")
 stat_attribute_growth = ExtResource("16_up1d2")
 id = "mc"
