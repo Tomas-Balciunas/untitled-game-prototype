@@ -220,11 +220,18 @@ func game_load(data: Dictionary) -> void:
 
 static func create_from_save(data: Dictionary) -> Effect:
 	var script_path: String = data.get("script", "")
-	if script_path.is_empty():
-		push_error("Effect.create_from_save: missing script path")
-		return null
-	var script: Script = load(script_path)
-	if script == null:
-		push_error("Effect.create_from_save: failed to load script '%s'" % script_path)
-		return null
-	return script.new()
+	if not script_path.is_empty() and ResourceLoader.exists(script_path):
+		var script: Script = load(script_path)
+		if script:
+			return script.new()
+
+	var effect_id: String = data.get("props", {}).get("id", "")
+	if not effect_id.is_empty():
+		var proto: Effect = EffectRegistry.get_effect(effect_id)
+		if proto:
+			return proto.duplicate()
+
+	SaveManager.report_load_issue(
+		"Effect.create_from_save: cannot restore effect (script '%s', id '%s')" % [script_path, effect_id]
+	)
+	return null

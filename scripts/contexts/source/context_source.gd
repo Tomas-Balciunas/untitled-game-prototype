@@ -37,7 +37,7 @@ static func create_from_save(data: Dictionary) -> ContextSource:
 			return TrapSource.from_save(data)
 		SourceType.MOVEMENT:
 			return MovementSource.new()
-	push_error("ContextSource.create_from_save: unknown source type %s" % t)
+	SaveManager.report_load_issue("ContextSource.create_from_save: unknown source type %s" % t)
 	return null
 
 

@@ -209,7 +209,7 @@ func on_turn_end() -> void:
 func cleanup_after_battle() -> void:
 	for effect: Effect in effects.duplicate():
 		if effect.expires_after_battle:
-			effects.erase(effect)
+			remove_effect(effect)
 
 	for effect in effects:
 		effect.on_battle_end()
@@ -322,7 +322,7 @@ func game_save() -> Dictionary:
 static func create_from_save(data: Dictionary) -> Character:
 	var res: CharacterResource = CharacterRegistry.get_character(data["id"])
 	if res == null:
-		push_error("Character resource not found for id %s" % data["id"])
+		SaveManager.report_load_issue("Character resource not found for id %s" % data["id"])
 		return null
 
 	res.race = RaceRegistry.get_by_name(RaceRegistry.type_to_string(data["race"]))
@@ -361,7 +361,7 @@ func game_load(data: Dictionary) -> void:
 		for skill_id: String in data["skills"]:
 			var skill := SkillRegistry.get_skill(skill_id)
 			if not skill:
-				push_error("Skill not found: %s" % skill_id)
+				SaveManager.report_load_issue("Skill not found: %s" % skill_id)
 				continue
 			learnt_skills.append(skill)
 

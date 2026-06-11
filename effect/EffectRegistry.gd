@@ -1,4 +1,5 @@
 extends Node
+const SCAN_DIRS := ["res://effect", "res://gear"]
 
 var effects := {}
 
@@ -6,39 +7,36 @@ func _ready() -> void:
 	_register_all()
 
 func _register_all() -> void:
-	var res_paths := [
-		# existing
-		"res://effect/_offensive/armor_pierce/ArmorPierce.tres",
-		"res://effect/poison/poison on hit.tres",
-		"res://effect/_passive/counterattack/Counterattack.tres",
-		"res://effect/_passive/damage share/DamageShare.tres",
-		"res://effect/_passive/healing/HealBoost.tres",
-		"res://effect/_passive/mp_cost/MpCostReduction.tres",
-		"res://effect/_passive/resistance poison/PoisonRes.tres",
-		"res://gear/consumable/hp pot minor/heal_on_consume_effect.tres",
-		"res://gear/consumable/poison flask minor/poison_on_consume_effect.tres",
-		"res://effect/_offensive/mana_drain/ManaDrainEffect.tres",
-		"res://effect/_offensive/stun/StunOnHitEffect.tres",
-		# fighter
-		"res://effect/_passive/battle_hardened/battle_hardened.tres",
-		"res://effect/_passive/counter_strike/counter_strike.tres",
-		# knight
-		"res://effect/_passive/fortified/fortified.tres",
-		"res://effect/_passive/warded/warded.tres",
-		# mage
-		"res://effect/_passive/arcane_resonance/arcane_resonance.tres",
-		"res://effect/_passive/spell_mastery/spell_mastery.tres",
-		# priest
-		"res://effect/_passive/divine_favor/divine_favor.tres",
-		# thief
-		"res://effect/_passive/evasive/evasive.tres",
-		"res://effect/_passive/shadow_veil/shadow_veil.tres",
-	]
+	for dir: String in SCAN_DIRS:
+		_scan_dir(dir)
 
-	for path: String in res_paths:
-		var res := ResourceLoader.load(path)
-		if res:
-			register_effect(res)
+func _scan_dir(path: String) -> void:
+	var dir := DirAccess.open(path)
+	if not dir:
+		push_warning("EffectRegistry: cannot open directory %s" % path)
+		return
+	dir.list_dir_begin()
+	var entry := dir.get_next()
+	while entry != "":
+		if dir.current_is_dir():
+			if not entry.begins_with("."):
+				_scan_dir(path.path_join(entry))
+		else:
+			_try_register_file(path.path_join(entry))
+		entry = dir.get_next()
+	dir.list_dir_end()
+
+func _try_register_file(file_path: String) -> void:
+	if file_path.ends_with(".remap"):
+		file_path = file_path.trim_suffix(".remap")
+	if not (file_path.ends_with(".tres") or file_path.ends_with(".res")):
+		return
+	var res := ResourceLoader.load(file_path)
+	if res is Effect:
+		if (res as Effect).id.is_empty():
+			push_warning("EffectRegistry: effect without id skipped: %s" % file_path)
+			return
+		register_effect(res)
 
 func register_effect(effect: Effect) -> void:
 	if effect.id in effects:

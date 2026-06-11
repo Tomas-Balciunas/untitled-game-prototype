@@ -1,10 +1,10 @@
 # Effect double that records trigger order, for EffectRunner pipeline tests.
 extends StatusEffect
 
-var tag: String = ""
+@export var tag: String = ""
+@export var stage_name: String = ""
+@export var stops: bool = false
 var log_ref: Array = []
-var stage_name: String = ""
-var stops: bool = false
 
 func listened_triggers() -> Array:
 	return [stage_name]
