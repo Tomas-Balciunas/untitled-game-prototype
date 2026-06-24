@@ -1,5 +1,6 @@
 [gd_resource type="Resource" script_class="CharacterResource" format=3 uid="uid://dvky7cvffgf22"]
 
+[ext_resource type="Resource" uid="uid://duss0omx3oijk" path="res://characters/allies/MC/mc_stats.tres" id="1_ghhp2"]
 [ext_resource type="Script" uid="uid://cbelvg2fndssu" path="res://scripts/BattleEvent.gd" id="2_2usx5"]
 [ext_resource type="PackedScene" uid="uid://bbixalnsv3np6" path="res://characters/allies/MC/_body/MC.tscn" id="3_2usx5"]
 [ext_resource type="Script" uid="uid://bp0biy0knxw2o" path="res://effect/Effect.gd" id="4_2usx5"]
@@ -13,23 +14,11 @@
 [ext_resource type="Resource" uid="uid://ddltekb7f2a12" path="res://effect/bleed/bleed_effects/active_attacks_increase_bleed_stacks/active_attacks_increase_bleed_stacks.tres" id="8_ghhp2"]
 [ext_resource type="Resource" uid="uid://cs2tci0dc3vvo" path="res://characters/_class/_Unknown.tres" id="8_xghbj"]
 [ext_resource type="Resource" uid="uid://lcgngc3c13fc" path="res://characters/_race/_Unknown.tres" id="9_ghhp2"]
+[ext_resource type="Resource" uid="uid://b6feokcsb2ttg" path="res://effect/poison/poison_resolution_on_hit.tres" id="9_xghbj"]
+[ext_resource type="Resource" uid="uid://yjlsmld4jg7y" path="res://effect/_passive/basic_attack_ap_cost_reduce/reduce_basic_attack_ap_cost.tres" id="10_dr5ls"]
 [ext_resource type="Script" uid="uid://bwn4gpkaijqsg" path="res://scripts/CharacterResource.gd" id="10_fb0jw"]
 [ext_resource type="Script" uid="uid://bqln4xpkkidja" path="res://stat/_stats/stats.gd" id="12_jti2u"]
 [ext_resource type="Resource" uid="uid://riijdkc770g2" path="res://stat/DefaultStatAttributeGrowth.tres" id="16_up1d2"]
-
-[sub_resource type="Resource" id="Resource_up1d2"]
-script = ExtResource("12_jti2u")
-attack = 10.0
-health = 50.0
-mana = 10.0
-sp = 10.0
-speed = 5.0
-defense = 10.0
-magic_power = 10.0
-divine_power = 10.0
-magic_defense = 10.0
-resistance = 10.0
-metadata/_custom_type_script = "uid://bqln4xpkkidja"
 
 [sub_resource type="Resource" id="Resource_uxndi"]
 script = ExtResource("12_jti2u")
@@ -49,9 +38,9 @@ metadata/_custom_type_script = "uid://bqln4xpkkidja"
 
 [resource]
 script = ExtResource("10_fb0jw")
-default_effects = Array[ExtResource("4_2usx5")]([ExtResource("6_up1d2"), ExtResource("6_xghbj"), ExtResource("7_up1d2"), ExtResource("8_ghhp2")])
+default_effects = Array[ExtResource("4_2usx5")]([ExtResource("6_up1d2"), ExtResource("6_xghbj"), ExtResource("7_up1d2"), ExtResource("8_ghhp2"), ExtResource("9_xghbj"), ExtResource("10_dr5ls")])
 default_items = Array[ExtResource("4_jti2u")]([ExtResource("6_jti2u")])
-base_stats = SubResource("Resource_up1d2")
+base_stats = ExtResource("1_ghhp2")
 stat_level_growth = SubResource("Resource_uxndi")
 stat_attribute_growth = ExtResource("16_up1d2")
 id = "mc"

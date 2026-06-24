@@ -17,7 +17,6 @@ var death_shader = preload("uid://crlilwavkuu5u")
 var blood_particle_material = null
 
 func _ready() -> void:
-	set_projectile_spawn_point()
 	play_idle()
 	
 	CharacterBus.character_damaged.connect(_on_damaged)
@@ -140,21 +139,7 @@ func play_run_back() -> void:
 	if animation_player.has_animation("run_back"):
 		animation_player.play("run_back")
 
-func play_attack(event: ActionEvent, targeting_range: TargetingManager.RangeType, target_pos: Vector3) -> void:
-	if targeting_range == TargetingManager.RangeType.MELEE:
-		if animation_player.has_animation("melee_attack"):
-			animation_player.play("melee_attack")
-			await hit_confirmed
-			event.confirm()
-			await animation_player.animation_finished
-			
-			return
-	
-	if targeting_range == TargetingManager.RangeType.RANGED:
-		fire_projectile(event, target_pos)
-	
-		return
-	
+func play_attack(event: ActionEvent, target_pos: Vector3) -> void:
 	if animation_player.has_animation("attack"):
 		animation_player.play("attack")
 		await hit_confirmed
@@ -166,26 +151,12 @@ func play_attack(event: ActionEvent, targeting_range: TargetingManager.RangeType
 	event.confirm()
 
 
-func play_skill(event: ActionEvent, targeting_range: TargetingManager.RangeType, animation: String, target_pos: Vector3) -> void:
+func play_skill(event: ActionEvent, animation: String, target_pos: Vector3) -> void:
 	if animation_player.has_animation(animation):
 		animation_player.play(animation)
 		await hit_confirmed
 		event.confirm()
 		await animation_player.animation_finished
-		
-		return
-	
-	if targeting_range == TargetingManager.RangeType.MELEE:
-		if animation_player.has_animation("melee_attack"):
-			animation_player.play("melee_attack")
-			await hit_confirmed
-			event.confirm()
-			await animation_player.animation_finished
-			
-			return
-	
-	if targeting_range == TargetingManager.RangeType.RANGED:
-		fire_projectile(event, target_pos)
 		
 		return
 	
@@ -217,37 +188,6 @@ func _on_anim_finish() -> void:
 func _attack_connected() -> void:
 	hit_confirmed.emit()
 
-
-func fire_projectile(event: ActionEvent, target_pos: Vector3, start_pos: Vector3 = global_position) -> void:
-	var projectile := DEFAULT_PROJECTILE.instantiate()
-
-	var to_target := target_pos - start_pos
-	var distance := to_target.length()
-	var direction := to_target.normalized()
-	var speed := 15.0
-	var travel_time := distance / speed
-
-	get_tree().current_scene.add_child(projectile)
-
-	projectile.global_transform = get_projectile_spawn_point_transform()
-	projectile.look_at(target_pos, Vector3.UP)
-
-	projectile.launch_projectile(event, direction, speed, travel_time)
-
-
-func set_projectile_spawn_point() -> void:
-	if (has_node("ProjectileSpawn")):
-		projectile_spawn = get_node("ProjectileSpawn")
-
-func get_projectile_spawn_point_transform() -> Transform3D:
-	if projectile_spawn:
-		return projectile_spawn.global_transform
-	
-	push_error("%s has no projectile spawn point set!" % body_owner.resource.name if body_owner else "unknown")
-	
-	return global_transform
-
-
 func play_poison(event: ActionEvent) -> void:
 	if has_node("StatusEffectAnimations"):
 		var player: StatusEffectAnimation = get_node("StatusEffectAnimations")
@@ -257,5 +197,4 @@ func play_poison(event: ActionEvent) -> void:
 		return
 		
 	event.confirm()
-		
 		

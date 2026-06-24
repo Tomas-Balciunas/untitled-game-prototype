@@ -29,8 +29,8 @@
 [ext_resource type="Script" uid="uid://rkotit4vkflf" path="res://scenes/ui/chest/chest_content.gd" id="15_2f3dj"]
 [ext_resource type="Script" uid="uid://b4kodgy0qo0cl" path="res://scenes/ui/battle/battle_controls/battle_controls_interface.gd" id="18_2f3dj"]
 [ext_resource type="PackedScene" uid="uid://c1geh2y2biany" path="res://scenes/battle_text_lines.tscn" id="25_yq6so"]
-[ext_resource type="PackedScene" path="res://scenes/ui/status_effects/StatusEffectsWindow.tscn" id="31_sew0"]
 [ext_resource type="Script" uid="uid://dd5ranljoqy48" path="res://scenes/fps.gd" id="30_fv21b"]
+[ext_resource type="PackedScene" path="res://scenes/ui/status_effects/StatusEffectsWindow.tscn" id="31_sew0"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tel4y"]
 bg_color = Color(0.6, 0.6, 0.6, 0.105)
@@ -84,6 +84,7 @@ script = ExtResource("4_a8y0u")
 
 [node name="CharacterMenu" type="Panel" parent="UIRoot/OverworldInterface" unique_id=1194874376]
 unique_name_in_owner = true
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -889,6 +890,11 @@ layout_mode = 2
 focus_mode = 0
 text = "Flee"
 
+[node name="EndTurnButton" type="Button" parent="UIRoot/BattleInterface/BattleControls/Buttons" unique_id=988765908]
+unique_name_in_owner = true
+layout_mode = 2
+text = "End Turn"
+
 [node name="Skill" type="Control" parent="UIRoot/BattleInterface/BattleControls" unique_id=1334706348]
 layout_mode = 1
 anchor_left = 0.262
@@ -996,6 +1002,15 @@ offset_top = -424.0
 offset_right = 40.0
 offset_bottom = -384.0
 
+[node name="ap_container" type="HBoxContainer" parent="UIRoot/BattleInterface/BattleControls" unique_id=898257327]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 18.6
+anchor_top = 20.500002
+anchor_right = 26.35
+anchor_bottom = 21.35
+offset_top = -6.1035156e-05
+
 [node name="EventInterface" type="Control" parent="UIRoot" unique_id=1041232143]
 layout_mode = 3
 anchors_preset = 15
@@ -1092,7 +1107,8 @@ mouse_filter = 2
 layout_mode = 1
 offset_top = -181.0
 
-[node name="StatusEffectsWindow" parent="UIRoot" instance=ExtResource("31_sew0")]
+[node name="StatusEffectsWindow" parent="UIRoot" unique_id=350077927 instance=ExtResource("31_sew0")]
+layout_mode = 3
 
 [node name="Managers" type="Node" parent="." unique_id=1152471153]
 
@@ -1139,3 +1155,4 @@ script = ExtResource("30_fv21b")
 [connection signal="pressed" from="UIRoot/BattleInterface/BattleControls/Buttons/SkillButton" to="UIRoot/BattleInterface/BattleControls" method="_on_skill_button_pressed"]
 [connection signal="pressed" from="UIRoot/BattleInterface/BattleControls/Buttons/ItemButton" to="UIRoot/BattleInterface/BattleControls" method="_on_item_button_pressed"]
 [connection signal="pressed" from="UIRoot/BattleInterface/BattleControls/Buttons/FleeButton" to="UIRoot/BattleInterface/BattleControls" method="_on_flee_button_pressed"]
+[connection signal="pressed" from="UIRoot/BattleInterface/BattleControls/Buttons/EndTurnButton" to="UIRoot/BattleInterface/BattleControls" method="_on_end_turn_button_pressed"]

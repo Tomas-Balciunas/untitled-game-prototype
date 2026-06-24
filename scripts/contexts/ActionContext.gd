@@ -1,6 +1,12 @@
 class_name ActionContext
 
-var source: ContextSource
+var _turn: TurnState = null
+var turn: TurnState:
+	get:
+		return BattleContext.get_turn_state()
+	set(value): _turn = value
+
+var source: ContextSource = null
 var initial_target: Character = null
 var targets: Array[Character] = []
 var temporary_effects: Array[Effect] = []
@@ -9,7 +15,6 @@ var actively_cast: bool = false
 var stop_processing: bool = false
 var root_trigger: Effect = null
 var targeting: TargetingManager.TargetType = TargetingManager.TargetType.SINGLE
-var targeting_range: TargetingManager.RangeType = TargetingManager.RangeType.MELEE
 var attack_rate: int = 1
 
 var skip_turn: bool = false

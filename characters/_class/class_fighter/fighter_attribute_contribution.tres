@@ -55,20 +55,9 @@ script = ExtResource("1_gjrfv")
 stat = 3
 contributions = Array[ExtResource("2_fo3kp")]([SubResource("M6"), SubResource("M7")])
 
-[sub_resource type="Resource" id="M8"]
-script = ExtResource("2_fo3kp")
-attribute = 5
-multiplier = 1.0
-
-[sub_resource type="Resource" id="M9"]
-script = ExtResource("2_fo3kp")
-attribute = 4
-multiplier = 0.3
-
 [sub_resource type="Resource" id="E4"]
 script = ExtResource("1_gjrfv")
 stat = 4
-contributions = Array[ExtResource("2_fo3kp")]([SubResource("M8"), SubResource("M9")])
 
 [sub_resource type="Resource" id="M10"]
 script = ExtResource("2_fo3kp")

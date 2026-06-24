@@ -25,7 +25,6 @@ func show_item_info(item: Item, wielder: Character = null) -> void:
 		if item is Weapon:
 			stat_lines.append("Attack rate: x%s" % item.attack_rate)
 			stat_lines.append("Type: %s" % _weapon_type_str(item.weapon_type))
-			stat_lines.append("Range: %s" % _range_str(item.weapon_range))
 
 		var stats: Stats = item.stats
 		var is_weapon := item is Weapon
@@ -78,13 +77,6 @@ func _weapon_type_str(t: ItemTypes.WeaponType) -> String:
 	match t:
 		ItemTypes.WeaponType.SWORD: return "Sword"
 		ItemTypes.WeaponType.AXE:   return "Axe"
-	return "Unknown"
-
-
-func _range_str(r: TargetingManager.RangeType) -> String:
-	match r:
-		TargetingManager.RangeType.MELEE:  return "Melee"
-		TargetingManager.RangeType.RANGED: return "Ranged"
 	return "Unknown"
 
 

@@ -42,7 +42,10 @@ Key methods / hooks:
   `get_display_stacks()`.
 - Value transformers: `modify_skill_cost()`, `modify_shop_price()`.
 - Save/load: reflection-based `game_save()`/`game_load()` (stores script path +
-  storage vars). **Renaming an effect script breaks existing saves.**
+  storage vars). `create_from_save` tries the script path first; if the file
+  was renamed/moved it falls back to `EffectRegistry.get_effect(props.id)` and
+  duplicates the prototype (so registered effects survive script renames).
+  Unrestorable effects go through `SaveManager.report_load_issue`.
 
 ### Templates — `effect/templates/`
 Set `category` + sensible flag defaults in `_init` (subclasses overriding
@@ -127,8 +130,11 @@ ON_*_USE_CONSUMABLE, ON_*_SKILL_USE, ON_DEATH).
 `can_process` + `owner_is_actor/target`).
 
 ### Registry — `effect/EffectRegistry.gd` (autoload)
-`_register_all()` is a **hand-maintained list of `.tres` paths** by `id`.
-New effects must be added manually (scaling pain — candidate for auto-scan).
+Auto-scans `res://effect` + `res://gear` recursively at startup for `.tres`
+resources that are `Effect`s, indexed by `id`. Effects with an empty `id` are
+skipped with a warning (give every effect an id — it's also the save-load
+fallback key). Handles exported builds (`.remap` suffix stripping). Duplicate
+ids warn and last-one-wins.
 
 ### Application & ticking
 - `scripts/resolvers/EffectApplicationResolver.gd`: `run_pipeline` fires
@@ -148,12 +154,31 @@ New effects must be added manually (scaling pain — candidate for auto-scan).
   `on_apply()`, append, subscribe. `remove_effect()`: unsubscribe + erase.
 - Turn hooks: `on_turn_start()` / `on_turn_end()` iterate `effects.duplicate()`
   calling each effect's same-named hook (mutation-safe).
-- `cleanup_after_battle()`: erases `expires_after_battle` effects, clears temp
+- `cleanup_after_battle()`: removes `expires_after_battle` effects via
+  `remove_effect` (which also unsubscribes from EffectRunner), clears temp
   modifiers, recalculates stats.
 
 ---
 
 ## Battle / turn flow
+- **Presentation direction**: battle is fixed-camera, characters don't move
+  (scope cut from first-person choreography). The run-up / camera-turn calls
+  (`perform_run_towards_target`, `look_at_target`) are commented out in
+  `BattleManager.gd` / `basic_attack.gd` pending removal; feedback comes from
+  in-place animations + simple effects.
+- **Turn indicator**: acting *enemy* gets a pulsing red ring at its feet —
+  `FormationSlot.turn_indicator` (`scenes/battle_formation/formation_slot.gd`),
+  built in code (no .tscn edit), driven by `BattleBus.turn_started(battler,
+  is_party_member)` / `turn_ended`; hidden on `perform_death()` / `clear()`.
+- **Party hit flash**: red vignette flash (edges in, clear center; inline
+  canvas shader) when a party member takes damage —
+  `scenes/ui/hit_flash_overlay.gd` (`HitFlashOverlay`, ColorRect), code-mounted
+  as last child of `UIRoot` in `root_interface.gd._ready` (renders above all
+  interfaces). Listens to `CharacterBus.character_damaged`, filters via
+  `PartyManager.has_member_by_object`; peak alpha scales with final damage / max HP
+  (full at 50%+), +bonus on crit, 0.35s fade. Note: fires on any party damage
+  incl. overworld DoT ticks (party has no visible 3D bodies — camera sits in
+  the MC's body on the ally row; their 3D "damaged" anims play off-screen).
 - `scripts/BattleManager.gd`: `_on_turn_start()` builds ctx, runs
   `TurnStageResolver(ON_TURN_START)`, then `current_battler.on_turn_start()`.
   `_on_turn_end()` runs `TurnStageResolver(ON_TURN_END)`, then
@@ -187,31 +212,59 @@ the resolver.
 
 ---
 
+## Save / load — `scripts/SaveManager.gd` (autoload)
+- `build_game_state()` aggregates `GameState` + `PartyManager` + `MapInstance`
+  + `InteractionTagManager` via cascading `game_save()`/`game_load()` methods;
+  binary `store_var` to `user://save_slot_N.save`.
+- **Versioned**: root carries `"version"` (`SAVE_VERSION`, currently 1; missing
+  = 0). `apply_game_state` runs `_migrate()` (a v→v+1 chain) before applying.
+  Bump `SAVE_VERSION` + add a `_migrate_vN_to_vN+1` on any format change.
+- **Atomic writes**: saves go to `<path>.tmp` then swap; `load_game` recovers
+  from an orphaned `.tmp` if a crash hit between write and swap. Non-Dictionary
+  payloads are rejected as corrupt.
+- **Load-issue reporting**: loaders call `SaveManager.report_load_issue(msg)`
+  (warn + collect into `load_issues`, cleared per load) instead of silent
+  drops — used by `Effect.create_from_save`, `Character` (missing character
+  resource / skill id), `ContextSource`. `load_issues` is UI-surfaceable.
+- Party load is two-phase (characters first, then effects) so cross-character
+  effect sources resolve — see `PartyManager.game_load` / `game_load_effects`.
+
 ## Known gaps / TODO themes (from review)
 - Stacking/reapply policy is unfinished (`Poison.stacks` exists; stacking logic
   commented out; no general "already applied" policy).
-- `EffectRegistry` manual list (auto-scan candidate).
 - `ActionContext` accumulating flags.
 - `EffectScope` enum under-used.
+- ~10 effect `.tres` files have no `id` (warned at startup by EffectRegistry
+  scan) — they can't use the save-load registry fallback until ids are added.
 
 ## Tests
 GUT (Godot Unit Test) 9.x lives in `addons/gut/`; all test code is isolated
 under `test/` (nothing in production dirs). Config: `.gutconfig.json`.
 Run headless: `./run_tests.ps1` (or see `test/README.md`). Current coverage:
-base `Effect` lifecycle (duration tick / expiry / display / save-load),
-`Bleed` (stack math, priorities), `PoisonEffect` (config / scoping), the
-`EffectRunner` trigger pipeline (priority order + `stop_processing`),
-**resolvers** (`DamageResolver` damage/defense/lethal, `HealingResolver`
-multipliers/scaling/clamp, `EffectApplicationResolver`, `TurnStageResolver`),
-and **BattleManager** state logic (`_check_end_conditions`, turn-queue ordering).
+- **Effects**: base `Effect` lifecycle (duration/expiry/display/save-load),
+  `Bleed`, `PoisonEffect`, `EffectRunner` pipeline (priority + `stop_processing`).
+- **Resolvers**: `DamageResolver`, `HealingResolver`, `EffectApplicationResolver`,
+  `TurnStageResolver`.
+- **BattleManager**: `_check_end_conditions`, turn-queue ordering.
+- **Stats**: `Stats`/`Attributes` math + save/load, `StatModifier`,
+  `StatCalculator` (additive/multiplicative/percentage stats, temp-modifier
+  cleanup, weapon scaling), `WeaponScaling` (contributions + save/load).
+- **Gear**: `Inventory`, `Equipment` equip/unequip (slots, stats, modifiers).
+- **Progression**: `ExperienceManager` curve + level-up.
+- **Character**: mana/SP clamping + signals, `SkillCost.consume`,
+  `cleanup_after_battle`.
+- **Misc**: `EventFlags`, `TargetingManager` basics.
+- **Save/load**: `SaveManager` (version stamp, migration chain, atomic write +
+  tmp recovery, corrupt-file rejection, issue reporting), `Effect`
+  registry-fallback restore, registry auto-scan sanity.
+
 Test doubles in `test/helpers/`: `FakeCharacter` (skips Character's heavy
-`_init`; used where only `is_dead`/`action_value`/`effects` matter),
-`Combatant` (builds a *real* Character from a `.tres` for resolver tests),
-`ProbeEffect`, `RecordingEffect`.
-> Resolver tests force determinism by zeroing attacker `accuracy` (skips the
-> `randf()` variance in `DamageCalculator`) and register a dummy
-> `RichTextLabel` on `BattleTextLines` so `print_line` doesn't error
-> headless. GUT fails tests on any engine `push_error`.
+`_init`; used where only simple fields matter), `Combatant` (builds a *real*
+Character from a **code-built fixture resource** with known stats — no
+production `.tres` dependency), `ProbeEffect`, `RecordingEffect`.
+> Determinism notes: fixture has `accuracy` 0, which skips `randf()` damage
+> variance; a dummy `RichTextLabel` is registered on `BattleTextLines` where
+> production code prints; GUT fails tests on any engine `push_error`.
 
 ## Verifying changes (headless)
 Compile + run main scene a few frames, exit 0 = clean:

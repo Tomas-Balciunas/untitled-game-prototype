@@ -8,6 +8,7 @@ var current_battler: Character = null
 @onready var skill_button: Button = %SkillButton
 @onready var item_button: Button = %ItemButton
 @onready var flee_button: Button = %FleeButton
+@onready var end_turn_button: Button = %EndTurnButton
 
 @onready var skill_popup := $Skill
 @onready var skill_list_container := $Skill/ScrollContainer/SkillListContainer
@@ -27,7 +28,12 @@ const SKILL_ENTRY = preload("uid://by0xll5nd2ejj")
 
 @onready var v_box_container_2: VBoxContainer = $VBoxContainer2
 
+@onready var ap_container: HBoxContainer = $ap_container
+const AP_SCENE = preload("uid://dlnv4bs0wadg2")
+
+
 func _ready() -> void:
+	ap_container.visible = false
 	BattleBus.battle_start.connect(_on_battle_start)
 	BattleBus.battle_end.connect(_on_battle_end)
 	
@@ -35,6 +41,7 @@ func _ready() -> void:
 	
 	BattleBus.ally_turn_started.connect(_on_ally_turn_started)
 	BattleBus.turn_ended.connect(_on_turn_ended)
+	BattleBus.action_points_changed.connect(on_action_points_changed)
 
 func _on_queue_processed(queue: Array[Character]) -> void:
 	for child in v_box_container_2.get_children():
@@ -59,6 +66,7 @@ func _on_battle_end() -> void:
 
 
 func _on_ally_turn_started(battler: Character) -> void:
+	ap_container.visible = true
 	current_battler = battler
 	_populate_skill_list()
 	_populate_item_list()
@@ -69,26 +77,33 @@ func _on_ally_turn_started(battler: Character) -> void:
 
 
 func _on_turn_ended() -> void:
+	ap_container.visible = false
+	for child:TextureRect in ap_container.get_children():
+		child.queue_free()
+	
 	hide()
 
 
 func _on_defend_button_pressed() -> void:
-	BattleBus.action_selected.emit(BattleBus.DEFEND, null)
+	BattleBus.action_selected.emit(GuardAction.new())
 
 func _on_attack_button_pressed() -> void:
-	BattleBus.action_selected.emit(BattleBus.ATTACK, null)
+	BattleBus.action_selected.emit(BasicAttack.new())
 	skill_popup.visible = false
 	item_popup.visible = false
 
 func _on_flee_button_pressed() -> void:
-	BattleBus.action_selected.emit(BattleBus.FLEE, null)
+	BattleBus.action_selected.emit(FleeAction.new())
+
+func _on_end_turn_button_pressed() -> void:
+	BattleBus.control_selected.emit(BattleBus.END_TURN)
 
 func _on_skill_selected(skill: Skill) -> void:
-	BattleBus.action_selected.emit(BattleBus.SKILL, skill)
+	BattleBus.action_selected.emit(SkillAction.new(skill))
 	skill_popup.visible = false
 
 func _on_item_selected(item: Consumable) -> void:
-	BattleBus.action_selected.emit(BattleBus.ITEM, item)
+	BattleBus.action_selected.emit(ItemAction.new(item))
 	skill_popup.hide()
 
 func highlight_action(action: String) -> void:
@@ -172,3 +187,11 @@ func _on_item_hover(item: Consumable) -> void:
 
 func _on_item_unhover() -> void:
 	item_info_panel.visible = false
+
+func on_action_points_changed(ap_points: int) -> void:
+	for child: TextureRect in ap_container.get_children():
+		child.queue_free()
+	
+	for i in range(ap_points):
+		var ap: TextureRect = AP_SCENE.instantiate()
+		ap_container.add_child(ap)

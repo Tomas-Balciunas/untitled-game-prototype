@@ -170,6 +170,14 @@ func _modifies_shop_price() -> bool:
 func modify_shop_price(_item: Item, _is_buy: bool, price: int) -> int:
 	return price
 
+# Value transformer: return the adjusted AP cost. Must be pure (no side effects)
+# — it runs on every cost preview as well as actual consumption.
+func _modifies_action_point_cost() -> bool:
+	return false
+
+func modify_action_point_cost(_action: BattleAction, cost: int) -> int:
+	return cost
+
 func tick(_ctx: ActionContext) -> void:
 	pass
 

@@ -112,12 +112,12 @@ func _on_anim_finish(_e: StringName) -> void:
 	body_instance.play_idle()
 
 
-func perform_attack(event: ActionEvent, targeting_range: TargetingManager.RangeType, target: FormationSlot) -> void:
-	body_instance.play_attack(event, targeting_range, target.global_position)
+func perform_attack(event: ActionEvent, target: FormationSlot) -> void:
+	body_instance.play_attack(event, target.global_position)
 
 
-func perform_skill(event: ActionEvent, targeting_range: TargetingManager.RangeType, animation: String, target: FormationSlot) -> void:
-	body_instance.play_skill(event, targeting_range, animation, target.global_position)
+func perform_skill(event: ActionEvent, animation: String, target: FormationSlot) -> void:
+	body_instance.play_skill(event, animation, target.global_position)
 
 
 func perform_item_use(target: FormationSlot) -> void:

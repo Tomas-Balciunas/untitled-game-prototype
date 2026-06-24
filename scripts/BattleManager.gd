@@ -29,16 +29,16 @@ var battlers: Array[Character] = []
 var turn_queue: Array[Character] = []
 var enemy_slots: Array[Node] = []
 var _to_cleanup: Array[Character] = []
-var _pending_action: String = ""
-var _pending_entity: Variant = null
-var _pending_target: Character = null
 var current_battler: Character = null
+var turn_state: TurnState = null
 var action_queue: Array[ActionEvent] = []
+
 
 func begin(_enemies: Array[Character]) -> void:
 	BattleEventBus.event_concluded.connect(Callable(self, "_on_event_concluded"))
 	TargetingManager.battle_target_selected.connect(_on_target_selected)
 	BattleBus.action_selected.connect(_on_player_action_selected)
+	BattleBus.control_selected.connect(_on_control_selected)
 	
 	var party_members := PartyManager.members
 	
@@ -109,6 +109,8 @@ func _process_turn_queue() -> void:
 
 func _on_turn_start() -> void:
 	disable_all_targeting()
+	turn_state = TurnState.new(current_battler)
+	
 	var is_party_member: bool = current_battler in party
 	BattleBus.turn_started.emit(current_battler, is_party_member)
 
@@ -120,7 +122,7 @@ func _on_turn_start() -> void:
 
 	if is_party_member:
 		current_state = BattleState.PLAYER_TURN
-		_on_player_turn(ctx) ## handle cases like checking for hard CC
+		_on_player_turn(ctx)
 	else:
 		current_state = BattleState.ENEMY_TURN
 		_process_enemy_turn(ctx)
@@ -139,6 +141,7 @@ func _on_turn_end() -> void:
 	
 func _on_player_turn(ctx: ActionContext) -> void:
 	BattleBus.ally_turn_started.emit(current_battler)
+	
 	if ctx.skip_turn:
 		current_state = BattleState.TURN_END
 		return
@@ -149,49 +152,58 @@ func _on_player_turn(ctx: ActionContext) -> void:
 			current_state = BattleState.TURN_END
 			return
 		
-		var attacker_slot := get_slot(current_battler)
-		await _perform_player_action("attack", ctx.initial_target, attacker_slot)
+		await _run_action(BasicAttack.new(), ctx.initial_target)
 		current_state = BattleState.TURN_END
-		return
 		
-func _on_player_action_selected(action: String, entity: Variant) -> void:
+func _on_player_action_selected(action: BattleAction) -> void:
 	if current_state != BattleState.PLAYER_TURN:
 		return
-		
-	_pending_action = action
-	_pending_entity = entity
-	
-	match action:
-		BattleBus.DEFEND:
-			_handle_defend()
+
+	if not action.can_afford(current_battler, turn_state):
+		NotificationBus.notification_requested.emit("Not enough action points!")
+		return
+
+	turn_state.current_action = action
+
+	if action.needs_target():
+		enable_all_targeting()
+	else:
+		await _run_action(action, null)
+
+
+func _on_control_selected(kind: String) -> void:
+	if current_state != BattleState.PLAYER_TURN:
+		return
+
+	match kind:
+		BattleBus.END_TURN:
 			current_state = BattleState.TURN_END
-			return
-		BattleBus.FLEE:
-			_handle_end(BattleBus.FLEE)
-			current_state = BattleState.TURN_END
-			return
-		BattleBus.ATTACK:
-			enable_all_targeting()
-			return
-		BattleBus.SKILL:
-			enable_all_targeting()
-			return
-		BattleBus.ITEM:
-			enable_all_targeting()
-			return
+
 
 func _on_target_selected(target: Character) -> void:
 	disable_all_targeting()
-	_pending_target = target
-	_resolve_player_action()
+	var action: BattleAction = turn_state.current_action
 
-func _resolve_player_action() -> void:
+	if action == null:
+		current_state = BattleState.PLAYER_TURN
+		return
+
+	await _run_action(action, target)
+	enable_all_targeting()
+
+
+func _run_action(action: BattleAction, target: Character) -> void:
 	var attacker_slot := get_slot(current_battler)
-	
-	await _perform_player_action(_pending_action, _pending_target, attacker_slot)
-	await attacker_slot.position_back()
-	
-	current_state = BattleState.ACTION_QUEUE
+	var target_slot := get_slot(target) if target else null
+
+	current_state = BattleState.ANIMATING
+
+	var event: BattleActionEvent = await action.execute(current_battler, target, attacker_slot, target_slot)
+
+	if event.ends_turn:
+		current_state = BattleState.TURN_END
+	else:
+		current_state = BattleState.PLAYER_TURN
 
 
 func await_action_queue() -> void:
@@ -209,95 +221,6 @@ func await_action_queue() -> void:
 	current_state = BattleState.TURN_END
 
 
-func _perform_player_action(action: String, target: Character, attacker_slot: FormationSlot) -> void:
-	var target_slot := get_slot(target)
-	var weapon: Weapon = current_battler.equipment["weapon"] if current_battler.equipment["weapon"] else null
-	
-	var targeting: TargetingManager.TargetType
-	var targeting_range: TargetingManager.RangeType
-	var attack_rate: int
-	
-	if weapon:
-		targeting = weapon.targeting
-		targeting_range = weapon.weapon_range
-		attack_rate = weapon.attack_rate
-	else:
-		targeting = TargetingManager.TargetType.SINGLE
-		targeting_range = TargetingManager.RangeType.MELEE
-		attack_rate = 1
-	
-	match action:
-		BattleBus.ATTACK:
-			var targets := TargetingManager.get_applicable_targets(target, targeting)
-			
-			var ctx := ActionContext.new()
-			ctx.source = CharacterSource.new(current_battler)
-			ctx.set_targets(target, targets)
-			ctx.actively_cast = true
-			ctx.targeting = targeting
-			ctx.targeting_range = targeting_range
-			ctx.attack_rate = attack_rate
-			
-			current_state = BattleState.ANIMATING
-			
-			var basic_attack: BasicAttack = BasicAttack.new(ctx, attacker_slot, target_slot)
-			await basic_attack.attack(targeting, targeting_range, attack_rate)
-			
-		
-		BattleBus.SKILL:
-			if _pending_entity is not Skill:
-				push_error("Selected skill action entity is not skill!")
-				return
-				
-			var skill: Skill = _pending_entity as Skill
-			var targets := TargetingManager.get_applicable_targets(target, skill.targeting_type)
-			var ctx := ActionContext.new()
-			ctx.source = CharacterSource.new(current_battler)
-			ctx.set_targets(target, targets)
-			ctx.actively_cast = true
-			ctx.temporary_effects = skill.effects
-			var resolver: SkillResolver = SkillResolver.new(skill)
-			current_state = BattleState.ANIMATING
-			
-			#if current_battler.is_main:
-				#await attacker_slot.look_at_target(target_slot)
-			
-			#if targeting_range == TargetingManager.RangeType.MELEE:
-				#await attacker_slot.perform_run_towards_target(target_slot)
-			
-			var orchestrator: ActionOrchestrator = ActionOrchestrator.new(current_battler, ctx, resolver)
-			await orchestrator.execute_action(
-				func (e: ActionEvent) -> void:
-					attacker_slot.perform_skill(e, skill.skill_range, skill.animation_name, target_slot),
-				"skill %s" % skill.name
-			)
-			
-			
-		BattleBus.ITEM:
-			if _pending_entity is not Consumable:
-				push_error("Selected item action entity is not item!")
-				return
-				
-			var item := _pending_entity as Consumable
-			
-			targeting = item.template.targeting_type
-			var targets := TargetingManager.get_applicable_targets(target, targeting)
-			
-			var cons := ConsumableContext.new()
-			cons.source = ItemSource.new(current_battler, item)
-			cons.set_targets(target, targets)
-			cons.temporary_effects = item.get_all_effects()
-			cons.actively_cast = true
-			
-			current_state = BattleState.ANIMATING
-			await attacker_slot.perform_item_use(target_slot)
-			var timed_out: bool = await SignalFailsafe.await_signal_or_timeout(self, BattleBus.attack_connected, ATTACK_CONNECTED_TIMEOUT)
-
-			if timed_out:
-				push_error("Attack connected signal timed out for character: %s, %s " % [current_battler.resource.name, current_battler.resource.id])
-			
-			var _ctx := ConsumableResolver.new(item).execute(cons)
-
 func _process_enemy_turn(ctx: ActionContext) -> void:
 	if current_battler == null:
 		current_state = BattleState.CHECK_END
@@ -310,16 +233,13 @@ func _process_enemy_turn(ctx: ActionContext) -> void:
 	var weapon: Weapon = current_battler.equipment["weapon"] if current_battler.equipment["weapon"] else null
 	
 	var targeting: TargetingManager.TargetType
-	var targeting_range: TargetingManager.RangeType
 	var attack_rate: int
 	
 	if weapon:
 		targeting = weapon.targeting
-		targeting_range = weapon.weapon_range
 		attack_rate = weapon.attack_rate
 	else:
 		targeting = TargetingManager.TargetType.SINGLE
-		targeting_range = TargetingManager.RangeType.MELEE
 		attack_rate = 1
 	
 	var target: Character = null
@@ -356,9 +276,6 @@ func _process_enemy_turn(ctx: ActionContext) -> void:
 	
 	current_state = BattleState.ANIMATING
 	
-	#if targeting_range == TargetingManager.RangeType.MELEE:
-		#await attacker_slot.perform_run_towards_target(target_slot)
-	#else:
 	await get_tree().create_timer(0.6).timeout
 		
 	for i in range(attack_rate):
@@ -367,7 +284,7 @@ func _process_enemy_turn(ctx: ActionContext) -> void:
 		var orchertrator: ActionOrchestrator = ActionOrchestrator.new(current_battler, atk, resolver)
 		await orchertrator.execute_action(
 			func (e: ActionEvent) -> void:
-				attacker_slot.perform_attack(e, targeting_range, target_slot)
+				attacker_slot.perform_attack(e, target_slot)
 		)
 		
 		if i < attack_rate - 1:

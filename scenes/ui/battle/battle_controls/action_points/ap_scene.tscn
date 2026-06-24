@@ -1,0 +1,7 @@
+[gd_scene format=3 uid="uid://dlnv4bs0wadg2"]
+
+[ext_resource type="Texture2D" uid="uid://uqp2mbjoyaqo" path="res://scenes/ui/battle/battle_controls/action_points/ap.png" id="1_yflid"]
+
+[node name="TextureRect" type="TextureRect" unique_id=176874055]
+texture = ExtResource("1_yflid")
+expand_mode = 2

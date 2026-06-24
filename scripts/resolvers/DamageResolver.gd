@@ -29,6 +29,7 @@ func run_pipeline(event: DamageInstance) -> void:
 	
 	#BattleEventBus.before_receive_damage.emit(ctx)
 	#await BattleFlow.wait_if_paused()
+	event.calculator.calculate_final_damage()
 	EffectRunner.process_trigger(EffectTriggers.ON_DAMAGE_ABOUT_TO_BE_APPLIED, event)
 	
 	BattleTextLines.print_line("%s dealt %f %s damage to %s" % [
@@ -38,7 +39,12 @@ func run_pipeline(event: DamageInstance) -> void:
 		event.target.resource.name
 		])
 	
-	event.calculator.calculate_final_damage()
+	if event.ctx.turn:
+		event.ctx.turn.damage_dealt += event.calculator.get_final_damage()
+		event.ctx.turn.damage_instance_count += 1
+		if event.ctx.actively_cast:
+			event.ctx.turn.active_attack_count += 1
+	
 	event.target.set_current_health(event.target.state.current_health - event.calculator.get_final_damage(), event)
 	
 	EffectRunner.process_trigger(EffectTriggers.ON_DAMAGE_APPLIED, event)

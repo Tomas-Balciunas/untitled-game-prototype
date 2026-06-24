@@ -46,9 +46,9 @@ func on_trigger(stage: String, event: TriggerEvent) -> void:
 		bleed_event.from_base_event(event)
 		
 		var ctx: ActionContext = ActionContext.new()
+		ctx.turn = event.ctx.turn
 		ctx.set_targets(owner)
 		ctx.source = event.source
-		ctx.targeting_range = event.ctx.targeting_range
 		
 		EffectRunner.process_trigger(ON_BLEED_DAMAGE_INSTANCE, bleed_event)
 		

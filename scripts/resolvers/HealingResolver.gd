@@ -36,6 +36,9 @@ func run_pipeline(event: HealTriggerEvent) -> void:
 	if event.ctx.source is CharacterSource:
 		mult *= event.ctx.source.character.stats.healing_done / 100.0
 	event.heal = int(round(event.heal * mult))
+	
+	if event.ctx.turn:
+		event.ctx.turn.healing_done += event.heal
 
 	event.target.set_current_health(event.target.state.current_health + event.heal)
 

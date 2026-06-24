@@ -108,3 +108,11 @@ func get_slot(character: Character) -> FormationSlot:
 		return ally_formation.get_slot_for(character)
 	
 	return slot
+
+func get_turn_state() -> TurnState:
+	if !manager:
+		push_error("Turn state is null!")
+		
+		return null
+	
+	return manager.turn_state

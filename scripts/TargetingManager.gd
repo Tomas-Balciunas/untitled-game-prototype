@@ -13,11 +13,6 @@ enum TargetType {
 	BOUNCE
 }
 
-enum RangeType {
-	MELEE,
-	RANGED
-}
-
 enum Mode {
 	DISABLED,
 	NONE,

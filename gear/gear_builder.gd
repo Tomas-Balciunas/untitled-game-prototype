@@ -102,7 +102,6 @@ func build_weapon(tier: String) -> Weapon:
 	item.id = GameState.generate_id()
 	item.weapon_type = ItemTypes.WeaponType.values().pick_random()
 	item.targeting = TargetingManager.TargetType.SINGLE
-	item.weapon_range = TargetingManager.RangeType.MELEE
 	item.accuracy_range = ItemConfig.get_accuracy(item.weapon_type)
 	item.attack_rate = 1
 	item.quality = get_quality()

@@ -6,4 +6,7 @@
 script = ExtResource("1_vrya1")
 name = "Poison trigger"
 description = "Resolves poison on hit"
+native = true
+show_in_status = false
+expire_phase = 3
 metadata/_custom_type_script = "uid://4l2clqoak01s"

@@ -5,9 +5,11 @@ const ITEM = "item"
 const ATTACK = "attack"
 const DEFEND = "defend"
 const FLEE = "flee"
+const END_TURN = "end_turn"
 
 signal queue_processed(queue: Array[Character])
-signal action_selected(action: String, entity: Variant)
+signal action_selected(action: BattleAction)
+signal control_selected(kind: String)
 
 signal battle_start
 signal battle_end
@@ -16,3 +18,4 @@ signal turn_started(battler: Character, is_party_member: bool)
 signal turn_ended
 signal enemy_died(dead: Character)
 signal attack_connected
+signal action_points_changed(ap_points: int)

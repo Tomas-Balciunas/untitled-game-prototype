@@ -24,10 +24,6 @@ func on_trigger(_stage: String, _event: TriggerEvent) -> void:
 	trigger()
 
 func trigger(power: float = 1.0) -> void:
-	_deal_damage(power)
-
-
-func _deal_damage(power: float) -> void:
 	var poison_event: PoisonEvent = PoisonEvent.new()
 	poison_event.from_poison(self)
 	poison_event.power = power

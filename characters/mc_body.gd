@@ -6,12 +6,7 @@ class_name MainCharacterBody
 @onready var camera_3d: Camera3D = $Camera3D
 
 
-func play_attack(event: ActionEvent, targeting_range: TargetingManager.RangeType, target_pos: Vector3) -> void:
-	if targeting_range == TargetingManager.RangeType.RANGED:
-			fire_projectile(event, target_pos)
-			
-			return
-	
+func play_attack(event: ActionEvent, target_pos: Vector3) -> void:
 	if animation_player.has_animation("attack"):
 		animation_player.stop()
 		melee_attack.global_position = get_viewport().size / 2
