@@ -8,8 +8,6 @@ var ends_turn: bool = true
 var action_point_cost: int = 0
 
 
-# --- Prepare phase (cost only, no context/slots) --------------------------------
-
 # Pure cost resolution: base cost run through the actor's cost transformers.
 # Mirrors Skill.compute_cost — safe to call for previews (UI / early gate).
 func _resolve_ap_cost(actor: Character) -> int:
@@ -52,6 +50,7 @@ func execute(actor: Character, target: Character, attacker_slot: FormationSlot, 
 
 	var ctx: ActionContext = build_context(actor, target)
 	var event: BattleActionEvent = consume_action_points(ctx)
+	
 	if not event.consumed:
 		return event
 

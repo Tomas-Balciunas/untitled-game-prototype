@@ -192,9 +192,15 @@ func _on_target_selected(target: Character) -> void:
 	enable_all_targeting()
 
 
-func _run_action(action: BattleAction, target: Character) -> void:
-	var attacker_slot := get_slot(current_battler)
-	var target_slot := get_slot(target) if target else null
+func _run_action(action: BattleAction, target: Character = null) -> void:
+	var attacker_slot: FormationSlot = get_slot(current_battler)
+	var target_slot: FormationSlot = null
+	
+	if target:
+		target_slot = get_slot(target)
+	
+	if !attacker_slot or (target != null and target_slot == null):
+		return
 
 	current_state = BattleState.ANIMATING
 

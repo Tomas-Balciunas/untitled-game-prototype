@@ -15,6 +15,7 @@ var accuracy_range: int = 0
 var defense_ignore: int = 0
 var is_critical: bool = false
 var critical_damage: float = 1.7
+var damage_reduction: float = 1.0
 
 func _init(event: DamageInstance) -> void:
 	context = event.ctx
@@ -44,7 +45,8 @@ func calculate_final_damage() -> void:
 
 	if is_critical:
 		final_damage *= critical_damage
-
+	
+	final_damage *= damage_reduction
 
 func apply_accuracy_variance() -> void:
 	if accuracy_range == 0 or accuracy == 0.0:
