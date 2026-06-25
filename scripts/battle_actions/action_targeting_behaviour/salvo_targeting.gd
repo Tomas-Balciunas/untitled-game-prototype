@@ -1,4 +1,4 @@
-extends ProjectileLauncher
+extends BaseLauncher
 
 class_name SalvoLauncher
 

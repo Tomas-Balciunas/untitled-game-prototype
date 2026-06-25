@@ -190,48 +190,42 @@ ids warn and last-one-wins.
   `force_action`, `should_tick_consume_duration`, `tick_power`,
   `additional_procs`, etc. (Tends toward a god-object — many ad-hoc flags.)
 
-## Multi-hit targeting — `scripts/battle_actions/attack_launcher.gd`
-`AttackLauncher` (RefCounted) is the projectile launchers reborn **without
-projectiles** — a reusable attack sequencer that owns the `ActionOrchestrator`
-boilerplate so the battle actions stay thin. Constructed `(actor, ctx,
-resolver)`; the caller supplies its own animation as `animate: func(e:
-ActionEvent, target_slot: FormationSlot)` (closing over the attacker slot —
-the launcher passes the per-hit target slot). Used by basic attacks
-(`basic_attack.gd`) and skills (`skill_action.gd`); item use can adopt it once
-its ConsumableResolver flow is reconciled. Methods:
-- `strike(animate)` — one animated action resolving every current `ctx.target`
-  (SINGLE / ROW / COLUMN / BLAST / MASS).
-- `salvo(pellets, animate)` — sets `ctx.targets` to the **initial target first**
-  + `pellets-1` random valid (via `TargetingManager.get_salvo_targets`), then a
-  single `strike`. All land together (DamageResolver loops with no delay) —
-  shotgun, not a chain.
-- `bounce(bounces, is_active_attack, start_from_target, animate)` — **exact
-  port** of the original `BounceProjectileLauncher.bounce` (minus projectiles /
-  the removed RangeType). Each iteration is its own orchestrated action using
-  `resolver`; `get_valid_slot` picks a random valid slot **excluding the
-  immediately-previous**, with `i == 0 && !start_from_target` forced to the
-  initial target, and `continue` (skip) when no valid slot is found. So basic
-  attacks call `bounce(n, true, false, …)`: hit #1 is the initial target
-  (`current_bounce = 1`), then chains; a lone enemy yields just that first hit
-  (matches original). The animated swing replaces the projectile per hop. The
-  optional effect `effect/_offensive/bounce_damage.gd` (`BounceIncreasingDamage`,
-  attach to a weapon/character) reads `current_bounce` on
-  `ON_BEFORE_RECEIVE_DAMAGE` and escalates each successive hop.
+## Multi-hit targeting — `scripts/battle_actions/action_targeting_behaviour/`
+The projectile launchers reborn **without projectiles**: an abstract
+`projectile_launcher.gd` (`ProjectileLauncher`, extends Node) holds the shared
+state — `resolver`, `ctx`, `initial_target`, `is_ally`, `actor`, `actor_slot` —
+and two concrete launchers built from `(resolver, ctx)`. They select among
+**characters** (not slots) via `BattleContext.get_valid_battlers(is_ally)`;
+`valid_slot()` rejects a candidate that `is_dead` or equals the excluded one.
+Each sub-hit runs through its own `ActionOrchestrator`, but the animation
+callable is just `e.confirm()` (no projectile/anim to wait on) — so the hit
+resolves immediately.
+- `bounce_targeting.gd` (`BounceLauncher`) — `bounce(bounces, is_active_attack
+  = false)`: wraps the run in a `"bounce parent"` ActionEvent, then loops
+  `bounces`: `i == 0` targets the initial target, otherwise
+  `get_valid_slot(previous, …)` (random valid, excluding the previous);
+  `continue` (skip) when none found. Each hop builds a fresh `ActionContext`
+  with `options.current_bounce` (+ `total_bounces`), resolves, then
+  `await BattleContext.wait(0.1)` — sequential chain. The optional effect
+  `effect/_offensive/bounce_damage.gd` (`BounceIncreasingDamage`, attach to a
+  weapon/character) reads `current_bounce` on `ON_BEFORE_RECEIVE_DAMAGE` and
+  escalates each successive hop.
+- `salvo_targeting.gd` (`SalvoLauncher`) — `shrapnel(pellets, is_active_attack
+  = false)`: fires `pellets` hits at `slots.pick_random()` (no exclusion — can
+  repeat, initial not guaranteed), each carrying `options.pellet`. Orchestrators
+  are launched **without await** → all land together (shotgun).
 
-Resolver per caller: basic attacks pass a `DamageResolver` (every hop is plain
-damage — exact original). `strike`/`salvo` for **skills** use a `SkillResolver`
-(cost + ON_BEFORE/POST_SKILL_USE fire once over all targets). Skill **bounce**
-can't run through `SkillResolver` per hop (it would re-consume cost each
-bounce), so `skill_action._bounce` fires the skill-use envelope once and passes
-`skill.get_resolver(ctx)` (plain damage) to `bounce`.
-
-Counts come from the **entity**: `Weapon.bounce_instances` / `salvo_pellets`
-for basic attacks, `Skill.bounce_instances` / `salvo_pellets` for skills (same
-field names). `Weapon` save/load persists `targeting` + both counts (previously
-`targeting` was hard-reset to SINGLE on load). Salvo pellets land together (one
-cast, resolver loops targets); bounce hops are each a full orchestrated action
-(per-hop swing), gated by their animation — no fixed inter-hop delay.
-(History: original `ProjectileLauncher` + subclasses removed in commit 8c38cec.)
+**Wiring**: only `basic_attack.gd` so far. `perform` runs the normal animated
+melee swing on `ctx.targets` first, then — inside the `attack_rate` loop —
+dispatches on `ctx.targeting`: `BOUNCE` → `await BounceLauncher.bounce(…)`,
+`SALVO` → `SalvoLauncher.shrapnel(…)` (fire-and-forget). So bounce's `i == 0`
+re-hits the initial target *after* the melee swing already hit it. Skills /
+items don't use these yet. (Note as of writing: the launcher counts are
+hardcoded `50` and `DamageResolver.new(1)` is a flat placeholder — wire to
+`Weapon.bounce_instances` / `salvo_pellets` and the attack stat when ready.
+`Weapon` already carries those count fields + persists `targeting`.)
+(History: original slot-based `ProjectileLauncher` + subclasses removed in
+commit 8c38cec, reintroduced character-based in f6135e5.)
 
 ## Skills — `skills/Skill.gd`
 `Skill` resource: `cost`, `effects: Array[Effect]` (passed as temporary effects),

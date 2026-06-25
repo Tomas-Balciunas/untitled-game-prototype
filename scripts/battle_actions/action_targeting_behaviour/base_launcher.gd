@@ -1,7 +1,7 @@
 @abstract
 extends Node
 
-class_name ProjectileLauncher
+class_name BaseLauncher
 
 var resolver: EffectResolver = null
 var ctx: ActionContext = null

@@ -1,4 +1,4 @@
-extends ProjectileLauncher
+extends BaseLauncher
 
 class_name BounceLauncher
 
@@ -31,12 +31,7 @@ func bounce(bounces: int, is_active_attack: bool = false) -> void:
 		if !previous_target:
 			continue
 		
-		var target: Character = null
-		
-		if i <= 0:
-			target = initial_target
-		else:
-			target = get_valid_slot(previous_target, slots)
+		var target: Character = get_valid_slot(previous_target, slots)
 		
 		if !target:
 			continue

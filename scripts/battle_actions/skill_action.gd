@@ -20,6 +20,7 @@ func build_context(actor: Character, target: Character) -> ActionContext:
 	ctx.set_targets(target, targets)
 	ctx.actively_cast = true
 	ctx.temporary_effects = skill.effects
+	ctx.targeting = skill.targeting_type
 
 	return ctx
 
@@ -33,3 +34,10 @@ func perform(ctx: ActionContext, actor: Character, attacker_slot: FormationSlot,
 			attacker_slot.perform_skill(e, skill.animation_name, target_slot),
 		"skill %s" % skill.name
 	)
+	
+	if ctx.targeting == TargetingManager.TargetType.BOUNCE:
+		var launcher: BounceLauncher = BounceLauncher.new(resolver, ctx)
+		await launcher.bounce(5)
+	elif ctx.targeting == TargetingManager.TargetType.SALVO:
+		var launcher: SalvoLauncher = SalvoLauncher.new(resolver, ctx)
+		launcher.shrapnel(5)
