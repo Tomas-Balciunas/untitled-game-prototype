@@ -17,6 +17,7 @@
 [ext_resource type="Resource" uid="uid://b6feokcsb2ttg" path="res://effect/poison/poison_resolution_on_hit.tres" id="9_xghbj"]
 [ext_resource type="Resource" uid="uid://yjlsmld4jg7y" path="res://effect/_passive/basic_attack_ap_cost_reduce/reduce_basic_attack_ap_cost.tres" id="10_dr5ls"]
 [ext_resource type="Script" uid="uid://bwn4gpkaijqsg" path="res://scripts/CharacterResource.gd" id="10_fb0jw"]
+[ext_resource type="Resource" uid="uid://b5i710vervft" path="res://effect/flee/flee_success_increase.tres" id="11_dr5ls"]
 [ext_resource type="Script" uid="uid://bqln4xpkkidja" path="res://stat/_stats/stats.gd" id="12_jti2u"]
 [ext_resource type="Resource" uid="uid://riijdkc770g2" path="res://stat/DefaultStatAttributeGrowth.tres" id="16_up1d2"]
 
@@ -38,7 +39,7 @@ metadata/_custom_type_script = "uid://bqln4xpkkidja"
 
 [resource]
 script = ExtResource("10_fb0jw")
-default_effects = Array[ExtResource("4_2usx5")]([ExtResource("6_up1d2"), ExtResource("6_xghbj"), ExtResource("7_up1d2"), ExtResource("8_ghhp2"), ExtResource("9_xghbj"), ExtResource("10_dr5ls")])
+default_effects = Array[ExtResource("4_2usx5")]([ExtResource("6_up1d2"), ExtResource("6_xghbj"), ExtResource("7_up1d2"), ExtResource("8_ghhp2"), ExtResource("9_xghbj"), ExtResource("10_dr5ls"), ExtResource("11_dr5ls")])
 default_items = Array[ExtResource("4_jti2u")]([ExtResource("6_jti2u")])
 base_stats = ExtResource("1_ghhp2")
 stat_level_growth = SubResource("Resource_uxndi")

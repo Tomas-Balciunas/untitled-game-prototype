@@ -23,7 +23,7 @@ func build_context(actor: Character, target: Character) -> ActionContext:
 	return ctx
 
 
-func perform(ctx: ActionContext, actor: Character, attacker_slot: FormationSlot, target_slot: FormationSlot) -> void:
+func perform(ctx: ActionContext, actor: Character, attacker_slot: FormationSlot, target_slot: FormationSlot, _event: BattleActionEvent) -> void:
 	var resolver: DamageResolver = DamageResolver.new(actor.stats.get_stat(Stats.StatRef.ATTACK))
 
 	for i in range(ctx.attack_rate):

@@ -1,0 +1,8 @@
+[gd_resource type="Resource" script_class="BounceIncreasingDamage" format=3]
+
+[ext_resource type="Script" path="res://effect/_offensive/bounce_damage.gd" id="1_bdmg"]
+
+[resource]
+script = ExtResource("1_bdmg")
+id = "bounce_increasing_damage"
+name = "Bounce damage"

@@ -17,7 +17,7 @@ func build_context(actor: Character, _target: Character) -> ActionContext:
 	return ctx
 
 
-func perform(_ctx: ActionContext, actor: Character, _attacker_slot: FormationSlot, _target_slot: FormationSlot) -> void:
+func perform(_ctx: ActionContext, actor: Character, _attacker_slot: FormationSlot, _target_slot: FormationSlot, _event: BattleActionEvent) -> void:
 	var guard_effect: GuardEffect = GuardEffect.new()
 	guard_effect.native = false
 	guard_effect.show_in_status = true
@@ -27,3 +27,5 @@ func perform(_ctx: ActionContext, actor: Character, _attacker_slot: FormationSlo
 	guard_effect.expire_phase = Effect.TurnPhase.TURN_START
 	
 	actor.apply_effect(guard_effect, CharacterSource.new(actor))
+	
+	BattleTextLines.print_line("%s is defending!" % actor.resource.name)

@@ -32,7 +32,6 @@ metadata/_custom_type_script = "uid://blqk30gl013xc"
 script = ExtResource("9_vfxq6")
 effect = ExtResource("8_tttne")
 name = "Temporal lock"
-skill_range = 1
 metadata/_custom_type_script = "uid://dyfab3mccm3i2"
 
 [resource]

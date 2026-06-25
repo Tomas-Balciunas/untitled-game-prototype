@@ -25,7 +25,7 @@ func build_context(actor: Character, target: Character) -> ActionContext:
 	return cons
 
 
-func perform(ctx: ActionContext, actor: Character, attacker_slot: FormationSlot, target_slot: FormationSlot) -> void:
+func perform(ctx: ActionContext, actor: Character, attacker_slot: FormationSlot, target_slot: FormationSlot, _event: BattleActionEvent) -> void:
 	await attacker_slot.perform_item_use(target_slot)
 	var timed_out: bool = await SignalFailsafe.await_signal_or_timeout(
 		BattleContext.manager, BattleBus.attack_connected, BattleManager.ATTACK_CONNECTED_TIMEOUT)

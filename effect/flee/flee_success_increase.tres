@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="FleeSuccessIncrease" format=3 uid="uid://b5i710vervft"]
+
+[ext_resource type="Script" uid="uid://c4hepbkgci72e" path="res://effect/flee/flee_success_increase.gd" id="1_2cfq4"]
+
+[resource]
+script = ExtResource("1_2cfq4")
+native = true
+show_in_status = false
+expire_phase = 3
+metadata/_custom_type_script = "uid://c4hepbkgci72e"

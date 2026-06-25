@@ -205,6 +205,10 @@ func _run_action(action: BattleAction, target: Character = null) -> void:
 	current_state = BattleState.ANIMATING
 
 	var event: BattleActionEvent = await action.execute(current_battler, target, attacker_slot, target_slot)
+	
+	if event.ends_battle:
+		_handle_end(event.end_reason)
+		return
 
 	if event.ends_turn:
 		current_state = BattleState.TURN_END
@@ -335,16 +339,12 @@ func _handle_lose() -> void:
 	current_state = BattleState.IDLE
 
 func _handle_flee() -> void:
-	var success := randf() < 1
-	if success:
-		print("Party flees successfully!")
-		for member: Character in party:
-			member.cleanup_after_battle()
-		BattleBus.battle_end.emit()
-		EncounterBus.encounter_ended.emit("flee", BattleContext.encounter_data)
-		current_state = BattleState.IDLE
-	else:
-		print("Failed to flee!")
+	for member: Character in party:
+		member.cleanup_after_battle()
+	
+	BattleBus.battle_end.emit()
+	EncounterBus.encounter_ended.emit("flee", BattleContext.encounter_data)
+	current_state = BattleState.IDLE
 	
 func _register_battler(battler: Character) -> void:
 	battlers.append(battler)

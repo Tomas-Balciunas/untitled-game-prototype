@@ -8,6 +8,8 @@ var original_ap_cost: int = 0
 var ap_cost: int = 0
 var ends_turn: bool = true
 var consumed: bool = false
+var ends_battle: bool = false
+var end_reason: String = ""
 
 
 func from_action(_action: BattleAction) -> void:

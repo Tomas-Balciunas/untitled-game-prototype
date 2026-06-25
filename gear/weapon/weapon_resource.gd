@@ -7,6 +7,10 @@ class_name WeaponResource
 @export var weapon_type: ItemTypes.WeaponType = ItemTypes.WeaponType.SWORD
 @export var accuracy_range: int = 0
 @export var scaling: WeaponScaling
+## only matters when bounce targeting is selected
+@export var bounce_instances: int = 1
+## only matters when salvo targeting is selected
+@export var salvo_pellets: int = 1
 
 
 func _init() -> void:
@@ -35,6 +39,8 @@ func _build_instance() -> Weapon:
 	weapon.weapon_type = weapon_type
 	weapon.accuracy_range = accuracy_range
 	weapon.attack_rate = attack_rate
+	weapon.bounce_instances = bounce_instances
+	weapon.salvo_pellets = salvo_pellets
 	weapon.scaling = scaling.duplicate(true) if scaling else WeaponScaling.new()
 
 	return weapon

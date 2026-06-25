@@ -5,44 +5,23 @@
 [ext_resource type="Script" uid="uid://cyhrh3l20i5dm" path="res://stat/StatModifier.gd" id="2_rlxj8"]
 [ext_resource type="Script" uid="uid://dshxh47nef2ua" path="res://gear/weapon/weapon_resource.gd" id="3_57sea"]
 [ext_resource type="Script" uid="uid://likchd30gj4i" path="res://stat/WeaponScalingEntry.gd" id="4_cbo5s"]
-[ext_resource type="Script" uid="uid://c3wbue0mr3cu6" path="res://stat/AttributeMultiplier.gd" id="5_u2mev"]
-[ext_resource type="Script" uid="uid://cnf0s33d5kgwj" path="res://stat/StatMultiplier.gd" id="6_ae0si"]
 [ext_resource type="Script" uid="uid://bvisd0pcg6yka" path="res://stat/WeaponScaling.gd" id="7_t7x44"]
 
 [sub_resource type="Resource" id="Resource_57sea"]
 script = ExtResource("1_rlxj8")
-attack = 5.0
+attack = 1.0
 metadata/_custom_type_script = "uid://bqln4xpkkidja"
-
-[sub_resource type="Resource" id="Resource_njtog"]
-script = ExtResource("5_u2mev")
-multiplier = 0.1
-metadata/_custom_type_script = "uid://c3wbue0mr3cu6"
-
-[sub_resource type="Resource" id="Resource_nba68"]
-script = ExtResource("4_cbo5s")
-attribute_contributions = Array[ExtResource("5_u2mev")]([SubResource("Resource_njtog")])
-
-[sub_resource type="Resource" id="Resource_cbo5s"]
-script = ExtResource("5_u2mev")
-attribute = 1
-multiplier = 1.0
-metadata/_custom_type_script = "uid://c3wbue0mr3cu6"
-
-[sub_resource type="Resource" id="Resource_u2mev"]
-script = ExtResource("4_cbo5s")
-stat = 6
-attribute_contributions = Array[ExtResource("5_u2mev")]([SubResource("Resource_cbo5s")])
 
 [sub_resource type="Resource" id="Resource_rnp4p"]
 script = ExtResource("7_t7x44")
-entries = Array[ExtResource("4_cbo5s")]([SubResource("Resource_nba68"), SubResource("Resource_u2mev")])
 
 [resource]
 script = ExtResource("3_57sea")
-attack_rate = 3
+targeting = 6
 accuracy_range = 5
 scaling = SubResource("Resource_rnp4p")
+bounce_instances = 3
+salvo_pellets = 3
 base_stats = SubResource("Resource_57sea")
 name = "test sword"
 description = "test sword"

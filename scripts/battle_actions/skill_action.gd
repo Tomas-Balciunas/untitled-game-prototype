@@ -24,7 +24,7 @@ func build_context(actor: Character, target: Character) -> ActionContext:
 	return ctx
 
 
-func perform(ctx: ActionContext, actor: Character, attacker_slot: FormationSlot, target_slot: FormationSlot) -> void:
+func perform(ctx: ActionContext, actor: Character, attacker_slot: FormationSlot, target_slot: FormationSlot, _event: BattleActionEvent) -> void:
 	var resolver: SkillResolver = SkillResolver.new(skill)
 	var orchestrator: ActionOrchestrator = ActionOrchestrator.new(actor, ctx, resolver)
 

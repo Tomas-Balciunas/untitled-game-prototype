@@ -9,3 +9,5 @@ magic_scale = 1.0
 id = "power_strike"
 name = "Power Strike"
 description = "A heavy focused blow that deals significantly more damage than a standard attack."
+targeting_type = 7
+salvo_pellets = 6

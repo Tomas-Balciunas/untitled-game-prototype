@@ -12,7 +12,10 @@ class_name Skill
 @export var targeting_type: TargetingManager.TargetType = TargetingManager.TargetType.SINGLE
 @export var animation_name: String
 @export var owner_only: bool = false
-
+## only matters when bounce targeting is selected
+@export var bounce_instances: int = 1
+## only matters when salvo targeting is selected
+@export var salvo_pellets: int = 1
 
 func _get_name() -> String:
 	return name

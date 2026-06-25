@@ -38,7 +38,7 @@ func needs_target() -> bool:
 func build_context(actor: Character, target: Character) -> ActionContext
 
 @abstract
-func perform(ctx: ActionContext, actor: Character, attacker_slot: FormationSlot, target_slot: FormationSlot) -> void
+func perform(ctx: ActionContext, actor: Character, attacker_slot: FormationSlot, target_slot: FormationSlot, event: BattleActionEvent) -> void
 
 func execute(actor: Character, target: Character, attacker_slot: FormationSlot, target_slot: FormationSlot) -> BattleActionEvent:
 	if actor == null or (needs_target() and (target == null or attacker_slot == null or target_slot == null)):
@@ -54,7 +54,7 @@ func execute(actor: Character, target: Character, attacker_slot: FormationSlot, 
 	if not event.consumed:
 		return event
 
-	await perform(ctx, actor, attacker_slot, target_slot)
+	await perform(ctx, actor, attacker_slot, target_slot, event)
 
 	return event
 

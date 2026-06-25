@@ -3,8 +3,6 @@ class_name CharacterBody
 
 signal hit_confirmed
 
-const DEFAULT_PROJECTILE = preload("uid://ixevorw37712")
-
 @onready var collision: CollisionShape3D = $CollisionShape3D
 @onready var sprite: Sprite3D = $Sprite
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
