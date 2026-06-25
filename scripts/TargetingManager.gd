@@ -10,7 +10,8 @@ enum TargetType {
 	ROW,
 	COLUMN,
 	MASS,
-	BOUNCE
+	BOUNCE,
+	SALVO
 }
 
 enum Mode {

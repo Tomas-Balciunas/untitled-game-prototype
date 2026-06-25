@@ -37,6 +37,24 @@ func new_action(event: ActionEvent) -> void:
 	if in_battle and manager:
 		manager.action_queue.append(event)
 
+func get_valid_battlers(is_ally: bool) -> Array[Character]:
+	var all: Array[Character]
+	
+	if is_ally:
+		all = get_allies_all()
+	else:
+		all = get_enemies_all()
+	
+	var slots: Array[Character] = []
+	
+	for slot in all:
+		if !slot or slot.is_dead:
+			continue
+		
+		slots.append(slot)
+	
+	return slots
+
 
 func get_enemies_all() -> Array[Character]:
 	if !manager:

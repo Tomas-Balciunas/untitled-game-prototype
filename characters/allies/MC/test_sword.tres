@@ -17,7 +17,7 @@ script = ExtResource("7_t7x44")
 
 [resource]
 script = ExtResource("3_57sea")
-targeting = 6
+targeting = 7
 accuracy_range = 5
 scaling = SubResource("Resource_rnp4p")
 bounce_instances = 3

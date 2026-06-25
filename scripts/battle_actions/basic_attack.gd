@@ -24,7 +24,7 @@ func build_context(actor: Character, target: Character) -> ActionContext:
 
 
 func perform(ctx: ActionContext, actor: Character, attacker_slot: FormationSlot, target_slot: FormationSlot, _event: BattleActionEvent) -> void:
-	var resolver: DamageResolver = DamageResolver.new(actor.stats.get_stat(Stats.StatRef.ATTACK))
+	var resolver: DamageResolver = DamageResolver.new(1)
 
 	for i in range(ctx.attack_rate):
 		var orcherstrator: ActionOrchestrator = ActionOrchestrator.new(actor, ctx, resolver)
@@ -34,5 +34,12 @@ func perform(ctx: ActionContext, actor: Character, attacker_slot: FormationSlot,
 					attacker_slot.perform_attack(e, target_slot),
 				"basic melee attack",
 			)
+		
+		if ctx.targeting == TargetingManager.TargetType.BOUNCE:
+			var launcher: BounceLauncher = BounceLauncher.new(resolver, ctx)
+			await launcher.bounce(50)
+		elif ctx.targeting == TargetingManager.TargetType.SALVO:
+			var launcher: SalvoLauncher = SalvoLauncher.new(resolver, ctx)
+			launcher.shrapnel(50)
 
 		await BattleContext.wait(0.2)
