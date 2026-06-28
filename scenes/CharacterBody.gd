@@ -167,11 +167,11 @@ func play_skill(event: ActionEvent, animation: String, target_pos: Vector3) -> v
 	event.confirm()
 
 
-func play_item_use() -> void:
+func play_item_use(event: ActionEvent) -> void:
 	if animation_player.has_animation("attack"):
 		animation_player.play("attack")
 		await animation_player.animation_finished
-
+	event.confirm()
 
 func play_damaged() -> void:
 	if animation_player.has_animation("damaged"):

@@ -363,6 +363,10 @@ func _on_battler_died(rip: Character) -> void:
 func _corpse_janny() -> void:
 	for dead in _to_cleanup:
 		var slot = get_slot(dead)
+		if !slot:
+			push_error("missing slot for %s, probably already freed" % dead.resource.name)
+			continue
+		
 		await slot.perform_death()
 		dead.cleanup_after_battle()
 		battlers.erase(dead)

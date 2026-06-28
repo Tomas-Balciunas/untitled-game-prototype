@@ -120,11 +120,10 @@ func perform_skill(event: ActionEvent, animation: String, target: FormationSlot)
 	body_instance.play_skill(event, animation, target.global_position)
 
 
-func perform_item_use(target: FormationSlot) -> void:
-	await perform_run_towards_target(target)
-	body_instance.play_item_use()
+func perform_item_use(event: ActionEvent, target: FormationSlot) -> void:
+	body_instance.play_item_use(event)
 
-
+## deprecated for now
 func perform_run_towards_target(target: FormationSlot) -> void:
 	var tween: Tween = create_tween()
 
@@ -143,7 +142,7 @@ func perform_run_towards_target(target: FormationSlot) -> void:
 		.set_ease(Tween.EASE_IN_OUT)
 	await tween.finished
 
-
+## deprecated for now
 func look_at_target(target: FormationSlot) -> void:
 	if not body_instance.has_node("Camera3D"):
 		return
@@ -167,7 +166,7 @@ func look_at_target(target: FormationSlot) -> void:
 	
 	await tween.finished
 
-
+## deprecated for now
 func position_back() -> void:
 	var parent_space := get_parent()
 	var home_local: Vector3 = parent_space.to_local(home_global)

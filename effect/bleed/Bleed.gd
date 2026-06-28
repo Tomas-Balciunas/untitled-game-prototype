@@ -44,11 +44,12 @@ func on_trigger(stage: String, event: TriggerEvent) -> void:
 		var bleed_event: BleedEvent = BleedEvent.new()
 		bleed_event.from_bleed(self)
 		bleed_event.from_base_event(event)
+		bleed_event.source = CharacterSource.new(owner)
 		
 		var ctx: ActionContext = ActionContext.new()
-		ctx.turn = event.ctx.turn
+		ctx.turn = bleed_event.ctx.turn
 		ctx.set_targets(owner)
-		ctx.source = event.source
+		ctx.source = bleed_event.source
 		
 		EffectRunner.process_trigger(ON_BLEED_DAMAGE_INSTANCE, bleed_event)
 		

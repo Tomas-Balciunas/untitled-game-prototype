@@ -11,6 +11,8 @@ var value: int = 0
 func get_item_name() -> String:
 	return item_name
 
+func get_item_description() -> String:
+	return item_description
 
 func item_type_to_string(item_type: ItemTypes.ItemType) -> String:
 	return ItemTypes.item_type_to_string(item_type)

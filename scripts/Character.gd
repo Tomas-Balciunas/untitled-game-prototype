@@ -132,7 +132,7 @@ func can_be_healed() -> bool:
 func can_receive_effects() -> bool:
 	return true
 
-func set_current_health(new_health: int, damage_event: DamageInstance = null) -> void:
+func set_current_health(new_health: int, damage_event: DamageInstance = null, emit_dead: bool = true) -> void:
 	var old: int = state.current_health
 	var new: float = clamp(new_health, 0, stats.health)
 	
@@ -148,7 +148,8 @@ func set_current_health(new_health: int, damage_event: DamageInstance = null) ->
 	if new == 0 and old > 0:
 		state.current_health = int(new)
 		is_dead = true
-		emit_signal("died", self)
+		if emit_dead:
+			emit_signal("died", self)
 	
 	if damage_event:
 		CharacterBus.character_damaged.emit(self, damage_event)

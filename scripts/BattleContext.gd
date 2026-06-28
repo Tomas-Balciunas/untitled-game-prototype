@@ -128,7 +128,7 @@ func get_slot(character: Character) -> FormationSlot:
 	return slot
 
 func get_turn_state() -> TurnState:
-	if !manager:
+	if !manager or !manager.turn_state:
 		push_error("Turn state is null!")
 		
 		return null

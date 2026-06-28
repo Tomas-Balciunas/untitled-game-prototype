@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="ApRefundOnKill" format=3 uid="uid://bdqolqlnshxcp"]
+
+[ext_resource type="Script" uid="uid://br4781ad5ancr" path="res://effect/_passive/ap_refund_on_kill/ap_refund_on_kill.gd" id="1_4yixd"]
+
+[resource]
+script = ExtResource("1_4yixd")
+expires_after_battle = true
+expire_phase = 2
+metadata/_custom_type_script = "uid://br4781ad5ancr"

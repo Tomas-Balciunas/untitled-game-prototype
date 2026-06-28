@@ -17,11 +17,10 @@ script = ExtResource("7_t7x44")
 
 [resource]
 script = ExtResource("3_57sea")
-targeting = 7
 accuracy_range = 5
 scaling = SubResource("Resource_rnp4p")
 bounce_instances = 3
-salvo_pellets = 3
+salvo_pellets = 30
 base_stats = SubResource("Resource_57sea")
 name = "test sword"
 description = "test sword"

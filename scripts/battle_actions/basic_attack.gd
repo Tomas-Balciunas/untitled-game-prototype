@@ -24,22 +24,25 @@ func build_context(actor: Character, target: Character) -> ActionContext:
 
 
 func perform(ctx: ActionContext, actor: Character, attacker_slot: FormationSlot, target_slot: FormationSlot, _event: BattleActionEvent) -> void:
-	var resolver: DamageResolver = DamageResolver.new(1)
+	var resolver: DamageResolver = DamageResolver.new(actor.stats.get_stat(Stats.StatRef.ATTACK))
+	var weapon: Weapon = actor.equipment.weapon if actor.equipment.weapon else null
 
 	for i in range(ctx.attack_rate):
-		var orcherstrator: ActionOrchestrator = ActionOrchestrator.new(actor, ctx, resolver)
+		var orchestrator: ActionOrchestrator = ActionOrchestrator.new(actor, ctx, resolver)
 
-		await orcherstrator.execute_action(
+		await orchestrator.execute_action(
 				func(e: ActionEvent) -> void:
 					attacker_slot.perform_attack(e, target_slot),
 				"basic melee attack",
 			)
 		
 		if ctx.targeting == TargetingManager.TargetType.BOUNCE:
+			var bounces: int = weapon.bounce_instances if weapon else 1
 			var launcher: BounceLauncher = BounceLauncher.new(resolver, ctx)
-			await launcher.bounce(50)
+			await launcher.bounce(bounces)
 		elif ctx.targeting == TargetingManager.TargetType.SALVO:
+			var pellets: int = weapon.salvo_pellets if weapon else 1
 			var launcher: SalvoLauncher = SalvoLauncher.new(resolver, ctx)
-			launcher.shrapnel(50)
+			launcher.shrapnel(pellets)
 
 		await BattleContext.wait(0.2)

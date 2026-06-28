@@ -24,12 +24,10 @@ func execute(ctx: ActionContext) -> ActionContext:
 
 
 func run_pipeline(event: DamageInstance) -> void:
-	#TODO: refactor trigger flow
 	EffectRunner.process_trigger(EffectTriggers.ON_BEFORE_RECEIVE_DAMAGE, event)
 	
-	#BattleEventBus.before_receive_damage.emit(ctx)
-	#await BattleFlow.wait_if_paused()
 	event.calculator.calculate_final_damage()
+	
 	EffectRunner.process_trigger(EffectTriggers.ON_DAMAGE_ABOUT_TO_BE_APPLIED, event)
 	
 	BattleTextLines.print_line("%s dealt %f %s damage to %s" % [
@@ -45,16 +43,17 @@ func run_pipeline(event: DamageInstance) -> void:
 		if event.ctx.actively_cast:
 			event.ctx.turn.active_attack_count += 1
 	
-	event.target.set_current_health(event.target.state.current_health - event.calculator.get_final_damage(), event)
+	event.target.set_current_health(event.target.state.current_health - event.calculator.get_final_damage(), event, false)
+	
+	if event.target.is_dead:
+		EffectRunner.process_trigger(EffectTriggers.ON_DEATH, event)
+		
+		if event.target.is_dead:
+			event.target.died.emit(event.target)
+			
+			return
 	
 	EffectRunner.process_trigger(EffectTriggers.ON_DAMAGE_APPLIED, event)
-	
-	## should be in battle state
-	#if event.ctx.target.is_dead:
-		#event.trigger = EffectTriggers.ON_DEATH
-		#EffectRunner.process_trigger(event)
-	
-
 
 func build_event(ctx: ActionContext, target: Character) -> DamageInstance:
 	return DamageInstance.new(ctx, target, damage)

@@ -13,7 +13,7 @@ func _init(_item: Consumable) -> void:
 
 
 func build_context(actor: Character, target: Character) -> ActionContext:
-	var targeting: TargetingManager.TargetType = item.template.targeting_type
+	var targeting: TargetingManager.TargetType = item.targeting_type if item.targeting_type else TargetingManager.TargetType.SINGLE
 	var targets := TargetingManager.get_applicable_targets(target, targeting)
 
 	var cons := ConsumableContext.new()
@@ -26,11 +26,12 @@ func build_context(actor: Character, target: Character) -> ActionContext:
 
 
 func perform(ctx: ActionContext, actor: Character, attacker_slot: FormationSlot, target_slot: FormationSlot, _event: BattleActionEvent) -> void:
-	await attacker_slot.perform_item_use(target_slot)
-	var timed_out: bool = await SignalFailsafe.await_signal_or_timeout(
-		BattleContext.manager, BattleBus.attack_connected, BattleManager.ATTACK_CONNECTED_TIMEOUT)
-
-	if timed_out:
-		push_error("Attack connected signal timed out for character: %s, %s " % [actor.resource.name, actor.resource.id])
-
-	ConsumableResolver.new(item).execute(ctx)
+	var resolver: ConsumableResolver = ConsumableResolver.new(item)
+	var orchestrator: ActionOrchestrator = ActionOrchestrator.new(actor, ctx, resolver)
+	
+	await orchestrator.execute_action(
+				func(e: ActionEvent) -> void:
+					attacker_slot.perform_item_use(e, target_slot),
+				"item use",
+			)
+	

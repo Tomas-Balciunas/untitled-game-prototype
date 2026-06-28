@@ -6,7 +6,7 @@
 [resource]
 script = ExtResource("1_fit4h")
 stacks = 100
-damage_per_stack = 0.05
+damage_per_stack = 100.05
 name = "Bleed"
 description = "Bleed status"
 icon = ExtResource("1_32e7r")

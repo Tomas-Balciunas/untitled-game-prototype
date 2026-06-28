@@ -2,12 +2,14 @@
 
 [ext_resource type="Script" uid="uid://4wkxp72a0kpc" path="res://skills/AttackSkill.gd" id="1"]
 [ext_resource type="Script" uid="uid://bp0biy0knxw2o" path="res://effect/Effect.gd" id="1_pa67l"]
+[ext_resource type="Resource" uid="uid://bdqolqlnshxcp" path="res://effect/_passive/ap_refund_on_kill/ap_refund_on_kill.tres" id="2_s2he4"]
 
 [resource]
 script = ExtResource("1")
+attack_scale = 2.0
 magic_scale = 1.0
 id = "power_strike"
 name = "Power Strike"
 description = "A heavy focused blow that deals significantly more damage than a standard attack."
-targeting_type = 7
+effects = Array[ExtResource("1_pa67l")]([ExtResource("2_s2he4")])
 salvo_pellets = 6

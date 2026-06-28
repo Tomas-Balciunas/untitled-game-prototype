@@ -16,7 +16,7 @@ func build_context(actor: Character, target: Character) -> ActionContext:
 	var targets := TargetingManager.get_applicable_targets(target, skill.targeting_type)
 
 	var ctx := ActionContext.new()
-	ctx.source = CharacterSource.new(actor)
+	ctx.source = SkillSource.new(actor, skill)
 	ctx.set_targets(target, targets)
 	ctx.actively_cast = true
 	ctx.temporary_effects = skill.effects
