@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="Chest" format=3 uid="uid://mptwinive2u3"]
+
+[ext_resource type="Script" uid="uid://djh7svb2aijp2" path="res://scripts/Chest.gd" id="1_e7rmx"]
+[ext_resource type="Script" uid="uid://b06vmgrh4qa8i" path="res://gear/ItemResource.gd" id="1_y1gxn"]
+[ext_resource type="Resource" uid="uid://cakblj60r6ir" path="res://gear/weapon/cheat_sword.tres" id="2_8odep"]
+[ext_resource type="Resource" uid="uid://nx8ggxxx4own" path="res://scenes/test_chest_key.tres" id="3_puxxk"]
+
+[resource]
+script = ExtResource("1_e7rmx")
+original_key = ExtResource("3_puxxk")
+custom_items = Array[ExtResource("1_y1gxn")]([ExtResource("2_8odep")])
+metadata/_custom_type_script = "uid://djh7svb2aijp2"

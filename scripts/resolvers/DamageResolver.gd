@@ -50,8 +50,6 @@ func run_pipeline(event: DamageInstance) -> void:
 		
 		if event.target.is_dead:
 			event.target.died.emit(event.target)
-			
-			return
 	
 	EffectRunner.process_trigger(EffectTriggers.ON_DAMAGE_APPLIED, event)
 

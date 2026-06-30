@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://clkdjxvrj86wv" path="res://shop/ShopEntry.gd" id="1_f4teb"]
 [ext_resource type="Script" uid="uid://d1rasbjfrxr5p" path="res://shop/ShopData.gd" id="2_jh62t"]
 [ext_resource type="Resource" uid="uid://bksuu5x4hbshr" path="res://gear/consumable/hp pot minor/hp_pot.tres" id="2_lfpir"]
+[ext_resource type="Resource" uid="uid://nx8ggxxx4own" path="res://scenes/test_chest_key.tres" id="3_lfpir"]
 
 [sub_resource type="Resource" id="Resource_4ohvi"]
 script = ExtResource("1_f4teb")
@@ -10,8 +11,15 @@ item = ExtResource("2_lfpir")
 stock = 5
 metadata/_custom_type_script = "uid://clkdjxvrj86wv"
 
+[sub_resource type="Resource" id="Resource_tel4y"]
+script = ExtResource("1_f4teb")
+item = ExtResource("3_lfpir")
+price = 1
+stock = 1
+metadata/_custom_type_script = "uid://clkdjxvrj86wv"
+
 [resource]
 script = ExtResource("2_jh62t")
 shop_name = "Shop test"
-entries = Array[ExtResource("1_f4teb")]([SubResource("Resource_4ohvi")])
+entries = Array[ExtResource("1_f4teb")]([SubResource("Resource_4ohvi"), SubResource("Resource_tel4y")])
 metadata/_custom_type_script = "uid://d1rasbjfrxr5p"

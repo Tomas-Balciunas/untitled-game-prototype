@@ -28,6 +28,8 @@ func on_map_loaded(_map_data: Dictionary) -> void:
 	update_chest_state()
 
 func _instantiate_custom_items() -> void:
+	chest.set_locked(null)
+		
 	for resource: ItemResource in chest.custom_items:
 		chest.items.append(resource._build_instance())
 	chest.custom_items.clear()
@@ -66,10 +68,14 @@ func build_items(_map_data: Dictionary) -> Array[Item]:
 	return items
 
 func build_chest(map_data: Dictionary) -> void:
+	var trapped = randf() > 0.5
+	
 	var inst := Chest.new()
 	inst.id = id
-	inst.trapped = randf() > 0
 	inst.items = build_items(map_data)
+	
+	if trapped:
+		inst.trap = TrapRegistry.get_random_trap()
 
 	chest = inst
 	
@@ -89,8 +95,6 @@ func game_save() -> Dictionary:
 	return {
 		"id": id,
 		"items": items,
-		"locked": chest.locked,
-		"trapped": chest.trapped,
 		"was_opened": chest.was_opened,
 		"random": random
 	}

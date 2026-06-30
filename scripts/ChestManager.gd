@@ -9,25 +9,43 @@ func _ready() -> void:
 
 func on_open_chest_requested(c: Chest) -> void:
 	chest = c
-	if chest.trapped:
+	if chest.key != null or chest.trap != null:
 		ChestBus.display_chest_opener.emit()
 	else:
 		ChestBus.display_chest_content.emit(chest)
 
 func on_chest_opener_chosen(character: Character) -> void:
-	var line_1 := "%s attempts to open the chest..." % character.resource.name
-	var trap: Trap
+	var b := EventBuilder.new()
+	b.say("", ["%s attempts to open the chest..." % character.resource.name])
+	
+	if chest.key and used_key():
+		b.say("", ["Used %s" % chest.key.get_item_name()])
+	elif chest.key and !used_key():
+		b.say("", ["Locked!"])
+		await EventManager.process_event(b.build())
+		return
+	
 	if chest.trap:
-		trap = chest.trap
-	else:
-		trap = TrapRegistry.get_random_trap()
-
-	var b := EventBuilder.new().say("", [line_1])
-	if randf() > 0:
-		b.say("", ["Oops! %s" % trap.name]).trap(trap, character)
+		if chest_disarmed(character):
+			b.say("", ["Trap disarmed!"])
+		else:
+			b.say("", ["Oops! %s" % chest.trap.name]).trap(chest.trap, character)
 	else:
 		b.say("", ["Open!"])
 
 	await EventManager.process_event(b.build())
-	chest.set_trapped(false)
+	chest.set_not_trapped()
+	chest.set_unlocked()
 	ChestBus.display_chest_content.emit(chest)
+
+func chest_disarmed(_opener: Character) -> bool:
+	return randf() > 0.5
+
+func used_key() -> bool:
+	for member: Character in PartyManager.members:
+		var item: Item = member.inventory.get_item_by_id(chest.key.id)
+		
+		if item != null and member.inventory.remove_item(item):
+			return true
+	
+	return false

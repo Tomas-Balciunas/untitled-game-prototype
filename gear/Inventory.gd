@@ -24,6 +24,13 @@ func remove_item(item: Item) -> bool:
 func has_item(item: Item) -> bool:
 	return item in slots
 
+func get_item_by_id(id: String) -> Item:
+	for item: Item in slots:
+		if item.id == id:
+			return item
+	
+	return null
+
 func get_all_items() -> Array[Item]:
 	return slots.duplicate()
 

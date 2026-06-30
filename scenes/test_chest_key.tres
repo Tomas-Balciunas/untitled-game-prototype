@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="QuestItemResource" format=3 uid="uid://nx8ggxxx4own"]
+
+[ext_resource type="Script" uid="uid://c0nnjlcyyp2p4" path="res://gear/QuestItemResource.gd" id="1_aijpt"]
+
+[resource]
+script = ExtResource("1_aijpt")
+id = "123"
+name = "Chest Key"
+type = 2
+description = "whatever"
+metadata/_custom_type_script = "uid://c0nnjlcyyp2p4"
