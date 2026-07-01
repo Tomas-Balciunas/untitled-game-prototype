@@ -1,37 +1,41 @@
-[gd_scene load_steps=3 format=3 uid="uid://ed1wo7vfltsb"]
+[gd_scene format=3 uid="uid://ed1wo7vfltsb"]
 
 [ext_resource type="Script" uid="uid://dhhg4mlmlgs83" path="res://scenes/player/player.gd" id="1_p0vlq"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_p0vlq"]
 size = Vector3(0.620972, 1.62979, 0.552612)
 
-[node name="Player" type="CharacterBody3D" groups=["player"]]
+[node name="Player" type="CharacterBody3D" unique_id=1573161333 groups=["player"]]
 script = ExtResource("1_p0vlq")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=661067906]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.816819, 0)
 shape = SubResource("BoxShape3D_p0vlq")
 
-[node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, -0.303)
+[node name="Camera3D" type="Camera3D" parent="." unique_id=1561252970]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, -0.014999121)
 current = true
 fov = 93.0034
 far = 285.41
 
-[node name="OmniLight3D" type="OmniLight3D" parent="Camera3D"]
+[node name="OmniLight3D" type="OmniLight3D" parent="Camera3D" unique_id=1989508157]
 transform = Transform3D(1, 0, 0, 0, 0.0297301, 0, 0, 0, 1, 0, 0, 0.312911)
 light_color = Color(0.585928, 0.568995, 0.564924, 1)
 light_indirect_energy = 2.826
 omni_range = 6.66321
 
-[node name="FrontRay" type="RayCast3D" parent="."]
+[node name="FrontRay" type="RayCast3D" parent="." unique_id=252221713]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.45272213, 0)
 target_position = Vector3(0, 0, -2)
 
-[node name="BackRay" type="RayCast3D" parent="."]
+[node name="BackRay" type="RayCast3D" parent="." unique_id=1550421216]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.4521498, 0)
 target_position = Vector3(0, 0, 2)
 
-[node name="LeftRay" type="RayCast3D" parent="."]
+[node name="LeftRay" type="RayCast3D" parent="." unique_id=260118209]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.4382261, 0)
 target_position = Vector3(-2, 0, 0)
 
-[node name="RightRay" type="RayCast3D" parent="."]
+[node name="RightRay" type="RayCast3D" parent="." unique_id=683802123]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.45905375, 0)
 target_position = Vector3(2, 0, 0)
