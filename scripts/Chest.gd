@@ -28,16 +28,16 @@ func set_locked(_key: QuestItemResource = null) -> void:
 		return
 	
 	key = original_key._build_instance()
-	ChestBus.chest_state_changed.emit(self)
+	ObjectBus.chest_state_changed.emit(self)
 
 func set_unlocked() -> void:
 	key = null
-	ChestBus.chest_state_changed.emit(self)
+	ObjectBus.chest_state_changed.emit(self)
 
 func set_trapped(_trap: Trap) -> void:
 	trap = _trap
-	ChestBus.chest_state_changed.emit(self)
+	ObjectBus.chest_state_changed.emit(self)
 
 func set_not_trapped() -> void:
 	trap = null
-	ChestBus.chest_state_changed.emit(self)
+	ObjectBus.chest_state_changed.emit(self)

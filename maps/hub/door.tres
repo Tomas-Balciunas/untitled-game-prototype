@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="Door" format=3 uid="uid://1076kq8jj1mn"]
+
+[ext_resource type="Script" uid="uid://thpvb0l1cx3w" path="res://scripts/Door.gd" id="1_71geg"]
+[ext_resource type="Resource" uid="uid://8ufc6fbnjad8" path="res://trap/_traps/PoisonTrap.tres" id="2_ily2u"]
+
+[resource]
+script = ExtResource("1_71geg")
+trap = ExtResource("2_ily2u")
+metadata/_custom_type_script = "uid://thpvb0l1cx3w"

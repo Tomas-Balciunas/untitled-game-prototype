@@ -6,7 +6,7 @@ var targeting_type: TargetingManager.TargetType = TargetingManager.TargetType.SI
 
 
 func use_item(user: Character) -> void:
-	var ctx := ConsumableContext.new()
+	var ctx := ActionContext.new()
 	ctx.source = ItemSource.new(user, self)
 	ctx.set_targets(user)
 	ctx.actively_cast = true

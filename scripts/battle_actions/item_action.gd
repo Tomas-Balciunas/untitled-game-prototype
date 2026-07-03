@@ -16,7 +16,7 @@ func build_context(actor: Character, target: Character) -> ActionContext:
 	var targeting: TargetingManager.TargetType = item.targeting_type if item.targeting_type else TargetingManager.TargetType.SINGLE
 	var targets := TargetingManager.get_applicable_targets(target, targeting)
 
-	var cons := ConsumableContext.new()
+	var cons := ActionContext.new()
 	cons.source = ItemSource.new(actor, item)
 	cons.set_targets(target, targets)
 	cons.temporary_effects = item.get_all_effects()

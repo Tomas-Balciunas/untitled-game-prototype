@@ -2,14 +2,19 @@ extends Interactable
 class_name DoorInteractable
 
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
-var is_open: bool = false
-
-
+@export var door: Door = null
 
 func _interact() -> void:
-	if !is_open:
+	if door == null:
+		door = Door.new()
+	
+	if door.key != null or door.trap != null:
+		ObjectBus.open_door_requested.emit(door)
+		return
+	
+	if !door.is_open:
 		animation_player.play("open")
-		is_open = true
+		door.is_open = true
 	else:
 		animation_player.play("close")
-		is_open = false
+		door.is_open = false

@@ -9,7 +9,7 @@ func _init(e: Effect) -> void:
 	effect = e
 
 
-func execute(ctx: ActionContext) -> EffectApplicationContext:
+func execute(ctx: ActionContext) -> ActionContext:
 	if !effect:
 		push_error("Effect missing")
 		return

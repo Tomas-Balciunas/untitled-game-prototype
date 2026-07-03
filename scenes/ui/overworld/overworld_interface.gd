@@ -1,14 +1,17 @@
 extends InterfaceBase
 
-enum Mode { CHEST, CHARACTER_MENU }
+enum Mode { CHEST, CHARACTER_MENU, DOOR }
 
 @onready var character_menu: CharacterMenu = %CharacterMenu
 @onready var chest: ChestInterface = %Chest
+@onready var door: DoorInterface = $Door
 
 
 func _ready() -> void:
-	ChestBus.display_chest_opener.connect(_on_chest_display_opener)
-	ChestBus.display_chest_content.connect(_on_chest_display_content)
+	ObjectBus.display_door_opener.connect(_on_door_display_opener)
+	
+	ObjectBus.display_chest_opener.connect(_on_chest_display_opener)
+	ObjectBus.display_chest_content.connect(_on_chest_display_content)
 	CharacterBus.display_character_menu.connect(_on_character_menu_display)
 
 
@@ -19,6 +22,11 @@ func _set_mode(mode: Mode) -> void:
 
 func _set_visibility(mode: InterfaceRoot.Mode) -> void:
 	visible = mode == InterfaceRoot.Mode.OVERWORLD
+
+
+func _on_door_display_opener() -> void:
+	door.display_door_opener_choice()
+	_set_mode(Mode.DOOR)
 
 
 func _on_chest_display_opener() -> void:

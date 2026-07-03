@@ -4,15 +4,15 @@ extends Node
 var chest: Chest = null
 
 func _ready() -> void:
-	ChestBus.open_chest_requested.connect(on_open_chest_requested)
-	ChestBus.chest_opener_chosen.connect(on_chest_opener_chosen)
+	ObjectBus.open_chest_requested.connect(on_open_chest_requested)
+	ObjectBus.chest_opener_chosen.connect(on_chest_opener_chosen)
 
 func on_open_chest_requested(c: Chest) -> void:
 	chest = c
 	if chest.key != null or chest.trap != null:
-		ChestBus.display_chest_opener.emit()
+		ObjectBus.display_chest_opener.emit()
 	else:
-		ChestBus.display_chest_content.emit(chest)
+		ObjectBus.display_chest_content.emit(chest)
 
 func on_chest_opener_chosen(character: Character) -> void:
 	var b := EventBuilder.new()
@@ -36,7 +36,7 @@ func on_chest_opener_chosen(character: Character) -> void:
 	await EventManager.process_event(b.build())
 	chest.set_not_trapped()
 	chest.set_unlocked()
-	ChestBus.display_chest_content.emit(chest)
+	ObjectBus.display_chest_content.emit(chest)
 
 func chest_disarmed(_opener: Character) -> bool:
 	return randf() > 0.5

@@ -71,7 +71,7 @@ func remove_item_from_chest(item: Item) -> bool:
 	if not success:
 		return false
 	
-	ChestBus.chest_state_changed.emit(chest)
+	ObjectBus.chest_state_changed.emit(chest)
 	
 	return true
 

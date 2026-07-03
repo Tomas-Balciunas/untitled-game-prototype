@@ -1,7 +1,7 @@
 extends Node
-class_name ChestOpenerChoiceInterface
+class_name DoorOpenerChoiceInterface
 
-signal close_chest_opener_choice
+signal close_door_opener_choice
 
 @onready var v_box_container: VBoxContainer = $VBoxContainer
 
@@ -16,8 +16,8 @@ func init() -> void:
 		v_box_container.add_child(btn)
 		
 func on_opener_clicked(c: Character) -> void:
-	close_chest_opener_choice.emit()
-	ObjectBus.chest_opener_chosen.emit(c)
+	close_door_opener_choice.emit()
+	ObjectBus.door_opener_chosen.emit(c)
 
 
 func _clear() -> void:

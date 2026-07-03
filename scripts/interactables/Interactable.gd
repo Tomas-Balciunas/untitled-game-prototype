@@ -24,7 +24,9 @@ func _can_interact() -> bool:
 	if player == null:
 		return false
 		
-	return player.global_position.distance_to(global_position) <= interact_distance
+	var test = player.global_position.distance_to(global_position) 
+	
+	return test <= interact_distance
 
 func _interact() -> void:
 	print("Interacted with ", name)

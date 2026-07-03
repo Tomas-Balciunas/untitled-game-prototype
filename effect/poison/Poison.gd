@@ -20,8 +20,11 @@ func listened_triggers() -> Array:
 func can_process(_stage: String, event: TriggerEvent) -> bool:
 	return owner_is_actor(event)
 
-func on_trigger(_stage: String, _event: TriggerEvent) -> void:
+func on_trigger(stage: String, _event: TriggerEvent) -> void:
 	trigger()
+	
+	if stage == EffectTriggers.ON_MOVEMENT:
+		consume_duration()
 
 func trigger(power: float = 1.0) -> void:
 	var poison_event: PoisonEvent = PoisonEvent.new()

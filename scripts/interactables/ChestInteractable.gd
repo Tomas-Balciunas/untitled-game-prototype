@@ -11,8 +11,8 @@ enum Contents { GEAR_ONLY, CONSUMABLES_ONLY, BOTH }
 @export var chest: Chest
 
 func on_map_loaded(_map_data: Dictionary) -> void:
-	if !ChestBus.chest_state_changed.is_connected(on_chest_state_changed):
-		ChestBus.chest_state_changed.connect(on_chest_state_changed)
+	if !ObjectBus.chest_state_changed.is_connected(on_chest_state_changed):
+		ObjectBus.chest_state_changed.connect(on_chest_state_changed)
 
 	var data: Dictionary = MapInstance.chest_state.get(id, {})
 
@@ -39,7 +39,7 @@ func _interact() -> void:
 		push_error("Chest was not built!")
 		return
 
-	ChestBus.open_chest_requested.emit(chest)
+	ObjectBus.open_chest_requested.emit(chest)
 
 func build_items(_map_data: Dictionary) -> Array[Item]:
 	var items: Array[Item] = []
@@ -112,8 +112,6 @@ func game_load(data: Dictionary) -> Chest:
 
 	var updated_chest := Chest.new()
 	updated_chest.id = data.get("id")
-	updated_chest.locked = data.get("locked")
-	updated_chest.trapped = data.get("trapped")
 	updated_chest.was_opened = data.get("was_opened")
 	updated_chest.items = items
 
