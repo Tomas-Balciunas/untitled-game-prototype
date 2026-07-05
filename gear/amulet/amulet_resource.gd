@@ -20,6 +20,7 @@ func _build_instance() -> Amulet:
 	amulet.quality = quality
 	amulet.item_description = description
 	amulet.value = value
+	amulet.icon = icon
 	amulet.stats = base_stats.duplicate(true)
 	amulet.base_stats = amulet.stats.duplicate(true)
 	amulet.base_effects = effects.duplicate(true)

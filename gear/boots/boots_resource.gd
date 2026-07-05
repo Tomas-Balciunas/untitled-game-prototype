@@ -20,6 +20,7 @@ func _build_instance() -> Boots:
 	boots.quality = quality
 	boots.item_description = description
 	boots.value = value
+	boots.icon = icon
 	boots.stats = base_stats.duplicate(true)
 	boots.base_stats = boots.stats.duplicate(true)
 	boots.base_effects = effects.duplicate(true)

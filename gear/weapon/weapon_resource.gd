@@ -31,6 +31,7 @@ func _build_instance() -> Weapon:
 	weapon.quality = quality
 	weapon.item_description = description
 	weapon.value = value
+	weapon.icon = icon
 	weapon.stats = base_stats.duplicate(true)
 	weapon.base_stats = weapon.stats.duplicate(true)
 	weapon.base_effects = effects.duplicate(true)

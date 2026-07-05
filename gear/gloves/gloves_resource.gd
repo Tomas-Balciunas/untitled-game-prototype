@@ -20,6 +20,7 @@ func _build_instance() -> Gloves:
 	gloves.quality = quality
 	gloves.item_description = description
 	gloves.value = value
+	gloves.icon = icon
 	gloves.stats = base_stats.duplicate(true)
 	gloves.base_stats = gloves.stats.duplicate(true)
 	gloves.base_effects = effects.duplicate(true)

@@ -1,6 +1,8 @@
 extends Resource
 class_name Chest
 
+signal chest_unlocked
+
 @export var id: String
 @export var was_opened: bool = false
 @export var was_trapped: bool = false
@@ -33,6 +35,7 @@ func set_locked(_key: QuestItemResource = null) -> void:
 func set_unlocked() -> void:
 	key = null
 	ObjectBus.chest_state_changed.emit(self)
+	chest_unlocked.emit()
 
 func set_trapped(_trap: Trap) -> void:
 	trap = _trap

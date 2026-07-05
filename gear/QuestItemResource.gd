@@ -15,5 +15,6 @@ func _build_instance() -> QuestItem:
 	quest_item.type = type
 	quest_item.item_description = description
 	quest_item.value = 0
+	quest_item.icon = icon
 	
 	return quest_item

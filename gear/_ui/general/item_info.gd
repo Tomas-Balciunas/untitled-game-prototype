@@ -1,5 +1,6 @@
 extends Node
 
+@onready var item_icon: TextureRect = $Icon
 @onready var item_name_label: Label = $ItemName
 @onready var item_type_label: Label = $ItemType
 @onready var item_quality: Label = $ItemQuality
@@ -14,6 +15,7 @@ func show_item_info(item: Item, wielder: Character = null) -> void:
 		return
 
 	self.visible = true
+	item_icon.texture = item.get_icon()
 	item_name_label.text = item.get_item_name()
 	item_type_label.text = item.item_type_to_string(item.type)
 
@@ -62,6 +64,7 @@ func show_item_info(item: Item, wielder: Character = null) -> void:
 			effects_label.text = ""
 
 func clear_info() -> void:
+	item_icon.texture = null
 	item_name_label.text = ""
 	item_type_label.text = ""
 	item_quality.text = ""

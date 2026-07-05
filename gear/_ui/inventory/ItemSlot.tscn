@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3 uid="uid://bdksl8u0q4sv0"]
+[gd_scene format=3 uid="uid://bdksl8u0q4sv0"]
 
 [ext_resource type="Script" uid="uid://bmi7xjsknp6o3" path="res://gear/_ui/inventory/ItemSlot.gd" id="1_2w6r6"]
 
@@ -22,16 +22,23 @@ HBoxContainer/constants/separation = 4
 Panel/styles/panel = SubResource("StyleBoxFlat_tcynw")
 PanelContainer/styles/panel = SubResource("StyleBoxFlat_2w6r6")
 
-[node name="ItemSlot" type="PanelContainer"]
+[node name="ItemSlot" type="PanelContainer" unique_id=303450650]
 offset_right = 33.0
 offset_bottom = 23.0
 theme = SubResource("Theme_2w6r6")
 script = ExtResource("1_2w6r6")
 
-[node name="Container" type="HBoxContainer" parent="."]
+[node name="Container" type="HBoxContainer" parent="." unique_id=1975797]
 layout_mode = 2
 
-[node name="Name" type="Label" parent="Container"]
+[node name="Icon" type="TextureRect" parent="Container" unique_id=2031032044]
+custom_minimum_size = Vector2(32, 32)
+custom_maximum_size = Vector2(32, 32)
+propagate_maximum_size = true
+layout_mode = 2
+stretch_mode = 5
+
+[node name="Name" type="Label" parent="Container" unique_id=243900542]
 layout_mode = 2
 
 [connection signal="gui_input" from="." to="." method="_on_gui_input"]

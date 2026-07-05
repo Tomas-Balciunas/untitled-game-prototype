@@ -20,6 +20,7 @@ func _build_instance() -> Helmet:
 	helmet.quality = quality
 	helmet.item_description = description
 	helmet.value = value
+	helmet.icon = icon
 	helmet.stats = base_stats.duplicate(true)
 	helmet.base_stats = helmet.stats.duplicate(true)
 	helmet.base_effects = effects.duplicate(true)

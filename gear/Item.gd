@@ -6,10 +6,15 @@ var item_name: String
 var item_description: String
 var type: ItemTypes.ItemType
 var value: int = 0
+var icon: Texture2D
 
 
 func get_item_name() -> String:
 	return item_name
+
+## Own icon if set, otherwise the type-based default (null if none exists).
+func get_icon() -> Texture2D:
+	return icon if icon != null else ItemIcons.for_item(self)
 
 func get_item_description() -> String:
 	return item_description

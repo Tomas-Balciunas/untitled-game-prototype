@@ -20,6 +20,7 @@ func _build_instance() -> Ring:
 	ring.quality = quality
 	ring.item_description = description
 	ring.value = value
+	ring.icon = icon
 	ring.stats = base_stats.duplicate(true)
 	ring.base_stats = ring.stats.duplicate(true)
 	ring.base_effects = effects.duplicate(true)

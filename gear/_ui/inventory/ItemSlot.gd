@@ -6,6 +6,7 @@ signal item_hovered(item: Item)
 signal item_unhovered()
 signal item_selected(item: Item)
 
+@onready var item_icon: TextureRect = $Container/Icon
 @onready var item_name: Label = $Container/Name
 
 var item: Item = null
@@ -13,6 +14,7 @@ var item: Item = null
 func bind(item_instance: Item) -> void:
 	item = item_instance
 	item_name.text = item.get_item_name()
+	item_icon.texture = item.get_icon()
 
 
 func _on_mouse_entered() -> void:
