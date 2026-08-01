@@ -3,7 +3,7 @@ class_name ItemIcons
 
 const WEAPON_DEFAULTS := {
 	ItemTypes.WeaponType.SWORD: "res://assets/icons/gear/weapons/1h_sword/1h-sword-default.png",
-	ItemTypes.WeaponType.AXE: "res://assets/icons/gear/weapons/1h_axe/1h-axe-default.png"
+	ItemTypes.WeaponType.AXE: "res://assets/icons/gear/weapons/1h_axe/1h-axe-default-kra-test.png"
 }
 
 const GEAR_DEFAULTS := {}

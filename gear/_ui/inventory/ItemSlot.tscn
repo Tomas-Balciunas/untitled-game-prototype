@@ -32,8 +32,8 @@ script = ExtResource("1_2w6r6")
 layout_mode = 2
 
 [node name="Icon" type="TextureRect" parent="Container" unique_id=2031032044]
-custom_minimum_size = Vector2(32, 32)
-custom_maximum_size = Vector2(32, 32)
+custom_minimum_size = Vector2(48, 48)
+custom_maximum_size = Vector2(48, 48)
 propagate_maximum_size = true
 layout_mode = 2
 stretch_mode = 5

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://de670aejqylm4"
-path="res://.godot/imported/bleed_icon.png-93935ca4508f6452bbad48c19c36451c.ctex"
+uid="uid://ds17g8g2vagrk"
+path="res://.godot/imported/bleed-icon.png-f3be95e9d9162263890a49e779a7e35d.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://effect/bleed/bleed_icon.png"
-dest_files=["res://.godot/imported/bleed_icon.png-93935ca4508f6452bbad48c19c36451c.ctex"]
+source_file="res://assets/icons/effect/bleed/bleed-icon.png"
+dest_files=["res://.godot/imported/bleed-icon.png-f3be95e9d9162263890a49e779a7e35d.ctex"]
 
 [params]
 

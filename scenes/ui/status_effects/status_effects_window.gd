@@ -44,7 +44,8 @@ func _add_row(effect: Effect) -> void:
 	row.add_theme_constant_override("separation", 8)
 
 	var icon := TextureRect.new()
-	icon.custom_minimum_size = Vector2(24, 24)
+	icon.custom_minimum_size = Vector2(32, 32)
+	icon.custom_maximum_size = Vector2(32, 32)
 	icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 	icon.texture = effect.get_icon()
 	row.add_child(icon)
