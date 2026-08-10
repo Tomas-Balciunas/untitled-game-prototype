@@ -40,6 +40,7 @@ func bounce(bounces: int, is_active_attack: bool = false) -> void:
 		bounce_ctx.source = ctx.source
 		bounce_ctx.set_targets(target)
 		bounce_ctx.actively_cast = is_active_attack
+		bounce_ctx.temporary_effects = ctx.temporary_effects
 		bounce_ctx.options = {
 			"total_bounces": bounces,
 			"current_bounce": i + 1

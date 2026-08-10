@@ -12,6 +12,8 @@ class_name Skill
 @export var targeting_type: TargetingManager.TargetType = TargetingManager.TargetType.SINGLE
 @export var animation_name: String
 @export var owner_only: bool = false
+@export var attack_rate: int = 1
+@export var uses_weapons_attack_rate: bool = false
 ## only matters when bounce targeting is selected
 @export var bounce_instances: int = 1
 ## only matters when salvo targeting is selected

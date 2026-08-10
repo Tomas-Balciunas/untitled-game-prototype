@@ -30,3 +30,24 @@ func set_targets(initial: Character, all_targets: Array[Character] = []) -> void
 	
 	if all_targets.is_empty():
 		targets.append(initial_target)
+
+func duplicate() -> ActionContext:
+	var copy := ActionContext.new()
+
+	copy._turn = _turn
+	copy.source = source
+	copy.initial_target = initial_target
+	copy.targets = targets.duplicate()
+	copy.temporary_effects = temporary_effects.duplicate()
+	copy.options = options.duplicate()
+	copy.actively_cast = actively_cast
+	copy.stop_processing = stop_processing
+	copy.root_trigger = root_trigger
+	copy.targeting = targeting
+	copy.attack_rate = attack_rate
+	copy.skip_turn = skip_turn
+	copy.force_action = force_action
+	copy.forced_skill = forced_skill
+	copy.additional_procs = additional_procs.duplicate()
+
+	return copy

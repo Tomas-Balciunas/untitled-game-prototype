@@ -39,6 +39,12 @@ func can_process(stage: String, event: TriggerEvent) -> bool:
 		_:
 			return false
 	
+func on_apply() -> void:
+	var existing_bleed: Effect = owner.get_effect_by_name(self)
+	
+	if existing_bleed != null and existing_bleed is Bleed:
+		(existing_bleed as Bleed).stacks += stacks
+	
 func on_trigger(stage: String, event: TriggerEvent) -> void:
 	if stage == EffectTriggers.ON_DAMAGE_APPLIED:
 		var bleed_event: BleedEvent = BleedEvent.new()

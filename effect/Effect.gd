@@ -46,6 +46,10 @@ enum TurnPhase {
 ## triggered immediately and removed during the same state
 @export var immediate_trigger: bool = false
 
+## only one instance can be carried by a character
+## on_apply will still be called to resolve whatever effects needs
+@export var single_instance: bool = true
+
 @export var process_when_dead: bool = false
 @export var priority: int = 200
 @export var effect_type: Array[EffectType] = []
@@ -192,6 +196,7 @@ func can_process_when_dead() -> bool:
 
 func get_priority(_stage: String = "") -> int:
 	return priority
+
 
 func game_save() -> Dictionary:
 	var script_path: String = ""
