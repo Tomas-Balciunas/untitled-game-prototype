@@ -28,6 +28,7 @@ enum TurnPhase {
 	NONE
 }
 
+## Make sure to always set an id either in resource or in _init for consistency
 @export var id: String
 @export var name: String = "Unnamed Effect"
 @export var description: String = "Unnamed Effect"
@@ -48,7 +49,7 @@ enum TurnPhase {
 
 ## only one instance can be carried by a character
 ## on_apply will still be called to resolve whatever effects needs
-@export var single_instance: bool = true
+@export var single_instance: bool = false
 
 @export var process_when_dead: bool = false
 @export var priority: int = 200
@@ -63,6 +64,12 @@ var remaining_turns: int = -1
 
 var owner: Character = null
 var source: ContextSource = null
+
+func get_id() -> String:
+	if id == "":
+		push_error("Effect %s is missing an ID!" % _get_name())
+	
+	return id
 
 func set_owner(_owner: Character) -> void:
 	owner = _owner

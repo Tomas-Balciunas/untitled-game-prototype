@@ -9,7 +9,6 @@
 [ext_resource type="Resource" uid="uid://c5qyqcmwx0qfy" path="res://scripts/experience/ExperienceManager.tres" id="6_l36pt"]
 [ext_resource type="Script" uid="uid://dq4acpkde276p" path="res://skills/Skill.gd" id="6_lkn2v"]
 [ext_resource type="Resource" uid="uid://c7nmidhbqovfy" path="res://effect/_passive/consumable_discount/discount.tres" id="6_up1d2"]
-[ext_resource type="Resource" uid="uid://by4pf2vg22quv" path="res://effect/bleed/bleed_test.tres" id="6_xghbj"]
 [ext_resource type="Resource" uid="uid://beawinixonrnb" path="res://effect/bleed/bleed_effects/reduce_enemy_bleed_consumption/reduce_enemy_bleed_consumption.tres" id="7_up1d2"]
 [ext_resource type="Resource" uid="uid://ddltekb7f2a12" path="res://effect/bleed/bleed_effects/active_attacks_increase_bleed_stacks/active_attacks_increase_bleed_stacks.tres" id="8_ghhp2"]
 [ext_resource type="Resource" uid="uid://cs2tci0dc3vvo" path="res://characters/_class/_Unknown.tres" id="8_xghbj"]
@@ -41,7 +40,7 @@ metadata/_custom_type_script = "uid://bqln4xpkkidja"
 [resource]
 script = ExtResource("10_fb0jw")
 default_skills = Array[ExtResource("6_lkn2v")]([ExtResource("15_wur0s")])
-default_effects = Array[ExtResource("4_2usx5")]([ExtResource("6_up1d2"), ExtResource("6_xghbj"), ExtResource("7_up1d2"), ExtResource("8_ghhp2"), ExtResource("9_xghbj"), ExtResource("10_dr5ls"), ExtResource("11_dr5ls")])
+default_effects = Array[ExtResource("4_2usx5")]([ExtResource("6_up1d2"), ExtResource("7_up1d2"), ExtResource("8_ghhp2"), ExtResource("9_xghbj"), ExtResource("10_dr5ls"), ExtResource("11_dr5ls")])
 default_items = Array[ExtResource("4_jti2u")]([ExtResource("6_jti2u")])
 base_stats = ExtResource("1_ghhp2")
 stat_level_growth = SubResource("Resource_uxndi")

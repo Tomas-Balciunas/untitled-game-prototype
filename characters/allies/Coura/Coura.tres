@@ -5,6 +5,8 @@
 [ext_resource type="PackedScene" uid="uid://dqjihmjf45spx" path="res://characters/allies/Coura/_body/Coura.tscn" id="2_klpoy"]
 [ext_resource type="Script" uid="uid://dq4acpkde276p" path="res://skills/Skill.gd" id="3_ma71o"]
 [ext_resource type="Script" uid="uid://cgllfcpvodqsg" path="res://scripts/experience/ExperienceManager.gd" id="4_g8tir"]
+[ext_resource type="Resource" uid="uid://dgxlt0x8p42nw" path="res://effect/_passive/damage share/DamageShare.tres" id="5_ci8co"]
+[ext_resource type="Resource" uid="uid://bbhp3nyjhsykk" path="res://effect/_passive/damage_accumulator.tres" id="5_yxfip"]
 [ext_resource type="Script" uid="uid://b06vmgrh4qa8i" path="res://gear/ItemResource.gd" id="6_nka8l"]
 [ext_resource type="Resource" uid="uid://dwkrtdgmmacpv" path="res://skills/_offensive/row_attack_buff.tres" id="7_3lheu"]
 [ext_resource type="Resource" uid="uid://cdu3c36ji1mmg" path="res://characters/_class/class_knight/class_knight.tres" id="7_8dd4x"]
@@ -42,6 +44,7 @@ job = ExtResource("7_8dd4x")
 attributes = SubResource("Resource_ci8co")
 slot_width = null
 default_skills = Array[ExtResource("3_ma71o")]([ExtResource("7_3lheu")])
+default_effects = Array[ExtResource("7_klpoy")]([ExtResource("5_yxfip"), ExtResource("5_ci8co")])
 default_damage_type = null
 base_stats = SubResource("Resource_yxfip")
 stat_attribute_growth = ExtResource("14_yxfip")

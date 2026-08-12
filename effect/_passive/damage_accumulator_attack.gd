@@ -6,7 +6,6 @@ var accumulator: int = 0
 const THRESHOLD: int = 10 
 
 func _init() -> void:
-	super()
 	name = "Lash"
 	description = "Damage is accumulated, upon reaching a certain threshold the next attack unleashes the accumulated damage"
 
@@ -35,7 +34,7 @@ func on_trigger(_stage: String, _event: TriggerEvent) -> void:
 			return
 		
 		var tgt: Character = event.target
-		var adjacent := TargetingManager.get_applicable_targets(tgt, TargetingManager.TargetType.ADJACENT)
+		var adjacent := TargetingManager.get_applicable_targets(tgt, TargetingManager.TargetType.BLAST)
 		
 		BattleTextLines.print_line("Lash activated!")
 		var resolver := DamageResolver.new(accumulator)
@@ -47,3 +46,5 @@ func on_trigger(_stage: String, _event: TriggerEvent) -> void:
 		
 		accumulator = 0
 		
+func get_display_stacks() -> int:
+	return accumulator

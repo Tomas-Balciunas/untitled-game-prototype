@@ -225,8 +225,14 @@ func apply_effect(effect: Effect, source: ContextSource) -> Effect:
 	inst.remaining_turns = inst.duration_turns
 	inst.on_apply()
 	
-	if effect.single_instance and get_effect_by_name(effect) != null:
-		return
+	if inst.single_instance:
+		var id: String = inst.get_id()
+		
+		if id == "":
+			return
+		
+		if get_effect_by_id(id) != null:
+			return
 	
 	effects.append(inst)
 	EffectRunner.subscribe(inst)
@@ -238,9 +244,12 @@ func remove_effect(effect: Effect) -> void:
 		EffectRunner.unsubscribe(effect)
 		effects.erase(effect)
 
-func get_effect_by_name(effect: Effect) -> Effect:
+func get_effect_by_id(id: String) -> Effect:
+	if id == "":
+		return null
+	
 	for e in effects:
-		if e._get_name() == effect._get_name():
+		if e.get_id() == id:
 			return e
 	
 	return null

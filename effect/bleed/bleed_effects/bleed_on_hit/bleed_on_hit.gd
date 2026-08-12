@@ -11,7 +11,7 @@ func can_process(_stage: String, event: TriggerEvent) -> bool:
 	if !event.ctx.actively_cast:
 		return false
 	
-	if !event.source.get_actor() == owner:
+	if event.source.get_actor() != owner:
 		return false
 		
 	
@@ -19,7 +19,7 @@ func can_process(_stage: String, event: TriggerEvent) -> bool:
 
 func on_trigger(_stage: String, event: TriggerEvent) -> void:
 	var bleed: Bleed = Bleed.new()
-	bleed.stacks = 30
+	bleed.stacks = stacks
 	
 	var ctx: ActionContext = event.ctx.duplicate()
 	ctx.set_targets(event.target)

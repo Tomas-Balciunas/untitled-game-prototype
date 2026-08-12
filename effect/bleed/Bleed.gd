@@ -8,16 +8,20 @@ const ON_BLEED_DAMAGE_INSTANCE = "on_bleed_damage_instance"
 @export var stacks: int = 0
 ## default amount of stacks lost on turn end 
 @export var stack_loss: float = 0.5
+
+## damage dealt on hit per stack
 @export var damage_per_stack: float = 0.2
 
 @export var turn_end_priority: int = -900
 @export var damage_applied_priority: int = -1010
 
 func _init() -> void:
+	id = EffectIds.BLEED
 	battle_only = true
 	expires_after_battle = true
 	show_in_status = true
 	native = false
+	single_instance = true
 
 func listened_triggers() -> Array:
 	return [
@@ -50,7 +54,6 @@ func on_trigger(stage: String, event: TriggerEvent) -> void:
 		var bleed_event: BleedEvent = BleedEvent.new()
 		bleed_event.from_bleed(self)
 		bleed_event.from_base_event(event)
-		bleed_event.source = CharacterSource.new(owner)
 		
 		var ctx: ActionContext = ActionContext.new()
 		ctx.turn = bleed_event.ctx.turn
@@ -72,7 +75,7 @@ func on_trigger(stage: String, event: TriggerEvent) -> void:
 		consume_stacks(bleed_event)
 
 func consume_stacks(bleed_event: BleedEvent) -> void:
-	stacks = roundi(stacks * bleed_event.stack_loss)
+	stacks = roundi(stacks * (1.0 - bleed_event.stack_loss))
 	
 	if stacks <= 0:
 		on_expire()
