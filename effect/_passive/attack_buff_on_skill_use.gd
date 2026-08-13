@@ -22,9 +22,9 @@ func on_trigger(stage: String, _event: TriggerEvent) -> void:
 	if stage == EffectTriggers.ON_BEFORE_SKILL_USE:
 		active_mod = mod.duplicate()
 		_event.actor.character.state.add_modifier(active_mod)
-		StatCalculator.recalculate_stat(_event.actor.character, active_mod.stat)
+		StatCalculator.recalculate_all_stats(_event.actor.character)
 	
 	if stage == EffectTriggers.ON_POST_SKILL_USE:
 		if active_mod:
 			_event.actor.character.state.remove_modifier(active_mod)
-			StatCalculator.recalculate_stat(_event.actor.character, active_mod.stat)
+			StatCalculator.recalculate_all_stats(_event.actor.character)

@@ -23,6 +23,7 @@ func on_trigger(_stage: String, event: TriggerEvent) -> void:
 	
 	var ctx: ActionContext = event.ctx.duplicate()
 	ctx.set_targets(event.target)
+	ctx.source = EffectSource.new(bleed)
 	
 	var resolver: EffectApplicationResolver = EffectApplicationResolver.new(bleed)
 	resolver.execute(ctx)

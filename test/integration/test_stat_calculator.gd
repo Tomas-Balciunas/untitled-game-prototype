@@ -1,5 +1,5 @@
-# computed_stats holds the pre-gear/pre-modifier value, so expectations are
-# derived from it rather than replicating attribute/level growth math.
+# computed_stats holds the pre-modifier value (gear included), so expectations
+# are derived from it rather than replicating attribute/level growth math.
 extends GutTest
 
 const Combatant = preload("res://test/helpers/combatant.gd")
@@ -29,22 +29,22 @@ func _mod(stat: Stats.StatRef, type: StatModifier.Type, value: float) -> StatMod
 
 func test_additive_modifier_adds_flat() -> void:
 	var c := _make()
-	StatCalculator.recalculate_stat(c, Stats.StatRef.DEFENSE)
+	StatCalculator.recalculate_all_stats(c)
 	var before := c.stats.get_stat(Stats.StatRef.DEFENSE)
 
 	c.state.add_modifier(_mod(Stats.StatRef.DEFENSE, StatModifier.Type.ADDITIVE, 10.0))
-	StatCalculator.recalculate_stat(c, Stats.StatRef.DEFENSE)
+	StatCalculator.recalculate_all_stats(c)
 
 	assert_eq(c.stats.get_stat(Stats.StatRef.DEFENSE), before + 10)
 
 
 func test_multiplicative_modifier_scales_computed() -> void:
 	var c := _make()
-	StatCalculator.recalculate_stat(c, Stats.StatRef.DEFENSE)
+	StatCalculator.recalculate_all_stats(c)
 	var before := c.stats.get_stat(Stats.StatRef.DEFENSE)
 
 	c.state.add_modifier(_mod(Stats.StatRef.DEFENSE, StatModifier.Type.MULTIPLICATIVE, 1.0))
-	StatCalculator.recalculate_stat(c, Stats.StatRef.DEFENSE)
+	StatCalculator.recalculate_all_stats(c)
 
 	# a 100% multiplicative mod adds exactly computed_stats worth (±1 rounding)
 	var delta := c.stats.get_stat(Stats.StatRef.DEFENSE) - before
@@ -53,24 +53,24 @@ func test_multiplicative_modifier_scales_computed() -> void:
 
 func test_percentage_stat_baseline_is_100() -> void:
 	var c := _make()
-	StatCalculator.recalculate_stat(c, Stats.StatRef.HEALING_DONE)
+	StatCalculator.recalculate_all_stats(c)
 	assert_eq(c.stats.get_stat(Stats.StatRef.HEALING_DONE), 100)
 
 
 func test_percentage_stat_takes_multiplicative_modifier() -> void:
 	var c := _make()
 	c.state.add_modifier(_mod(Stats.StatRef.HEALING_DONE, StatModifier.Type.MULTIPLICATIVE, 0.2))
-	StatCalculator.recalculate_stat(c, Stats.StatRef.HEALING_DONE)
+	StatCalculator.recalculate_all_stats(c)
 	assert_eq(c.stats.get_stat(Stats.StatRef.HEALING_DONE), 120)
 
 
 func test_temporary_modifiers_cleared_after_battle() -> void:
 	var c := _make()
-	StatCalculator.recalculate_stat(c, Stats.StatRef.DEFENSE)
+	StatCalculator.recalculate_all_stats(c)
 	var before := c.stats.get_stat(Stats.StatRef.DEFENSE)
 
 	c.state.add_temporary_modifier(_mod(Stats.StatRef.DEFENSE, StatModifier.Type.ADDITIVE, 10.0))
-	StatCalculator.recalculate_stat(c, Stats.StatRef.DEFENSE)
+	StatCalculator.recalculate_all_stats(c)
 	assert_eq(c.stats.get_stat(Stats.StatRef.DEFENSE), before + 10)
 
 	c.cleanup_after_battle()
@@ -79,7 +79,7 @@ func test_temporary_modifiers_cleared_after_battle() -> void:
 
 func test_weapon_scaling_adds_attribute_contribution() -> void:
 	var c := _make()
-	StatCalculator.recalculate_stat(c, Stats.StatRef.ATTACK)
+	StatCalculator.recalculate_all_stats(c)
 	var before := c.stats.get_stat(Stats.StatRef.ATTACK)
 
 	var am := AttributeMultiplier.new()
@@ -98,6 +98,6 @@ func test_weapon_scaling_adds_attribute_contribution() -> void:
 	w.scaling = scaling
 	c.equipment.weapon = w
 
-	StatCalculator.recalculate_stat(c, Stats.StatRef.ATTACK)
+	StatCalculator.recalculate_all_stats(c)
 	var str_value: int = c.attributes.get_attribute(Attributes.AttributeRef.STR)
 	assert_eq(c.stats.get_stat(Stats.StatRef.ATTACK), before + roundi(str_value * 2.0))

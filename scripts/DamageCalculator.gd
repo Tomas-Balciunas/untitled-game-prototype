@@ -14,7 +14,7 @@ var accuracy: float = 0.0
 var accuracy_range: int = 0
 var defense_ignore: int = 0
 var is_critical: bool = false
-var critical_damage: float = 1.7
+var critical_damage: float = 1.5
 var damage_reduction: float = 1.0
 
 func _init(event: DamageInstance) -> void:

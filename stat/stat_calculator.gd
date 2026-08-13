@@ -3,32 +3,20 @@ class_name StatCalculator
 
 
 static func recalculate_all_stats(c: Character) -> void:
-	# Pass 1: compute every stat normally (no weapon scaling).
 	for s: Stats.StatRef in Stats.StatRef.values():
-		_recalculate_stat_base(c, s)
+		_recalculate_modified(c, s)
 
-	# Pass 2: apply weapon scaling to power stats AFTER everything else is
-	# finalized, so scaling can safely read from other stats (health, speed...).
+	for s: Stats.StatRef in Stats.StatRef.values():
+		_apply_dependent_modifiers(c, s)
+
 	for s: Stats.StatRef in WeaponScaling.ALLOWED_TARGET_STATS:
 		_apply_weapon_scaling(c, s)
 
 
-static func recalculate_stat(c: Character, s: Stats.StatRef) -> void:
-	_recalculate_stat_base(c, s)
-	if s in WeaponScaling.ALLOWED_TARGET_STATS:
-		_apply_weapon_scaling(c, s)
-
-
-static func _recalculate_stat_base(c: Character, s: Stats.StatRef) -> void:
-	# Percentage stats start from a fixed baseline and only take multiplicative
-	# modifiers — they ignore base/attribute/level/gear contributions entirely.
+static func _recalculate_modified(c: Character, s: Stats.StatRef) -> void:
 	if Stats.is_percentage_stat(s):
 		_recalculate_percentage_stat(c, s)
 		return
-
-	var base_value: float = c.base_stats.get_stat(s)
-	var computed_stat: float = base_value + get_attribute_contribution(s, c) + get_level_contribution(s, c)
-	c.computed_stats.set_stat(s, computed_stat)
 
 	var gear_value: float = 0.0
 
@@ -40,26 +28,36 @@ static func _recalculate_stat_base(c: Character, s: Stats.StatRef) -> void:
 		else:
 			push_error("Non gear item is equipped: %s" % slot.get_item_name())
 
-	var flat_bonus: float = 0.0
-	var pct_bonus: float = 0.0
+	var computed: float = c.base_stats.get_stat(s) \
+		+ get_attribute_contribution(s, c) \
+		+ get_level_contribution(s, c) \
+		+ gear_value
+
+	c.computed_stats.set_stat(s, computed)
+
+	var mod_bonus: float = 0.0
 
 	for mod: StatModifier in c.state.get_modifiers():
-		if not mod.stat == s:
+		if mod.stat != s or mod.depends_on_another_stat:
 			continue
+		mod_bonus += mod.compute_value(c, computed)
 
-		var val: float = mod.compute_value(c, computed_stat)
+	c.modified_stats.set_stat(s, computed + mod_bonus)
 
-		## kinda redundant since we get already multiplied value but whatever
-		if mod.type == StatModifier.Type.ADDITIVE:
-			flat_bonus += val
-		elif mod.type == StatModifier.Type.MULTIPLICATIVE:
-			pct_bonus += val
 
-	var final: float = round(computed_stat + flat_bonus + pct_bonus + gear_value)
+static func _apply_dependent_modifiers(c: Character, s: Stats.StatRef) -> void:
+	if Stats.is_percentage_stat(s):
+		return
 
-	c.stats.set_stat(s, final)
+	var modified: float = c.modified_stats.get_stat_raw(s)
+	var bonus: float = 0.0
 
-	CharacterBus.stat_changed.emit(c, s)
+	for mod: StatModifier in c.state.get_modifiers():
+		if mod.stat != s or not mod.depends_on_another_stat:
+			continue
+		bonus += mod.compute_value(c, modified)
+
+	_set_final(c, s, round(modified + bonus))
 
 
 static func _apply_weapon_scaling(c: Character, s: Stats.StatRef) -> void:
@@ -76,8 +74,7 @@ static func _apply_weapon_scaling(c: Character, s: Stats.StatRef) -> void:
 	if scaling_total == 0.0:
 		return
 
-	c.stats.set_stat(s, round(c.stats.get_stat(s) + scaling_total))
-	CharacterBus.stat_changed.emit(c, s)
+	_set_final(c, s, round(c.stats.get_stat_raw(s) + scaling_total))
 
 
 static func _recalculate_percentage_stat(c: Character, s: Stats.StatRef) -> void:
@@ -93,7 +90,16 @@ static func _recalculate_percentage_stat(c: Character, s: Stats.StatRef) -> void
 			continue
 		total += mod.compute_value(c, Stats.PERCENTAGE_BASE)
 
-	c.stats.set_stat(s, round(total))
+	c.modified_stats.set_stat(s, total)
+
+	_set_final(c, s, round(total))
+
+
+static func _set_final(c: Character, s: Stats.StatRef, value: float) -> void:
+	if c.stats.get_stat_raw(s) == value:
+		return
+
+	c.stats.set_stat(s, value)
 
 	CharacterBus.stat_changed.emit(c, s)
 
@@ -115,6 +121,6 @@ static func get_attribute_contribution(stat: Stats.StatRef, c: Character) -> flo
 		total += growth.get_contribution(stat, c.attributes)
 
 	return total
-	
+
 static func get_level_contribution(stat: Stats.StatRef, c: Character) -> float:
 	return c.job.get_stat_level_growth().get_stat(stat) * (c.level - 1) + c.resource.get_stat_level_growth().get_stat(stat) * (c.level - 1)

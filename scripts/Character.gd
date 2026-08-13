@@ -15,11 +15,12 @@ var level: int = 1
 var current_experience: int = 0
 var unspent_attribute_points: int = 0
 var resource: CharacterResource
+var action_value: float = 0
 var stats: Stats
 var computed_stats: Stats
+var modified_stats: Stats
 var base_stats: Stats
 var state: CharacterState
-var action_value: float = 0
 var learnt_skills: Array[Skill] = []
 var effects: Array[Effect] = []
 var gear_effects: Dictionary = {}
@@ -64,6 +65,7 @@ func _init(res: CharacterResource, override_level: int = 0) -> void:
 	stats = res.base_stats.duplicate(true)
 	base_stats = res.base_stats.duplicate(true)
 	computed_stats = base_stats.duplicate(true)
+	modified_stats = base_stats.duplicate(true)
 	
 	state = CharacterState.new(stats)
 	

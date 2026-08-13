@@ -11,7 +11,6 @@ name = "Bleed on hit"
 show_in_status = false
 expires_after_battle = true
 immediate_trigger = true
-single_instance = false
 expire_phase = 3
 metadata/_custom_type_script = "uid://didkw804ef454"
 

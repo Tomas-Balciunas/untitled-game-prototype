@@ -18,8 +18,69 @@
 [ext_resource type="Script" uid="uid://bwn4gpkaijqsg" path="res://scripts/CharacterResource.gd" id="10_fb0jw"]
 [ext_resource type="Resource" uid="uid://b5i710vervft" path="res://effect/flee/flee_success_increase.tres" id="11_dr5ls"]
 [ext_resource type="Script" uid="uid://bqln4xpkkidja" path="res://stat/_stats/stats.gd" id="12_jti2u"]
+[ext_resource type="Script" uid="uid://cyhrh3l20i5dm" path="res://stat/StatModifier.gd" id="14_n2yt7"]
+[ext_resource type="Resource" uid="uid://4nuocqswjl8e" path="res://stat/_modifier/atktohp.tres" id="15_laiw4"]
 [ext_resource type="Resource" uid="uid://bd81umfsm4m38" path="res://skills/_offensive/shadow_strike.tres" id="15_wur0s"]
+[ext_resource type="Script" uid="uid://c2lpfe7ep4fuv" path="res://gear/chest/chestpiece_resource.gd" id="16_j38o7"]
 [ext_resource type="Resource" uid="uid://riijdkc770g2" path="res://stat/DefaultStatAttributeGrowth.tres" id="16_up1d2"]
+[ext_resource type="Script" uid="uid://boy2cfkvcqeih" path="res://gear/gloves/gloves_resource.gd" id="17_j38o7"]
+[ext_resource type="Script" uid="uid://dgejkbmc67evn" path="res://gear/amulet/amulet_resource.gd" id="18_005oo"]
+[ext_resource type="Resource" uid="uid://whx7pvedeuto" path="res://stat/_modifier/hptoatk.tres" id="19_puooe"]
+[ext_resource type="Script" uid="uid://6tkommsg4x7t" path="res://gear/helmet/helmet_resource.gd" id="20_l3irn"]
+[ext_resource type="Script" uid="uid://bixwdffu6ktda" path="res://gear/ring/ring_resource.gd" id="21_l3irn"]
+
+[sub_resource type="Resource" id="Resource_nkkwp"]
+script = ExtResource("12_jti2u")
+metadata/_custom_type_script = "uid://bqln4xpkkidja"
+
+[sub_resource type="Resource" id="Resource_yxfip"]
+script = ExtResource("16_j38o7")
+base_stats = SubResource("Resource_nkkwp")
+modifiers = Array[ExtResource("14_n2yt7")]([ExtResource("15_laiw4")])
+name = "chest atk to hp"
+metadata/_custom_type_script = "uid://c2lpfe7ep4fuv"
+
+[sub_resource type="Resource" id="Resource_de6xg"]
+script = ExtResource("12_jti2u")
+attack = 10.0
+metadata/_custom_type_script = "uid://bqln4xpkkidja"
+
+[sub_resource type="Resource" id="Resource_ctt4b"]
+script = ExtResource("17_j38o7")
+base_stats = SubResource("Resource_de6xg")
+name = "just atk"
+metadata/_custom_type_script = "uid://boy2cfkvcqeih"
+
+[sub_resource type="Resource" id="Resource_wmhra"]
+script = ExtResource("12_jti2u")
+health = 10.0
+metadata/_custom_type_script = "uid://bqln4xpkkidja"
+
+[sub_resource type="Resource" id="Resource_fh2h5"]
+script = ExtResource("18_005oo")
+base_stats = SubResource("Resource_wmhra")
+name = "just hp"
+metadata/_custom_type_script = "uid://dgejkbmc67evn"
+
+[sub_resource type="Resource" id="Resource_rbpie"]
+script = ExtResource("20_l3irn")
+modifiers = Array[ExtResource("14_n2yt7")]([ExtResource("19_puooe")])
+name = "helm hp to atk"
+metadata/_custom_type_script = "uid://6tkommsg4x7t"
+
+[sub_resource type="Resource" id="Resource_sldy8"]
+script = ExtResource("14_n2yt7")
+name = "10% hp"
+stat = 1
+type = 1
+value = 0.1
+metadata/_custom_type_script = "uid://cyhrh3l20i5dm"
+
+[sub_resource type="Resource" id="Resource_gxfsa"]
+script = ExtResource("21_l3irn")
+modifiers = Array[ExtResource("14_n2yt7")]([SubResource("Resource_sldy8")])
+name = "ring 10% hp"
+metadata/_custom_type_script = "uid://bixwdffu6ktda"
 
 [sub_resource type="Resource" id="Resource_uxndi"]
 script = ExtResource("12_jti2u")
@@ -41,7 +102,7 @@ metadata/_custom_type_script = "uid://bqln4xpkkidja"
 script = ExtResource("10_fb0jw")
 default_skills = Array[ExtResource("6_lkn2v")]([ExtResource("15_wur0s")])
 default_effects = Array[ExtResource("4_2usx5")]([ExtResource("6_up1d2"), ExtResource("7_up1d2"), ExtResource("8_ghhp2"), ExtResource("9_xghbj"), ExtResource("10_dr5ls"), ExtResource("11_dr5ls")])
-default_items = Array[ExtResource("4_jti2u")]([ExtResource("6_jti2u")])
+default_items = Array[ExtResource("4_jti2u")]([ExtResource("6_jti2u"), SubResource("Resource_yxfip"), SubResource("Resource_ctt4b"), SubResource("Resource_fh2h5"), SubResource("Resource_rbpie"), SubResource("Resource_gxfsa")])
 base_stats = ExtResource("1_ghhp2")
 stat_level_growth = SubResource("Resource_uxndi")
 stat_attribute_growth = ExtResource("16_up1d2")

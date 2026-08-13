@@ -37,7 +37,7 @@ func test_equip_moves_item_from_inventory_to_slot() -> void:
 
 func test_equip_adds_gear_stats() -> void:
 	var c := _make()
-	StatCalculator.recalculate_stat(c, Stats.StatRef.ATTACK)
+	StatCalculator.recalculate_all_stats(c)
 	var before := c.stats.get_stat(Stats.StatRef.ATTACK)
 
 	var w := _sword(5.0)
@@ -49,7 +49,7 @@ func test_equip_adds_gear_stats() -> void:
 
 func test_unequip_returns_item_and_restores_stats() -> void:
 	var c := _make()
-	StatCalculator.recalculate_stat(c, Stats.StatRef.ATTACK)
+	StatCalculator.recalculate_all_stats(c)
 	var before := c.stats.get_stat(Stats.StatRef.ATTACK)
 
 	var w := _sword(5.0)
@@ -78,7 +78,7 @@ func test_equip_replaces_existing_item() -> void:
 
 func test_gear_modifiers_apply_and_remove() -> void:
 	var c := _make()
-	StatCalculator.recalculate_stat(c, Stats.StatRef.DEFENSE)
+	StatCalculator.recalculate_all_stats(c)
 	var before := c.stats.get_stat(Stats.StatRef.DEFENSE)
 
 	var w := _sword(0.0)

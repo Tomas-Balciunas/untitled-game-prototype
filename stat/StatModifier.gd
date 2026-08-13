@@ -14,6 +14,7 @@ enum Type {
 @export var value: float = 0.0
 @export var priority: int = 0
 @export var applicable_items: Array[ItemTypes.GearType] = []
+@export var depends_on_another_stat: bool = false
 
 func compute_value(_character: Character, _derived_stat: float) -> float:
 	if type == Type.ADDITIVE:

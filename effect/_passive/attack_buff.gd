@@ -19,13 +19,13 @@ func on_apply() -> void:
 		modifier = mod
 
 	owner.state.add_temporary_modifier(modifier)
-	StatCalculator.recalculate_stat(owner, modifier.stat)
+	StatCalculator.recalculate_all_stats(owner)
 	BattleTextLines.print_line("applied att buff to %s" % owner.resource.name)
 
 func on_expire() -> void:
 	if owner and modifier:
 		owner.state.remove_temporary_modifier(modifier)
-		StatCalculator.recalculate_stat(owner, modifier.stat)
+		StatCalculator.recalculate_all_stats(owner)
 	super()
 
 func listened_triggers() -> Array:

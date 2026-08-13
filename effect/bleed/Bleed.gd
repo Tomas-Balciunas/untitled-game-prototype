@@ -17,6 +17,7 @@ const ON_BLEED_DAMAGE_INSTANCE = "on_bleed_damage_instance"
 
 func _init() -> void:
 	id = EffectIds.BLEED
+	icon = preload("uid://ds17g8g2vagrk")
 	battle_only = true
 	expires_after_battle = true
 	show_in_status = true
@@ -44,7 +45,7 @@ func can_process(stage: String, event: TriggerEvent) -> bool:
 			return false
 	
 func on_apply() -> void:
-	var existing_bleed: Effect = owner.get_effect_by_name(self)
+	var existing_bleed: Effect = owner.get_effect_by_id(EffectIds.BLEED)
 	
 	if existing_bleed != null and existing_bleed is Bleed:
 		(existing_bleed as Bleed).stacks += stacks
@@ -54,6 +55,7 @@ func on_trigger(stage: String, event: TriggerEvent) -> void:
 		var bleed_event: BleedEvent = BleedEvent.new()
 		bleed_event.from_bleed(self)
 		bleed_event.from_base_event(event)
+		bleed_event.source = EffectSource.new(self, event.source.get_actor())
 		
 		var ctx: ActionContext = ActionContext.new()
 		ctx.turn = bleed_event.ctx.turn

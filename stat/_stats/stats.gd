@@ -102,6 +102,26 @@ func get_stat(stat: StatRef) -> int:
 		_:                     return 0
 
 
+func get_stat_raw(stat: StatRef) -> float:
+	match stat:
+		StatRef.ATTACK:        return attack
+		StatRef.HEALTH:        return health
+		StatRef.MANA:          return mana
+		StatRef.SP:            return sp
+		StatRef.ACTION_POINTS: return action_points
+		StatRef.SPEED:         return speed
+		StatRef.DEFENSE:       return defense
+		StatRef.MAGIC_POWER:   return magic_power
+		StatRef.DIVINE_POWER:  return divine_power
+		StatRef.MAGIC_DEFENSE: return magic_defense
+		StatRef.RESISTANCE:    return resistance
+		StatRef.ACCURACY:      return accuracy
+		StatRef.EVASION:       return evasion
+		StatRef.HEALING_DONE:     return healing_done
+		StatRef.HEALING_RECEIVED: return healing_received
+		_:                     return 0.0
+
+
 func set_stat(stat: StatRef, value: float) -> void:
 	match stat:
 		StatRef.ATTACK:        attack        = value

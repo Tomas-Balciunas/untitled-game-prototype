@@ -22,13 +22,13 @@ func on_apply() -> void:
 	_modifier.value = value
 	_modifier.name = name
 	owner.state.add_modifier(_modifier)
-	StatCalculator.recalculate_stat(owner, stat)
+	StatCalculator.recalculate_all_stats(owner)
 
 
 func remove_self() -> void:
 	if _modifier and owner:
 		owner.state.remove_modifier(_modifier)
-		StatCalculator.recalculate_stat(owner, stat)
+		StatCalculator.recalculate_all_stats(owner)
 	super.remove_self()
 
 
@@ -44,4 +44,4 @@ func game_load(data: Dictionary) -> void:
 		_modifier.value = value
 		_modifier.name = name
 		owner.state.add_modifier(_modifier)
-		StatCalculator.recalculate_stat(owner, stat)
+		StatCalculator.recalculate_all_stats(owner)

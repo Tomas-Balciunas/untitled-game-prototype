@@ -249,6 +249,55 @@ the resolver.
 
 ---
 
+## Stat pipeline — `stat/stat_calculator.gd`
+
+Four `Stats` layers live on `Character` (only `base_stats` is authored data; the
+rest are derived and not saved):
+
+| layer | contents |
+|---|---|
+| `base_stats` | raw, from `CharacterResource.base_stats` |
+| `computed_stats` | base + attribute growth + level growth + **gear** |
+| `modified_stats` | computed + non-dependent `StatModifier`s |
+| `stats` | modified + dependent modifiers + weapon scaling — the value everything gameplay-side reads |
+
+`recalculate_all_stats(c)` is the **only** entry point (a single-stat variant
+existed and was removed — see the invariant below). It runs three loops:
+
+1. `_recalculate_modified` for every stat — fills `computed_stats` then
+   `modified_stats`. Self-contained per stat: nothing here reads another stat.
+2. `_apply_dependent_modifiers` for every stat — modifiers flagged
+   `depends_on_another_stat` run here and may read `modified_stats` of *any*
+   stat. Writes `stats`.
+3. `_apply_weapon_scaling` for the `WeaponScaling.ALLOWED_TARGET_STATS` power
+   stats — always last, and reads final `stats` for its `stat_contributions`
+   (a source stat may not itself be a power stat, which is push_error-guarded).
+
+**The invariant**: every cross-stat read comes from a layer that is complete and
+never written again by the time it is read. Loop 2 only reads `modified_stats`
+and only writes `stats`, so mutual conversions — `stat/_modifier/hp_to_atk.gd`
+plus `atk_to_hp.gd` on the same character — both see pre-conversion values and
+resolve order-independently instead of feeding back into each other. This is
+also why single-stat recalculation is gone: buffing ATTACK alone would leave a
+HEALTH modifier that reads attack stale.
+
+Writes to the final layer funnel through `_set_final`, which skips the write and
+the `CharacterBus.stat_changed` emit when the value is unchanged — that is what
+keeps a full recalc from spamming 15 signals per buff application.
+
+Rounding happens once, at the final layer; `computed_stats` / `modified_stats`
+stay float. `Stats.get_stat()` rounds to int — use `get_stat_raw()` when reading
+a layer back for further math.
+
+Percentage stats (`Stats.PERCENTAGE_STATS`) bypass the normal path entirely via
+`_recalculate_percentage_stat`: baseline `Stats.PERCENTAGE_BASE`, multiplicative
+modifiers only (ADDITIVE is push_error-guarded), resolved in loop 1 and skipped
+by loop 2. Known gaps: gear-borne percentage stats are silently dropped, and a
+`depends_on_another_stat` modifier on a percentage stat would evaluate against
+an unfilled `modified_stats`. Neither is reachable with current content.
+
+---
+
 ## Save / load — `scripts/SaveManager.gd` (autoload)
 - `build_game_state()` aggregates `GameState` + `PartyManager` + `MapInstance`
   + `InteractionTagManager` via cascading `game_save()`/`game_load()` methods;
