@@ -16,10 +16,12 @@ enum StatRef {
 	ACCURACY,
 	EVASION,
 	HEALING_DONE,
-	HEALING_RECEIVED
+	HEALING_RECEIVED,
+	CRITICAL_DAMAGE
 }
 
 const PERCENTAGE_BASE := 100.0
+const CRITICAL_DAMAGE_BASE := 150.0
 
 const PERCENTAGE_STATS: Array[StatRef] = [
 	StatRef.HEALING_DONE,
@@ -44,7 +46,8 @@ const STAT_NAMES := {
 	StatRef.ACCURACY:      "Accuracy",
 	StatRef.EVASION:       "Evasion",
 	StatRef.HEALING_DONE:  "Healing Done",
-	StatRef.HEALING_RECEIVED: "Healing Received"
+	StatRef.HEALING_RECEIVED: "Healing Received",
+	StatRef.CRITICAL_DAMAGE: "Critical Damage"
 }
 
 @export var attack: float = 0.0
@@ -62,6 +65,7 @@ const STAT_NAMES := {
 @export var evasion: float = 0.0
 @export var healing_done: float = 0.0
 @export var healing_received: float = 0.0
+@export var critical_damage: float = 0.0
 
 
 func add(other: Stats) -> void:
@@ -80,6 +84,7 @@ func add(other: Stats) -> void:
 	evasion           += other.evasion
 	healing_done      += other.healing_done
 	healing_received  += other.healing_received
+	critical_damage   += other.critical_damage
 
 
 func get_stat(stat: StatRef) -> int:
@@ -99,6 +104,7 @@ func get_stat(stat: StatRef) -> int:
 		StatRef.EVASION:       return roundi(evasion)
 		StatRef.HEALING_DONE:     return roundi(healing_done)
 		StatRef.HEALING_RECEIVED: return roundi(healing_received)
+		StatRef.CRITICAL_DAMAGE:  return roundi(critical_damage)
 		_:                     return 0
 
 
@@ -119,6 +125,7 @@ func get_stat_raw(stat: StatRef) -> float:
 		StatRef.EVASION:       return evasion
 		StatRef.HEALING_DONE:     return healing_done
 		StatRef.HEALING_RECEIVED: return healing_received
+		StatRef.CRITICAL_DAMAGE:  return critical_damage
 		_:                     return 0.0
 
 
@@ -139,6 +146,7 @@ func set_stat(stat: StatRef, value: float) -> void:
 		StatRef.EVASION:       evasion       = value
 		StatRef.HEALING_DONE:     healing_done     = value
 		StatRef.HEALING_RECEIVED: healing_received = value
+		StatRef.CRITICAL_DAMAGE:  critical_damage  = value
 
 
 func add_stat(stat: StatRef, value: float) -> void:
@@ -158,6 +166,11 @@ func add_stat(stat: StatRef, value: float) -> void:
 		StatRef.EVASION:       evasion       += value
 		StatRef.HEALING_DONE:     healing_done     += value
 		StatRef.HEALING_RECEIVED: healing_received += value
+		StatRef.CRITICAL_DAMAGE:  critical_damage  += value
+
+
+func get_critical_multiplier() -> float:
+	return (CRITICAL_DAMAGE_BASE + critical_damage) / 100.0
 
 
 static func get_stat_name(stat: StatRef) -> String:
@@ -172,6 +185,7 @@ func game_save() -> Dictionary:
 		"divine_power": divine_power, "magic_defense": magic_defense,
 		"resistance": resistance, "accuracy": accuracy, "evasion": evasion,
 		"healing_done": healing_done, "healing_received": healing_received,
+		"critical_damage": critical_damage,
 	}
 
 
@@ -191,3 +205,4 @@ func game_load(data: Dictionary) -> void:
 	evasion       = data.get("evasion", 0.0)
 	healing_done     = data.get("healing_done", 0.0)
 	healing_received = data.get("healing_received", 0.0)
+	critical_damage  = data.get("critical_damage", 0.0)

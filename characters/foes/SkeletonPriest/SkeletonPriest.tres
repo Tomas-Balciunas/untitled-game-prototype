@@ -1,0 +1,29 @@
+[gd_resource type="Resource" script_class="CharacterResource" format=3 uid="uid://cmdq1cvhgys4g"]
+
+[ext_resource type="Script" uid="uid://bwn4gpkaijqsg" path="res://scripts/CharacterResource.gd" id="1_res"]
+[ext_resource type="Resource" path="res://characters/foes/SkeletonPriest/attributes.tres" id="2_attr"]
+[ext_resource type="Resource" path="res://characters/foes/SkeletonPriest/skeleton_priest_stats.tres" id="3_stats"]
+[ext_resource type="Script" uid="uid://cbelvg2fndssu" path="res://scripts/BattleEvent.gd" id="3_yd401"]
+[ext_resource type="Resource" path="res://characters/foes/SkeletonPriest/stat_level_growth.tres" id="4_lvl"]
+[ext_resource type="Resource" uid="uid://cfsvb5he1u2it" path="res://characters/foes/SkeletonPriest/stat_attribute_growth.tres" id="5_grow"]
+[ext_resource type="Script" uid="uid://bp0biy0knxw2o" path="res://effect/Effect.gd" id="5_qs1q1"]
+[ext_resource type="Script" uid="uid://b06vmgrh4qa8i" path="res://gear/ItemResource.gd" id="6_5x8bx"]
+[ext_resource type="PackedScene" path="res://characters/foes/SkeletonPriest/_body/SkeletonPriest.tscn" id="6_body"]
+[ext_resource type="Script" uid="uid://dq4acpkde276p" path="res://skills/Skill.gd" id="7_skill"]
+[ext_resource type="Resource" path="res://skills/_offensive/smite.tres" id="8_skill_a"]
+[ext_resource type="Resource" uid="uid://bk1ekpvjscjmg" path="res://skills/_defensive/_heal/single heal.tres" id="9_skill_b"]
+[ext_resource type="Resource" uid="uid://cs2tci0dc3vvo" path="res://characters/_class/_Unknown.tres" id="10_fkcnc"]
+[ext_resource type="Resource" uid="uid://lcgngc3c13fc" path="res://characters/_race/_Unknown.tres" id="11_ho04t"]
+
+[resource]
+script = ExtResource("1_res")
+attributes = ExtResource("2_attr")
+default_skills = Array[ExtResource("7_skill")]([ExtResource("8_skill_a"), ExtResource("9_skill_b")])
+base_stats = ExtResource("3_stats")
+stat_level_growth = ExtResource("4_lvl")
+stat_attribute_growth = ExtResource("5_grow")
+experience_granted = 60
+id = "e_skeleton_priest_001"
+name = "Skeleton Priest"
+character_body = ExtResource("6_body")
+metadata/_custom_type_script = "uid://bwn4gpkaijqsg"

@@ -4,7 +4,6 @@ class_name CharacterResource
 
 const DEFAULT_RACE   = preload("res://characters/_race/_Unknown.tres")
 const DEFAULT_JOB    = preload("res://characters/_class/_Unknown.tres")
-const DEFAULT_EXPERIENCE_MANAGER := preload("res://scripts/experience/ExperienceManager.tres")
 const DEFAULT_STATS = preload("uid://57fo0cycgjne")
 const DEFAULT_STAT_GROWTH = preload("uid://s8gs3fa65s30")
 
@@ -29,7 +28,8 @@ var is_main: bool = false
 @export var stat_attribute_growth: StatAttributeGrowth
 
 @export var battle_events: Array[BattleEvent]
-@export var experience_manager: ExperienceManager = DEFAULT_EXPERIENCE_MANAGER
+
+@export var experience_granted: int = 1
 
 func _init() -> void:
 	if not attributes:

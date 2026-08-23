@@ -6,6 +6,8 @@ signal chest_state_changed(chest: Chest)
 
 signal open_door_requested(door: Door)
 signal door_opener_chosen(c: Character)
+signal door_unlocked(door: Door)
+signal door_state_changed(door: Door)
 
 ## UI signals
 signal display_chest_opener

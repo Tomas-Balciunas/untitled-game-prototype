@@ -76,16 +76,13 @@ func get_mass_allies() -> Array[Character]:
 			mass.append(slot)
 	return mass
 
-func grant_experience_to_all(amount: int) -> void:
-	if amount <= 0:
-		return
+func get_average_party_level() -> int:
+	var lvl: int = 0
+	
 	for member: Character in members:
-		member.experience_manager.grant_experience_to_character(member, amount)
-
-func grant_experience_to(member: Character, amount: int) -> void:
-	if member == null or amount <= 0:
-		return
-	member.experience_manager.grant_experience_to_character(member, amount)
+		lvl += member.level
+	
+	return roundi(lvl / len(members))
 
 func game_save() -> Dictionary:
 	var members_data := []

@@ -475,6 +475,18 @@ text = "Healing Received:"
 layout_mode = 2
 size_flags_horizontal = 3
 
+[node name="CriticalDamage" type="HBoxContainer" parent="StatsUI/Stats" unique_id=1490012001]
+layout_mode = 2
+
+[node name="CriticalDamageKey" type="Label" parent="StatsUI/Stats/CriticalDamage" unique_id=1490012002]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Critical Damage:"
+
+[node name="CriticalDamageValue" type="Label" parent="StatsUI/Stats/CriticalDamage" unique_id=1490012003]
+layout_mode = 2
+size_flags_horizontal = 3
+
 [node name="EffectsUI" type="PanelContainer" parent="." unique_id=110768152]
 unique_name_in_owner = true
 visible = false

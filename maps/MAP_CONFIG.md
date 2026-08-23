@@ -53,6 +53,33 @@ All ranges are `[min, max]` integer pairs and are inclusive on both ends.
 | `bake_navmesh` | bool | `true` | When true, the generator builds one combined `NavigationMesh` with greedy-merged rectangular polygons over all floor tiles and assigns it to the parent `NavigationRegion3D`. The per-cell navmesh stitching that `GridMap.bake_navigation` would otherwise do is disabled. **Effect**: a 5-tile corridor becomes one polygon instead of five; a 10×10 room becomes one instead of one hundred. NavigationAgent A* cost drops by ~10–50× on large maps. Disable only if you want per-cell precision for very irregular tile shapes. |
 | `merge_walls` | bool | `true` | When true, the per-cell wall `BoxShape3D` is dropped from the `MeshLibrary` and the generator instead places a single `StaticBody3D` (named `MergedWalls`) with greedy-merged box shapes — long walls become one collider each. Drops collider count from ~30k to typically a few hundred on big maps. Disable if you want per-cell collision boundaries for some custom interaction. |
 
+### Doors, locks and keys
+
+| Field | Type | Default | Effect |
+|---|---|---|---|
+| `door_chance` | float `0.0–1.0` | `0.30` | Probability a room's chosen entrance becomes a door. At most one door per room. |
+| `corridor_door_chance` | float `0.0–1.0` | `0.12` | Same for corridor chokepoints (the midpoint of a straight run of ≥ 3 pure-corridor tiles). |
+| `max_door_width` | int | `1` | Openings wider than this are **archways**: never cut, never doored, never lockable. Keeps one door equal to one panel with one id. |
+| `max_doors` | int | `12` | Ceiling. Locked doors are retained first, then the remainder round-robin by region so density stays spatially even. |
+| `door_lock_chance` | float `0.0–1.0` | `0.35` | Probability an eligible threshold is locked. |
+| `max_locked_doors` | int | `3` | A **ceiling, not a quota**. Only bridges of the region graph are lockable, and loop corridors destroy bridges — so a heavily looped seed legitimately yields fewer locks, or none, and warns. |
+| `door_trap_chance` | float `0.0–1.0` | `0.04` | Never rolled on a locked door: one obstacle per threshold. |
+| `max_trapped_doors` | int | `2` | Bounds how many opener dialogs a map can demand. |
+| `chest_lock_chance` | float `0.0–1.0` | `0.25` | Probability a chest is locked. Inert while `max_locked_chests` is 0. |
+| `max_locked_chests` | int | `0` | Only chests in regions reachable before any door lock are eligible, so a locked chest is never behind a locked door. |
+| `key_enemy_drop_chance` | float `0.0–1.0` | `0.0` | Probability a key is carried by an enemy group instead of sitting in a chest. |
+| `reward_chest_quantity` | int | `4` | Items in the chest a locked door guards. Those chests also use `Contents.BOTH` and are never trapped. |
+
+**Invariants an implementer must not break.**
+
+1. Door ids come from tile coordinates (`door_<x>_<y>_<axis>`), so they are stable across regeneration and across any change in generation order — unlike the positional chest ids.
+2. Only **bridge** edges of the region graph may be locked, and every key is sited strictly inside the region set reachable *before* that lock is placed. By induction the locks are openable in placement order, so the dungeon is always completable.
+3. A key is never placed inside a locked container, which makes dependency cycles impossible.
+4. A locked door always guards a region containing a chest — `_ensure_region_chest` adds one, constrained to tiles inside that region, and the lock is abandoned if it cannot.
+5. The first eligible bridge on the spawn → end-portal path is locked deliberately, so the feature gates progression rather than only decorating side rooms.
+
+`generate()` must stay free of autoload references, including in functions it never calls: GDScript resolves autoload identifiers when the script is compiled, so one reference anywhere stops the whole generator loading outside a running project. Trap *selection* therefore happens in `_populate_doors`, not during generation.
+
 ### Layouts
 
 - **`branching`** — random room placement order; spanning chain in placement order; extra loops linking non-consecutive rooms. Explorable dungeon with side paths.

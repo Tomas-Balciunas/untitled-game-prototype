@@ -22,12 +22,31 @@ func run(_manager: EventManager) -> void:
 		push_error("GiveItemStep: item._build_instance() returned null")
 		return
 
-	if not receiver.inventory.add_item(instance):
+	var holder := receiver
+
+	if not holder.inventory.add_item(instance):
+		holder = null
+
+		for m: Character in PartyManager.members:
+			if m == receiver:
+				continue
+			if m.inventory.add_item(instance):
+				holder = m
+				break
+
+	if holder == null:
 		NotificationBus.notification_requested.emit("%s's inventory is full!" % receiver.resource.name)
+
+		if instance.type == ItemTypes.ItemType.QUEST:
+			MapInstance.queue_pending_key({ "id": instance.id, "name": instance.get_item_name() })
+
 		return
 
+	if instance.type == ItemTypes.ItemType.QUEST:
+		MapInstance.mark_key_granted(instance.id)
+
 	if notify:
-		NotificationBus.notification_requested.emit("%s received %s" % [receiver.resource.name, instance.get_item_name()])
+		NotificationBus.notification_requested.emit("%s received %s" % [holder.resource.name, instance.get_item_name()])
 
 
 func _resolve_receiver() -> Character:

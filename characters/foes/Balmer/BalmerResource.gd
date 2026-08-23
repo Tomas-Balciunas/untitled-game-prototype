@@ -1,0 +1,3 @@
+extends CharacterResource
+
+class_name BalmerResource

@@ -31,18 +31,31 @@ class Result:
 	var wall_tiles: Dictionary = {}
 	var enemy_spawns: Array = []
 	var chest_spawns: Array = []
+	# Door/lock output. door_spawns entries are
+	# {id, a, b, locked, key_id, key_name, seal_name, trap_id}; chest_keys and
+	# enemy_keys map a spawn INDEX to the {id, name} keys it must hand out;
+	# chest_locks maps a chest index to the lock it carries; reward_chests lists
+	# the chest indices created to justify a locked door.
+	var corridor_tiles: Dictionary = {}
+	var door_spawns: Array = []
+	var chest_keys: Dictionary = {}
+	var chest_locks: Dictionary = {}
+	var enemy_keys: Dictionary = {}
+	var reward_chests: Array = []
 
 var _rng: RandomNumberGenerator
 var _config: Dictionary
+var _map_id: String = ""
 var _width: int
 var _height: int
 var _floor: Dictionary = {}
 var _corridor_path: Dictionary = {}
 
-func _init(seed_value: int, config: Dictionary) -> void:
+func _init(seed_value: int, config: Dictionary, map_id: String = "") -> void:
 	_rng = RandomNumberGenerator.new()
 	_rng.seed = seed_value
 	_config = config
+	_map_id = map_id
 	_width = int(_config.get("width", 30))
 	_height = int(_config.get("height", 30))
 
@@ -213,20 +226,711 @@ func generate() -> Result:
 	if res.has_end:
 		chest_excludes.append(res.end_tile)
 	res.chest_spawns = _pick_room_tiles(rooms, _rng.randi_range(int(chest_range[0]), int(chest_range[1])), chest_excludes)
+	res.corridor_tiles = _corridor_path.duplicate()
+
+	_build_doors(res, rooms)
+
 	return res
+
+# ---------- doors, locks and keys ----------
+
+const CARDINALS: Array[Vector2i] = [Vector2i(1, 0), Vector2i(-1, 0), Vector2i(0, 1), Vector2i(0, -1)]
+
+# Runs the whole door pipeline. Order matters: candidates define where the floor
+# graph may be cut, the cut defines regions, only bridges of the region graph may
+# be locked, and keys are sited strictly in the pre-lock reachable set.
+func _build_doors(res: Result, rooms: Array) -> void:
+	var cands: Array = _collect_door_candidates(rooms, res.floor_tiles)
+	if cands.is_empty():
+		return
+
+	var built: Dictionary = _build_regions(res.floor_tiles, cands)
+	var region_of: Dictionary = built["region_of"]
+	var regions: Array = built["regions"]
+	var edges: Array = _build_edges(cands, region_of)
+	var bridges: Dictionary = _find_bridges(regions.size(), edges)
+
+	var locks: Array = _assign_door_locks(res, rooms, regions, region_of, edges, bridges)
+	_assign_chest_locks(res, regions, locks)
+	_assign_doors(res, cands, edges, locks)
+
+# Door ids come from tile coordinates, never from placement order, so they stay
+# stable across regeneration — unlike the positional chest ids.
+func _door_key(a: Vector2i, b: Vector2i) -> String:
+	var lo: Vector2i = a
+	if b.y < a.y or (b.y == a.y and b.x < a.x):
+		lo = b
+	var axis: String = "x" if a.x != b.x else "z"
+	return "door_%d_%d_%s" % [lo.x, lo.y, axis]
+
+func _pair_key(a: Vector2i, b: Vector2i) -> String:
+	return _door_key(a, b)
+
+func _room_boundary_tiles(r: Room) -> Array:
+	var tiles: Array = []
+	for x in range(r.x, r.x + r.w):
+		tiles.append(Vector2i(x, r.y))
+		if r.h > 1:
+			tiles.append(Vector2i(x, r.y + r.h - 1))
+	for y in range(r.y + 1, r.y + r.h - 1):
+		tiles.append(Vector2i(r.x, y))
+		if r.w > 1:
+			tiles.append(Vector2i(r.x + r.w - 1, y))
+	return tiles
+
+# Splits one side's entrance tiles into maximal contiguous runs along the axis
+# perpendicular to the side.
+func _split_runs(pairs: Array, d: Vector2i) -> Array:
+	var by_coord: Dictionary = {}
+	for p: Dictionary in pairs:
+		var t: Vector2i = p["t"]
+		by_coord[t.y if d.x != 0 else t.x] = p
+
+	var keys: Array = by_coord.keys()
+	keys.sort()
+
+	var runs: Array = []
+	var current: Array = []
+	var prev: int = 0
+
+	for k: int in keys:
+		if current.is_empty() or k == prev + 1:
+			current.append(by_coord[k])
+		else:
+			runs.append(current)
+			current = [by_coord[k]]
+		prev = k
+
+	if not current.is_empty():
+		runs.append(current)
+
+	return runs
+
+# Only width-1 openings become doors. A wider run is an archway: not cut, not
+# doored, never lockable — which keeps one door equal to one panel with one id.
+func _collect_door_candidates(rooms: Array, floor_set: Dictionary) -> Array:
+	var room_of: Dictionary = {}
+	for i in range(rooms.size()):
+		var r: Room = rooms[i]
+		for x in range(r.x, r.x + r.w):
+			for y in range(r.y, r.y + r.h):
+				room_of[Vector2i(x, y)] = i
+
+	var cands: Dictionary = {}
+	var max_width: int = int(_config.get("max_door_width", 1))
+
+	for i in range(rooms.size()):
+		var r: Room = rooms[i]
+		var by_side: Dictionary = {}
+
+		for t: Vector2i in _room_boundary_tiles(r):
+			for d: Vector2i in CARDINALS:
+				var o: Vector2i = t + d
+				if not floor_set.has(o):
+					continue
+				if room_of.get(o, -1) == i:
+					continue
+				if not by_side.has(d):
+					by_side[d] = []
+				by_side[d].append({ "t": t, "o": o })
+
+		if by_side.is_empty():
+			push_warning("MapGenerator: room %d has no entrance" % i)
+			continue
+
+		for d: Vector2i in by_side.keys():
+			for run: Array in _split_runs(by_side[d], d):
+				if run.size() > max_width:
+					continue
+				for pair: Dictionary in run:
+					var id: String = _door_key(pair["t"], pair["o"])
+					if cands.has(id):
+						continue
+					cands[id] = {
+						"id": id, "inside": pair["t"], "outside": pair["o"],
+						"kind": "room", "room_idx": i,
+					}
+
+	for pick: Dictionary in _corridor_chokepoints(floor_set, room_of):
+		var t: Vector2i = pick["tile"]
+		var o: Vector2i = t + pick["axis"]
+		var id: String = _door_key(t, o)
+		if cands.has(id):
+			continue
+		cands[id] = { "id": id, "inside": t, "outside": o, "kind": "corridor", "room_idx": -1 }
+
+	return cands.values()
+
+# One candidate per maximal straight corridor run, not one per tile: the per-tile
+# version yields thousands of candidates and near-single-tile regions, plus a
+# redundant second door right outside every room entrance.
+func _corridor_chokepoints(floor_set: Dictionary, room_of: Dictionary) -> Array:
+	var straight: Dictionary = {}
+
+	for key in _corridor_path.keys():
+		var t: Vector2i = key
+		if room_of.has(t):
+			continue
+		var nb: Array = []
+		for d: Vector2i in CARDINALS:
+			if floor_set.has(t + d):
+				nb.append(d)
+		if nb.size() != 2 or nb[0] != -nb[1]:
+			continue
+		straight[t] = Vector2i(absi(nb[0].x), absi(nb[0].y))
+
+	var seen: Dictionary = {}
+	var picks: Array = []
+	var keys: Array = straight.keys()
+	keys.sort_custom(func(a: Vector2i, b: Vector2i) -> bool:
+		if a.y != b.y:
+			return a.y < b.y
+		return a.x < b.x
+	)
+
+	for key in keys:
+		var start: Vector2i = key
+		if seen.has(start):
+			continue
+		var axis: Vector2i = straight[start]
+		var run: Array = [start]
+		seen[start] = true
+
+		for step: Vector2i in [axis, -axis]:
+			var cur: Vector2i = start + step
+			while straight.has(cur) and straight[cur] == axis and not seen.has(cur):
+				seen[cur] = true
+				if step == axis:
+					run.append(cur)
+				else:
+					run.push_front(cur)
+				cur += step
+
+		if run.size() < 3:
+			continue
+
+		var mid: Vector2i = run[run.size() / 2]
+		if room_of.has(mid + axis):
+			continue
+		picks.append({ "tile": mid, "axis": axis })
+
+	return picks
+
+# Floods the floor graph while refusing to step across a candidate threshold, so
+# each region is a section of the dungeon a door can seal off.
+func _build_regions(floor_set: Dictionary, cands: Array) -> Dictionary:
+	var cut: Dictionary = {}
+	for c: Dictionary in cands:
+		cut[_pair_key(c["inside"], c["outside"])] = true
+
+	var region_of: Dictionary = {}
+	var regions: Array = []
+
+	for key in floor_set.keys():
+		if region_of.has(key):
+			continue
+		var idx: int = regions.size()
+		var tiles: Array = []
+		var stack: Array = [key]
+		region_of[key] = idx
+
+		while not stack.is_empty():
+			var t: Vector2i = stack.pop_back()
+			tiles.append(t)
+			for d: Vector2i in CARDINALS:
+				var n: Vector2i = t + d
+				if not floor_set.has(n) or region_of.has(n):
+					continue
+				if cut.has(_pair_key(t, n)):
+					continue
+				region_of[n] = idx
+				stack.push_back(n)
+
+		regions.append({ "id": idx, "tiles": tiles, "chests": [], "enemies": [] })
+
+	return { "region_of": region_of, "regions": regions }
+
+# A threshold whose two sides are the same region is a loop, and two thresholds
+# joining the same pair of regions are a way around each other. Neither may be
+# locked, so both are marked unlockable before bridge detection even runs.
+func _build_edges(cands: Array, region_of: Dictionary) -> Array:
+	var edges: Array = []
+	var multiplicity: Dictionary = {}
+
+	for c: Dictionary in cands:
+		var ra: int = region_of.get(c["inside"], -1)
+		var rb: int = region_of.get(c["outside"], -1)
+		var edge: Dictionary = {
+			"id": c["id"], "ra": ra, "rb": rb,
+			"kind": c["kind"], "room_idx": c["room_idx"],
+			"lockable": ra >= 0 and rb >= 0 and ra != rb,
+		}
+		if edge["lockable"]:
+			var pk: String = "%d_%d" % [mini(ra, rb), maxi(ra, rb)]
+			multiplicity[pk] = int(multiplicity.get(pk, 0)) + 1
+		edges.append(edge)
+
+	for edge: Dictionary in edges:
+		if not edge["lockable"]:
+			continue
+		var pk: String = "%d_%d" % [mini(edge["ra"], edge["rb"]), maxi(edge["ra"], edge["rb"])]
+		if int(multiplicity[pk]) > 1:
+			edge["lockable"] = false
+
+	return edges
+
+# Iterative Tarjan. Skips the traversing EDGE INDEX rather than the parent
+# vertex: skipping by vertex reports both of two parallel edges as bridges, which
+# is exactly the two-entrance room the player would walk around.
+func _find_bridges(region_count: int, edges: Array) -> Dictionary:
+	var adj: Array = []
+	for _i in range(region_count):
+		adj.append([])
+
+	for i in range(edges.size()):
+		var e: Dictionary = edges[i]
+		if e["ra"] < 0 or e["rb"] < 0 or e["ra"] == e["rb"]:
+			continue
+		adj[e["ra"]].append({ "to": e["rb"], "edge": i })
+		adj[e["rb"]].append({ "to": e["ra"], "edge": i })
+
+	var disc: Array = []
+	var low: Array = []
+	for _i in range(region_count):
+		disc.append(-1)
+		low.append(-1)
+
+	var bridges: Dictionary = {}
+	var timer: int = 0
+
+	for start in range(region_count):
+		if disc[start] != -1:
+			continue
+		disc[start] = timer
+		low[start] = timer
+		timer += 1
+		var stack: Array = [[start, -1, 0]]
+
+		while not stack.is_empty():
+			var frame: Array = stack[stack.size() - 1]
+			var node: int = frame[0]
+			var cursor: int = frame[2]
+
+			if cursor < adj[node].size():
+				frame[2] = cursor + 1
+				var link: Dictionary = adj[node][cursor]
+				if link["edge"] == frame[1]:
+					continue
+				var to: int = link["to"]
+				if disc[to] == -1:
+					disc[to] = timer
+					low[to] = timer
+					timer += 1
+					stack.append([to, link["edge"], 0])
+				else:
+					low[node] = mini(low[node], disc[to])
+			else:
+				stack.pop_back()
+				if stack.is_empty():
+					continue
+				var parent: int = stack[stack.size() - 1][0]
+				low[parent] = mini(low[parent], low[node])
+				if low[node] > disc[parent]:
+					bridges[frame[1]] = true
+
+	return bridges
+
+func _region_path_edges(from_region: int, to_region: int, region_count: int, edges: Array) -> Dictionary:
+	var path: Dictionary = {}
+	if from_region < 0 or to_region < 0 or from_region == to_region:
+		return path
+
+	var adj: Array = []
+	for _i in range(region_count):
+		adj.append([])
+	for i in range(edges.size()):
+		var e: Dictionary = edges[i]
+		if e["ra"] < 0 or e["rb"] < 0 or e["ra"] == e["rb"]:
+			continue
+		adj[e["ra"]].append({ "to": e["rb"], "edge": i })
+		adj[e["rb"]].append({ "to": e["ra"], "edge": i })
+
+	var came_from: Dictionary = { from_region: -1 }
+	var queue: Array = [from_region]
+	var head: int = 0
+
+	while head < queue.size():
+		var node: int = queue[head]
+		head += 1
+		if node == to_region:
+			break
+		for link: Dictionary in adj[node]:
+			if came_from.has(link["to"]):
+				continue
+			came_from[link["to"]] = link["edge"]
+			queue.append(link["to"])
+
+	if not came_from.has(to_region):
+		return path
+
+	var cur: int = to_region
+	while cur != from_region:
+		var edge_idx: int = came_from[cur]
+		if edge_idx < 0:
+			break
+		path[edge_idx] = true
+		var e: Dictionary = edges[edge_idx]
+		cur = e["ra"] if e["rb"] == cur else e["rb"]
+
+	return path
+
+func _pick_region_room(region_idx: int, rooms: Array, region_of: Dictionary) -> int:
+	var found: Array = []
+
+	for i in range(rooms.size()):
+		var r: Room = rooms[i]
+		var hit: bool = false
+		for x in range(r.x, r.x + r.w):
+			for y in range(r.y, r.y + r.h):
+				if region_of.get(Vector2i(x, y), -1) == region_idx:
+					hit = true
+					break
+			if hit:
+				break
+		if hit:
+			found.append(i)
+
+	if found.is_empty():
+		return -1
+
+	return found[_rng.randi() % found.size()]
+
+# A locked door has to be worth opening, so the region behind it gets a chest if
+# it has none. Constrained to tiles actually inside that region, or the "reward"
+# could sit on the wrong side of the lock.
+func _ensure_region_chest(res: Result, regions: Array, region_idx: int, room: Room, region_of: Dictionary) -> bool:
+	if not regions[region_idx]["chests"].is_empty():
+		return true
+
+	var taken: Dictionary = {}
+	for t in res.chest_spawns:
+		taken[t] = true
+	for t in res.enemy_spawns:
+		taken[t] = true
+	taken[res.spawn] = true
+	taken[res.return_tile] = true
+	if res.has_end:
+		taken[res.end_tile] = true
+
+	var options: Array = []
+	for x in range(room.x, room.x + room.w):
+		for y in range(room.y, room.y + room.h):
+			var t := Vector2i(x, y)
+			if taken.has(t) or _corridor_path.has(t):
+				continue
+			if region_of.get(t, -1) != region_idx:
+				continue
+			options.append(t)
+
+	if options.is_empty():
+		return false
+
+	var idx: int = res.chest_spawns.size()
+	res.chest_spawns.append(options[_rng.randi() % options.size()])
+	res.reward_chests.append(idx)
+	regions[region_idx]["chests"].append(idx)
+
+	return true
+
+# Chooses a container to hold one key. Callers pass only regions that are
+# reachable without the lock this key opens, which is what keeps the dungeon
+# completable.
+func _pick_key_site(res: Result, regions: Array, region_ids: Array, exclude_chests: Dictionary, enemy_chance: float) -> Dictionary:
+	var chests: Array = []
+	var enemies: Array = []
+
+	for region_idx in region_ids:
+		for idx: int in regions[region_idx]["chests"]:
+			if exclude_chests.has(idx) or res.chest_locks.has(idx):
+				continue
+			chests.append(idx)
+		for idx: int in regions[region_idx]["enemies"]:
+			enemies.append(idx)
+
+	var fresh_chests: Array = chests.filter(func(i: int) -> bool: return not res.chest_keys.has(i))
+	var fresh_enemies: Array = enemies.filter(func(i: int) -> bool: return not res.enemy_keys.has(i))
+
+	var chest_pool: Array = fresh_chests if not fresh_chests.is_empty() else chests
+	var enemy_pool: Array = fresh_enemies if not fresh_enemies.is_empty() else enemies
+
+	var want_enemy: bool = _rng.randf() < enemy_chance and not enemy_pool.is_empty()
+	if not want_enemy and chest_pool.is_empty():
+		want_enemy = not enemy_pool.is_empty()
+
+	if want_enemy:
+		return { "kind": "enemy", "index": enemy_pool[_rng.randi() % enemy_pool.size()] }
+
+	if chest_pool.is_empty():
+		return {}
+
+	return { "kind": "chest", "index": chest_pool[_rng.randi() % chest_pool.size()] }
+
+func _register_key(res: Result, site: Dictionary, key_id: String, key_name: String) -> void:
+	var bucket: Dictionary = res.enemy_keys if site["kind"] == "enemy" else res.chest_keys
+	var idx: int = site["index"]
+	if not bucket.has(idx):
+		bucket[idx] = []
+	bucket[idx].append({ "id": key_id, "name": key_name })
+
+# Frontier walk outward from the spawn region. A lock is only ever placed on a
+# bridge, and its key only ever inside the region set already reachable at that
+# moment — so by induction every lock is openable in placement order and the map
+# is always completable. The first eligible bridge on the spawn -> exit path is
+# locked deliberately, so the feature actually gates progression.
+func _assign_door_locks(res: Result, rooms: Array, regions: Array, region_of: Dictionary, edges: Array, bridges: Dictionary) -> Array:
+	var spawn_region: int = region_of.get(res.spawn, -1)
+	if spawn_region < 0:
+		return []
+
+	if _map_id.is_empty():
+		push_error("MapGenerator: no map_id, refusing to mint keys with an empty namespace")
+		return []
+
+	for idx in range(res.chest_spawns.size()):
+		var r: int = region_of.get(res.chest_spawns[idx], -1)
+		if r >= 0:
+			regions[r]["chests"].append(idx)
+
+	for idx in range(res.enemy_spawns.size()):
+		var r: int = region_of.get(res.enemy_spawns[idx], -1)
+		if r >= 0:
+			regions[r]["enemies"].append(idx)
+
+	for region: Dictionary in regions:
+		region["depth"] = 0
+
+	var main_path: Dictionary = {}
+	if res.has_end:
+		main_path = _region_path_edges(spawn_region, region_of.get(res.end_tile, -1), regions.size(), edges)
+
+	var budget: int = int(_config.get("max_locked_doors", 3))
+	var chance: float = clampf(float(_config.get("door_lock_chance", 0.35)), 0.0, 1.0)
+	var enemy_chance: float = clampf(float(_config.get("key_enemy_drop_chance", 0.0)), 0.0, 1.0)
+
+	var reachable: Dictionary = { spawn_region: true }
+	var resolved: Dictionary = {}
+	var locks: Array = []
+	var ordinal: int = 0
+	var forced_main: bool = false
+
+	while true:
+		var frontier: Array = []
+		for i in range(edges.size()):
+			if resolved.has(i):
+				continue
+			var e: Dictionary = edges[i]
+			if e["ra"] < 0 or e["rb"] < 0 or e["ra"] == e["rb"]:
+				continue
+			if reachable.has(e["ra"]) == reachable.has(e["rb"]):
+				continue
+			frontier.append(i)
+
+		if frontier.is_empty():
+			break
+
+		var pick: int = -1
+		if not forced_main:
+			for i: int in frontier:
+				if main_path.has(i) and bridges.has(i) and edges[i]["lockable"]:
+					pick = i
+					break
+		if pick < 0:
+			pick = frontier[_rng.randi() % frontier.size()]
+
+		var edge: Dictionary = edges[pick]
+		var old_r: int = edge["ra"] if reachable.has(edge["ra"]) else edge["rb"]
+		var new_r: int = edge["rb"] if old_r == edge["ra"] else edge["ra"]
+		var eligible: bool = edge["lockable"] and bridges.has(pick) and locks.size() < budget
+		var want_main: bool = eligible and not forced_main and main_path.has(pick)
+		var do_lock: bool = eligible and (want_main or _rng.randf() < chance)
+
+		if do_lock:
+			var guard_room: int = _pick_region_room(new_r, rooms, region_of)
+			var site: Dictionary = _pick_key_site(res, regions, reachable.keys(), {}, enemy_chance)
+
+			if guard_room < 0 or site.is_empty() or not _ensure_region_chest(res, regions, new_r, rooms[guard_room], region_of):
+				do_lock = false
+			else:
+				var kid: String = KeyFactory.key_id(_map_id, edge["id"])
+				var kname: String = KeyFactory.key_name(ordinal)
+				_register_key(res, site, kid, kname)
+				locks.append({
+					"id": edge["id"], "region": new_r,
+					"key_id": kid, "key_name": kname,
+					"seal_name": KeyFactory.seal_word(ordinal),
+				})
+				ordinal += 1
+				if want_main:
+					forced_main = true
+
+		regions[new_r]["depth"] = int(regions[old_r]["depth"]) + (1 if do_lock else 0)
+		reachable[new_r] = true
+		resolved[pick] = true
+
+	if locks.size() < budget:
+		push_warning("MapGenerator: placed %d/%d locked doors (no further bridge candidates)" % [locks.size(), budget])
+
+	return locks
+
+# A locked chest never holds a door key and never sits behind a locked door, so
+# it can only ever add a short detour, never a dependency chain.
+func _assign_chest_locks(res: Result, regions: Array, _locks: Array) -> void:
+	var max_locked: int = int(_config.get("max_locked_chests", 0))
+	if max_locked <= 0:
+		return
+
+	var chance: float = clampf(float(_config.get("chest_lock_chance", 0.25)), 0.0, 1.0)
+	var enemy_chance: float = clampf(float(_config.get("key_enemy_drop_chance", 0.0)), 0.0, 1.0)
+
+	var open_regions: Array = []
+	var region_of_chest: Dictionary = {}
+
+	for region: Dictionary in regions:
+		if int(region.get("depth", 0)) != 0:
+			continue
+		open_regions.append(region["id"])
+		for idx: int in region["chests"]:
+			region_of_chest[idx] = region["id"]
+
+	var locked: int = 0
+	var ordinal: int = 0
+
+	for idx in range(res.chest_spawns.size()):
+		if locked >= max_locked:
+			break
+		if res.chest_keys.has(idx) or res.reward_chests.has(idx):
+			continue
+		if not region_of_chest.has(idx):
+			continue
+		if _rng.randf() >= chance:
+			continue
+
+		var site: Dictionary = _pick_key_site(res, regions, open_regions, { idx: true }, enemy_chance)
+		if site.is_empty():
+			continue
+
+		var kid: String = KeyFactory.key_id(_map_id, "chest_%02d" % idx)
+		var kname: String = KeyFactory.key_name(ordinal + 3)
+		_register_key(res, site, kid, kname)
+		res.chest_locks[idx] = { "key_id": kid, "key_name": kname, "trap_id": "" }
+		ordinal += 1
+		locked += 1
+
+# Locked thresholds are kept unconditionally. The rest are rolled per kind, then
+# capped round-robin by region so density stays spatially even instead of
+# exhausting the budget on the first rooms of a chain.
+func _assign_doors(res: Result, cands: Array, edges: Array, locks: Array) -> void:
+	var lock_by_id: Dictionary = {}
+	for l: Dictionary in locks:
+		lock_by_id[l["id"]] = l
+
+	var edge_by_id: Dictionary = {}
+	for e: Dictionary in edges:
+		edge_by_id[e["id"]] = e
+
+	var door_chance: float = clampf(float(_config.get("door_chance", 0.30)), 0.0, 1.0)
+	var corridor_chance: float = clampf(float(_config.get("corridor_door_chance", 0.12)), 0.0, 1.0)
+	var max_doors: int = int(_config.get("max_doors", 12))
+	var trap_chance: float = clampf(float(_config.get("door_trap_chance", 0.04)), 0.0, 1.0)
+	var max_trapped: int = int(_config.get("max_trapped_doors", 2))
+
+	var locked_first: Array = []
+	var rest: Array = []
+	var room_used: Dictionary = {}
+
+	for c: Dictionary in cands:
+		if not lock_by_id.has(c["id"]):
+			continue
+		locked_first.append(c)
+		if c["kind"] == "room":
+			room_used[c["room_idx"]] = true
+
+	for c: Dictionary in cands:
+		if lock_by_id.has(c["id"]):
+			continue
+		if c["kind"] == "room":
+			if room_used.has(c["room_idx"]) or _rng.randf() >= door_chance:
+				continue
+			room_used[c["room_idx"]] = true
+		elif _rng.randf() >= corridor_chance:
+			continue
+		rest.append(c)
+
+	var by_region: Dictionary = {}
+	for c: Dictionary in rest:
+		var r: int = edge_by_id[c["id"]]["ra"]
+		if not by_region.has(r):
+			by_region[r] = []
+		by_region[r].append(c)
+
+	var region_keys: Array = by_region.keys()
+	region_keys.sort()
+
+	var final: Array = locked_first.duplicate()
+	var round_idx: int = 0
+
+	while final.size() < max_doors:
+		var added: bool = false
+		for rk in region_keys:
+			if final.size() >= max_doors:
+				break
+			var bucket: Array = by_region[rk]
+			if round_idx < bucket.size():
+				final.append(bucket[round_idx])
+				added = true
+		if not added:
+			break
+		round_idx += 1
+
+	var trapped: int = 0
+
+	for c: Dictionary in final:
+		var lock: Dictionary = lock_by_id.get(c["id"], {})
+		# Only whether it is trapped is decided here. Which trap is resolved in
+		# _populate_doors, so generate() stays free of autoload dependencies and
+		# can run headless.
+		var is_trapped: bool = lock.is_empty() and trapped < max_trapped and _rng.randf() < trap_chance
+
+		if is_trapped:
+			trapped += 1
+
+		res.door_spawns.append({
+			"id": c["id"], "a": c["inside"], "b": c["outside"],
+			"locked": not lock.is_empty(),
+			"key_id": lock.get("key_id", ""),
+			"key_name": lock.get("key_name", ""),
+			"seal_name": lock.get("seal_name", ""),
+			"trapped": is_trapped,
+		})
+
+## Every draw in this file must come from `_rng`, or the same seed stops
+## producing the same map — and because enemy and chest state is keyed by
+## positional index, a reshuffle rebinds saved state to the wrong objects.
+func _shuffle_in_place(arr: Array) -> void:
+	for i in range(arr.size() - 1, 0, -1):
+		var j: int = _rng.randi() % (i + 1)
+		var tmp = arr[i]
+		arr[i] = arr[j]
+		arr[j] = tmp
 
 func _order_chain(rooms: Array, layout: String) -> Array:
 	if layout == "branching":
 		return rooms
 	if layout == "maze":
-		# Random shuffle so the spanning chain weaves across the grid instead of
-		# snaking row-by-row. Deterministic with the map seed via Fisher-Yates.
+		# Shuffled so the spanning chain weaves across the grid instead of
+		# snaking row-by-row.
 		var shuffled: Array = rooms.duplicate()
-		for i in range(shuffled.size() - 1, 0, -1):
-			var j: int = _rng.randi() % (i + 1)
-			var tmp = shuffled[i]
-			shuffled[i] = shuffled[j]
-			shuffled[j] = tmp
+		_shuffle_in_place(shuffled)
 		return shuffled
 	# linear/mixed: chain rooms by distance from the first room so the path
 	# progresses outward instead of jumping around.
@@ -327,8 +1031,9 @@ func apply_to_scene(scene_root: Node, result: Result, tileset: String, return_ma
 	if merge_walls:
 		_build_merged_wall_colliders(scene_root, result.wall_tiles)
 
-	_populate_enemies(scene_root, result.enemy_spawns)
-	_populate_chests(gridmap, result.chest_spawns)
+	_populate_enemies(scene_root, result)
+	_populate_chests(gridmap, result)
+	_populate_doors(gridmap, result.door_spawns)
 	_populate_transition(gridmap, result.return_tile, return_map_id)
 	if result.has_end and not end_map_id.is_empty():
 		_populate_transition(gridmap, result.end_tile, end_map_id)
@@ -393,21 +1098,108 @@ func _build_combined_navmesh(scene_root: Node, floor_tiles: Dictionary) -> void:
 	var bounds: Callable = _tile_bounds_resolver(gridmap)
 
 	var rects: Array = _greedy_rectangles(floor_tiles)
+
+	# Godot merges navmesh edges by quantized endpoint POSITION, so coincident
+	# corners already match. What does not match is a T-junction: a wide room
+	# rect's edge spans straight past a 1-tile corridor rect's shorter edge, and
+	# an edge pair only merges when both endpoints agree. So every rect edge has
+	# to carry the boundary points its neighbours introduce along it, or a room
+	# and the corridor leaving it stay unconnected and enemies cannot path out.
+	var x_breaks: Dictionary = {}
+	var z_breaks: Dictionary = {}
+
+	for rect in rects:
+		var x_hi: int = rect.x + rect.w
+		var z_hi: int = rect.y + rect.h
+
+		for z_line in [rect.y, z_hi]:
+			if not x_breaks.has(z_line):
+				x_breaks[z_line] = {}
+			x_breaks[z_line][rect.x] = true
+			x_breaks[z_line][x_hi] = true
+
+		for x_line in [rect.x, x_hi]:
+			if not z_breaks.has(x_line):
+				z_breaks[x_line] = {}
+			z_breaks[x_line][rect.y] = true
+			z_breaks[x_line][z_hi] = true
+
 	var navmesh := NavigationMesh.new()
 	var verts := PackedVector3Array()
+	var index_of: Dictionary = {}
 	var y: float = TilesetRegistry.FLOOR_THICKNESS + 0.001  # just above floor surface
+
 	for rect in rects:
 		var b: Dictionary = bounds.call(rect)
-		var base: int = verts.size()
-		verts.append(Vector3(b.lo_x, y, b.lo_z))
-		verts.append(Vector3(b.hi_x, y, b.lo_z))
-		verts.append(Vector3(b.hi_x, y, b.hi_z))
-		verts.append(Vector3(b.lo_x, y, b.hi_z))
-		navmesh.add_polygon(PackedInt32Array([base, base + 1, base + 2, base + 3]))
+		var x_hi: int = rect.x + rect.w
+		var z_hi: int = rect.y + rect.h
+		var poly := PackedInt32Array()
+
+		# Same winding as before: +x along the near edge, +z along the far side,
+		# then back. Each side emits its start corner plus its interior breaks;
+		# the next side emits the shared corner.
+		for bx in _interior_breaks(x_breaks.get(rect.y, {}), rect.x, x_hi, false):
+			poly.append(_intern_vertex(verts, index_of, Vector3(_axis_world(bx, rect.x, x_hi, b.lo_x, b.hi_x), y, b.lo_z)))
+
+		for bz in _interior_breaks(z_breaks.get(x_hi, {}), rect.y, z_hi, false):
+			poly.append(_intern_vertex(verts, index_of, Vector3(b.hi_x, y, _axis_world(bz, rect.y, z_hi, b.lo_z, b.hi_z))))
+
+		for bx in _interior_breaks(x_breaks.get(z_hi, {}), rect.x, x_hi, true):
+			poly.append(_intern_vertex(verts, index_of, Vector3(_axis_world(bx, rect.x, x_hi, b.lo_x, b.hi_x), y, b.hi_z)))
+
+		for bz in _interior_breaks(z_breaks.get(rect.x, {}), rect.y, z_hi, true):
+			poly.append(_intern_vertex(verts, index_of, Vector3(b.lo_x, y, _axis_world(bz, rect.y, z_hi, b.lo_z, b.hi_z))))
+
+		navmesh.add_polygon(poly)
+
 	navmesh.vertices = verts
-	# Adjacent polygons share an edge by construction (greedy fills the grid
-	# with integer-aligned rectangles), so no edge-connection tolerance needed.
 	nav_region.navigation_mesh = navmesh
+
+## One side of a rectangle, as boundary indices: the start corner followed by any
+## neighbour-introduced breaks strictly inside it. The end corner belongs to the
+## next side. `reverse` walks the side backwards, so winding stays consistent.
+func _interior_breaks(candidates: Dictionary, lo: int, hi: int, reverse: bool) -> Array:
+	var inner: Array = []
+
+	for key in candidates.keys():
+		var value: int = key
+		if value > lo and value < hi:
+			inner.append(value)
+
+	inner.sort()
+
+	var points: Array = [hi] if reverse else [lo]
+
+	if reverse:
+		inner.reverse()
+
+	points.append_array(inner)
+
+	return points
+
+## Maps a tile-boundary index on one axis to its world coordinate, using the
+## rect's own already-resolved world span so cell centring stays consistent.
+func _axis_world(boundary: int, lo: int, hi: int, lo_world: float, hi_world: float) -> float:
+	if boundary <= lo:
+		return lo_world
+	if boundary >= hi:
+		return hi_world
+
+	var t: float = float(boundary - lo) / float(hi - lo)
+
+	return lerpf(lo_world, hi_world, t)
+
+func _intern_vertex(verts: PackedVector3Array, index_of: Dictionary, pos: Vector3) -> int:
+	var key := Vector3i(roundi(pos.x * 100.0), roundi(pos.y * 100.0), roundi(pos.z * 100.0))
+
+	if index_of.has(key):
+		return index_of[key]
+
+	var idx: int = verts.size()
+	verts.append(pos)
+	index_of[key] = idx
+
+	return idx
 
 # ---------- merged wall colliders ----------
 
@@ -675,7 +1467,7 @@ func _pick_enemy_spawns(room_pool: Array, all_rooms: Array, count: int, corridor
 		var t: Vector2i = tile_key
 		if not _is_in_any_room(t, all_rooms):
 			corridor_pool.append(t)
-	corridor_pool.shuffle()  # cheap variety, fine even though it uses engine RNG
+	_shuffle_in_place(corridor_pool)
 
 	var attempts: int = 0
 	var max_attempts: int = count * 30
@@ -719,7 +1511,8 @@ func _find_gridmap(root: Node) -> GridMap:
 func _to_world(p: Vector2i) -> Vector3:
 	return Vector3(p.x * TilesetRegistry.TILE_SIZE, 0.0, p.y * TilesetRegistry.TILE_SIZE)
 
-func _populate_enemies(scene_root: Node, spawns: Array) -> void:
+func _populate_enemies(scene_root: Node, result: Result) -> void:
+	var spawns: Array = result.enemy_spawns
 	var enemies_node: Node = scene_root.get_node_or_null("Enemies")
 	if enemies_node == null:
 		push_warning("MapGenerator: no Enemies node in scene root; skipping enemy spawns")
@@ -727,47 +1520,105 @@ func _populate_enemies(scene_root: Node, spawns: Array) -> void:
 	var spawn_script: Script = load("res://scripts/SpawnId.gd")
 	var idx: int = 0
 	
-	## level range is converted to floats
 	var levels_parsed: Array = _config.get("enemy_level_range", [])
-		
-	if levels_parsed.is_empty() or len(levels_parsed) != 2:
-		push_warning("MapGenerator: no enemy level range set or incorrect value provided")
-		return
-	
-	var levels: Array = []
-	
-	for value in levels_parsed:
-		levels.append(int(value))
-	
+	var levels: Array = [1, 3]
+
+	# MAP_CONFIG.md already documents [1, 3] as the default. Returning early
+	# here instead left the whole map with zero enemy markers.
+	if levels_parsed.size() != 2:
+		push_warning("MapGenerator: enemy_level_range missing or malformed, using %s" % str(levels))
+	else:
+		levels = [int(levels_parsed[0]), int(levels_parsed[1])]
+
+
 	for tile_v in spawns:
 		var tile: Vector2i = tile_v
 		var marker := Marker3D.new()
 		marker.set_script(spawn_script)
 		marker.spawn_id = "proc_spawn_%02d" % idx
 		marker.level_range = levels
+		marker.reward_keys = result.enemy_keys.get(idx, [])
 		marker.position = _to_world(tile) + Vector3(0, 0.1, 0)
 		enemies_node.add_child(marker)
 		idx += 1
 
-func _populate_chests(gridmap: GridMap, spawns: Array) -> void:
+## MapInstance.chest_state is keyed on the bare chest id, so two procedural maps
+## both numbering from proc_chest_00 shared one saved state.
+func _chest_id(idx: int) -> String:
+	if _map_id.is_empty():
+		push_error("MapGenerator: no map_id given, procedural chest ids will collide across maps")
+		return "proc_chest_%02d" % idx
+
+	return "%s_chest_%02d" % [_map_id, idx]
+
+func _populate_chests(gridmap: GridMap, result: Result) -> void:
 	var chests_node: Node = gridmap.get_node_or_null("Chests")
 	if chests_node == null:
+		push_warning("MapGenerator: no Chests node in blueprint; skipping chests")
 		return
 	var chest_scene: PackedScene = load("res://scenes/ChestBasic.tscn")
 	if chest_scene == null:
 		push_warning("MapGenerator: ChestBasic.tscn not found; skipping chests")
 		return
+	var reward_quantity: int = int(_config.get("reward_chest_quantity", 4))
 	var idx: int = 0
-	for tile_v in spawns:
+	for tile_v in result.chest_spawns:
 		var tile: Vector2i = tile_v
 		var chest := chest_scene.instantiate()
 		chest.position = _to_world(tile) + Vector3(0, 0.5, 0)
 		if "id" in chest:
-			chest.id = "proc_chest_%02d" % idx
+			chest.id = _chest_id(idx)
 		if "random" in chest:
 			chest.random = true
+		if "forced_keys" in chest:
+			chest.forced_keys = result.chest_keys.get(idx, [])
+		if "lock_spec" in chest:
+			chest.lock_spec = result.chest_locks.get(idx, {})
+		# The payoff for a key hunt must not be the same two random items every
+		# corridor chest gives.
+		if result.reward_chests.has(idx):
+			if "quantity" in chest:
+				chest.quantity = reward_quantity
+			if "contents" in chest:
+				chest.contents = ChestInteractable.Contents.BOTH
 		chests_node.add_child(chest)
 		idx += 1
+
+func _populate_doors(gridmap: GridMap, doors: Array) -> void:
+	if doors.is_empty():
+		return
+	var doors_node: Node = gridmap.get_node_or_null("Doors")
+	if doors_node == null:
+		push_warning("MapGenerator: no Doors node in blueprint; skipping %d doors" % doors.size())
+		return
+	var door_scene: PackedScene = load("res://maps/_door/proc_door.tscn")
+	if door_scene == null:
+		push_warning("MapGenerator: proc_door.tscn not found; skipping doors")
+		return
+
+	for entry_v in doors:
+		var entry: Dictionary = entry_v
+		var a: Vector2i = entry["a"]
+		var b: Vector2i = entry["b"]
+		var node: Node3D = door_scene.instantiate()
+		# Tile t sits at world t * TILE_SIZE, so the shared boundary midpoint is
+		# just the summed coordinates at TILE_SIZE 2.
+		node.position = Vector3(float(a.x + b.x), 0.0, float(a.y + b.y))
+		# The closed leaf is thin on local Z, so yaw 0 seals a north/south step.
+		node.rotation = Vector3(0.0, PI * 0.5 if (b - a).x != 0 else 0.0, 0.0)
+		node.door_id = entry["id"]
+		node.locked = entry["locked"]
+		node.key_id = entry["key_id"]
+		node.key_name = entry["key_name"]
+		node.seal_name = entry["seal_name"]
+		node.trap_id = _pick_trap_id(entry["trapped"])
+		doors_node.add_child(node)
+
+func _pick_trap_id(is_trapped: bool) -> String:
+	if not is_trapped or TrapRegistry.basic_traps.is_empty():
+		return ""
+
+	return TrapRegistry.basic_traps[_rng.randi() % TrapRegistry.basic_traps.size()].id
 
 const PORTAL_COLOR: Color = Color(0.30, 0.60, 1.00)
 

@@ -111,6 +111,8 @@ func load_map(map_id: String = "", load_data: Dictionary = {}) -> void:
 	if MapInstance.map_id != map_id or not MapInstance.map_id:
 		print("Dungeon: Loading new map")
 		MapInstance.hydrate_from_resource(map_data)
+	elif MapInstance.available_enemies.is_empty():
+		MapInstance.hydrate_enemy_pool(map_data)
 
 	if !load_data.is_empty():
 		MapInstance.hydrate_from_load(load_data)
@@ -120,6 +122,11 @@ func load_map(map_id: String = "", load_data: Dictionary = {}) -> void:
 		current_map_scene = _build_procedural_map(map_data, load_data.is_empty())
 	else:
 		var map_scene := MapManager.get_map(map_id)
+
+		if map_scene == null:
+			push_error("Dungeon: map '%s' is declared in maps.json but not registered in MapManager.maps" % map_id)
+			return
+
 		current_map_scene = map_scene.instantiate()
 
 	self.add_child(current_map_scene)
@@ -186,7 +193,7 @@ func _build_procedural_map(map_data: Dictionary, fresh_entry: bool) -> Node:
 	var end_map_id: String = map_data.get("end_map", "")
 
 	var seed_value: int = MapInstance.get_or_create_seed(map_id)
-	var gen := MapGenerator.new(seed_value, config)
+	var gen := MapGenerator.new(seed_value, config, map_id)
 	var result: MapGenerator.Result = gen.generate()
 	gen.apply_to_scene(scene_root, result, tileset, return_map_id, end_map_id)
 

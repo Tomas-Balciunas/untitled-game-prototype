@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://dphnv8sgmui72"]
+[gd_scene format=3 uid="uid://dphnv8sgmui72"]
 
 [ext_resource type="MeshLibrary" uid="uid://iknfmk60o8bp" path="res://maps/crypt/mesh/crypt_00.tres" id="1_k72gb"]
 [ext_resource type="Script" uid="uid://qwci85k0novh" path="res://scripts/ChestManager.gd" id="2_52c82"]
@@ -18,10 +18,10 @@ cell_height = 0.01
 background_mode = 2
 sky = SubResource("Sky_k72gb")
 
-[node name="NavigationRegion3D" type="NavigationRegion3D"]
+[node name="NavigationRegion3D" type="NavigationRegion3D" unique_id=1213401897]
 navigation_mesh = SubResource("NavigationMesh_k72gb")
 
-[node name="Crypt" type="GridMap" parent="."]
+[node name="Crypt" type="GridMap" parent="." unique_id=1033018035]
 mesh_library = ExtResource("1_k72gb")
 cell_size = Vector3(1, 2, 1)
 cell_center_y = false
@@ -31,32 +31,32 @@ data = {
 }
 metadata/_editor_floor_ = Vector3(0, 1, 0)
 
-[node name="Chests" type="Node" parent="Crypt"]
+[node name="Chests" type="Node" parent="Crypt" unique_id=942538565]
 script = ExtResource("2_52c82")
 
-[node name="Transitions" type="Node" parent="Crypt"]
+[node name="Transitions" type="Node" parent="Crypt" unique_id=1876460177]
 
-[node name="Rest" type="Node" parent="Crypt"]
+[node name="Rest" type="Node" parent="Crypt" unique_id=1688791000]
 
-[node name="Interactable" type="Node" parent="Crypt"]
+[node name="Interactable" type="Node" parent="Crypt" unique_id=1400246812]
 
-[node name="Events" type="Node" parent="Crypt"]
+[node name="Events" type="Node" parent="Crypt" unique_id=1784587380]
 
-[node name="WorldEnvironment" type="WorldEnvironment" parent="Crypt"]
+[node name="WorldEnvironment" type="WorldEnvironment" parent="Crypt" unique_id=64856435]
 environment = SubResource("Environment_chn7v")
 
-[node name="Torches" type="Node" parent="Crypt"]
+[node name="Torches" type="Node" parent="Crypt" unique_id=1626432811]
 
-[node name="Torch" parent="Crypt/Torches" instance=ExtResource("3_t5wcu")]
+[node name="Torch" parent="Crypt/Torches" unique_id=1299771342 instance=ExtResource("3_t5wcu")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.300486, 0.29680318, -12.792891)
 
-[node name="Torch2" parent="Crypt/Torches" instance=ExtResource("3_t5wcu")]
+[node name="Torch2" parent="Crypt/Torches" unique_id=221071621 instance=ExtResource("3_t5wcu")]
 transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, -10.013159, 0.42176503, 0.7986388)
 
-[node name="Enemies" type="Node" parent="."]
+[node name="Enemies" type="Node" parent="." unique_id=390207237]
 script = ExtResource("3_1x1qq")
 
-[node name="Marker3D" type="Marker3D" parent="Enemies"]
+[node name="Marker3D" type="Marker3D" parent="Enemies" unique_id=1396174222]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.033161, 0, 0.0021735132)
 script = ExtResource("4_chn7v")
 spawn_id = "spawn_01"

@@ -1,7 +1,0 @@
-[gd_resource type="Resource" script_class="Door" format=3 uid="uid://1076kq8jj1mn"]
-
-[ext_resource type="Script" uid="uid://thpvb0l1cx3w" path="res://scripts/Door.gd" id="1_71geg"]
-
-[resource]
-script = ExtResource("1_71geg")
-metadata/_custom_type_script = "uid://thpvb0l1cx3w"

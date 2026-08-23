@@ -20,11 +20,11 @@ func _ready() -> void:
 	TransitionManager.connect("map_transition_ended", Callable(self, "_on_map_transition_ended"))
 
 func _physics_process(_delta: float) -> void:
-	
+
 	if tween is Tween:
 		if tween.is_running():
 			return
-			
+
 	if Input.is_action_pressed("move_forward") and not front_ray.is_colliding():
 		if GameState.is_busy():
 			return

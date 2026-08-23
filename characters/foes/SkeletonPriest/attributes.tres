@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="Attributes" format=3]
+
+[ext_resource type="Script" uid="uid://blqk30gl013xc" path="res://stat/_attribute/attributes.gd" id="1_attr"]
+
+[resource]
+script = ExtResource("1_attr")
+strength = 3
+intelligence = 5
+piety = 11
+vitality = 5
+dexterity = 4
+speed = 4
+luck = 3
+metadata/_custom_type_script = "uid://blqk30gl013xc"

@@ -54,16 +54,26 @@ func on_item_selected(item: Item) -> void:
 func on_character_selected(character: Character) -> void:
 	if !selected_item:
 		push_error("Selected item is null in chest!")
-	
+		return
+
 	if !character.inventory.has_free_slot():
 		NotificationBus.notification_requested.emit("%s has no free slots" % character.resource.name)
+		return
 
-	if remove_item_from_chest(selected_item):
-		character.inventory.add_item(selected_item)
-		NotificationBus.notification_requested.emit("%s has received %s" % [character.resource.name, selected_item.get_item_name()])
-		remove_item(selected_item)
-	else:
-		push_error("ItemResource was not removed from chest")
+	if !character.inventory.add_item(selected_item):
+		NotificationBus.notification_requested.emit("%s could not take %s" % [character.resource.name, selected_item.get_item_name()])
+		return
+
+	var taken: Item = selected_item
+
+	if !remove_item_from_chest(taken):
+		push_error("Item was not removed from chest")
+
+	if taken.type == ItemTypes.ItemType.QUEST:
+		MapInstance.mark_key_granted(taken.id)
+
+	NotificationBus.notification_requested.emit("%s has received %s" % [character.resource.name, taken.get_item_name()])
+	remove_item(taken)
 	
 func remove_item_from_chest(item: Item) -> bool:
 	var success: bool = chest.remove_item(item)

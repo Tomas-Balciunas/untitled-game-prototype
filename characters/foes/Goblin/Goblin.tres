@@ -1,0 +1,26 @@
+[gd_resource type="Resource" script_class="CharacterResource" format=3 uid="uid://bf7iqafyt01fl"]
+
+[ext_resource type="Script" uid="uid://bwn4gpkaijqsg" path="res://scripts/CharacterResource.gd" id="1_res"]
+[ext_resource type="Resource" path="res://characters/foes/Goblin/attributes.tres" id="2_attr"]
+[ext_resource type="Script" uid="uid://cbelvg2fndssu" path="res://scripts/BattleEvent.gd" id="3_nsodf"]
+[ext_resource type="Resource" path="res://characters/foes/Goblin/goblin_stats.tres" id="3_stats"]
+[ext_resource type="Resource" path="res://characters/foes/Goblin/stat_level_growth.tres" id="4_lvl"]
+[ext_resource type="Script" uid="uid://bp0biy0knxw2o" path="res://effect/Effect.gd" id="5_c4vdi"]
+[ext_resource type="Resource" uid="uid://cyni3kvaq3rkk" path="res://characters/foes/Goblin/stat_attribute_growth.tres" id="5_grow"]
+[ext_resource type="Script" uid="uid://b06vmgrh4qa8i" path="res://gear/ItemResource.gd" id="6_18l4r"]
+[ext_resource type="PackedScene" uid="uid://5r0hwtkk272a" path="res://characters/foes/Goblin/_body/Goblin.tscn" id="6_body"]
+[ext_resource type="Script" uid="uid://dq4acpkde276p" path="res://skills/Skill.gd" id="7_o6oaa"]
+[ext_resource type="Resource" uid="uid://cs2tci0dc3vvo" path="res://characters/_class/_Unknown.tres" id="8_akg0d"]
+[ext_resource type="Resource" uid="uid://lcgngc3c13fc" path="res://characters/_race/_Unknown.tres" id="9_nholw"]
+
+[resource]
+script = ExtResource("1_res")
+attributes = ExtResource("2_attr")
+base_stats = ExtResource("3_stats")
+stat_level_growth = ExtResource("4_lvl")
+stat_attribute_growth = ExtResource("5_grow")
+experience_granted = 50
+id = "e_goblin_001"
+name = "Goblin"
+character_body = ExtResource("6_body")
+metadata/_custom_type_script = "uid://bwn4gpkaijqsg"

@@ -43,4 +43,14 @@ func get_trap(id: String) -> Trap:
 	return null
 
 func get_random_trap() -> Trap:
-	return basic_traps[randi() % len(basic_traps)]
+	return basic_traps[randi() % len(basic_traps)].duplicate()
+
+func instantiate_trap(id: String) -> Trap:
+	if id.is_empty():
+		return null
+
+	if not traps.has(id):
+		push_error("Trap not found by %s" % id)
+		return null
+
+	return traps[id].duplicate()

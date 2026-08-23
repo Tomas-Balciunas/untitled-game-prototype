@@ -18,14 +18,31 @@ func _ready() -> void:
 func _on_enemy_died(dead: Character) -> void:
 	remove_slot_for(dead)
 
-func get_enemy_instances(resources: Array[CharacterResource]) -> Array[Character]:
+func get_enemy_instances(encounter_enemies: Array[EncounterEnemy]) -> Array[Character]:
 	var enemies: Array[Character] = []
-	for r in resources:
-		##TODO: temporary enemy overflow guard
+	
+	for encounter_enemy in encounter_enemies:
 		if len(enemies) >= MAX_SLOTS:
 			return enemies
-		var e := Character.new(r)
-		enemies.append(e)
+		
+		if encounter_enemy.resource == null:
+			push_error("Encounter enemy is missing a resource!")
+			continue
+		
+		var enemy: Character = Character.new(encounter_enemy.resource, encounter_enemy.level)
+		
+		if encounter_enemy.name_override != "":
+			enemy.name = encounter_enemy.name_override
+		
+		for extra_modifier: StatModifier in encounter_enemy.stat_modifiers:
+			enemy.state.add_modifier(extra_modifier)
+		
+		for extra_effect: Effect in encounter_enemy.extra_effects:
+			enemy.apply_effect(extra_effect, CharacterSource.new(enemy))
+		
+		StatCalculator.recalculate_all_stats(enemy)
+		enemy.full_heal()
+		enemies.append(enemy)
 	return enemies
 
 func place_all_enemies(enemies: Array[Character]) -> void:

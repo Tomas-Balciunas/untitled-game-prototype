@@ -9,7 +9,6 @@
 [ext_resource type="Script" uid="uid://b06vmgrh4qa8i" path="res://gear/ItemResource.gd" id="5_mpmjy"]
 [ext_resource type="Resource" uid="uid://cs2tci0dc3vvo" path="res://characters/_class/_Unknown.tres" id="6_mpmjy"]
 [ext_resource type="Resource" uid="uid://lcgngc3c13fc" path="res://characters/_race/_Unknown.tres" id="7_gcpvx"]
-[ext_resource type="Resource" uid="uid://c5qyqcmwx0qfy" path="res://scripts/experience/ExperienceManager.tres" id="8_tl2ml"]
 [ext_resource type="Resource" uid="uid://d0teo8fy4hnlf" path="res://characters/foes/Skeltal/skeltal_interactions.tres" id="10_07eh6"]
 [ext_resource type="Resource" uid="uid://y06tpwicaj0j" path="res://characters/foes/Skeltal/stat_attribute_growth.tres" id="13_07eh6"]
 [ext_resource type="Resource" uid="uid://j2iols3j2tne" path="res://characters/foes/Skeltal/attributes.tres" id="14_skel1"]
@@ -18,15 +17,17 @@
 [sub_resource type="Resource" id="Resource_rmkt2"]
 script = ExtResource("2_smc4f")
 attack = 3.0
-health = 200.0
+health = 50.0
 mana = 10.0
 sp = 10.0
+action_points = 10.0
 speed = 3.0
 defense = 10
 magic_power = 10
 divine_power = 10
 magic_defense = 10
 resistance = 10
+evasion = 1.0
 metadata/_custom_type_script = "uid://bqln4xpkkidja"
 
 [resource]
@@ -35,6 +36,7 @@ attributes = ExtResource("14_skel1")
 base_stats = SubResource("Resource_rmkt2")
 stat_level_growth = ExtResource("15_skel2")
 stat_attribute_growth = ExtResource("13_07eh6")
+experience_granted = 50
 id = "0000"
 name = "Skeleton"
 character_body = ExtResource("3_tl2ml")

@@ -1,7 +1,7 @@
 [gd_resource type="Resource" script_class="CharacterResource" format=3 uid="uid://btr7k6tmwt3qi"]
 
 [ext_resource type="Script" uid="uid://bwn4gpkaijqsg" path="res://scripts/CharacterResource.gd" id="1_04kyn"]
-[ext_resource type="Resource" uid="uid://57fo0cycgjne" path="res://stat/_stats/DefaultStats.tres" id="1_7mwlc"]
+[ext_resource type="Resource" path="res://characters/foes/_fallback/boo_stats.tres" id="1_7mwlc"]
 [ext_resource type="Script" uid="uid://cbelvg2fndssu" path="res://scripts/BattleEvent.gd" id="2_y8skw"]
 [ext_resource type="PackedScene" uid="uid://cygiaifldp3mm" path="res://characters/foes/_fallback/_body/Fallback.tscn" id="3_d1mbr"]
 [ext_resource type="Script" uid="uid://bp0biy0knxw2o" path="res://effect/Effect.gd" id="3_xdmfg"]
@@ -17,6 +17,7 @@
 [resource]
 script = ExtResource("1_04kyn")
 attributes = ExtResource("12_boo1")
+base_stats = ExtResource("1_7mwlc")
 stat_level_growth = ExtResource("13_boo2")
 stat_attribute_growth = ExtResource("11_d1mbr")
 id = "e_enemy_001"

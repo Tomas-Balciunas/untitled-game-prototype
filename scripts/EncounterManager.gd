@@ -16,11 +16,7 @@ func start_encounter(data: EncounterData) -> void:
 	GameState.current_state = GameState.States.IN_BATTLE
 	print("EncounterManager: Starting encounter:", data.id)
 	
-	var enemies: Array[CharacterResource] = []
 	var arena := MapManager.get_arena(data.arena)
-	
-	for enemy in data.enemies:
-		enemies.append(CharacterRegistry.get_character(enemy.id))
 	
 	var tween := get_tree().create_tween()
 	transition_battle.modulate.a = 0.0
@@ -31,7 +27,7 @@ func start_encounter(data: EncounterData) -> void:
 	current_battle_scene = battle_scene.instantiate()
 	get_tree().get_root().get_node("Main").add_child(current_battle_scene)
 	current_battle_scene.global_position = Vector3(1000, 0, 1000)
-	current_battle_scene.initiate(arena, enemies, data)
+	current_battle_scene.initiate(arena, data)
 	
 	tween = get_tree().create_tween()
 	tween.tween_property(transition_battle, "modulate:a", 0.0, 0.5)
@@ -39,11 +35,8 @@ func start_encounter(data: EncounterData) -> void:
 	await tween.finished
 
 func end_encounter(result: String, data: EncounterData) -> void:
-	if result == "win":
-		MapInstance.mark_encounter_cleared(data.id)
-
-	current_battle_scene.queue_free()
 	get_tree().get_root().get_node("Main").remove_child(current_battle_scene)
+	current_battle_scene.queue_free()
 	current_battle_scene = null
 	print("EncounterManager: Ending encounter with result:", result)
 	BattleContext.clear_context()
@@ -52,12 +45,17 @@ func end_encounter(result: String, data: EncounterData) -> void:
 	if result == "win":
 		if data.reward_event != null:
 			await EventManager.process_event(data.reward_event)
-		else:
-			var default_steps := _build_default_reward_steps(data)
-			if not default_steps.is_empty():
-				await EventManager.process_event(default_steps)
 
-		PartyManager.grant_experience_to_all(data.experience_reward)
+		var default_steps := _build_default_reward_steps(data)
+		if not default_steps.is_empty():
+			await EventManager.process_event(default_steps)
+		
+		if data.experience_reward > 0:
+			PartyManager.grant_experience_to_all(data.experience_reward)
+		else:
+			ExperienceManager.calculate_and_grant_encounter_experience(data)
+		
+		MapInstance.mark_encounter_cleared(data.id)
 
 	GameState.current_state = GameState.States.IDLE
 

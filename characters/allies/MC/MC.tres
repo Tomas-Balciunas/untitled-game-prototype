@@ -6,7 +6,6 @@
 [ext_resource type="Script" uid="uid://bp0biy0knxw2o" path="res://effect/Effect.gd" id="4_2usx5"]
 [ext_resource type="Script" uid="uid://b06vmgrh4qa8i" path="res://gear/ItemResource.gd" id="4_jti2u"]
 [ext_resource type="Resource" uid="uid://b2movrdrkxno7" path="res://characters/allies/MC/test_sword.tres" id="6_jti2u"]
-[ext_resource type="Resource" uid="uid://c5qyqcmwx0qfy" path="res://scripts/experience/ExperienceManager.tres" id="6_l36pt"]
 [ext_resource type="Script" uid="uid://dq4acpkde276p" path="res://skills/Skill.gd" id="6_lkn2v"]
 [ext_resource type="Resource" uid="uid://c7nmidhbqovfy" path="res://effect/_passive/consumable_discount/discount.tres" id="6_up1d2"]
 [ext_resource type="Resource" uid="uid://beawinixonrnb" path="res://effect/bleed/bleed_effects/reduce_enemy_bleed_consumption/reduce_enemy_bleed_consumption.tres" id="7_up1d2"]

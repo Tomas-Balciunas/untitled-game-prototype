@@ -11,19 +11,10 @@ func _ready() -> void:
 	battle_manager.enemy_grid = enemy_grid
 	battle_manager.ally_grid = ally_grid
 
-func initiate(arena: PackedScene, enemies: Array[CharacterResource], data: EncounterData) -> void:
+func initiate(arena: PackedScene, data: EncounterData) -> void:
 	load_arena(arena)
-	var duplicated_enemies: Array[CharacterResource] = enemies.duplicate(true)
 	
-	if !data.level_range.is_empty():
-		assert(data.level_range[0] is int)
-		assert(data.level_range[1] is int)
-		assert(data.level_range[0] < data.level_range[1])
-		
-		for enemy in duplicated_enemies:
-			enemy.level = range(data.level_range[0], data.level_range[1] + 1).pick_random()
-	
-	var enemy_instances := load_enemies(enemies)
+	var enemy_instances := load_enemies(data)
 	ally_grid.place_all_allies()
 	BattleContext.fill_context(battle_manager, enemy_grid, ally_grid, data)
 	
@@ -36,8 +27,8 @@ func load_arena(arena_scene: PackedScene) -> void:
 	var arena_instance := arena_scene.instantiate()
 	arena_root.add_child(arena_instance)
 
-func load_enemies(enemies: Array[CharacterResource]) -> Array[Character]:
-	var enemy_instances: Array[Character] = enemy_grid.get_enemy_instances(enemies)
+func load_enemies(data: EncounterData) -> Array[Character]:
+	var enemy_instances: Array[Character] = enemy_grid.get_enemy_instances(data.enemies)
 	enemy_grid.place_all_enemies(enemy_instances)
 	
 	return enemy_instances

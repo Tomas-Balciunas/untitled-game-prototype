@@ -1,0 +1,116 @@
+[gd_scene format=3 uid="uid://h7ygbdt4414w"]
+
+[ext_resource type="Script" uid="uid://06dsdpcwkunk" path="res://scripts/interactables/door_interactable.gd" id="1_11vop"]
+[ext_resource type="Script" uid="uid://c0nnjlcyyp2p4" path="res://gear/QuestItemResource.gd" id="2_seflw"]
+[ext_resource type="Script" uid="uid://thpvb0l1cx3w" path="res://scripts/Door.gd" id="3_g0nqe"]
+[ext_resource type="Texture2D" uid="uid://bof7itr03d6g8" path="res://maps/test_map/generic_dungeon.png" id="4_ase26"]
+
+[sub_resource type="Resource" id="Resource_shjaa"]
+script = ExtResource("2_seflw")
+metadata/_custom_type_script = "uid://c0nnjlcyyp2p4"
+
+[sub_resource type="Resource" id="Resource_ctxwy"]
+script = ExtResource("3_g0nqe")
+key = SubResource("Resource_shjaa")
+metadata/_custom_type_script = "uid://thpvb0l1cx3w"
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_2sg8f"]
+size = Vector3(2, 2, 0.35)
+
+[sub_resource type="BoxMesh" id="BoxMesh_xhdjd"]
+size = Vector3(2, 2, 0.06)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_5olmo"]
+size = Vector3(2, 2, 0.06)
+
+[sub_resource type="Animation" id="Animation_2sg8f"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_5olmo"]
+resource_name = "close"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, 1.5707964, 0), Vector3(0, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_xhdjd"]
+resource_name = "open"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, 1.5707964, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_5olmo"]
+_data = {
+&"RESET": SubResource("Animation_2sg8f"),
+&"close": SubResource("Animation_5olmo"),
+&"open": SubResource("Animation_xhdjd")
+}
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_x2715"]
+albedo_texture = ExtResource("4_ase26")
+uv1_scale = Vector3(2, 2, 1)
+
+[node name="DoorInteractable" type="Area3D" unique_id=169355905]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 0, 0)
+script = ExtResource("1_11vop")
+door = SubResource("Resource_ctxwy")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=331391165]
+transform = Transform3D(1, 0, 1.1641532e-10, 0, 1, 0, 0, 0, 1.0000001, 1, 1, 0)
+shape = SubResource("BoxShape3D_2sg8f")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="." unique_id=691435447]
+transform = Transform3D(0.5, 0, 0, 0, 1, 0, 0, 0, 0.5, 0.5, 0, 0)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D" unique_id=1379126910]
+transform = Transform3D(1, 0, 0, 0, 0.75, 0, 0, 0, 1, 1, 0.75, 0)
+mesh = SubResource("BoxMesh_xhdjd")
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="StaticBody3D" unique_id=1473876717]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1, 0)
+shape = SubResource("BoxShape3D_5olmo")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="StaticBody3D" unique_id=856808111]
+libraries/ = SubResource("AnimationLibrary_5olmo")
+
+[node name="Wall" type="CSGBox3D" parent="." unique_id=2026337477]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 0.1, 1, 1, 0)
+use_collision = true
+size = Vector3(2, 2, 1)
+material = SubResource("StandardMaterial3D_x2715")
+
+[node name="DoorCutout" type="CSGBox3D" parent="Wall" unique_id=1033291400]
+transform = Transform3D(1, 0, 0, 0, 1.5, 0, 0, 0, 1, 0, -0.25, 0)
+operation = 2
+use_collision = true

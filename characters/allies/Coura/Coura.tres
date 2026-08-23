@@ -4,7 +4,7 @@
 [ext_resource type="Script" uid="uid://bqln4xpkkidja" path="res://stat/_stats/stats.gd" id="2_3lheu"]
 [ext_resource type="PackedScene" uid="uid://dqjihmjf45spx" path="res://characters/allies/Coura/_body/Coura.tscn" id="2_klpoy"]
 [ext_resource type="Script" uid="uid://dq4acpkde276p" path="res://skills/Skill.gd" id="3_ma71o"]
-[ext_resource type="Script" uid="uid://cgllfcpvodqsg" path="res://scripts/experience/ExperienceManager.gd" id="4_g8tir"]
+[ext_resource type="Script" uid="uid://cbelvg2fndssu" path="res://scripts/BattleEvent.gd" id="3_yxfip"]
 [ext_resource type="Resource" uid="uid://dgxlt0x8p42nw" path="res://effect/_passive/damage share/DamageShare.tres" id="5_ci8co"]
 [ext_resource type="Resource" uid="uid://bbhp3nyjhsykk" path="res://effect/_passive/damage_accumulator.tres" id="5_yxfip"]
 [ext_resource type="Script" uid="uid://b06vmgrh4qa8i" path="res://gear/ItemResource.gd" id="6_nka8l"]
@@ -25,17 +25,16 @@ attack = 3.0
 health = 20.0
 mana = 10.0
 sp = 10.0
+action_points = 10.0
 speed = 8.0
 defense = 10
 magic_power = 10
 divine_power = 10
 magic_defense = 10
 resistance = 10
+accuracy = 9.0
+evasion = 8.0
 metadata/_custom_type_script = "uid://bqln4xpkkidja"
-
-[sub_resource type="Resource" id="Resource_klpoy"]
-script = ExtResource("4_g8tir")
-metadata/_custom_type_script = "uid://cgllfcpvodqsg"
 
 [resource]
 script = ExtResource("9_0ou40")
@@ -48,8 +47,6 @@ default_effects = Array[ExtResource("7_klpoy")]([ExtResource("5_yxfip"), ExtReso
 default_damage_type = null
 base_stats = SubResource("Resource_yxfip")
 stat_attribute_growth = ExtResource("14_yxfip")
-battle_events = null
-experience_manager = SubResource("Resource_klpoy")
 id = "a_coura_1"
 name = "Coura"
 character_body = ExtResource("2_klpoy")

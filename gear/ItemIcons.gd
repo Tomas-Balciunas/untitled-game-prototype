@@ -9,7 +9,7 @@ const WEAPON_DEFAULTS := {
 const GEAR_DEFAULTS := {}
 
 const CONSUMABLE_DEFAULT := ""
-const QUEST_DEFAULT := ""
+const QUEST_DEFAULT := "res://assets/icons/gear/misc/key_default.png"
 
 
 static func for_item(item: Item) -> Texture2D:

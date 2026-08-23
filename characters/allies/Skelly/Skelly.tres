@@ -5,7 +5,7 @@
 [ext_resource type="Script" uid="uid://bwn4gpkaijqsg" path="res://scripts/CharacterResource.gd" id="1_s17id"]
 [ext_resource type="Script" uid="uid://dq4acpkde276p" path="res://skills/Skill.gd" id="1_yod8j"]
 [ext_resource type="Script" uid="uid://cbelvg2fndssu" path="res://scripts/BattleEvent.gd" id="2_4twd5"]
-[ext_resource type="Resource" uid="uid://57fo0cycgjne" path="res://stat/_stats/DefaultStats.tres" id="2_jtp86"]
+[ext_resource type="Resource" path="res://characters/allies/Skelly/skelly_stats.tres" id="2_jtp86"]
 [ext_resource type="PackedScene" uid="uid://cvja2deox1khy" path="res://characters/allies/Skelly/_body/Skelly.tscn" id="3_bv0l2"]
 [ext_resource type="Resource" uid="uid://eiwm6khdbjki" path="res://characters/_race/Human.tres" id="4_l3iqv"]
 [ext_resource type="Script" uid="uid://b06vmgrh4qa8i" path="res://gear/ItemResource.gd" id="4_yu6ia"]
@@ -31,6 +31,7 @@ script = ExtResource("1_s17id")
 race = ExtResource("4_l3iqv")
 job = ExtResource("16_tyjbr")
 attributes = SubResource("Resource_rhf32")
+base_stats = ExtResource("2_jtp86")
 default_damage_type = 1
 stat_attribute_growth = SubResource("Resource_8uvd5")
 id = "a_skelly_1"

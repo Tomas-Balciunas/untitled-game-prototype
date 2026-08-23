@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://06dsdpcwkunk" path="res://scripts/interactables/door_interactable.gd" id="1_2sg8f"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_2sg8f"]
-size = Vector3(2.012207, 2, 0.34208113)
+size = Vector3(2, 2, 0.35)
 
 [sub_resource type="Animation" id="Animation_2sg8f"]
 length = 0.001
@@ -60,16 +60,16 @@ _data = {
 }
 
 [sub_resource type="BoxMesh" id="BoxMesh_xhdjd"]
-size = Vector3(2.282257, 2, 0.001)
+size = Vector3(2, 2, 0.06)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_5olmo"]
-size = Vector3(2.012207, 2, 0.001)
+size = Vector3(2, 2, 0.06)
 
 [node name="DoorInteractable" type="Area3D" unique_id=169355905]
 script = ExtResource("1_2sg8f")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=331391165]
-transform = Transform3D(1, 0, 1.1641532e-10, 0, 1, 0, 0, 0, 1.0000001, 1, 1, 0.042214602)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1, 0)
 shape = SubResource("BoxShape3D_2sg8f")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=856808111]
@@ -78,9 +78,9 @@ libraries/ = SubResource("AnimationLibrary_5olmo")
 [node name="StaticBody3D" type="StaticBody3D" parent="." unique_id=691435447]
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D" unique_id=1379126910]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.1446184, 1.0065709, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1, 0)
 mesh = SubResource("BoxMesh_xhdjd")
 
 [node name="CollisionShape3D2" type="CollisionShape3D" parent="StaticBody3D" unique_id=1473876717]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.1153532, 0.89593697, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1, 0)
 shape = SubResource("BoxShape3D_5olmo")

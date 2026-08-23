@@ -1,0 +1,26 @@
+[gd_resource type="Resource" script_class="CharacterResource" format=3 uid="uid://cyckw8lipdog2"]
+
+[ext_resource type="Script" uid="uid://bwn4gpkaijqsg" path="res://scripts/CharacterResource.gd" id="1_res"]
+[ext_resource type="Resource" path="res://characters/foes/Rat/attributes.tres" id="2_attr"]
+[ext_resource type="Script" uid="uid://cbelvg2fndssu" path="res://scripts/BattleEvent.gd" id="3_qc8a1"]
+[ext_resource type="Resource" path="res://characters/foes/Rat/rat_stats.tres" id="3_stats"]
+[ext_resource type="Resource" path="res://characters/foes/Rat/stat_level_growth.tres" id="4_lvl"]
+[ext_resource type="Script" uid="uid://bp0biy0knxw2o" path="res://effect/Effect.gd" id="5_bq0bx"]
+[ext_resource type="Resource" uid="uid://uahkks2g6tlb" path="res://characters/foes/Rat/stat_attribute_growth.tres" id="5_grow"]
+[ext_resource type="Script" uid="uid://b06vmgrh4qa8i" path="res://gear/ItemResource.gd" id="6_3jcpy"]
+[ext_resource type="PackedScene" uid="uid://hh5734mquqv1" path="res://characters/foes/Rat/_body/Rat.tscn" id="6_body"]
+[ext_resource type="Script" uid="uid://dq4acpkde276p" path="res://skills/Skill.gd" id="7_q568s"]
+[ext_resource type="Resource" uid="uid://cs2tci0dc3vvo" path="res://characters/_class/_Unknown.tres" id="8_1oohg"]
+[ext_resource type="Resource" uid="uid://lcgngc3c13fc" path="res://characters/_race/_Unknown.tres" id="9_242pr"]
+
+[resource]
+script = ExtResource("1_res")
+attributes = ExtResource("2_attr")
+base_stats = ExtResource("3_stats")
+stat_level_growth = ExtResource("4_lvl")
+stat_attribute_growth = ExtResource("5_grow")
+experience_granted = 20
+id = "e_rat_001"
+name = "Rat"
+character_body = ExtResource("6_body")
+metadata/_custom_type_script = "uid://bwn4gpkaijqsg"

@@ -5,7 +5,7 @@ class_name WeaponResource
 @export var targeting: TargetingManager.TargetType = TargetingManager.TargetType.SINGLE
 @export var attack_rate: int = 1
 @export var weapon_type: ItemTypes.WeaponType = ItemTypes.WeaponType.SWORD
-@export var accuracy_range: int = 0
+@export var damage_variance: int = 0
 @export var scaling: WeaponScaling
 ## only matters when bounce targeting is selected
 @export var bounce_instances: int = 1
@@ -38,7 +38,7 @@ func _build_instance() -> Weapon:
 	weapon.base_modifiers = modifiers.duplicate(true)
 	weapon.targeting = targeting
 	weapon.weapon_type = weapon_type
-	weapon.accuracy_range = accuracy_range
+	weapon.damage_variance = damage_variance
 	weapon.attack_rate = attack_rate
 	weapon.bounce_instances = bounce_instances
 	weapon.salvo_pellets = salvo_pellets

@@ -289,6 +289,78 @@ Rounding happens once, at the final layer; `computed_stats` / `modified_stats`
 stay float. `Stats.get_stat()` rounds to int — use `get_stat_raw()` when reading
 a layer back for further math.
 
+`CRITICAL_DAMAGE` is a normal (non-percentage) stat holding a **bonus percent**,
+default 0. Baseline + conversion live on `Stats`: `CRITICAL_DAMAGE_BASE` (150.0,
+next to `PERCENTAGE_BASE`) and `get_critical_multiplier()` →
+`(CRITICAL_DAMAGE_BASE + critical_damage) / 100.0`. `DamageCalculator._init`
+just consumes that (falling back to the baseline when there is no actor), so an
+unauthored character still crits for 1.5x and gear/modifiers add on top. It is
+deliberately not a `PERCENTAGE_STAT`: those use a fixed 100 baseline, drop gear
+contributions, and reject flat modifiers. (`Stats` is shared with `Gear`, so any
+non-zero default on the resource would be re-added per equipped item.)
+
+### Authoring stat resources — two invariants
+
+**`StatGrowthEntry.stat` is a raw `Stats.StatRef` index.** All four
+`stat_attribute_growth.tres` files were written against an enum that predated
+`ACTION_POINTS` (index 4), so every entry from `spd` onward was off by one:
+speed fed action points, dex fed resistance, and `EVASION` (12) received nothing
+at all — every character had 0 evasion, floored to 1.0 by the damage calculator.
+Fixed 2026-08-16. When adding an entry, read the index off `Stats.StatRef`
+directly; the sub-resource `id=` names are the only record of intent and they
+are not checked against anything.
+
+**`base_stats` must author `action_points`.** `turn_state.gd:22` seeds a turn's
+AP solely from that stat — there is no fallback and no attribute contribution.
+A character with 0 lands on 0 AP and can never afford an action. This was masked
+by the off-by-one (speed leaked into AP), so it only became load-bearing once
+that was corrected.
+
+Characters with no `base_stats` fall back to the *shared* `DefaultStats.tres`
+via `CharacterResource`'s export default. Lili, Skelly, Balmer and Boo all did;
+each now has its own resource so tuning one cannot move the others.
+
+### Damage roll (`scripts\DamageCalculator.gd`)
+
+`calculate_final_damage()` runs: variance roll → defense softening
+(`200 / (200 + defense)`) → crit multiplier → `damage_reduction`.
+
+The roll in `apply_damage_variance()` is the only randomness. Everything derives
+from one scale-invariant measure of the accuracy gap (both stats floored at 1.0):
+
+```
+advantage = (accuracy - evasion) / (accuracy + evasion)   # -1 .. 1
+```
+
+Parity is 0, 2x accuracy is 0.33, 4x is 0.6, 10x is 0.82. This replaced a raw
+`accuracy / evasion` ratio, which was unbounded and exploded whenever a target
+had no authored evasion.
+
+**Damage.** `exponent = DAMAGE_SKEW_RANGE ** -advantage` (so 1/3 .. 3), then
+`roll = randf() ** exponent` and `final_damage = lerpf(min, max, roll)` with
+min/max at `base * (1 ± damage_variance/100)`. The roll has CDF `x ** (1/exponent)`,
+giving mean `1 / (1 + exponent)` — 0.5 at parity, capped at 0.75 when dominant
+and 0.25 when outclassed. Bounded by construction, so damage never pins to max.
+
+**Crit** is the top slice of that *same* roll, so a crit is always a near-max
+hit rather than an independent coin flip:
+
+```
+chance    = CRITICAL_CHANCE_MAX * clamp(inverse_lerp(CRITICAL_GATE, CRITICAL_FULL, advantage), 0, 1)
+threshold = (1 - chance) ** exponent
+```
+
+Solving `1 - threshold ** (1/exponent) = chance` is what makes the observed rate
+come out to exactly `chance` despite the skew. Below `CRITICAL_GATE` (0.34, ~2x
+evasion) crits are impossible; the rate ramps to `CRITICAL_CHANCE_MAX` (15%) at
+`CRITICAL_FULL` (0.80, ~9x). **Accuracy is the crit-chance stat** — there is no
+separate crit chance stat, and no miss roll anywhere.
+
+`damage_variance` comes from the equipped weapon; when it is 0 (no weapon) the
+roll is skipped entirely and the hit can never crit. Note that integer rounding
+in `get_final_damage()` flattens the band at low damage numbers — at ~12 damage,
+a variance under ~15 collapses to a single value.
+
 Percentage stats (`Stats.PERCENTAGE_STATS`) bypass the normal path entirely via
 `_recalculate_percentage_stat`: baseline `Stats.PERCENTAGE_BASE`, multiplicative
 modifiers only (ADDITIVE is push_error-guarded), resolved in loop 1 and skipped
@@ -314,6 +386,63 @@ an unfilled `modified_stats`. Neither is reachable with current content.
   resource / skill id), `ContextSource`. `load_issues` is UI-surfaceable.
 - Party load is two-phase (characters first, then effects) so cross-character
   effect sources resolve — see `PartyManager.game_load` / `game_load_effects`.
+
+## Doors, locks and keys
+- **Blocking is a collider, not a rule.** Player movement is gated by four
+  `RayCast3D`s (`Player.tscn`, `target_position` ±2, mask 1). A door blocks
+  because `door_interactable.tscn` carries `StaticBody3D/CollisionShape3D2` on
+  layer 1. Opening rotates the root 90°, which swings that collider onto the
+  *perpendicular* boundary rather than clearing it — so `_set_blocking(false)`
+  disables the shape. Never "open" a door by rotation alone.
+- **Leaf geometry**: hinge at the node origin, leaf spans local X `0..2` and
+  Y `0..2`. `open`/`close`/`RESET` write **absolute** rotation to
+  `NodePath(".:rotation")` on the root, so a yaw set on that node is erased on
+  first animate.
+- **`maps/_door/proc_door.tscn`** exists for exactly that reason: `DoorPivot`
+  (Node3D) holds the yaw, with `door_interactable.tscn` as a child at local
+  `(-1, 0, 0)` so the closed leaf centres on the pivot origin — and therefore on
+  a tile boundary — at any yaw. The animation tracks then compose with the yaw
+  instead of destroying it.
+- **Flow**: `DoorInteractable._interact` → keyed/trapped emits
+  `ObjectBus.open_door_requested` → `DoorManager` (a per-map node on the map's
+  `Doors` container, same convention as `ChestManager`) → `display_door_opener`
+  → `door_opener_chosen` → on success `door_unlocked` + `door_state_changed`.
+  `DoorManager` holds no node reference, which is why unlocking is a broadcast
+  the owning `DoorInteractable` matches by instance.
+- **Bump-to-open**: there is no `interact` action in `project.godot`, so
+  `player.gd::_try_bump` opens the door whose `StaticBody3D` a blocked movement
+  ray hit. Mouse click remains the fallback. `E` is already `strafe_right`.
+- **Persistence**: `MapInstance.door_state[map_id][door_id]`, written by
+  `DoorPivot` on `door_state_changed` and restored via
+  `apply_restored_state()` (no animation, so a door already opened does not pop).
+  `granted_keys` / `pending_keys` / `expected_keys` are the key ledgers; all four
+  are namespaced by `map_id` and default to `{}`, so no `SAVE_VERSION` bump.
+- **Keys are ids, not resources.** `gear/KeyFactory.gd` rebuilds a key from
+  `map_id` + door id, so no registry entry and no saved resource is needed on any
+  load path. `build`/`rebuild` return a **`QuestItemResource`** — assign it
+  directly to `Door.key`, `Chest.set_locked()`, `EncounterData.item_rewards`, and
+  call `._build_instance()` only where an `Item` is wanted (`Chest.items`,
+  `Inventory`). Reversing that is a type error.
+- **Procedural chest ids are map-namespaced** (`<map_id>_chest_NN`, via
+  `MapGenerator._chest_id`) because `MapInstance.chest_state` is keyed on the
+  bare id and two procedural maps would otherwise share one saved state.
+- **Every generator draw must come from `_rng`.** Enemy and chest state is keyed
+  by positional index, so an unseeded shuffle rebinds saved state to the wrong
+  objects on the next entry — procedural maps regenerate from a stored seed on
+  *every* entry.
+- **Generation pipeline** (`MapGenerator._build_doors`, last step of
+  `generate()`): collect candidates → cut the floor graph at them to get regions
+  → build one edge per candidate → find bridges → assign door locks by frontier
+  BFS from spawn → assign chest locks → roll which candidates become doors.
+  Invariants and config keys are documented in `maps/MAP_CONFIG.md`.
+- **`generate()` must not reference any autoload, even in dead code.** GDScript
+  resolves autoload identifiers at script-compile time, so a single reference
+  anywhere in `MapGenerator.gd` prevents the script loading outside a running
+  project. This is why trap selection lives in `_populate_doors`.
+- **Headless preview**: `maps/tools/gen_preview.tscn` runs the generator without
+  playing the game and asserts the lock/key invariants across many seeds. It is
+  a *scene*, not a `-s` script, for the autoload reason above:
+  `godot --headless --path . maps/tools/gen_preview.tscn -- --map random_crypt_01 --count 25`
 
 ## Known gaps / TODO themes (from review)
 - Stacking/reapply policy is unfinished (`Poison.stacks` exists; stacking logic
@@ -348,8 +477,8 @@ Test doubles in `test/helpers/`: `FakeCharacter` (skips Character's heavy
 `_init`; used where only simple fields matter), `Combatant` (builds a *real*
 Character from a **code-built fixture resource** with known stats — no
 production `.tres` dependency), `ProbeEffect`, `RecordingEffect`.
-> Determinism notes: fixture has `accuracy` 0, which skips `randf()` damage
-> variance; a dummy `RichTextLabel` is registered on `BattleTextLines` where
+> Determinism notes: the fixture equips no weapon, so `damage_variance` is 0 and
+> the `randf()` roll is skipped; a dummy `RichTextLabel` is registered on `BattleTextLines` where
 > production code prints; GUT fails tests on any engine `push_error`.
 
 ## Verifying changes (headless)

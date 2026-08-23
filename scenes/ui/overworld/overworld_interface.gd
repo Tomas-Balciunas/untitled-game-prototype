@@ -18,6 +18,7 @@ func _ready() -> void:
 func _set_mode(mode: Mode) -> void:
 	character_menu.visible = mode == Mode.CHARACTER_MENU
 	chest.visible = mode == Mode.CHEST
+	door.visible = mode == Mode.DOOR
 
 
 func _set_visibility(mode: InterfaceRoot.Mode) -> void:

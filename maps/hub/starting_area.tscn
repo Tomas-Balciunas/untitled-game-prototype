@@ -19,13 +19,23 @@
 [ext_resource type="PackedScene" uid="uid://sln6ve4lf8c2" path="res://characters/OverworldNPC.tscn" id="17_p4hwn"]
 [ext_resource type="PackedScene" uid="uid://c8fyl6fq4crr0" path="res://maps/_encounter/OverworldEnemy.tscn" id="18_bko6l"]
 [ext_resource type="Script" uid="uid://crya7r5lwmvqh" path="res://characters/overworld_npc.gd" id="18_y3577"]
-[ext_resource type="Resource" uid="uid://d34tlmbjgrfkv" path="res://maps/_encounter/starting area/basic_test_2.tres" id="19_4x3pf"]
 [ext_resource type="Resource" uid="uid://dh8kad7brt53b" path="res://characters/allies/Lili/Lili.tres" id="19_l6obu"]
 [ext_resource type="Script" uid="uid://dq1k40l227hss" path="res://scenes/ui/door/door_manager.gd" id="19_rna72"]
 [ext_resource type="PackedScene" uid="uid://brmuxif8auto4" path="res://characters/foes/Balmer/_body/Balmet.tscn" id="20_hag8j"]
 [ext_resource type="Resource" uid="uid://bs56ra62hh2us" path="res://characters/npcs/test/test_npc.tres" id="20_rna72"]
-[ext_resource type="PackedScene" uid="uid://cqtdufdmv5dmy" path="res://scripts/interactables/door_interactable.tscn" id="20_w0kgi"]
-[ext_resource type="Resource" uid="uid://1076kq8jj1mn" path="res://maps/hub/door.tres" id="21_w0kgi"]
+[ext_resource type="Script" uid="uid://b06vmgrh4qa8i" path="res://gear/ItemResource.gd" id="23_7wpse"]
+[ext_resource type="Script" uid="uid://dcegrpy67vkgu" path="res://scripts/encounter_enemy.gd" id="23_v6bh1"]
+[ext_resource type="Resource" uid="uid://cakblj60r6ir" path="res://gear/weapon/cheat_sword.tres" id="24_5iua8"]
+[ext_resource type="Script" uid="uid://bp0biy0knxw2o" path="res://effect/Effect.gd" id="24_tcxp3"]
+[ext_resource type="Resource" uid="uid://dnbe4wpt0o4by" path="res://characters/foes/SkeletonMage/SkeletonMage.tres" id="25_qqmk1"]
+[ext_resource type="Script" uid="uid://h6yx81uchl61" path="res://events/EventResource.gd" id="25_tyc16"]
+[ext_resource type="Script" uid="uid://cyhrh3l20i5dm" path="res://stat/StatModifier.gd" id="26_sxx2g"]
+[ext_resource type="Script" uid="uid://bujsjmx2ct03x" path="res://events/EventStep.gd" id="26_vvgws"]
+[ext_resource type="Script" uid="uid://dqb0vtfgoe5po" path="res://events/steps/ConversationStep.gd" id="27_v6bh1"]
+[ext_resource type="Script" uid="uid://cx64yl2v74seb" path="res://scripts/interactions/InteractionCondition.gd" id="28_tcxp3"]
+[ext_resource type="Script" uid="uid://ceqcevxs4u6i1" path="res://events/steps/TrapStep.gd" id="29_qqmk1"]
+[ext_resource type="Script" uid="uid://1mrlwj4lmc8w" path="res://trap/_traps/poison_trap.gd" id="30_sxx2g"]
+[ext_resource type="Script" uid="uid://bsiblcov0noq8" path="res://maps/_encounter/EncounterData.gd" id="31_2ljck"]
 
 [sub_resource type="NavigationMesh" id="NavigationMesh_g2q70"]
 vertices = PackedVector3Array(-3.5, 0.02, -1, -3.75, 0.02, -6.75, -6, 0.02, -6.75, -6.25, 0.02, -8.25, -18.25, 0.02, -8.25, -3.5, 0.02, 6.25, -18.25, 0.02, 6.25, -1, 0.02, -8.25, -2.5, 0.02, -8.25, -2.5, 0.02, -7, -0.75, 0.02, -7, -3.25, 0.02, -1.5, 1.25, 0.02, -6.75, 1, 0.02, -7.25, -0.5, 0.02, -1.5, -0.25, 0.02, 2.5, 0.5, 0.02, 2.5, 0.5, 0.02, -1.25, 2.5, 0.02, -1.5, 2.5, 0.02, -6.75)
@@ -70,6 +80,58 @@ fog_light_color = Color(0.501114, 0.536127, 0.591149, 1)
 fog_light_energy = 0.85
 fog_density = 0.0283
 fog_sky_affect = 0.0
+
+[sub_resource type="Resource" id="Resource_vvgws"]
+script = ExtResource("26_sxx2g")
+stat = 1
+type = 1
+value = 1.0
+metadata/_custom_type_script = "uid://cyhrh3l20i5dm"
+
+[sub_resource type="Resource" id="Resource_5iua8"]
+script = ExtResource("23_v6bh1")
+resource = ExtResource("25_qqmk1")
+level = 2
+stat_modifiers = Array[ExtResource("26_sxx2g")]([SubResource("Resource_vvgws")])
+metadata/_custom_type_script = "uid://dcegrpy67vkgu"
+
+[sub_resource type="Resource" id="Resource_tyc16"]
+script = ExtResource("23_v6bh1")
+resource = ExtResource("25_qqmk1")
+level = 2
+metadata/_custom_type_script = "uid://dcegrpy67vkgu"
+
+[sub_resource type="Resource" id="Resource_rna72"]
+script = ExtResource("27_v6bh1")
+lines = Array[String](["test", "test 2"])
+metadata/_custom_type_script = "uid://dqb0vtfgoe5po"
+
+[sub_resource type="Resource" id="Resource_y5qhy"]
+script = ExtResource("30_sxx2g")
+id = "poison_trap_01"
+damage = 2
+metadata/_custom_type_script = "uid://1mrlwj4lmc8w"
+
+[sub_resource type="Resource" id="Resource_jtp76"]
+script = ExtResource("29_qqmk1")
+trap = SubResource("Resource_y5qhy")
+metadata/_custom_type_script = "uid://ceqcevxs4u6i1"
+
+[sub_resource type="Resource" id="Resource_l6obu"]
+script = ExtResource("25_tyc16")
+steps = Array[ExtResource("26_vvgws")]([SubResource("Resource_rna72"), SubResource("Resource_jtp76")])
+metadata/_custom_type_script = "uid://h6yx81uchl61"
+
+[sub_resource type="Resource" id="Resource_n4ec6"]
+script = ExtResource("31_2ljck")
+id = "starting_area_02"
+description = "whatever"
+enemies = Array[ExtResource("23_v6bh1")]([SubResource("Resource_5iua8"), SubResource("Resource_tyc16")])
+experience_reward = 5000
+gold_reward = 500
+item_rewards = Array[ExtResource("23_7wpse")]([ExtResource("24_5iua8")])
+reward_event = SubResource("Resource_l6obu")
+metadata/_custom_type_script = "uid://bsiblcov0noq8"
 
 [node name="NavigationRegion3D" type="NavigationRegion3D" unique_id=570528448]
 navigation_mesh = SubResource("NavigationMesh_g2q70")
@@ -188,10 +250,6 @@ character = ExtResource("20_rna72")
 [node name="Doors" type="Node" parent="StartingArea" unique_id=83144628]
 script = ExtResource("19_rna72")
 
-[node name="DoorInteractable" parent="StartingArea/Doors" unique_id=169355905 instance=ExtResource("20_w0kgi")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.99045825, 0, -0.8260529)
-door = ExtResource("21_w0kgi")
-
 [node name="Enemies" type="Node" parent="." unique_id=1583926156]
 script = ExtResource("2_g1pjd")
 
@@ -219,5 +277,5 @@ spawn_id = "spawn_04"
 
 [node name="Enemy" parent="EnemiesCustom" unique_id=1824928787 instance=ExtResource("18_bko6l")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15, 0, -3)
-encounter_data = ExtResource("19_4x3pf")
+encounter_data = SubResource("Resource_n4ec6")
 enemy_scene = ExtResource("20_hag8j")

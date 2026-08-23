@@ -15,12 +15,13 @@ extends Node
 @onready var evasion_value: Label = $Stats/Evasion/EvasionValue
 @onready var healing_done_value: Label     = $Stats/HealingDone/HealingDoneValue
 @onready var healing_received_value: Label = $Stats/HealingReceived/HealingReceivedValue
+@onready var critical_damage_value: Label  = $Stats/CriticalDamage/CriticalDamageValue
 
 func bind_character(character: Character) -> void:
 	var s := character.stats
 	exp_value.text = "%s/%s" % [
 		character.current_experience,
-		character.experience_manager.exp_for_level(character.level + 1)
+		ExperienceManager.exp_for_level(character.level + 1)
 	]
 
 	hp_value.text            = str(s.get_stat(Stats.StatRef.HEALTH))
@@ -36,3 +37,4 @@ func bind_character(character: Character) -> void:
 	evasion_value.text = str(s.get_stat(Stats.StatRef.EVASION))
 	healing_done_value.text     = "%d%%" % s.get_stat(Stats.StatRef.HEALING_DONE)
 	healing_received_value.text = "%d%%" % s.get_stat(Stats.StatRef.HEALING_RECEIVED)
+	critical_damage_value.text  = "%d%%" % roundi(s.get_critical_multiplier() * 100.0)

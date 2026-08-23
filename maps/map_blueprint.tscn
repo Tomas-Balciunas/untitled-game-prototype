@@ -2,6 +2,8 @@
 
 [ext_resource type="MeshLibrary" uid="uid://uso6cfmk5r51" path="res://tileset white.tres" id="1_vbrp5"]
 [ext_resource type="Script" uid="uid://qwci85k0novh" path="res://scripts/ChestManager.gd" id="2_31cuy"]
+[ext_resource type="Script" uid="uid://dq1k40l227hss" path="res://scenes/ui/door/door_manager.gd" id="3_0kt6l"]
+[ext_resource type="Script" uid="uid://bep2fyftkjcsr" path="res://characters/npc_controller.gd" id="4_7ymah"]
 [ext_resource type="Script" uid="uid://7pao6hs651jh" path="res://scripts/EnemyController.gd" id="9_gbhr8"]
 
 [sub_resource type="Environment" id="Environment_kjsaj"]
@@ -34,6 +36,12 @@ script = ExtResource("2_31cuy")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="Blueprint" unique_id=1077364392]
 environment = SubResource("Environment_kjsaj")
+
+[node name="Doors" type="Node" parent="Blueprint" unique_id=1115369001]
+script = ExtResource("3_0kt6l")
+
+[node name="NPC" type="Node" parent="Blueprint" unique_id=1809221988]
+script = ExtResource("4_7ymah")
 
 [node name="EnemiesCustom" type="Node" parent="." unique_id=280642065]
 

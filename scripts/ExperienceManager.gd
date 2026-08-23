@@ -1,12 +1,12 @@
-extends Resource
+extends RefCounted
 
 class_name ExperienceManager
 
 
-func can_level_up(character: Character) -> bool:
+static func can_level_up(character: Character) -> bool:
 	return character.current_experience >= exp_for_level(character.level + 1)
 	
-func exp_for_level(lvl: int) -> int:
+static func exp_for_level(lvl: int) -> int:
 	if lvl <= 1:
 		return 0
 	
@@ -17,7 +17,7 @@ func exp_for_level(lvl: int) -> int:
 	
 	return total
 
-func level_up_character(character: Character) -> void:
+static func level_up_character(character: Character) -> void:
 	while can_level_up(character):
 		character.level += 1
 		character.unspent_attribute_points += 2
@@ -42,15 +42,35 @@ func level_up_character(character: Character) -> void:
 
 	StatCalculator.recalculate_all_stats(character)
 
-func grant_experience_to_character(character: Character, amount: int) -> void:
+static func grant_experience_to_character(character: Character, amount: int) -> void:
+	if amount <= 0:
+		return
+	
 	character.current_experience += amount
 
-func set_character_level(character: Character, level: int) -> void:
-	for skill in character.job.get_effects_until_level(level):
+static func set_character_level(character: Character, level: int) -> void:
+	for skill: Skill in character.job.get_effects_until_level(level):
 		character.learnt_skills.append(skill)
 	
-	for effect in character.job.get_effects_until_level(level):
+	for effect: Effect in character.job.get_effects_until_level(level):
 		character.apply_effect(effect, CharacterSource.new(character))
 	
 	character.current_experience = exp_for_level(level)
 	character.unspent_attribute_points = (level - 1) * 2
+
+func grant_experience_to_all(amount: int) -> void:
+	for member: Character in PartyManager.members:
+		grant_experience_to_character(member, amount)
+
+static func calculate_and_grant_encounter_experience(data: EncounterData) -> void:
+	for member: Character in PartyManager.members:
+		var encounter_exp: int = calculate_encounter_experience(member, data)
+		grant_experience_to_character(member, encounter_exp)
+
+static func calculate_encounter_experience(_character: Character, data: EncounterData) -> int:
+	var xp: int = 0
+	
+	for enemy: EncounterEnemy in data.enemies:
+		xp += enemy.resource.experience_granted * enemy.level
+	
+	return xp

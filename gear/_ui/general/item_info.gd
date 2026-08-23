@@ -105,6 +105,7 @@ const _STAT_SHORT := {
 	Stats.StatRef.EVASION:       "EVA",
 	Stats.StatRef.HEALING_DONE:     "HEAL",
 	Stats.StatRef.HEALING_RECEIVED: "RCV",
+	Stats.StatRef.CRITICAL_DAMAGE:  "CDMG",
 }
 
 

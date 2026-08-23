@@ -13,6 +13,9 @@ const CHEST_BASIC_UNLOCKED = preload("uid://bv17wkj3y400d")
 @export var contents: Contents = Contents.GEAR_ONLY
 @export var chest: Chest
 
+@export var forced_keys: Array = []
+@export var lock_spec: Dictionary = {}
+
 @onready var sprite_3d: Sprite3D = $Sprite3D
 @export var chest_asset_locked: Texture2D = null
 @export var chest_asset_unlocked: Texture2D = null
@@ -26,29 +29,72 @@ func on_map_loaded(_map_data: Dictionary) -> void:
 
 	if !data.is_empty():
 		chest = game_load(data)
+	else:
+		if chest and not chest.custom_items.is_empty():
+			_instantiate_custom_items()
+		else:
+			build_chest(_map_data)
+
+		update_chest_state()
+
+	if !chest:
+		push_error("Chest %s was not built!" % id)
 		return
 
-	if chest and not chest.custom_items.is_empty():
-		_instantiate_custom_items()
-	else:
-		build_chest(_map_data)
+	_apply_forced_keys()
 
-	update_chest_state()
-	
-	if chest:
+	if !chest.chest_unlocked.is_connected(on_chest_unlocked):
 		chest.chest_unlocked.connect(on_chest_unlocked)
-	
+
 	if chest.key != null:
 		set_asset_locked()
 	else:
 		set_asset_unlocked()
 
 func _instantiate_custom_items() -> void:
+	chest = chest.duplicate(true)
+	chest.id = id
 	chest.set_locked(null)
-		
+
 	for resource: ItemResource in chest.custom_items:
 		chest.items.append(resource._build_instance())
+
 	chest.custom_items.clear()
+
+func _apply_forced_keys() -> void:
+	if forced_keys.is_empty():
+		return
+
+	var added := false
+
+	for entry: Dictionary in forced_keys:
+		var key_id: String = entry.get("id", "")
+
+		if key_id.is_empty() or MapInstance.is_key_granted(key_id):
+			continue
+
+		if _holds_item_id(key_id) or _party_holds_item_id(key_id):
+			continue
+
+		chest.items.append(KeyFactory.rebuild(key_id, entry.get("name", "Key"))._build_instance())
+		added = true
+
+	if added:
+		update_chest_state()
+
+func _holds_item_id(item_id: String) -> bool:
+	for item: Item in chest.items:
+		if item.id == item_id:
+			return true
+
+	return false
+
+func _party_holds_item_id(item_id: String) -> bool:
+	for member: Character in PartyManager.members:
+		if member.inventory.get_item_by_id(item_id) != null:
+			return true
+
+	return false
 
 func _interact() -> void:
 	if !chest:
@@ -84,16 +130,19 @@ func build_items(_map_data: Dictionary) -> Array[Item]:
 	return items
 
 func build_chest(map_data: Dictionary) -> void:
-	var trapped = randf() > 0.5
-	
 	var inst := Chest.new()
 	inst.id = id
 	inst.items = build_items(map_data)
-	
-	if trapped:
-		inst.trap = TrapRegistry.get_random_trap()
-
 	chest = inst
+
+	if lock_spec.is_empty():
+		if randf() > 0.5:
+			chest.trap = TrapRegistry.get_random_trap()
+		return
+
+	chest.trap = TrapRegistry.instantiate_trap(lock_spec.get("trap_id", ""))
+	chest.set_locked(KeyFactory.rebuild(lock_spec.get("key_id", ""), lock_spec.get("key_name", "Key")))
+	chest.was_locked = true
 	
 func update_chest_state() -> void:
 	MapInstance.chest_state[id] = game_save()
@@ -127,7 +176,11 @@ func game_save() -> Dictionary:
 		"id": id,
 		"items": items,
 		"was_opened": chest.was_opened,
-		"random": random
+		"random": random,
+		"key_id": chest.key.id if chest.key else "",
+		"key_name": chest.key.get_item_name() if chest.key else "",
+		"trap_id": chest.trap.id if chest.trap else "",
+		"was_locked": chest.was_locked,
 	}
 
 func game_load(data: Dictionary) -> Chest:
@@ -145,5 +198,18 @@ func game_load(data: Dictionary) -> Chest:
 	updated_chest.id = data.get("id")
 	updated_chest.was_opened = data.get("was_opened")
 	updated_chest.items = items
+	updated_chest.was_locked = data.get("was_locked", false)
+
+	var key_id: String = data.get("key_id", "")
+
+	if !key_id.is_empty():
+		var key_res := KeyFactory.rebuild(key_id, data.get("key_name", "Key"))
+		updated_chest.original_key = key_res
+		updated_chest.key = key_res._build_instance()
+
+	var trap_id: String = data.get("trap_id", "")
+
+	if !trap_id.is_empty():
+		updated_chest.trap = TrapRegistry.instantiate_trap(trap_id)
 
 	return updated_chest

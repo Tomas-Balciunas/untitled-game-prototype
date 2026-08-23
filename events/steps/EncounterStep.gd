@@ -13,7 +13,12 @@ func run(_manager: EventManager) -> void:
 	var data := EncounterData.new()
 	data.id = "event_encounter"
 	data.arena = arena
-	data.enemies = enemy_instances
+	data.enemies = []
+
+	for res: CharacterResource in enemy_instances:
+		var encounter_enemy: EncounterEnemy = EncounterEnemy.new()
+		encounter_enemy.resource = res
+		data.enemies.append(encounter_enemy)
 
 	EncounterBus.encounter_started.emit(data)
 	await EncounterBus.encounter_ended

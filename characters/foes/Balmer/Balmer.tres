@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="CharacterResource" format=3 uid="uid://dq6o86j5axtjb"]
 
-[ext_resource type="Resource" uid="uid://57fo0cycgjne" path="res://stat/_stats/DefaultStats.tres" id="1_0q48i"]
+[ext_resource type="Resource" path="res://characters/foes/Balmer/balmer_stats.tres" id="1_0q48i"]
 [ext_resource type="Script" uid="uid://bwn4gpkaijqsg" path="res://scripts/CharacterResource.gd" id="1_l56jw"]
 [ext_resource type="Script" uid="uid://cbelvg2fndssu" path="res://scripts/BattleEvent.gd" id="2_2p1x5"]
 [ext_resource type="PackedScene" uid="uid://brmuxif8auto4" path="res://characters/foes/Balmer/_body/Balmet.tscn" id="3_2p1x5"]
@@ -9,7 +9,6 @@
 [ext_resource type="Script" uid="uid://dq4acpkde276p" path="res://skills/Skill.gd" id="4_ta3bf"]
 [ext_resource type="Resource" uid="uid://cs2tci0dc3vvo" path="res://characters/_class/_Unknown.tres" id="6_0q48i"]
 [ext_resource type="Resource" uid="uid://lcgngc3c13fc" path="res://characters/_race/_Unknown.tres" id="7_mwqcq"]
-[ext_resource type="Resource" uid="uid://c5qyqcmwx0qfy" path="res://scripts/experience/ExperienceManager.tres" id="8_mwqcq"]
 [ext_resource type="Resource" uid="uid://gul73mp3xo8s" path="res://characters/foes/Balmer/stat_attribute_growth.tres" id="11_2p1x5"]
 [ext_resource type="Resource" uid="uid://b1balmera001x" path="res://characters/foes/Balmer/attributes.tres" id="12_balm1"]
 [ext_resource type="Resource" uid="uid://b1balmerlvl01" path="res://characters/foes/Balmer/stat_level_growth.tres" id="13_balm2"]
@@ -17,8 +16,11 @@
 [resource]
 script = ExtResource("1_l56jw")
 attributes = ExtResource("12_balm1")
+level = 4
+base_stats = ExtResource("1_0q48i")
 stat_level_growth = ExtResource("13_balm2")
 stat_attribute_growth = ExtResource("11_2p1x5")
+experience_granted = 40
 id = "e_enemy_002"
 name = "Balmer"
 character_body = ExtResource("3_2p1x5")

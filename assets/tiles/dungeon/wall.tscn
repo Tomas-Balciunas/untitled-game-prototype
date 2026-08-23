@@ -1,0 +1,26 @@
+[gd_scene format=3 uid="uid://bmya18r5nt7rr"]
+
+[ext_resource type="Texture2D" uid="uid://bof7itr03d6g8" path="res://maps/test_map/generic_dungeon.png" id="1_p07w8"]
+[ext_resource type="Texture2D" uid="uid://cjgvfi54y5ap0" path="res://maps/test_map/generic_dungeon_n.png" id="2_jb268"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_uip53"]
+albedo_texture = ExtResource("1_p07w8")
+normal_scale = 0.2
+normal_texture = ExtResource("2_jb268")
+uv1_scale = Vector3(3, 4, 3)
+
+[sub_resource type="BoxMesh" id="BoxMesh_a4myo"]
+material = SubResource("StandardMaterial3D_uip53")
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_a4myo"]
+
+[node name="Node3D" type="Node3D" unique_id=1853092331]
+
+[node name="Wall" type="MeshInstance3D" parent="." unique_id=1895316606]
+transform = Transform3D(1, 0, 0, 0, 2, 0, 0, 0, 1, 0, 1, 0)
+mesh = SubResource("BoxMesh_a4myo")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Wall" unique_id=1417478017]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Wall/StaticBody3D" unique_id=1441532697]
+shape = SubResource("BoxShape3D_a4myo")

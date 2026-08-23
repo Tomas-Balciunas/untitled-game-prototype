@@ -4,7 +4,7 @@ class_name Weapon
 var targeting: TargetingManager.TargetType
 var attack_rate: int = 1
 var weapon_type: ItemTypes.WeaponType
-var accuracy_range: int = 0
+var damage_variance: int = 0
 var scaling: WeaponScaling
 ## only matters when bounce targeting is selected
 var bounce_instances: int = 1
@@ -15,7 +15,7 @@ var salvo_pellets: int = 1
 func game_save() -> Dictionary:
 	var data := super.game_save()
 	data["weapon_type"]      = weapon_type
-	data["accuracy_range"]   = accuracy_range
+	data["damage_variance"]  = damage_variance
 	data["attack_rate"]      = attack_rate
 	data["targeting"]        = targeting
 	data["bounce_instances"] = bounce_instances
@@ -27,7 +27,7 @@ func game_save() -> Dictionary:
 func game_load(data: Dictionary) -> void:
 	super.game_load(data)
 	weapon_type      = data.get("weapon_type", ItemTypes.WeaponType.SWORD) as ItemTypes.WeaponType
-	accuracy_range   = data.get("accuracy_range", 0)
+	damage_variance  = data.get("damage_variance", data.get("accuracy_range", 0))
 	attack_rate      = data.get("attack_rate", 1)
 	targeting        = data.get("targeting", TargetingManager.TargetType.SINGLE) as TargetingManager.TargetType
 	bounce_instances = data.get("bounce_instances", 1)

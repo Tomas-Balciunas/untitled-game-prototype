@@ -32,7 +32,7 @@
 [ext_resource type="Script" uid="uid://b4kodgy0qo0cl" path="res://scenes/ui/battle/battle_controls/battle_controls_interface.gd" id="18_2f3dj"]
 [ext_resource type="PackedScene" uid="uid://c1geh2y2biany" path="res://scenes/battle_text_lines.tscn" id="25_yq6so"]
 [ext_resource type="Script" uid="uid://dd5ranljoqy48" path="res://scenes/fps.gd" id="30_fv21b"]
-[ext_resource type="PackedScene" path="res://scenes/ui/status_effects/StatusEffectsWindow.tscn" id="31_sew0"]
+[ext_resource type="PackedScene" uid="uid://bh0ehbcpy22c1" path="res://scenes/ui/status_effects/StatusEffectsWindow.tscn" id="31_sew0"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tel4y"]
 bg_color = Color(0.6, 0.6, 0.6, 0.105)
@@ -540,6 +540,18 @@ size_flags_horizontal = 3
 text = "Healing Received:"
 
 [node name="HealingReceivedValue" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/StatsUI/Stats/HealingReceived" unique_id=1490011006]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="CriticalDamage" type="HBoxContainer" parent="UIRoot/OverworldInterface/CharacterMenu/StatsUI/Stats" unique_id=1490011007]
+layout_mode = 2
+
+[node name="CriticalDamageKey" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/StatsUI/Stats/CriticalDamage" unique_id=1490011008]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Critical Damage:"
+
+[node name="CriticalDamageValue" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/StatsUI/Stats/CriticalDamage" unique_id=1490011009]
 layout_mode = 2
 size_flags_horizontal = 3
 
@@ -1136,7 +1148,6 @@ layout_mode = 1
 offset_top = -181.0
 
 [node name="StatusEffectsWindow" parent="UIRoot" unique_id=350077927 instance=ExtResource("31_sew0")]
-layout_mode = 3
 
 [node name="Managers" type="Node" parent="." unique_id=1152471153]
 

@@ -12,6 +12,7 @@ var is_main: bool = false
 var body: PackedScene = null
 
 var level: int = 1
+var name: String = "Unknown Entity"
 var current_experience: int = 0
 var unspent_attribute_points: int = 0
 var resource: CharacterResource
@@ -35,7 +36,6 @@ var battle_events: Array[BattleEvent]
 var interactions: CharacterInteraction
 var interaction_controller: InteractionController
 var chatter: CharacterChatter
-var experience_manager: ExperienceManager = null
 
 var equipment: Equipment = null
 
@@ -76,8 +76,7 @@ func _init(res: CharacterResource, override_level: int = 0) -> void:
 	else:
 		level = max(1, res.level)
 	
-	experience_manager = res.experience_manager
-	experience_manager.set_character_level(self, level)
+	ExperienceManager.set_character_level(self, level)
 	
 	equipment = Equipment.new(self)
 	inventory = Inventory.new()
@@ -121,6 +120,9 @@ func _init(res: CharacterResource, override_level: int = 0) -> void:
 			apply_effect(effect, CharacterSource.new(self))
 	
 	StatCalculator.recalculate_all_stats(self)
+	full_heal()
+
+func full_heal() -> void:
 	state.current_health = stats.health
 	state.current_mana = stats.mana
 	state.current_sp = stats.sp

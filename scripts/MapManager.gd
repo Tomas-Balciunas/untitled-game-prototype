@@ -2,7 +2,8 @@ extends Node
 
 var maps: Dictionary = {
 	"beginning_area_01": preload("uid://c8n1llsvvhonb"),
-	"crypt_00": preload("uid://dphnv8sgmui72")
+	"crypt_00": preload("uid://dphnv8sgmui72"),
+	"dungeon_generic": preload("uid://c6e161wmncypw")
 }
 
 var arenas: Dictionary = {

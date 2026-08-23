@@ -80,7 +80,7 @@ static func _apply_weapon_scaling(c: Character, s: Stats.StatRef) -> void:
 static func _recalculate_percentage_stat(c: Character, s: Stats.StatRef) -> void:
 	c.computed_stats.set_stat(s, Stats.PERCENTAGE_BASE)
 
-	var total: float = Stats.PERCENTAGE_BASE
+	var total: float = c.stats.get_stat(s)
 
 	for mod: StatModifier in c.state.get_modifiers():
 		if mod.stat != s:
@@ -88,7 +88,8 @@ static func _recalculate_percentage_stat(c: Character, s: Stats.StatRef) -> void
 		if mod.type == StatModifier.Type.ADDITIVE:
 			push_error("Flat (ADDITIVE) modifier not allowed on percentage stat %s (modifier '%s')" % [Stats.get_stat_name(s), mod.id])
 			continue
-		total += mod.compute_value(c, Stats.PERCENTAGE_BASE)
+		
+		total += (100 - mod.compute_value(c, Stats.PERCENTAGE_BASE))
 
 	c.modified_stats.set_stat(s, total)
 

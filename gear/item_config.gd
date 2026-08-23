@@ -22,11 +22,11 @@ static func get_tier_multiplier(tier: String) -> float:
 	return TIER_DATA[tier]["mult"]
 
 
-static func get_accuracy(weapon_type: ItemTypes.WeaponType) -> int:
-	if not ACCURACY.has(weapon_type):
-		push_error("item config: accuracy not found for weapon type")
+static func get_damage_variance(weapon_type: ItemTypes.WeaponType) -> int:
+	if not DAMAGE_VARIANCE.has(weapon_type):
+		push_error("item config: damage variance not found for weapon type")
 		return 0
-	return ACCURACY[weapon_type]
+	return DAMAGE_VARIANCE[weapon_type]
 
 
 static func get_stat_range(tier: String, type: ItemTypes.GearType) -> Dictionary:
@@ -87,7 +87,7 @@ const TIER_DATA: Dictionary = {
 	"tier_2": { "name": "Worn",  "mult": 1.5, "max_modifiers": 2 },
 }
 
-const ACCURACY: Dictionary = {
+const DAMAGE_VARIANCE: Dictionary = {
 	ItemTypes.WeaponType.SWORD: 5,
 	ItemTypes.WeaponType.AXE:   8,
 }

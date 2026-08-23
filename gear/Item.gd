@@ -35,4 +35,8 @@ static func create_from_save(data: Dictionary) -> Item:
 		var c := Consumable.new()
 		c.game_load(data)
 		return c
+	if cls_name == "QuestItem":
+		var q := QuestItem.new()
+		q.game_load(data)
+		return q
 	return Gear.create_from_save(data)
