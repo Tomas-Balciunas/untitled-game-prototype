@@ -97,7 +97,6 @@ func add_encounter(data: EncounterData) -> void:
 		"id": data.id,
 		"enemies": entries,
 		"arena": data.arena,
-		"xp": data.experience_reward,
 	}
 
 func get_encounter(id: String) -> EncounterData:
@@ -132,7 +131,6 @@ func get_encounter(id: String) -> EncounterData:
 	enc.id = data["id"]
 	enc.enemies = enemies
 	enc.arena = data.get("arena", "arena_default_00")
-	enc.experience_reward = data.get("xp", 0)
 
 	return enc
 

@@ -71,6 +71,7 @@ static func calculate_encounter_experience(_character: Character, data: Encounte
 	var xp: int = 0
 	
 	for enemy: EncounterEnemy in data.enemies:
-		xp += enemy.resource.experience_granted * enemy.level
+		## placeholder xp calculation
+		xp += (enemy.resource.experience_granted * enemy.level) * enemy.experience_multiplier
 	
 	return xp

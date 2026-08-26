@@ -14,7 +14,6 @@
 [ext_resource type="Script" uid="uid://dyfab3mccm3i2" path="res://skills/CastSkill.gd" id="9_vfxq6"]
 [ext_resource type="Resource" uid="uid://coilrntx01n8m" path="res://characters/allies/Lili/new_resource.tres" id="10_pwtr7"]
 [ext_resource type="Script" uid="uid://dq4acpkde276p" path="res://skills/Skill.gd" id="10_tttne"]
-[ext_resource type="Resource" uid="uid://c5qyqcmwx0qfy" path="res://scripts/experience/ExperienceManager.tres" id="11_tttne"]
 [ext_resource type="Resource" uid="uid://riijdkc770g2" path="res://stat/DefaultStatAttributeGrowth.tres" id="21_52sjl"]
 
 [sub_resource type="Resource" id="Resource_n7wih"]

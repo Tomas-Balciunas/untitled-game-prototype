@@ -50,10 +50,7 @@ func end_encounter(result: String, data: EncounterData) -> void:
 		if not default_steps.is_empty():
 			await EventManager.process_event(default_steps)
 		
-		if data.experience_reward > 0:
-			PartyManager.grant_experience_to_all(data.experience_reward)
-		else:
-			ExperienceManager.calculate_and_grant_encounter_experience(data)
+		ExperienceManager.calculate_and_grant_encounter_experience(data)
 		
 		MapInstance.mark_encounter_cleared(data.id)
 

@@ -9,7 +9,7 @@
 
 [sub_resource type="Resource" id="Resource_57sea"]
 script = ExtResource("1_rlxj8")
-attack = 1.0
+attack = 100.0
 metadata/_custom_type_script = "uid://bqln4xpkkidja"
 
 [sub_resource type="Resource" id="Resource_rnp4p"]
@@ -17,6 +17,8 @@ script = ExtResource("7_t7x44")
 
 [resource]
 script = ExtResource("3_57sea")
+targeting = 1
+attack_rate = 4
 damage_variance = 10
 scaling = SubResource("Resource_rnp4p")
 bounce_instances = 3

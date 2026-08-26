@@ -51,7 +51,10 @@ enum TurnPhase {
 ## on_apply will still be called to resolve whatever effects needs
 @export var single_instance: bool = false
 
-@export var process_when_dead: bool = false
+## owner is dead at the time the trigger fires
+@export var process_when_owner_dead: bool = false
+## target was already dead when the event began (overkill hits, revives)
+@export var process_when_target_dead: bool = false
 @export var priority: int = 200
 @export var effect_type: Array[EffectType] = []
 
@@ -198,8 +201,11 @@ func owner_is_target(event: TriggerEvent) -> bool:
 func owner_is_actor(event: TriggerEvent) -> bool:
 	return owner == event.source.get_actor()
 
-func can_process_when_dead() -> bool:
-	return process_when_dead
+func can_process_when_owner_dead() -> bool:
+	return process_when_owner_dead
+
+func can_process_when_target_dead() -> bool:
+	return process_when_target_dead
 
 func get_priority(_stage: String = "") -> int:
 	return priority

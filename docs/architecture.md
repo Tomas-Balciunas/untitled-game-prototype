@@ -20,7 +20,13 @@ Key exported fields:
 - `native: bool = false` — innate/permanent trait; drives **character-menu** display.
 - `show_in_status: bool = true` — drives **status-screen** display.
 - `battle_only` (default true), `expires_after_battle` (default false),
-  `immediate_trigger`, `process_when_dead`, `priority` (default 200).
+  `immediate_trigger`, `priority` (default 200).
+- `process_when_owner_dead` / `process_when_target_dead` (both default false)
+  — opt-ins checked by `EffectRunner._passes_filters`. Owner check reads the
+  live `owner.is_dead`; target check reads `TriggerEvent.target_was_dead`,
+  i.e. the target was **already** a corpse when the event began, not merely
+  killed by it. On-death and killing-blow effects therefore need no opt-in;
+  corpse-targeting effects (revive, overkill riders) do.
 - `duration_turns: int = -1` (-1 = never expires on its own).
 - `expire_phase: TurnPhase` (TURN_START / TURN_END / **CUSTOM**) — when a
   phase-driven effect counts down. (DoTs don't use this path — they consume
@@ -117,7 +123,8 @@ mutate `stacks` directly. Local stage consts live on the `Bleed` class.
 `ctx.temporary_effects` (skill/proc effects — bound to owner/source here,
 filtered by `listened_triggers`) **plus** `_subscriptions[stage]`, sorts by
 `priority` (desc), then runs each through `_passes_filters` (battle_only +
-dead check) and `can_process`, calling `on_trigger`; `immediate_trigger`
+owner-dead + target-was-dead checks) and `can_process`, calling `on_trigger`;
+`immediate_trigger`
 effects `remove_self()` after firing. `ctx.stop_processing` short-circuits.
 > Temporary + persistent effects are **unified** into this single pass
 > (priority + stop_processing apply to both).
@@ -137,6 +144,13 @@ fallback key). Handles exported builds (`.remap` suffix stripping). Duplicate
 ids warn and last-one-wins.
 
 ### Application & ticking
+- `scripts/resolvers/DamageResolver.gd`: `run_pipeline` snapshots
+  `event.target_was_dead` before anything else, then fires
+  ON_BEFORE_RECEIVE_DAMAGE → ON_DAMAGE_ABOUT_TO_BE_APPLIED →
+  `set_current_health` → ON_DEATH → ON_DAMAGE_APPLIED. ON_DEATH is gated on
+  the alive→dead **transition** (`is_dead and not target_was_dead`), so a
+  multi-hit attack fires it once. Hits on an already-dead target still run the
+  full pipeline on purpose (HP bar is hidden; each hit reads as anticipation).
 - `scripts/resolvers/EffectApplicationResolver.gd`: `run_pipeline` fires
   ON_BEFORE_APPLY_EFFECT → `target.apply_effect()` (which subscribes) →
   ON_APPLY_EFFECT. So an applied effect is subscribed **before**

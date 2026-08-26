@@ -47,11 +47,14 @@ func process_trigger(stage: String, event: TriggerEvent) -> void:
 			effect.remove_self()
 
 
-static func _passes_filters(effect: Effect, _event: TriggerEvent) -> bool:
+static func _passes_filters(effect: Effect, event: TriggerEvent) -> bool:
 	if not BattleContext.in_battle and effect.battle_only:
 		return false
 	
-	if effect.owner.is_dead and !effect.can_process_when_dead():
+	if effect.owner.is_dead and not effect.can_process_when_owner_dead():
+		return false
+
+	if event.target_was_dead and not effect.can_process_when_target_dead():
 		return false
 	
 	return true

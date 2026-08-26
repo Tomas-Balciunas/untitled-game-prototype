@@ -24,6 +24,8 @@ func execute(ctx: ActionContext) -> ActionContext:
 
 
 func run_pipeline(event: DamageInstance) -> void:
+	event.target_was_dead = event.target.is_dead
+
 	EffectRunner.process_trigger(EffectTriggers.ON_BEFORE_RECEIVE_DAMAGE, event)
 	
 	event.calculator.calculate_final_damage()
@@ -45,7 +47,7 @@ func run_pipeline(event: DamageInstance) -> void:
 	
 	event.target.set_current_health(event.target.state.current_health - event.calculator.get_final_damage(), event, false)
 	
-	if event.target.is_dead:
+	if event.target.is_dead and not event.target_was_dead:
 		EffectRunner.process_trigger(EffectTriggers.ON_DEATH, event)
 		
 		if event.target.is_dead:
