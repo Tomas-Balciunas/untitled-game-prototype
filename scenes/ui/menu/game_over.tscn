@@ -1,0 +1,30 @@
+[gd_scene format=3 uid="uid://cy7lwg2h0ca1g"]
+
+[ext_resource type="Script" uid="uid://oflh3g8q6opp" path="res://scenes/ui/menu/game_over.gd" id="1_cmbm2"]
+[ext_resource type="Texture2D" uid="uid://de7pkpbrd8jxr" path="res://scenes/Untitled.png" id="2_753q5"]
+
+[node name="GameOver" type="Control" unique_id=1824742552]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_cmbm2")
+
+[node name="TextureRect" type="TextureRect" parent="." unique_id=295953006]
+layout_mode = 0
+offset_right = 1920.0
+offset_bottom = 1080.0
+texture = ExtResource("2_753q5")
+expand_mode = 2
+
+[node name="Button" type="Button" parent="." unique_id=561016332]
+layout_mode = 0
+offset_left = 880.0
+offset_top = 576.0
+offset_right = 967.0
+offset_bottom = 607.0
+text = "Play again"
+
+[connection signal="pressed" from="Button" to="." method="_on_button_pressed"]

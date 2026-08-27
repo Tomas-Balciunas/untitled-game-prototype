@@ -152,6 +152,7 @@ func set_current_health(new_health: int, damage_event: DamageInstance = null, em
 	if new == 0 and old > 0:
 		state.current_health = int(new)
 		is_dead = true
+		GameState.on_character_death()
 		if emit_dead:
 			emit_signal("died", self)
 	

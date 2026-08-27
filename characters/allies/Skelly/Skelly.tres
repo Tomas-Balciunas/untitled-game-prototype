@@ -11,7 +11,6 @@
 [ext_resource type="Script" uid="uid://b06vmgrh4qa8i" path="res://gear/ItemResource.gd" id="4_yu6ia"]
 [ext_resource type="Script" uid="uid://1soxj0rvfy7j" path="res://stat/StatGrowthEntry.gd" id="13_ympyx"]
 [ext_resource type="Script" uid="uid://c3wbue0mr3cu6" path="res://stat/AttributeMultiplier.gd" id="14_4twd5"]
-[ext_resource type="Resource" uid="uid://c5qyqcmwx0qfy" path="res://scripts/experience/ExperienceManager.tres" id="14_tyjbr"]
 [ext_resource type="Script" uid="uid://iowso0enbtmd" path="res://stat/StatAttributeGrowth.gd" id="15_g0fbc"]
 [ext_resource type="Resource" uid="uid://bswm14k77iahf" path="res://characters/_class/class_fighter/class_fighter.tres" id="16_tyjbr"]
 

@@ -1,5 +1,7 @@
 extends Node3D
 
+const GAME_OVER_PATH := "uid://cy7lwg2h0ca1g"
+
 enum States {
 	IDLE,
 	MAP_TRANSITION,
@@ -42,6 +44,16 @@ func game_save() -> Dictionary:
 	return {
 		"gold": gold,
 	}
+
+func on_character_death() -> void:
+	var party_dead: bool = true
+	
+	for member in PartyManager.members:
+		if !member.is_dead:
+			party_dead = false
+	
+	if party_dead:
+		get_tree().change_scene_to_file(GAME_OVER_PATH)
 
 func game_load(data: Dictionary) -> void:
 	gold = data.get("gold", 0)

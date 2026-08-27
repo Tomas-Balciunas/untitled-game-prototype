@@ -2,15 +2,15 @@ extends BaseCharacterResource
 
 class_name CharacterResource
 
-const DEFAULT_RACE   = preload("res://characters/_race/_Unknown.tres")
-const DEFAULT_JOB    = preload("res://characters/_class/_Unknown.tres")
-const DEFAULT_STATS = preload("uid://57fo0cycgjne")
-const DEFAULT_STAT_GROWTH = preload("uid://s8gs3fa65s30")
+const DEFAULT_RACE_PATH := "res://characters/_race/_Unknown.tres"
+const DEFAULT_JOB_PATH := "res://characters/_class/_Unknown.tres"
+const DEFAULT_STATS_PATH := "uid://57fo0cycgjne"
+const DEFAULT_STAT_GROWTH_PATH := "uid://s8gs3fa65s30"
 
 var is_main: bool = false
 
-@export var race: Race = DEFAULT_RACE
-@export var job: Job = DEFAULT_JOB
+@export var race: Race = load(DEFAULT_RACE_PATH)
+@export var job: Job = load(DEFAULT_JOB_PATH)
 
 @export var attributes: Attributes
 
@@ -23,7 +23,7 @@ var is_main: bool = false
 @export var default_damage_type: DamageTypes.Type
 @export var default_items: Array[ItemResource] = []
 
-@export var base_stats: Stats = DEFAULT_STATS
+@export var base_stats: Stats = load(DEFAULT_STATS_PATH)
 @export var stat_level_growth: Stats
 @export var stat_attribute_growth: StatAttributeGrowth
 
@@ -61,6 +61,6 @@ func get_stat_level_growth() -> Stats:
 	if !stat_level_growth:
 		push_error("Stat growth missing for %s" % name)
 		
-		return DEFAULT_STAT_GROWTH
+		return load(DEFAULT_STAT_GROWTH_PATH)
 	
 	return stat_level_growth

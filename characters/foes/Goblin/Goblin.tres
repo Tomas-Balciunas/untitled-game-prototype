@@ -9,13 +9,26 @@
 [ext_resource type="Resource" uid="uid://cyni3kvaq3rkk" path="res://characters/foes/Goblin/stat_attribute_growth.tres" id="5_grow"]
 [ext_resource type="Script" uid="uid://b06vmgrh4qa8i" path="res://gear/ItemResource.gd" id="6_18l4r"]
 [ext_resource type="PackedScene" uid="uid://5r0hwtkk272a" path="res://characters/foes/Goblin/_body/Goblin.tscn" id="6_body"]
+[ext_resource type="Script" uid="uid://utx0i8g3d20x" path="res://effect/_passive/death_resistance/death_resistance.gd" id="6_c4vdi"]
 [ext_resource type="Script" uid="uid://dq4acpkde276p" path="res://skills/Skill.gd" id="7_o6oaa"]
 [ext_resource type="Resource" uid="uid://cs2tci0dc3vvo" path="res://characters/_class/_Unknown.tres" id="8_akg0d"]
 [ext_resource type="Resource" uid="uid://lcgngc3c13fc" path="res://characters/_race/_Unknown.tres" id="9_nholw"]
 
+[sub_resource type="Resource" id="Resource_6xfs4"]
+script = ExtResource("6_c4vdi")
+stacks = 2
+id = "ugh"
+name = "deth res"
+expires_after_battle = true
+single_instance = true
+process_when_owner_dead = true
+expire_phase = 3
+metadata/_custom_type_script = "uid://utx0i8g3d20x"
+
 [resource]
 script = ExtResource("1_res")
 attributes = ExtResource("2_attr")
+default_effects = Array[ExtResource("5_c4vdi")]([SubResource("Resource_6xfs4")])
 base_stats = ExtResource("3_stats")
 stat_level_growth = ExtResource("4_lvl")
 stat_attribute_growth = ExtResource("5_grow")

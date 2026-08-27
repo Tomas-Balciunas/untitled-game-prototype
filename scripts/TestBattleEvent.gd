@@ -13,7 +13,7 @@ func prepare(owner: Character):
 func run():
 	pass
 
-func before_receive_damage(ctx: DamageContext):
+func before_receive_damage(ctx):
 	if ctx.target == _owner and ctx.final_value >= _owner.stats.current_health and times > 0:
 		push_warning("TestBattleEvent fatal-hit dialogue path is not wired to the new interaction system")
 		ctx.final_value = 0
