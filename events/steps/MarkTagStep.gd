@@ -19,15 +19,15 @@ func run(manager: EventManager) -> void:
 
 	match state:
 		State.COMPLETED:
-			if InteractionTagManager._has_completed_tag_for(id, tag):
+			if RunState.current.tags._has_completed_tag_for(id, tag):
 				return
-			InteractionTagManager._mark_tag_completed(id, tag)
+			RunState.current.tags._mark_tag_completed(id, tag)
 		State.AVAILABLE:
-			if InteractionTagManager._has_completed_tag_for(id, tag):
-				InteractionTagManager._remove_completed_tag_for(id, tag)
-			if InteractionTagManager._has_available_tag_for(id, tag):
+			if RunState.current.tags._has_completed_tag_for(id, tag):
+				RunState.current.tags._remove_completed_tag_for(id, tag)
+			if RunState.current.tags._has_available_tag_for(id, tag):
 				return
-			InteractionTagManager._add_available_tag_for(id, tag)
+			RunState.current.tags._add_available_tag_for(id, tag)
 
 
 func _resolve_id(manager: EventManager) -> String:

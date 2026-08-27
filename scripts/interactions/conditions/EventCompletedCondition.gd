@@ -8,7 +8,7 @@ class_name EventCompletedCondition
 
 
 func matches(_c: BaseCharacterResource) -> bool:
-	var done := EventFlags.is_event_completed(event_id)
+	var done := RunState.current.flags.is_event_completed(event_id)
 	return done if must_be_completed else not done
 
 

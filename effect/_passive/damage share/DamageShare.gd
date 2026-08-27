@@ -7,7 +7,7 @@ func listened_triggers() -> Array:
 	return [EffectTriggers.ON_DAMAGE_ABOUT_TO_BE_APPLIED]
 
 func can_process(_stage: String, event: TriggerEvent) -> bool:
-	if BattleContext.in_battle:
+	if RunState.current.battle.in_battle:
 		if not TargetingManager.same_side(owner, event.target):
 			return false
 	

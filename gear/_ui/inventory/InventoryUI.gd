@@ -92,7 +92,7 @@ func cleanup() -> void:
 
 
 func _on_transfer_button_pressed() -> void:
-	if len(PartyManager.members) <= 1:
+	if len(RunState.current.party.members) <= 1:
 		NotificationBus.notification_requested.emit("No allies to transfer an item to!")
 	
 	var inst := ITEM_TRANSFER_SCENE.instantiate()

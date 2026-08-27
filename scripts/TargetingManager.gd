@@ -46,36 +46,36 @@ func emit_selection(target: Character) -> void:
 	
 
 func get_applicable_targets(target: Character, type: TargetType) -> Array[Character]:
-	var is_party_member: bool = PartyManager.has_member(target.resource.id)
-	var enemy_grid: EnemyFormation = BattleContext.enemy_formation
-	var in_battle: bool = BattleContext.in_battle and enemy_grid != null
+	var is_party_member: bool = RunState.current.party.has_member(target.resource.id)
+	var enemy_grid: EnemyFormation = RunState.current.battle.enemy_formation
+	var in_battle: bool = RunState.current.battle.in_battle and enemy_grid != null
 	
 	match type:
 		TargetType.SINGLE:
 			return [target]
 		TargetType.COLUMN:
 			if is_party_member:
-				return PartyManager.get_column_allies(target)
+				return RunState.current.party.get_column_allies(target)
 			if in_battle:
 				return enemy_grid.get_column(target)
 		TargetType.ROW:
 			if is_party_member:
-				return PartyManager.get_row_allies(target)
+				return RunState.current.party.get_row_allies(target)
 			if in_battle:
 				return enemy_grid.get_row(target)
 		TargetType.BLAST:
 			if is_party_member:
-				return PartyManager.get_blast_allies(target)
+				return RunState.current.party.get_blast_allies(target)
 			if in_battle:
 				return enemy_grid.get_blast(target)
 		TargetType.ADJACENT:
 			if is_party_member:
-				return PartyManager.get_adjacent_allies(target)
+				return RunState.current.party.get_adjacent_allies(target)
 			if in_battle:
 				return enemy_grid.get_adjacent(target)
 		TargetType.MASS:
 			if is_party_member:
-				return PartyManager.get_mass_allies()
+				return RunState.current.party.get_mass_allies()
 			if in_battle:
 				return enemy_grid.get_mass()
 		#TODO: bounce targeting
@@ -84,6 +84,6 @@ func get_applicable_targets(target: Character, type: TargetType) -> Array[Charac
 
 
 func same_side(a: Character, b: Character) -> bool:
-	var party: Array[Character] = PartyManager.members
+	var party: Array[Character] = RunState.current.party.members
 	
 	return (a in party) == (b in party)

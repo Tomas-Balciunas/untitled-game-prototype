@@ -11,9 +11,13 @@ enum States {
 	EVENT
 }
 
-var gold: int = 0
+var gold: int:
+	get: return RunState.current.gold
+	set(value): RunState.current.gold = value
 
-var current_state: States = States.IDLE
+var current_state: States:
+	get: return RunState.current.current_state
+	set(value): RunState.current.current_state = value
 
 func is_busy() -> bool:
 	return current_state != States.IDLE
@@ -28,36 +32,20 @@ func set_event() -> void:
 	current_state = States.EVENT
 
 func add_gold(amount: int) -> void:
-	if amount <= 0:
-		return
-	gold += amount
-	CurrencyBus.gold_changed.emit(gold)
+	RunState.current.add_gold(amount)
 
 func spend_gold(amount: int) -> bool:
-	if amount <= 0 or gold < amount:
-		return false
-	gold -= amount
-	CurrencyBus.gold_changed.emit(gold)
-	return true
-
-func game_save() -> Dictionary:
-	return {
-		"gold": gold,
-	}
+	return RunState.current.spend_gold(amount)
 
 func on_character_death() -> void:
 	var party_dead: bool = true
 	
-	for member in PartyManager.members:
+	for member in RunState.current.party.members:
 		if !member.is_dead:
 			party_dead = false
 	
 	if party_dead:
 		get_tree().change_scene_to_file(GAME_OVER_PATH)
-
-func game_load(data: Dictionary) -> void:
-	gold = data.get("gold", 0)
-	CurrencyBus.gold_changed.emit(gold)
 
 func generate_id() -> String:
 	var a: float = randi()

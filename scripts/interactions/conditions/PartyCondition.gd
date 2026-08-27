@@ -14,21 +14,21 @@ enum Check { HAS_MEMBER, MISSING_MEMBER, HAS_SELF, MISSING_SELF, IS_FULL, HAS_FR
 func matches(c: BaseCharacterResource) -> bool:
 	match check:
 		Check.HAS_MEMBER:
-			return PartyManager.has_member(member_id)
+			return RunState.current.party.has_member(member_id)
 		Check.MISSING_MEMBER:
-			return not PartyManager.has_member(member_id)
+			return not RunState.current.party.has_member(member_id)
 		Check.HAS_SELF:
-			return PartyManager.has_member(c.id)
+			return RunState.current.party.has_member(c.id)
 		Check.MISSING_SELF:
-			return not PartyManager.has_member(c.id)
+			return not RunState.current.party.has_member(c.id)
 		Check.IS_FULL:
-			return PartyManager.is_party_full()
+			return RunState.current.party.is_party_full()
 		Check.HAS_FREE_SLOT:
-			return not PartyManager.is_party_full()
+			return not RunState.current.party.is_party_full()
 		Check.SIZE_AT_LEAST:
-			return PartyManager.members.size() >= size
+			return RunState.current.party.members.size() >= size
 		Check.SIZE_AT_MOST:
-			return PartyManager.members.size() <= size
+			return RunState.current.party.members.size() <= size
 
 	return false
 

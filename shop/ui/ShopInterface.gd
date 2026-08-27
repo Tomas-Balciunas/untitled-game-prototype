@@ -109,7 +109,7 @@ func _sell_price_for(item: Item) -> int:
 
 
 func _has_price_modifiers() -> bool:
-	for member: Character in PartyManager.members:
+	for member: Character in RunState.current.party.members:
 		for e: Effect in member.effects:
 			if e._modifies_shop_price():
 				return true
@@ -118,7 +118,7 @@ func _has_price_modifiers() -> bool:
 
 func _apply_price_modifiers(item: Item, base: int, is_buy: bool) -> int:
 	var p := base
-	for member: Character in PartyManager.members:
+	for member: Character in RunState.current.party.members:
 		for e: Effect in member.effects:
 			if e._modifies_shop_price():
 				p = e.modify_shop_price(item, is_buy, p)
@@ -126,9 +126,9 @@ func _apply_price_modifiers(item: Item, base: int, is_buy: bool) -> int:
 
 
 func _get_leader() -> Character:
-	if PartyManager.members.is_empty():
+	if RunState.current.party.members.is_empty():
 		return null
-	return PartyManager.members[0]
+	return RunState.current.party.members[0]
 
 
 func _on_buy(entry: ShopEntry, price: int) -> void:

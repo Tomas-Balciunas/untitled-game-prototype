@@ -19,7 +19,7 @@ func run(manager: EventManager) -> void:
 		push_error("RecruitCharacterStep requires a CharacterResource subject, got %s" % manager.subject)
 		return
 
-	if PartyManager.is_party_full():
+	if RunState.current.party.is_party_full():
 		manager.choices.append(PARTY_FULL)
 		if party_full_tag != "":
 			var m := MarkTagStep.new()
@@ -28,5 +28,5 @@ func run(manager: EventManager) -> void:
 			m.run(manager)
 		return
 
-	PartyManager.add_member(res)
+	RunState.current.party.add_member(res)
 	manager.choices.append(RECRUITED)

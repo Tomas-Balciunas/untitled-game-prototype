@@ -27,7 +27,7 @@ func run(_manager: EventManager) -> void:
 	if not holder.inventory.add_item(instance):
 		holder = null
 
-		for m: Character in PartyManager.members:
+		for m: Character in RunState.current.party.members:
 			if m == receiver:
 				continue
 			if m.inventory.add_item(instance):
@@ -38,25 +38,25 @@ func run(_manager: EventManager) -> void:
 		NotificationBus.notification_requested.emit("%s's inventory is full!" % receiver.resource.name)
 
 		if instance.type == ItemTypes.ItemType.QUEST:
-			MapInstance.queue_pending_key({ "id": instance.id, "name": instance.get_item_name() })
+			RunState.current.map.queue_pending_key({ "id": instance.id, "name": instance.get_item_name() })
 
 		return
 
 	if instance.type == ItemTypes.ItemType.QUEST:
-		MapInstance.mark_key_granted(instance.id)
+		RunState.current.map.mark_key_granted(instance.id)
 
 	if notify:
 		NotificationBus.notification_requested.emit("%s received %s" % [holder.resource.name, instance.get_item_name()])
 
 
 func _resolve_receiver() -> Character:
-	if PartyManager.members.is_empty():
+	if RunState.current.party.members.is_empty():
 		return null
 
 	if target_member_id == "":
-		return PartyManager.members[0]
+		return RunState.current.party.members[0]
 
-	for m: Character in PartyManager.members:
+	for m: Character in RunState.current.party.members:
 		if m.resource.id == target_member_id:
 			return m
 

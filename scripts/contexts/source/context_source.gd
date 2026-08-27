@@ -46,7 +46,7 @@ static func create_from_save(data: Dictionary) -> ContextSource:
 static func _find_character_by_id(char_id: String) -> Character:
 	if char_id.is_empty():
 		return null
-	for m: Character in PartyManager.members:
+	for m: Character in RunState.current.party.members:
 		if m.resource and m.resource.id == char_id:
 			return m
 	return null

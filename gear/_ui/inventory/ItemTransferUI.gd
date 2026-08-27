@@ -20,7 +20,7 @@ func bind(from: Character, item: Item) -> void:
 	
 	var applicable_allies: Array[Character] = []
 	
-	for member:Character in PartyManager.members:
+	for member:Character in RunState.current.party.members:
 		if !member == _from:
 			applicable_allies.append(member)
 	

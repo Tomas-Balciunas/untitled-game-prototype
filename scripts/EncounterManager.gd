@@ -39,7 +39,7 @@ func end_encounter(result: String, data: EncounterData) -> void:
 	current_battle_scene.queue_free()
 	current_battle_scene = null
 	print("EncounterManager: Ending encounter with result:", result)
-	BattleContext.clear_context()
+	RunState.current.end_battle()
 	print(data)
 
 	if result == "win":
@@ -52,7 +52,7 @@ func end_encounter(result: String, data: EncounterData) -> void:
 		
 		ExperienceManager.calculate_and_grant_encounter_experience(data)
 		
-		MapInstance.mark_encounter_cleared(data.id)
+		RunState.current.map.mark_encounter_cleared(data.id)
 
 	GameState.current_state = GameState.States.IDLE
 

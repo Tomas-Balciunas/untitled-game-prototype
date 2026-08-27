@@ -55,7 +55,7 @@ func _process(delta: float) -> void:
 func _refresh() -> void:
 	var lines: Array = ["[Turn Debug — F3]"]
 
-	var manager: BattleManager = BattleContext.manager
+	var manager: BattleManager = RunState.current.battle.manager
 	if manager == null:
 		lines.append("No battle manager")
 		_label.text = "\n".join(lines)

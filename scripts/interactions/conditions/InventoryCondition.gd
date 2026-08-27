@@ -13,12 +13,12 @@ func matches(_c: BaseCharacterResource) -> bool:
 		return false
 
 	if target_member_id != "":
-		for m: Character in PartyManager.members:
+		for m: Character in RunState.current.party.members:
 			if m.resource.id == target_member_id:
 				return _member_has_item(m)
 		return false
 
-	for m: Character in PartyManager.members:
+	for m: Character in RunState.current.party.members:
 		if _member_has_item(m):
 			return true
 

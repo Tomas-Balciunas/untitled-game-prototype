@@ -20,7 +20,7 @@ func place_all_allies() -> void:
 	clear_slots()
 
 	var allies := []
-	for a: Character in PartyManager.formation:
+	for a: Character in RunState.current.party.formation:
 		if allies.size() < MAX_SLOTS:
 			allies.append(a)
 		else:

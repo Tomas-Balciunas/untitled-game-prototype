@@ -223,8 +223,8 @@ func _on_input_event(_camera: Camera3D, event: InputEvent, _position: Vector3, _
 			CharacterBus.display_status_effects.emit(character_instance)
 		return
 
-	var is_ally := character_instance != null and PartyManager.has_member(character_instance.resource.id)
-	var targeting_enabled := BattleContext.ally_targeting_enabled if is_ally else BattleContext.enemy_targeting_enabled
+	var is_ally := character_instance != null and RunState.current.party.has_member(character_instance.resource.id)
+	var targeting_enabled := RunState.current.battle.ally_targeting_enabled if is_ally else RunState.current.battle.enemy_targeting_enabled
 
 	if not targeting_enabled:
 		return

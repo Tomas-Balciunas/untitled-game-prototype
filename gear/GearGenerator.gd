@@ -47,7 +47,7 @@ func _init(qty: int, types: Array[ItemTypes.GearType] = []) -> void:
 func generate() -> Array[Gear]:
 	var builder: GearBuilder = GearBuilder.new()
 	var generated_gear: Array[Gear] = []
-	var tiers: Array = MapInstance.available_tiers
+	var tiers: Array = RunState.current.map.available_tiers
 	
 	for i in range(quantity):
 		var tier := get_tier(tiers)

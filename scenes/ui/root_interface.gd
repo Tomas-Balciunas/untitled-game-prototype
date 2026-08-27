@@ -38,7 +38,7 @@ func _set_mode(mode: Mode) -> void:
 		interface._set_visibility(mode)
 
 func _on_event_concluded() -> void:
-	if BattleContext.in_battle:
+	if RunState.current.battle.in_battle:
 		show_battle()
 	else:
 		show_overworld()

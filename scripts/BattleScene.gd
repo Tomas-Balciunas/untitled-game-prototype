@@ -16,7 +16,7 @@ func initiate(arena: PackedScene, data: EncounterData) -> void:
 	
 	var enemy_instances := load_enemies(data)
 	ally_grid.place_all_allies()
-	BattleContext.fill_context(battle_manager, enemy_grid, ally_grid, data)
+	RunState.current.begin_battle(battle_manager, enemy_grid, ally_grid, data)
 	
 	battle_manager.begin(enemy_instances)
 	

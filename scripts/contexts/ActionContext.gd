@@ -3,7 +3,7 @@ class_name ActionContext
 var _turn: TurnState = null
 var turn: TurnState:
 	get:
-		return BattleContext.get_turn_state()
+		return RunState.current.battle.get_turn_state()
 	set(value): _turn = value
 
 var source: ContextSource = null

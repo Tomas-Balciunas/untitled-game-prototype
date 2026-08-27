@@ -8,7 +8,7 @@ var target: Character
 
 func run(_manager: EventManager) -> void:
 	if !target:
-		target = PartyManager.members.pick_random()
+		target = RunState.current.party.members.pick_random()
 		
 	if trap == null:
 		push_error("TrapStep has no trap set")

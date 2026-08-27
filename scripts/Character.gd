@@ -412,7 +412,7 @@ func game_load(data: Dictionary) -> void:
 
 # Two-phase load: effects are restored *after* all party characters exist,
 # so cross-character source references (e.g. ally A's skill poisons ally B)
-# can resolve via PartyManager.
+# can resolve via RunState.current.party.
 func game_load_effects(data: Dictionary) -> void:
 	if not data.has("effects"):
 		return

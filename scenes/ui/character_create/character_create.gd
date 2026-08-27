@@ -181,13 +181,13 @@ func update_attributes() -> void:
 	display_attributes = attr
 
 func _on_create_pressed() -> void:
-	var res := MC
+	var res: CharacterResource = MC.duplicate(true)
 	res.name = "Test"
 	res.job = chosen_job
 	res.race = chosen_race
 	res.attributes = Attributes.new()
 	res.is_main = true
-	var inst := PartyManager.add_member(res)
+	var inst := RunState.current.party.add_member(res)
 	
 	if !inst:
 		push_error("something went horribly wrong - created character instance is null, check party size?")

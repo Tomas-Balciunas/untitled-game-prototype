@@ -1,4 +1,6 @@
-extends Node
+extends RefCounted
+
+class_name DungeonState
 
 var map_id: String
 var current_map_name: String = ""
@@ -44,7 +46,7 @@ func set_player_spawn(pos: Vector2i, facing: Vector3 = Vector3.FORWARD) -> void:
 	player_position = pos
 	player_previous_position = pos
 	player_facing = facing
-	
+
 func hydrate_from_load(load_data: Dictionary) -> void:
 	if load_data.has("dungeon"):
 		var dungeon: Dictionary = load_data["dungeon"]
@@ -63,7 +65,7 @@ func update_player_position(pos: Vector2i, facing: Vector3) -> void:
 	player_position = pos
 	player_facing = facing
 
-	for c: Character in PartyManager.members:
+	for c: Character in RunState.current.party.members:
 		var ctx := ActionContext.new()
 		ctx.source = CharacterSource.new(c)
 
@@ -72,7 +74,7 @@ func update_player_position(pos: Vector2i, facing: Vector3) -> void:
 		event.ctx = ctx
 		# DoTs (poison) subscribe to ON_MOVEMENT and resolve themselves per step.
 		EffectRunner.process_trigger(EffectTriggers.ON_MOVEMENT, event)
-		
+
 func add_encounter(data: EncounterData) -> void:
 	if not encounters.has(map_id):
 		encounters[map_id] = {}

@@ -48,7 +48,7 @@ func _on_queue_processed(queue: Array[Character]) -> void:
 		child.queue_free()
 	var index := 1
 	var label2 := Label.new()
-	label2.text = "Current. %s av: %s" % [BattleContext.manager.current_battler.resource.name if current_battler else "", BattleContext.manager.current_battler.action_value if current_battler else ""]
+	label2.text = "Current. %s av: %s" % [RunState.current.battle.manager.current_battler.resource.name if current_battler else "", RunState.current.battle.manager.current_battler.action_value if current_battler else ""]
 	v_box_container_2.add_child(label2)
 	for c: Character in queue:
 		var label := Label.new()

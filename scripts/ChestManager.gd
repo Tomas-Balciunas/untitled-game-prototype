@@ -42,7 +42,7 @@ func chest_disarmed(_opener: Character) -> bool:
 	return randf() > 0.5
 
 func used_key() -> bool:
-	for member: Character in PartyManager.members:
+	for member: Character in RunState.current.party.members:
 		var item: Item = member.inventory.get_item_by_id(chest.key.id)
 		
 		if item != null and member.inventory.remove_item(item):

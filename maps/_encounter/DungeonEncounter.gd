@@ -60,9 +60,9 @@ func _ready() -> void:
 	EncounterBus.encounter_ended.connect(_on_encounter_ended)
 	navigation_agent_3d.target_reached.connect(_on_target_reached)
 	
-	MapInstance.add_encounter(encounter_data)
+	RunState.current.map.add_encounter(encounter_data)
 	
-	if MapInstance.is_encounter_cleared(encounter_data.id):
+	if RunState.current.map.is_encounter_cleared(encounter_data.id):
 		queue_free()
 		return
 	
@@ -78,7 +78,7 @@ func update_target_location(target_location: Vector3) -> void:
 
 func _on_encounter_ended(_res: String, data: EncounterData) -> void:
 	if data.id == encounter_data.id:
-		if MapInstance.is_encounter_cleared(data.id):
+		if RunState.current.map.is_encounter_cleared(data.id):
 			self.queue_free()
 		else:
 			can_trigger_battle = false

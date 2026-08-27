@@ -8,10 +8,10 @@ var hiree: CharacterResource = null
 func bind(character: CharacterResource) -> void:
 	name_label.text = character.name
 	hiree = character
-	for member in PartyManager.members:
+	for member in RunState.current.party.members:
 		if member.resource.id == hiree.id:
 			hire_btn.disabled = true
 
 func _on_hire_pressed() -> void:
-	PartyManager.add_member(hiree)
+	RunState.current.party.add_member(hiree)
 	hire_btn.disabled = true

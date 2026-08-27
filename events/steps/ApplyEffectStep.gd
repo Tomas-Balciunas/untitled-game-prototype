@@ -20,13 +20,13 @@ func run(_manager: EventManager) -> void:
 
 
 func _resolve_receiver() -> Character:
-	if PartyManager.members.is_empty():
+	if RunState.current.party.members.is_empty():
 		return null
 
 	if target_member_id == "":
-		return PartyManager.members[0]
+		return RunState.current.party.members[0]
 
-	for m: Character in PartyManager.members:
+	for m: Character in RunState.current.party.members:
 		if m.resource.id == target_member_id:
 			return m
 

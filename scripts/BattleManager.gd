@@ -40,7 +40,7 @@ func begin(_enemies: Array[Character]) -> void:
 	BattleBus.action_selected.connect(_on_player_action_selected)
 	BattleBus.control_selected.connect(_on_control_selected)
 	
-	var party_members := PartyManager.members
+	var party_members := RunState.current.party.members
 	
 	for b: Character in party_members + _enemies:
 		b.action_value = 10000 / (100 + b.stats.speed)
@@ -62,7 +62,7 @@ func _process(_delta: float) -> void:
 		
 		return
 		
-	if BattleContext.event_running:
+	if RunState.current.battle.event_running:
 		current_state = BattleState.ANIMATING
 		return
 
@@ -328,14 +328,14 @@ func _handle_win() -> void:
 	for member: Character in party:
 		member.cleanup_after_battle()
 	BattleBus.battle_end.emit()
-	EncounterBus.encounter_ended.emit("win", BattleContext.encounter_data)
+	EncounterBus.encounter_ended.emit("win", RunState.current.battle.encounter_data)
 	current_state = BattleState.IDLE
 
 func _handle_lose() -> void:
 	for member: Character in party:
 		member.cleanup_after_battle()
 	BattleBus.battle_end.emit()
-	EncounterBus.encounter_ended.emit("lose", BattleContext.encounter_data)
+	EncounterBus.encounter_ended.emit("lose", RunState.current.battle.encounter_data)
 	current_state = BattleState.IDLE
 
 func _handle_flee() -> void:
@@ -343,13 +343,13 @@ func _handle_flee() -> void:
 		member.cleanup_after_battle()
 	
 	BattleBus.battle_end.emit()
-	EncounterBus.encounter_ended.emit("flee", BattleContext.encounter_data)
+	EncounterBus.encounter_ended.emit("flee", RunState.current.battle.encounter_data)
 	current_state = BattleState.IDLE
 	
 func _register_battler(battler: Character) -> void:
 	battlers.append(battler)
 	
-	if battler in PartyManager.members:
+	if battler in RunState.current.party.members:
 		party.append(battler)
 	else:
 		enemies.append(battler)
@@ -377,30 +377,30 @@ func _corpse_janny() -> void:
 	_to_cleanup.clear()
 
 func disable_all_targeting() -> void:
-	BattleContext.enemy_targeting_enabled = false
-	BattleContext.ally_targeting_enabled = false
+	RunState.current.battle.enemy_targeting_enabled = false
+	RunState.current.battle.ally_targeting_enabled = false
 	TargetingManager.end()
 
 func enable_all_targeting() -> void:
-	BattleContext.enemy_targeting_enabled = true
-	BattleContext.ally_targeting_enabled = true
+	RunState.current.battle.enemy_targeting_enabled = true
+	RunState.current.battle.ally_targeting_enabled = true
 	TargetingManager.begin(TargetingManager.Mode.BATTLE)
 
 func enable_enemy_targeting() -> void:
-	BattleContext.enemy_targeting_enabled = true
+	RunState.current.battle.enemy_targeting_enabled = true
 
 func disable_enemy_targeting() -> void:
-	BattleContext.enemy_targeting_enabled = false
+	RunState.current.battle.enemy_targeting_enabled = false
 
 func enable_ally_targeting() -> void:
-	BattleContext.ally_targeting_enabled = true
+	RunState.current.battle.ally_targeting_enabled = true
 	
 func disable_ally_targeting() -> void:
-	BattleContext.ally_targeting_enabled = false
+	RunState.current.battle.ally_targeting_enabled = false
 
 
 func _on_event_concluded() -> void:
-	BattleContext.event_running = false
+	RunState.current.battle.event_running = false
 
 func process_queue() -> void:
 	# TODO need to consider clean up and end checks

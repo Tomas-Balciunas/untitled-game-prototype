@@ -20,7 +20,7 @@ func _ready() -> void:
 	visible = false
 
 func bind(character: Character) -> void:
-	if BattleContext.in_battle:
+	if RunState.current.battle.in_battle:
 		return
 		
 	character_instance = character

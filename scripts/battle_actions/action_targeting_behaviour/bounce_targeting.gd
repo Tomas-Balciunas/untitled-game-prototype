@@ -10,9 +10,9 @@ func _init(_resolver: EffectResolver, _ctx: ActionContext) -> void:
 	resolver = _resolver
 	ctx = _ctx
 	initial_target = ctx.initial_target
-	is_ally = PartyManager.has_member(initial_target.resource.id)
+	is_ally = RunState.current.party.has_member(initial_target.resource.id)
 	actor = ctx.source.get_actor()
-	actor_slot = BattleContext.get_slot(actor)
+	actor_slot = RunState.current.battle.get_slot(actor)
 	
 	assert(initial_target)
 	assert(actor)
@@ -20,12 +20,12 @@ func _init(_resolver: EffectResolver, _ctx: ActionContext) -> void:
 
 
 func bounce(bounces: int, is_active_attack: bool = false) -> void:
-	var slots: Array[Character] = BattleContext.get_valid_battlers(is_ally)
+	var slots: Array[Character] = RunState.current.battle.get_valid_battlers(is_ally)
 	
 	var previous_target: Character = initial_target
 	
 	var action_event := ActionEvent.new("bounce parent")
-	BattleContext.new_action(action_event)
+	RunState.current.battle.new_action(action_event)
 	
 	for i in range(bounces):
 		if !previous_target:
@@ -54,7 +54,7 @@ func bounce(bounces: int, is_active_attack: bool = false) -> void:
 		)
 		
 		previous_target = target
-		await BattleContext.wait(0.1)
+		await BattleSession.wait(0.1)
 	
 	action_event.finish()
 	

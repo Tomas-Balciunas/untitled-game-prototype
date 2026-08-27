@@ -81,7 +81,7 @@ func _refresh_debug_overlay() -> void:
 
 	var lines: Array = []
 	lines.append("[Debug — F3]")
-	lines.append("Map: %s" % MapInstance.map_id)
+	lines.append("Map: %s" % RunState.current.map.map_id)
 	if _current_map_data.has("generation"):
 		lines.append("Type: %s" % _current_map_data["generation"])
 	var config: Dictionary = _current_map_data.get("config", {})
@@ -92,12 +92,12 @@ func _refresh_debug_overlay() -> void:
 		lines.append("Layout: %s (%dx%d)" % [layout, w, h])
 		if config.has("density"):
 			lines.append("Density: %.2f" % float(config["density"]))
-	lines.append("Player tile: %s" % str(MapInstance.player_position))
+	lines.append("Player tile: %s" % str(RunState.current.map.player_position))
 	lines.append("Enemies (procedural): %d" % enemy_count)
 	if custom_enemy_count > 0:
 		lines.append("Enemies (custom): %d" % custom_enemy_count)
 	lines.append("Chests: %d" % chest_count)
-	lines.append("Cleared encounters: %d" % MapInstance.cleared_encounters.get(MapInstance.map_id, []).size())
+	lines.append("Cleared encounters: %d" % RunState.current.map.cleared_encounters.get(RunState.current.map.map_id, []).size())
 	lines.append("FPS: %d" % int(Engine.get_frames_per_second()))
 	_debug_label.text = "\n".join(lines)
 
@@ -108,14 +108,14 @@ func load_map(map_id: String = "", load_data: Dictionary = {}) -> void:
 
 	_kill_map()
 
-	if MapInstance.map_id != map_id or not MapInstance.map_id:
+	if RunState.current.map.map_id != map_id or not RunState.current.map.map_id:
 		print("Dungeon: Loading new map")
-		MapInstance.hydrate_from_resource(map_data)
-	elif MapInstance.available_enemies.is_empty():
-		MapInstance.hydrate_enemy_pool(map_data)
+		RunState.current.map.hydrate_from_resource(map_data)
+	elif RunState.current.map.available_enemies.is_empty():
+		RunState.current.map.hydrate_enemy_pool(map_data)
 
 	if !load_data.is_empty():
-		MapInstance.hydrate_from_load(load_data)
+		RunState.current.map.hydrate_from_load(load_data)
 
 	var generation: String = map_data.get("generation", "handcrafted")
 	if generation == "procedural":
@@ -130,8 +130,8 @@ func load_map(map_id: String = "", load_data: Dictionary = {}) -> void:
 		current_map_scene = map_scene.instantiate()
 
 	self.add_child(current_map_scene)
-	var player_position: Vector2i = MapInstance.player_previous_position
-	var player_facing: Vector3 = MapInstance.player_facing
+	var player_position: Vector2i = RunState.current.map.player_previous_position
+	var player_facing: Vector3 = RunState.current.map.player_facing
 
 	if current_map_scene.has_node("Enemies"):
 		if current_map_scene.get_node("Enemies").has_method("populate_enemy_spawn_points"):
@@ -165,14 +165,14 @@ func transition_to_map(map_id: String) -> void:
 	TransitionManager.transit_to_map_end()
 
 func _on_player_moved(data: Dictionary) -> void:
-	MapInstance.update_player_position(data["grid_position"], data["grid_direction"])
+	RunState.current.map.update_player_position(data["grid_position"], data["grid_direction"])
 
 func _on_encounter_ended(result: String, _data: EncounterData) -> void:
 	print("Back from battle with result:", result)
 	self.visible = true
 	process_mode = Node.PROCESS_MODE_INHERIT
-	var player_position: Vector2i = MapInstance.player_previous_position
-	var player_facing: Vector3 = MapInstance.player_facing
+	var player_position: Vector2i = RunState.current.map.player_previous_position
+	var player_facing: Vector3 = RunState.current.map.player_facing
 	player.set_grid_pos(player_position, player_facing, TILE_SIZE)
 
 func _kill_map() -> void:
@@ -192,12 +192,12 @@ func _build_procedural_map(map_data: Dictionary, fresh_entry: bool) -> Node:
 	var return_map_id: String = map_data.get("return_map", "")
 	var end_map_id: String = map_data.get("end_map", "")
 
-	var seed_value: int = MapInstance.get_or_create_seed(map_id)
+	var seed_value: int = RunState.current.map.get_or_create_seed(map_id)
 	var gen := MapGenerator.new(seed_value, config, map_id)
 	var result: MapGenerator.Result = gen.generate()
 	gen.apply_to_scene(scene_root, result, tileset, return_map_id, end_map_id)
 
 	if fresh_entry:
-		MapInstance.set_player_spawn(result.spawn)
+		RunState.current.map.set_player_spawn(result.spawn)
 
 	return scene_root

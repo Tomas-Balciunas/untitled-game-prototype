@@ -47,8 +47,8 @@ func trigger(power: float = 1.0) -> void:
 	var resolver = DamageResolver.new(amount)
 
 	#TODO: play for allies too
-	if BattleContext.in_battle:
-		var slot = BattleContext.enemy_formation.get_slot_for(owner)
+	if RunState.current.battle.in_battle:
+		var slot = RunState.current.battle.enemy_formation.get_slot_for(owner)
 		if slot:
 			var orchestrator = ActionOrchestrator.new(owner, tick_ctx, resolver)
 			orchestrator.execute_action(

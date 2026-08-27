@@ -8,7 +8,7 @@ class_name EnemyController
 
 
 func populate_enemy_spawn_points() -> void:
-	if MapInstance.available_enemies.is_empty():
+	if RunState.current.map.available_enemies.is_empty():
 		push_error("Map instance has no available enemies!")
 		return
 
@@ -21,16 +21,16 @@ func populate_enemy_spawn_points() -> void:
 		var lvl_range: Array = []
 		
 		if !point.level_range:
-			var avg_lvl: int = PartyManager.get_average_party_level()
+			var avg_lvl: int = RunState.current.party.get_average_party_level()
 			lvl_range = [max(1, avg_lvl - 1), avg_lvl + 1]
 		else:
 			lvl_range = point.level_range
 		
 		if point.spawn_id == "":
-			push_error("% map doesnt have a spawn id in marker!" % MapInstance.map_id)
+			push_error("% map doesnt have a spawn id in marker!" % RunState.current.map.map_id)
 			
 		var encounter_data: EncounterData
-		var saved_encounter := MapInstance.get_encounter(point.spawn_id)
+		var saved_encounter := RunState.current.map.get_encounter(point.spawn_id)
 		
 		if !saved_encounter:
 			encounter_data = build_encounter(point.spawn_id, lvl_range, point.reward_keys)
@@ -59,11 +59,11 @@ func build_encounter(spawn_id: String, level_range: Array, reward_keys: Array = 
 	
 	for entry: Dictionary in reward_keys:
 		var key_id: String = entry.get("id", "")
-		if key_id.is_empty() or MapInstance.is_key_granted(key_id):
+		if key_id.is_empty() or RunState.current.map.is_key_granted(key_id):
 			continue
 		data.item_rewards.append(KeyFactory.rebuild(key_id, entry.get("name", "Key")))
 
-	var pool := MapInstance.available_enemies
+	var pool := RunState.current.map.available_enemies
 	var enemy_count := randi_range(min_group_size, max_group_size)
 
 	for i in range(enemy_count):

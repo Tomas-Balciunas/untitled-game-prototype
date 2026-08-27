@@ -11,8 +11,8 @@ func _ready() -> void:
 func enter_rest_area() -> void:
 	var dungeon := get_tree().get_root().get_node("Main/Dungeon")
 	var player := get_tree().get_root().get_node("Main/Player")
-	_last_position = MapInstance.player_previous_position
-	_last_facing = MapInstance.player_facing
+	_last_position = RunState.current.map.player_previous_position
+	_last_facing = RunState.current.map.player_facing
 	dungeon.visible = false
 	dungeon.process_mode = Node.PROCESS_MODE_DISABLED
 	
@@ -25,7 +25,7 @@ func enter_rest_area() -> void:
 	player.global_transform = entry_spot.global_transform
 
 	var spots: Array = rest_area.get_node("PartySpots").get_children()
-	var members: Array[Character] = PartyManager.members.duplicate()
+	var members: Array[Character] = RunState.current.party.members.duplicate()
 	
 	spots.shuffle()
 	var interactable_scene := load("res://scripts/interactables/CharacterInteractable.tscn")
@@ -47,7 +47,7 @@ func enter_rest_area() -> void:
 		interactable.set_character(chara)
 		rest_character.collision.disabled = true
 		
-	for member in PartyManager.members:
+	for member in RunState.current.party.members:
 		var manager: ExperienceManager = member.resource.experience_manager
 		manager.level_up_character(member)
 
@@ -63,7 +63,7 @@ func exit_rest_area() -> void:
 	player.set_grid_pos(_last_position, _last_facing, 2.0)
 	dungeon.process_mode = Node.PROCESS_MODE_INHERIT
 	
-	for member in PartyManager.members:
+	for member in RunState.current.party.members:
 		member.set_current_health(member.stats.health)
 		member.set_current_mana(member.stats.mana)
 		

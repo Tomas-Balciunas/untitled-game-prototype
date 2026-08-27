@@ -18,7 +18,7 @@ func process_event(data: Variant, p_subject: BaseCharacterResource = null) -> Ev
 	var completion_id := ""
 
 	if data is String:
-		if EventFlags.is_event_completed(data):
+		if RunState.current.flags.is_event_completed(data):
 			return _finish_empty()
 
 		var ev := EventRegistry.get_event(data)
@@ -45,7 +45,7 @@ func process_event(data: Variant, p_subject: BaseCharacterResource = null) -> Ev
 		await step.run(self)
 
 	if completion_id != "":
-		EventFlags.mark_event_completed(completion_id)
+		RunState.current.flags.mark_event_completed(completion_id)
 
 	get_tree().paused = false
 	GameState.set_idle()

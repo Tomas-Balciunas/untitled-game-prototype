@@ -45,4 +45,4 @@ func perform(ctx: ActionContext, actor: Character, attacker_slot: FormationSlot,
 			var launcher: SalvoLauncher = SalvoLauncher.new(resolver, ctx)
 			launcher.shrapnel(pellets)
 
-		await BattleContext.wait(0.2)
+		await BattleSession.wait(0.2)

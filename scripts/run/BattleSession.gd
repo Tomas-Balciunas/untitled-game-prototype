@@ -1,4 +1,12 @@
-extends Node
+extends RefCounted
+
+class_name BattleSession
+
+## One battle. Replaced wholesale by Run.begin_battle / Run.end_battle, so every
+## field returns to its default — the old clear_context() left the four flags
+## below untouched and they leaked into the next battle.
+## Named Session, not State, because BattleManager already has an inner
+## `enum BattleState` for turn phases.
 
 var in_battle: bool = false
 var event_running: bool = false
@@ -13,22 +21,6 @@ var ally_targeting_enabled: bool = false
 var enemy_targeting_enabled := false
 
 
-func fill_context(battle_manager: BattleManager, enemies: EnemyFormation, allies: AllyFormation, data: EncounterData) -> void:
-	in_battle = true
-	manager = battle_manager
-	enemy_formation = enemies
-	ally_formation = allies
-	encounter_data = data
-
-
-func clear_context() -> void:
-	in_battle = false
-	manager = null
-	enemy_formation = null
-	ally_formation = null
-	encounter_data = null
-
-
 static func wait(seconds: float) -> void:
 	await Engine.get_main_loop().create_timer(seconds).timeout
 
@@ -39,20 +31,20 @@ func new_action(event: ActionEvent) -> void:
 
 func get_valid_battlers(is_ally: bool) -> Array[Character]:
 	var all: Array[Character]
-	
+
 	if is_ally:
 		all = get_allies_all()
 	else:
 		all = get_enemies_all()
-	
+
 	var slots: Array[Character] = []
-	
+
 	for slot in all:
 		if !slot or slot.is_dead:
 			continue
-		
+
 		slots.append(slot)
-	
+
 	return slots
 
 
@@ -60,7 +52,7 @@ func get_enemies_all() -> Array[Character]:
 	if !manager:
 		push_error("Trying to get all enemies on null manager")
 		return []
-	
+
 	return manager.enemies
 
 
@@ -68,7 +60,7 @@ func get_allies_all() -> Array[Character]:
 	if !manager:
 		push_error("Trying to get all allies on null manager")
 		return []
-	
+
 	return manager.party
 
 
@@ -76,7 +68,7 @@ func get_battlers_all() -> Array[Character]:
 	if !manager:
 		push_error("Trying to get all battlers on null manager")
 		return []
-	
+
 	return manager.battlers
 
 
@@ -84,7 +76,7 @@ func get_slots_enemies() -> Array[FormationSlot]:
 	if !enemy_formation:
 		push_error("Trying to get all enemy slots on null formation")
 		return []
-	
+
 	return enemy_formation.get_all_slots()
 
 
@@ -92,45 +84,45 @@ func get_slots_allies() -> Array[FormationSlot]:
 	if !ally_formation:
 		push_error("Trying to get all ally slots on null formation")
 		return []
-	
+
 	return ally_formation.get_all_slots()
 
 
 func get_valid_slots(is_ally: bool) -> Array[FormationSlot]:
 	var all: Array[FormationSlot]
-	
+
 	if is_ally:
 		all = get_slots_allies()
 	else:
 		all = get_slots_enemies()
-	
+
 	var slots: Array[FormationSlot] = []
-	
+
 	for slot in all:
 		if !slot or !slot.is_slot_targeting_enabled:
 			continue
-		
+
 		slots.append(slot)
-	
+
 	return slots
-	
-	
+
+
 func get_slot(character: Character) -> FormationSlot:
 	if !ally_formation or !enemy_formation:
 		push_error("Trying to get slot on null formations")
 		return null
-	
+
 	var slot: FormationSlot = enemy_formation.get_slot_for(character)
-	
+
 	if !slot:
 		return ally_formation.get_slot_for(character)
-	
+
 	return slot
 
 func get_turn_state() -> TurnState:
 	if !manager or !manager.turn_state:
 		push_error("Turn state is null!")
-		
+
 		return null
-	
+
 	return manager.turn_state

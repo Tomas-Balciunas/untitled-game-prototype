@@ -25,7 +25,7 @@ func on_map_loaded(_map_data: Dictionary) -> void:
 	if !ObjectBus.chest_state_changed.is_connected(on_chest_state_changed):
 		ObjectBus.chest_state_changed.connect(on_chest_state_changed)
 
-	var data: Dictionary = MapInstance.chest_state.get(id, {})
+	var data: Dictionary = RunState.current.map.chest_state.get(id, {})
 
 	if !data.is_empty():
 		chest = game_load(data)
@@ -70,7 +70,7 @@ func _apply_forced_keys() -> void:
 	for entry: Dictionary in forced_keys:
 		var key_id: String = entry.get("id", "")
 
-		if key_id.is_empty() or MapInstance.is_key_granted(key_id):
+		if key_id.is_empty() or RunState.current.map.is_key_granted(key_id):
 			continue
 
 		if _holds_item_id(key_id) or _party_holds_item_id(key_id):
@@ -90,7 +90,7 @@ func _holds_item_id(item_id: String) -> bool:
 	return false
 
 func _party_holds_item_id(item_id: String) -> bool:
-	for member: Character in PartyManager.members:
+	for member: Character in RunState.current.party.members:
 		if member.inventory.get_item_by_id(item_id) != null:
 			return true
 
@@ -145,7 +145,7 @@ func build_chest(map_data: Dictionary) -> void:
 	chest.was_locked = true
 	
 func update_chest_state() -> void:
-	MapInstance.chest_state[id] = game_save()
+	RunState.current.map.chest_state[id] = game_save()
 	
 func on_chest_state_changed(_chest: Chest) -> void:
 	if chest and chest.id == _chest.id:

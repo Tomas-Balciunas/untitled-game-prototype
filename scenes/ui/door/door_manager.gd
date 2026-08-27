@@ -8,19 +8,19 @@ func _ready() -> void:
 	MapBus.map_finished_loading.connect(_on_map_loaded)
 
 func _on_map_loaded(_map_data: Dictionary) -> void:
-	for entry: Dictionary in MapInstance.take_pending_keys():
+	for entry: Dictionary in RunState.current.map.take_pending_keys():
 		var instance: Item = KeyFactory.rebuild(entry.get("id", ""), entry.get("name", "Key"))._build_instance()
 		var delivered: bool = false
 
-		for member: Character in PartyManager.members:
+		for member: Character in RunState.current.party.members:
 			if member.inventory.add_item(instance):
 				delivered = true
 				break
 
 		if delivered:
-			MapInstance.mark_key_granted(instance.id)
+			RunState.current.map.mark_key_granted(instance.id)
 		else:
-			MapInstance.queue_pending_key(entry)
+			RunState.current.map.queue_pending_key(entry)
 
 func on_open_door_requested(d: Door) -> void:
 	if d.key == null and d.trap == null:
@@ -76,7 +76,7 @@ func _seal_label(d: Door) -> String:
 	return "an unfamiliar sigil"
 
 func _party_has_key(key_id: String) -> bool:
-	for member: Character in PartyManager.members:
+	for member: Character in RunState.current.party.members:
 		if member.inventory.get_item_by_id(key_id) != null:
 			return true
 
@@ -86,7 +86,7 @@ func door_disarmed(_opener: Character) -> bool:
 	return randf() > 0.5
 
 func used_key() -> bool:
-	for member: Character in PartyManager.members:
+	for member: Character in RunState.current.party.members:
 		var item: Item = member.inventory.get_item_by_id(door.key.id)
 
 		if item != null and member.inventory.remove_item(item):

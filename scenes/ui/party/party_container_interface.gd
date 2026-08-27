@@ -1,6 +1,5 @@
 extends Panel
 
-@onready var party: PartyManager
 @onready var formation := [
 	$PanelContainer/PartyContainer/PartyRow/PartyMemberSlot1/PartyMember,
 	$PanelContainer/PartyContainer/PartyRow/PartyMemberSlot2/PartyMember,
@@ -18,8 +17,8 @@ func _on_party_reloaded() -> void:
 	for slot: PartyMemberSlot in formation:
 		slot.hide_info()
 
-	for slot_index in range(PartyManager.formation.size()):
-		var member: Character = PartyManager.formation[slot_index]
+	for slot_index in range(RunState.current.party.formation.size()):
+		var member: Character = RunState.current.party.formation[slot_index]
 		if member:
 			_on_member_added(member, slot_index)
 

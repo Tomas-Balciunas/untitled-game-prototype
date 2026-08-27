@@ -59,11 +59,11 @@ static func set_character_level(character: Character, level: int) -> void:
 	character.unspent_attribute_points = (level - 1) * 2
 
 func grant_experience_to_all(amount: int) -> void:
-	for member: Character in PartyManager.members:
+	for member: Character in RunState.current.party.members:
 		grant_experience_to_character(member, amount)
 
 static func calculate_and_grant_encounter_experience(data: EncounterData) -> void:
-	for member: Character in PartyManager.members:
+	for member: Character in RunState.current.party.members:
 		var encounter_exp: int = calculate_encounter_experience(member, data)
 		grant_experience_to_character(member, encounter_exp)
 

@@ -14,7 +14,7 @@ func _init(_performer: Character, _ctx: ActionContext, _resolver: EffectResolver
 
 func execute_action(animation_callable: Callable, info: String = "") -> void:
 	var event := ActionEvent.new(info)
-	BattleContext.new_action(event)
+	RunState.current.battle.new_action(event)
 
 	animation_callable.call(event)
 

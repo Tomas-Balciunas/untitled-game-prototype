@@ -1542,7 +1542,7 @@ func _populate_enemies(scene_root: Node, result: Result) -> void:
 		enemies_node.add_child(marker)
 		idx += 1
 
-## MapInstance.chest_state is keyed on the bare chest id, so two procedural maps
+## RunState.current.map.chest_state is keyed on the bare chest id, so two procedural maps
 ## both numbering from proc_chest_00 shared one saved state.
 func _chest_id(idx: int) -> String:
 	if _map_id.is_empty():

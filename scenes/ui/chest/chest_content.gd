@@ -37,7 +37,7 @@ func init(_chest: Chest) -> void:
 		inst.init(item)
 		inst.chest_item_selected.connect(on_item_selected)
 	
-	for member in PartyManager.members:
+	for member in RunState.current.party.members:
 		var inst := CHEST_ITEM_TRANSFER_SELECT.instantiate()
 		members_select.add_child(inst)
 		inst.init(member)
@@ -70,7 +70,7 @@ func on_character_selected(character: Character) -> void:
 		push_error("Item was not removed from chest")
 
 	if taken.type == ItemTypes.ItemType.QUEST:
-		MapInstance.mark_key_granted(taken.id)
+		RunState.current.map.mark_key_granted(taken.id)
 
 	NotificationBus.notification_requested.emit("%s has received %s" % [character.resource.name, taken.get_item_name()])
 	remove_item(taken)

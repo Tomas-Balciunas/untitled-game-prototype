@@ -41,7 +41,7 @@ func _ready() -> void:
 
 
 func _on_damaged(c: Character, damage_instance: DamageInstance) -> void:
-	if not PartyManager.has_member_by_object(c):
+	if not RunState.current.party.has_member_by_object(c):
 		return
 
 	if not damage_instance.calculator or damage_instance.calculator.get_final_damage() <= 0:

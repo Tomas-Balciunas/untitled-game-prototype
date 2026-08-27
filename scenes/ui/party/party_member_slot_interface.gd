@@ -89,7 +89,7 @@ func _on_gui_input(event: InputEvent) -> void:
 		if TargetingManager.mode == TargetingManager.Mode.DISABLED:
 			return
 
-		if TargetingManager.mode == TargetingManager.Mode.BATTLE and not BattleContext.ally_targeting_enabled:
+		if TargetingManager.mode == TargetingManager.Mode.BATTLE and not RunState.current.battle.ally_targeting_enabled:
 			return
 
 		if TargetingManager.mode != TargetingManager.Mode.NONE:
@@ -104,7 +104,7 @@ func enable_slot_targeting() -> void:
 	targeting_enabled = true
 
 func _on_mouse_entered() -> void:
-	if BattleContext.in_battle and not BattleContext.ally_targeting_enabled:
+	if RunState.current.battle.in_battle and not RunState.current.battle.ally_targeting_enabled:
 		return
 	$HoverOverlay.visible = true
 

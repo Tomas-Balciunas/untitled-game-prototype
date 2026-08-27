@@ -51,25 +51,14 @@ func load_game(slot: int) -> Dictionary:
 	return data
 
 func build_game_state() -> Dictionary:
-	return {
-		"version": SAVE_VERSION,
-		"game_state": GameState.game_save(),
-		"party": PartyManager.game_save(),
-		"dungeon": MapInstance.game_save(),
-		"interaction_state": InteractionTagManager.game_save(),
-	}
+	var state := RunState.current.game_save()
+	state["version"] = SAVE_VERSION
+	return state
 
 func apply_game_state(state: Dictionary) -> void:
 	load_issues.clear()
 	_migrate(state)
-	if state.has("game_state"):
-		GameState.game_load(state["game_state"])
-	if state.has("party"):
-		PartyManager.game_load(state["party"])
-	if state.has("dungeon"):
-		MapInstance.game_load(state["dungeon"])
-	if state.has("interaction_state"):
-		InteractionTagManager.game_load(state["interaction_state"])
+	RunState.load_from(state)
 	emit_signal("party_reloaded")
 	if not load_issues.is_empty():
 		print("Save loaded with %d issue(s) — see warnings above" % load_issues.size())

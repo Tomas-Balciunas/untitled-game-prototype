@@ -8,7 +8,7 @@ signal close_chest_opener_choice
 func init() -> void:
 	_clear()
 	
-	for member in PartyManager.members:
+	for member in RunState.current.party.members:
 		var btn := Button.new()
 		btn.text = member.resource.name
 		btn.focus_mode = Control.FOCUS_NONE

@@ -10,7 +10,7 @@ func _init(_resolver: EffectResolver, _ctx: ActionContext) -> void:
 	resolver = _resolver
 	ctx = _ctx
 	initial_target = ctx.initial_target
-	is_ally = PartyManager.has_member(initial_target.resource.id)
+	is_ally = RunState.current.party.has_member(initial_target.resource.id)
 	actor = ctx.source.get_actor()
 	
 	assert(initial_target)
@@ -18,7 +18,7 @@ func _init(_resolver: EffectResolver, _ctx: ActionContext) -> void:
 
 
 func shrapnel(pellets: int, is_active_attack: bool = false) -> void:
-	var slots: Array[Character] = BattleContext.get_valid_battlers(is_ally)
+	var slots: Array[Character] = RunState.current.battle.get_valid_battlers(is_ally)
 	
 	for i in range(pellets):
 		var target: Character = slots.pick_random()

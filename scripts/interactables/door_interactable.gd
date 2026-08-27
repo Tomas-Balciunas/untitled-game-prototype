@@ -58,7 +58,7 @@ func on_map_loaded(_map_data: Dictionary) -> void:
 	if door_id.is_empty():
 		return
 
-	var state: Dictionary = MapInstance.get_door_state(door_id)
+	var state: Dictionary = RunState.current.map.get_door_state(door_id)
 
 	if state.is_empty():
 		_store()
@@ -140,7 +140,7 @@ func _store() -> void:
 	if door_id.is_empty():
 		return
 
-	MapInstance.set_door_state(door_id, {
+	RunState.current.map.set_door_state(door_id, {
 		"open": door.is_open,
 		"locked": door.key != null,
 		"key_id": door.key_id,

@@ -13,7 +13,7 @@ func _ready() -> void:
 	PartyBus.party_member_added.connect(_on_party_member_added)
 	
 	if character:
-		if PartyManager.has_member(character.id):
+		if RunState.current.party.has_member(character.id):
 			queue_free()
 			return
 		

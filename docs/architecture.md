@@ -2,7 +2,7 @@
 
 Self-maintained reference for fast iteration. Keep it updated when the
 described systems change. Paths are relative to the project root. Ignore
-`_legacy/`.
+`__legacy/`.
 
 > Scope so far: the **effect / combat** system (the area most worked on).
 > Extend with other subsystems as they're explored.
@@ -209,7 +209,7 @@ The projectile launchers reborn **without projectiles**: an abstract
 `projectile_launcher.gd` (`ProjectileLauncher`, extends Node) holds the shared
 state — `resolver`, `ctx`, `initial_target`, `is_ally`, `actor`, `actor_slot` —
 and two concrete launchers built from `(resolver, ctx)`. They select among
-**characters** (not slots) via `BattleContext.get_valid_battlers(is_ally)`;
+**characters** (not slots) via `RunState.current.battle.get_valid_battlers(is_ally)`;
 `valid_slot()` rejects a candidate that `is_dead` or equals the excluded one.
 Each sub-hit runs through its own `ActionOrchestrator`, but the animation
 callable is just `e.confirm()` (no projectile/anim to wait on) — so the hit
@@ -220,7 +220,7 @@ resolves immediately.
   `get_valid_slot(previous, …)` (random valid, excluding the previous);
   `continue` (skip) when none found. Each hop builds a fresh `ActionContext`
   with `options.current_bounce` (+ `total_bounces`), resolves, then
-  `await BattleContext.wait(0.1)` — sequential chain. The optional effect
+  `await BattleSession.wait(0.1)` — sequential chain. The optional effect
   `effect/_offensive/bounce_damage.gd` (`BounceIncreasingDamage`, attach to a
   weapon/character) reads `current_bounce` on `ON_BEFORE_RECEIVE_DAMAGE` and
   escalates each successive hop.
@@ -384,10 +384,48 @@ an unfilled `modified_stats`. Neither is reachable with current content.
 
 ---
 
+## Run lifetime — `scripts/run/`
+All mutable run-scoped state lives on a single `Run` object (`Run.gd`,
+`RefCounted`) owning `party` / `map` / `tags` / `flags` / `gold`
+(`Party`, `DungeonState`, `InteractionTags`, `EventFlagState` — all `RefCounted`).
+
+- **`RunState` (autoload) holds `current: Run` and nothing else.** Starting a
+  run is `RunState.begin()`, which *replaces* the object. There is no per-field
+  reset to keep in sync, so new run state can't be forgotten at a run boundary.
+  `current` is assigned at declaration, not in `_ready`, so it exists before any
+  other autoload's `_ready` runs and callers never null-check it.
+- **Why not autoloads.** Autoloads are children of `/root` and survive every
+  `change_scene_to_*`; run data stored on them leaks into the next playthrough
+  (party persisting across game over). Autoloads are correct for the *registries*
+  (immutable content) and the *buses* (stateless signal hubs) — not for data with
+  a lifetime shorter than the process.
+- **Why not a node under `main.tscn`.** Its lifetime *is* a run (the only
+  `change_scene_to_*` calls are MainMenu → CharacterCreate → main → GameOver →
+  MainMenu; nothing leaves `main.tscn` during play), but character creation
+  happens in the scene *before* it and Godot can't pass arguments through a
+  scene change.
+- **A battle nests one level down**: `Run.battle` (`BattleSession`), always
+  non-null, assigned by `Run.begin_battle()` and `Run.end_battle()` — both
+  *replace* it. The old `BattleContext.clear_context()` reset only 5 of its 9
+  fields, so `event_running`, `pending_actions` and the two `*_targeting_enabled`
+  flags leaked into the next battle (and past game over). Replacing can't leak.
+  Named `BattleSession` because `BattleManager` already has an inner
+  `enum BattleState` for turn phases.
+- `GameState.current_state` lives on `Run` too; `GameState` keeps the `States`
+  enum (a compile-time constant, not state) and forwards `is_busy()` /
+  `set_idle()` / `set_menu()` / `set_event()`.
+- Because both of the above are Run-owned, `RunState.begin()` is just
+  `current = Run.new()` — **there is no reset step to keep in sync.** Anything
+  added to `Run` is covered for free; anything left outside it is not.
+- `EventManager` stays a real autoload — its `choices`/`subject` are per-event
+  transients and it needs `get_tree().paused` and `await`.
+
 ## Save / load — `scripts/SaveManager.gd` (autoload)
-- `build_game_state()` aggregates `GameState` + `PartyManager` + `MapInstance`
-  + `InteractionTagManager` via cascading `game_save()`/`game_load()` methods;
-  binary `store_var` to `user://save_slot_N.save`.
+- `build_game_state()` delegates to `RunState.current.game_save()` (which
+  cascades into `party` / `map` / `tags` / `flags`) and stamps `"version"`;
+  binary `store_var` to `user://save_slot_N.save`. `apply_game_state()` calls
+  `RunState.load_from()`, so **loading a save also starts from a fresh `Run`**
+  and can't inherit state from the run you were in.
 - **Versioned**: root carries `"version"` (`SAVE_VERSION`, currently 1; missing
   = 0). `apply_game_state` runs `_migrate()` (a v→v+1 chain) before applying.
   Bump `SAVE_VERSION` + add a `_migrate_vN_to_vN+1` on any format change.
@@ -399,7 +437,10 @@ an unfilled `modified_stats`. Neither is reachable with current content.
   drops — used by `Effect.create_from_save`, `Character` (missing character
   resource / skill id), `ContextSource`. `load_issues` is UI-surfaceable.
 - Party load is two-phase (characters first, then effects) so cross-character
-  effect sources resolve — see `PartyManager.game_load` / `game_load_effects`.
+  effect sources resolve — see `Party.game_load` / `game_load_effects`.
+- Save keys are `game_state` / `party` / `dungeon` / `interaction_state` /
+  `event_flags`. All reads are `has()`-guarded, so adding a key needs no
+  `SAVE_VERSION` bump — only a change to an *existing* key's shape does.
 
 ## Doors, locks and keys
 - **Blocking is a collider, not a rule.** Player movement is gated by four
@@ -458,6 +499,33 @@ an unfilled `modified_stats`. Neither is reachable with current content.
   a *scene*, not a `-s` script, for the autoload reason above:
   `godot --headless --path . maps/tools/gen_preview.tscn -- --map random_crypt_01 --count 25`
 
+## Script / resource load-order gotchas
+These all produce errors far from their cause, usually at boot.
+
+- **Never `preload` a `.tres` whose script is a type the same script also
+  depends on.** `CharacterResource.gd` had `const DEFAULT_JOB =
+  preload("_Unknown.tres")` (scripted with `Job.gd`) *and* `@export var job:
+  Job`. The analyzer needs `Job.gd` for the annotation while resolving the
+  preload, so the loader returns the resource **script-less** — a bare
+  `Resource` — and every `@implicit_new` then fails with *"Trying to assign
+  value of type 'Resource' to a variable of type 'Job.gd'"*. Use a path const
+  plus `load()` in the initializer; `load()` hits the ResourceLoader cache, so
+  it's the same shared instance `preload` gave you.
+- **A `const preload` of a scene pulls in that scene's whole preload graph at
+  script-load time.** A `preload` of `game_over.tscn` in `GameState.gd` (the
+  first autoload) transitively dragged in MainMenu → CharacterCreate → item
+  `.tres` files, whose `_init` calls `GameState.generate_id()` — before the
+  `GameState` singleton existed. Reference scenes you only navigate to by
+  path/UID and `change_scene_to_file` them.
+- **Resource `_init` that calls an autoload is fragile** (`WeaponResource`,
+  `ConsumableResource`, `QuestItemResource` all call `GameState.generate_id()`).
+  It only works if no `.tres` loads before autoloads finish; any new const
+  preload can break that ordering.
+- **New `class_name`s need a filesystem rescan.** Headless runs read
+  `.godot/global_script_class_cache.cfg` and don't rescan, so a fresh
+  `class_name` fails with *"Could not find type X"* until the editor opens or
+  `godot --headless --import` runs.
+
 ## Known gaps / TODO themes (from review)
 - Stacking/reapply policy is unfinished (`Poison.stacks` exists; stacking logic
   commented out; no general "already applied" policy).
@@ -465,6 +533,12 @@ an unfilled `modified_stats`. Neither is reachable with current content.
 - `EffectScope` enum under-used.
 - ~10 effect `.tres` files have no `id` (warned at startup by EffectRegistry
   scan) — they can't use the save-load registry fallback until ids are added.
+- **`CharacterResource.experience_manager` doesn't exist** but is still read by
+  `RestManager.gd:51` and written by `test/helpers/combatant.gd:43`. The helper
+  throws, leaving every fixture half-built — this is the sole cause of the 35
+  failing GUT tests. `RestManager` will fail the same way at runtime.
+- The run-state shims (`PartyManager`, `MapInstance`, `InteractionTagManager`,
+  `EventFlags`) are transitional — see *Run lifetime*.
 
 ## Tests
 GUT (Godot Unit Test) 9.x lives in `addons/gut/`; all test code is isolated
@@ -498,8 +572,18 @@ production `.tres` dependency), `ProbeEffect`, `RecordingEffect`.
 ## Verifying changes (headless)
 Compile + run main scene a few frames, exit 0 = clean:
 ```
-& "C:\Users\Tomas\Desktop\Godot_v4.6-stable_win64_console.exe" --headless --path "<project>" --quit-after 120
+& "C:\Users\Tomas\Desktop\Godot_v4.7-stable_win64.exe" --headless --path "<project>" --quit-after 300
 ```
+Redirect stderr — script errors go there, not stdout. After adding a
+`class_name`, run `--headless --import` first to rebuild the class cache.
+
+Full GUT suite (baseline at time of writing: 106 tests, 71 pass, 35 fail — see
+*Known gaps*):
+```
+& "C:\Users\Tomas\Desktop\Godot_v4.7-stable_win64.exe" --headless --path "<project>" -s addons/gut/gut_cmdln.gd
+```
+To tell a regression from pre-existing breakage, run the same command in a
+`git worktree add --detach <tmp> HEAD` checkout and compare totals.
 The Godot **editor** locks files while open — deletes may be denied; ask the
 user to close it (or have them delete) and re-add a temporary stub if an
 orphaned script references a removed symbol.

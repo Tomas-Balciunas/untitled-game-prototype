@@ -21,9 +21,9 @@ func _setup_character() -> void:
 		return
 
 	for tag: String in default_tags:
-		if InteractionTagManager._has_completed_tag_for(id, tag):
+		if RunState.current.tags._has_completed_tag_for(id, tag):
 			continue
-		if InteractionTagManager._has_available_tag_for(id, tag):
+		if RunState.current.tags._has_available_tag_for(id, tag):
 			continue
 
-		InteractionTagManager._add_available_tag_for(id, tag)
+		RunState.current.tags._add_available_tag_for(id, tag)

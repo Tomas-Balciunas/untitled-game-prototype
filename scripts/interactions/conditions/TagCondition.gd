@@ -43,7 +43,7 @@ func _resolve_ids(c: BaseCharacterResource) -> Array[String]:
 			else:
 				ids.append(target_id)
 		Target.ANY_PARTY_MEMBER:
-			for m: Character in PartyManager.members:
+			for m: Character in RunState.current.party.members:
 				ids.append(m.resource.id)
 
 	return ids
@@ -52,9 +52,9 @@ func _resolve_ids(c: BaseCharacterResource) -> Array[String]:
 func _has_state_for(id: String) -> bool:
 	match state:
 		State.AVAILABLE:
-			return InteractionTagManager._has_available_tag_for(id, tag)
+			return RunState.current.tags._has_available_tag_for(id, tag)
 		State.COMPLETED:
-			return InteractionTagManager._has_completed_tag_for(id, tag)
+			return RunState.current.tags._has_completed_tag_for(id, tag)
 
 	return false
 
