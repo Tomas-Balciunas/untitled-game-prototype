@@ -1,0 +1,25 @@
+[gd_resource type="MeshLibrary" format=3 uid="uid://cph768vsikkpj"]
+
+[ext_resource type="BoxMesh" uid="uid://bdqwihq60bgpq" path="res://assets/tiles/grass/grass_001_mesh.tres" id="1_pxo5y"]
+[ext_resource type="BoxMesh" uid="uid://sgpkefuoeb0t" path="res://assets/tiles/mountain_wall/mountain_wall_mesh.tres" id="3_jvyrp"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_cqcgm"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_yoykw"]
+
+[resource]
+item/0/name = "grass"
+item/0/mesh = ExtResource("1_pxo5y")
+item/0/mesh_transform = Transform3D(1, 0, 0, 0, 0.02, 0, 0, 0, 1, 0, 0, 0)
+item/0/mesh_cast_shadow = 1
+item/0/shapes = [SubResource("BoxShape3D_cqcgm"), Transform3D(1, 0, 0, 0, 0.02, 0, 0, 0, 1, 0, 0, 0)]
+item/0/navigation_mesh_transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+item/0/navigation_layers = 1
+item/1/name = "mountain_ wall"
+item/1/mesh = ExtResource("3_jvyrp")
+item/1/mesh_transform = Transform3D(1, 0, 0, 0, 2, 0, 0, 0, 1, 0, 1, 0)
+item/1/mesh_cast_shadow = 1
+item/1/shapes = [SubResource("BoxShape3D_yoykw"), Transform3D(1, 0, 0, 0, 2, 0, 0, 0, 1, 0, 1, 0)]
+item/1/navigation_mesh_transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+item/1/navigation_layers = 1
+metadata/_editor_source_scene = "res://maps/town/mesh_lib_scene.tscn"

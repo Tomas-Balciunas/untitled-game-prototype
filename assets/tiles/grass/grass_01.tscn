@@ -1,0 +1,9 @@
+[gd_scene format=3 uid="uid://qqm82v3fbhq7"]
+
+[ext_resource type="BoxMesh" uid="uid://bdqwihq60bgpq" path="res://assets/tiles/grass/grass_001_mesh.tres" id="1_aog71"]
+
+[node name="Grass01" type="Node3D" unique_id=1932291330]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1038385312]
+transform = Transform3D(1, 0, 0, 0, 0.02, 0, 0, 0, 1, 0, 0, 0)
+mesh = ExtResource("1_aog71")

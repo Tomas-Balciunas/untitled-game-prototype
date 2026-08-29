@@ -1,0 +1,16 @@
+[gd_scene format=3 uid="uid://pflac1br130a"]
+
+[ext_resource type="BoxMesh" uid="uid://sgpkefuoeb0t" path="res://assets/tiles/mountain_wall/mountain_wall_mesh.tres" id="1_ysky1"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_a4myo"]
+
+[node name="MountainWall" type="Node3D" unique_id=643069577]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=671392821]
+transform = Transform3D(1, 0, 0, 0, 2, 0, 0, 0, 1, 0, 1, 0)
+mesh = ExtResource("1_ysky1")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="MeshInstance3D" unique_id=1581761944]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="MeshInstance3D/StaticBody3D" unique_id=2139067996]
+shape = SubResource("BoxShape3D_a4myo")

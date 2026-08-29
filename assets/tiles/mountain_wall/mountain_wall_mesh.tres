@@ -1,0 +1,16 @@
+[gd_resource type="BoxMesh" format=3 uid="uid://sgpkefuoeb0t"]
+
+[ext_resource type="Texture2D" uid="uid://ch6hjtjasehqa" path="res://assets/tiles/mountain_wall/mountain_wall.png" id="1_4uxma"]
+[ext_resource type="Texture2D" uid="uid://d1ybf4b7ct6r6" path="res://assets/tiles/mountain_wall/mountain_wall_n.png" id="2_ygaaf"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_mweoc"]
+albedo_texture = ExtResource("1_4uxma")
+normal_enabled = true
+normal_texture = ExtResource("2_ygaaf")
+uv1_scale = Vector3(1, 2, 1)
+uv1_triplanar = true
+uv1_triplanar_sharpness = 26.908747
+
+[resource]
+lightmap_size_hint = Vector2i(14, 31)
+material = SubResource("StandardMaterial3D_mweoc")

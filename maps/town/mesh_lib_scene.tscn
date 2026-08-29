@@ -1,0 +1,27 @@
+[gd_scene format=3 uid="uid://ymaf2kc62vwa"]
+
+[ext_resource type="BoxMesh" uid="uid://sgpkefuoeb0t" path="res://assets/tiles/mountain_wall/mountain_wall_mesh.tres" id="1_grx2v"]
+[ext_resource type="BoxMesh" uid="uid://bdqwihq60bgpq" path="res://assets/tiles/grass/grass_001_mesh.tres" id="2_1p15h"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_a4myo"]
+
+[node name="MeshLibScene" type="Node3D" unique_id=1980572661]
+
+[node name="Node3D2" type="Node3D" parent="." unique_id=1907853145]
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="Node3D2" unique_id=1038385312]
+transform = Transform3D(1, 0, 0, 0, 0.02, 0, 0, 0, 1, 0, 0, 0)
+mesh = ExtResource("2_1p15h")
+skeleton = NodePath("")
+
+[node name="Node3D" type="Node3D" parent="." unique_id=2050083609]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Node3D" unique_id=671392821]
+transform = Transform3D(1, 0, 0, 0, 2, 0, 0, 0, 1, -1, 1, 0)
+mesh = ExtResource("1_grx2v")
+skeleton = NodePath("")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Node3D/MeshInstance3D" unique_id=1581761944]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Node3D/MeshInstance3D/StaticBody3D" unique_id=2139067996]
+shape = SubResource("BoxShape3D_a4myo")
