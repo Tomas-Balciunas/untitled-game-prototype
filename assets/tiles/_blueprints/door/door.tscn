@@ -4,6 +4,7 @@
 [ext_resource type="Script" uid="uid://c0nnjlcyyp2p4" path="res://gear/QuestItemResource.gd" id="2_seflw"]
 [ext_resource type="Script" uid="uid://thpvb0l1cx3w" path="res://scripts/Door.gd" id="3_g0nqe"]
 [ext_resource type="Texture2D" uid="uid://bof7itr03d6g8" path="res://maps/test_map/generic_dungeon.png" id="4_ase26"]
+[ext_resource type="Texture2D" uid="uid://b0bamt4drcatx" path="res://assets/plank/wood_texture.jpg" id="4_seflw"]
 
 [sub_resource type="Resource" id="Resource_shjaa"]
 script = ExtResource("2_seflw")
@@ -17,7 +18,11 @@ metadata/_custom_type_script = "uid://thpvb0l1cx3w"
 [sub_resource type="BoxShape3D" id="BoxShape3D_2sg8f"]
 size = Vector3(2, 2, 0.35)
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_u4odn"]
+albedo_texture = ExtResource("4_seflw")
+
 [sub_resource type="BoxMesh" id="BoxMesh_xhdjd"]
+material = SubResource("StandardMaterial3D_u4odn")
 size = Vector3(2, 2, 0.06)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_5olmo"]

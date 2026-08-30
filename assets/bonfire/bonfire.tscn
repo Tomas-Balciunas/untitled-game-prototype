@@ -1,0 +1,69 @@
+[gd_scene format=3 uid="uid://bk26nspr3vg5u"]
+
+[ext_resource type="PackedScene" uid="uid://dyemrab0puavr" path="res://assets/stones/stone_01.tscn" id="1_6aopl"]
+[ext_resource type="Texture2D" uid="uid://dxwyy14f7ekhf" path="res://assets/stones/stone_texture.jpg" id="2_aq23s"]
+[ext_resource type="PackedScene" uid="uid://btsm6ceo4ene" path="res://assets/stones/stone_02.tscn" id="3_uctmc"]
+[ext_resource type="PackedScene" uid="uid://c33wmcsrd2g3w" path="res://assets/plank/plank.tscn" id="4_aq23s"]
+[ext_resource type="PackedScene" uid="uid://h07dustib6o1" path="res://assets/fire/fire.tscn" id="5_uctmc"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_2m8vh"]
+albedo_texture = ExtResource("2_aq23s")
+uv1_triplanar = true
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_8qnr7"]
+albedo_texture = ExtResource("2_aq23s")
+uv1_triplanar = true
+
+[node name="bonfire" type="Node3D" unique_id=2085155611]
+
+[node name="stone_01" parent="." unique_id=163930848 instance=ExtResource("1_6aopl")]
+transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0.33210623, 0.09006566, -0.4301303)
+surface_material_override/0 = SubResource("StandardMaterial3D_2m8vh")
+
+[node name="stone_02" parent="." unique_id=214436306 instance=ExtResource("3_uctmc")]
+transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, -0.009868741, 0.07675618, -0.53390217)
+surface_material_override/0 = SubResource("StandardMaterial3D_8qnr7")
+
+[node name="stone_03" parent="." unique_id=381461785 instance=ExtResource("1_6aopl")]
+transform = Transform3D(0.13410361, 0, 0.14837866, -0.035038438, 0.19434372, 0.031667497, -0.1441823, -0.047228407, 0.13031097, -0.40196905, 0.067596614, -0.4419967)
+
+[node name="stone_04" parent="." unique_id=148461488 instance=ExtResource("3_uctmc")]
+transform = Transform3D(0.2, 0, 0, 0, -0.09943721, -0.17352879, 0, 0.17352879, -0.09943721, -0.6175561, 0.045484006, -0.12248577)
+
+[node name="stone_05" parent="." unique_id=627073487 instance=ExtResource("1_6aopl")]
+transform = Transform3D(-0.022924736, 0.024938907, 0.19711035, -0.14724228, -0.13535032, -8.156675e-09, 0.1333948, -0.14511491, 0.033874694, 0.594419, 0.055399656, -0.15060279)
+
+[node name="stone_06" parent="." unique_id=695041789 instance=ExtResource("3_uctmc")]
+transform = Transform3D(0.19124874, 0.05403982, -0.022441305, 0, 0.07670375, 0.1847066, 0.058514226, -0.17662454, 0.07334749, 0.6040645, 0.032092273, 0.20764527)
+
+[node name="stone_07" parent="." unique_id=105376063 instance=ExtResource("1_6aopl")]
+transform = Transform3D(0.17966695, 0, -0.08786231, 0, 0.2, 0, 0.08786231, 0, 0.17966695, 0.37393168, 0.069291174, 0.5058364)
+
+[node name="stone_08" parent="." unique_id=1279431088 instance=ExtResource("3_uctmc")]
+transform = Transform3D(-0.0041828165, -0.1966593, -0.036161046, 0.19995478, -0.004252909, 0, -0.0007689481, -0.036152866, 0.19670378, 0.0035981238, 0.07417083, 0.6273463)
+
+[node name="stone_09" parent="." unique_id=2058190159 instance=ExtResource("1_6aopl")]
+transform = Transform3D(0.14436145, 0, 0.13841884, 0, 0.2, 0, -0.13841884, 0, 0.14436145, -0.6307397, 0.05353409, 0.24818945)
+
+[node name="stone_10" parent="." unique_id=933780191 instance=ExtResource("3_uctmc")]
+transform = Transform3D(0.18851936, 0.04417882, -0.050086793, -2.018569e-09, 0.14999047, 0.13229837, 0.06678663, -0.124704, 0.14138052, -0.3640043, 0.058591545, 0.5220903)
+
+[node name="plank" parent="." unique_id=626917074 instance=ExtResource("4_aq23s")]
+transform = Transform3D(0.06002805, 0.13042717, -0.019247487, -0.031653084, 0.26757696, 0, 0.017167281, 0.037300553, 0.067301825, -0.17705354, 0.3, -0.085491896)
+
+[node name="plank2" parent="." unique_id=966905092 instance=ExtResource("4_aq23s")]
+transform = Transform3D(0.047094446, -0.13077098, 0.041845627, 0.022809746, 0.26999804, 0.02026753, -0.046495475, 0, 0.052327536, 0.17698404, 0.3, 0)
+
+[node name="plank3" parent="." unique_id=423555498 instance=ExtResource("4_aq23s")]
+transform = Transform3D(0.07, 0, 0, 0, 0.25913733, -0.0352695, 0, 0.15115502, 0.060465377, -0.014974907, 0.3, -0.17708328)
+
+[node name="plank4" parent="." unique_id=1741077267 instance=ExtResource("4_aq23s")]
+transform = Transform3D(0.053776387, 0.0740962, -0.041342326, 0, -0.27677277, -0.027007096, -0.044811845, 0.088919014, -0.049612783, 0.12273052, 0.3, 0.123273015)
+
+[node name="plank5" parent="." unique_id=74991024 instance=ExtResource("4_aq23s")]
+transform = Transform3D(0.005391948, 0.046846062, 0.06893073, -0.034721952, 0.25882712, -0.006860823, -0.06054184, -0.14427039, 0.010073907, -0.04490997, 0.3, 0.1960578)
+
+[node name="plank6" parent="." unique_id=1318384544 instance=ExtResource("4_aq23s")]
+transform = Transform3D(0.05260585, 0.14493209, 0.031448416, -0.034721952, 0.25882712, -0.006860823, -0.030446872, -0.04475701, 0.06216049, -0.21187103, 0.3, 0.120125175)
+
+[node name="fire" parent="." unique_id=874704047 instance=ExtResource("5_uctmc")]

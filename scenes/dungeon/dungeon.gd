@@ -21,7 +21,7 @@ func _ready() -> void:
 
 	transition_rect.modulate.a = 0.0
 	_setup_debug_overlay()
-	load_map("dungeon_generic")
+	load_map("starting_map")
 
 func _setup_debug_overlay() -> void:
 	_debug_layer = CanvasLayer.new()

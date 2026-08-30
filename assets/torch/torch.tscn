@@ -1,0 +1,95 @@
+[gd_scene format=3 uid="uid://m4b7vqdoqd60"]
+
+[ext_resource type="Texture2D" uid="uid://b0bamt4drcatx" path="res://assets/plank/wood_texture.jpg" id="1_my26j"]
+[ext_resource type="Texture2D" uid="uid://bxbjax7rjquo1" path="res://assets/fire/fire_smoke.png" id="2_my26j"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_uvhwa"]
+albedo_texture = ExtResource("1_my26j")
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_5w7kb"]
+material = SubResource("StandardMaterial3D_uvhwa")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_4depb"]
+albedo_color = Color(0.5850621, 0.585062, 0.5850622, 1)
+metallic = 1.0
+metallic_specular = 0.96
+roughness = 0.24
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_pa17o"]
+material = SubResource("StandardMaterial3D_4depb")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_aq23s"]
+transparency = 1
+albedo_color = Color(0.80854607, 0.6529189, 0, 1)
+albedo_texture = ExtResource("2_my26j")
+emission_enabled = true
+emission = Color(0.85205156, 0.5590174, 9.62615e-07, 1)
+billboard_mode = 2
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_aq23s"]
+lifetime_randomness = 0.2
+particle_flag_align_y = true
+emission_shape = 1
+emission_sphere_radius = 0.3
+gravity = Vector3(0, 3, 0)
+turbulence_noise_scale = 1.848
+
+[sub_resource type="QuadMesh" id="QuadMesh_aq23s"]
+lightmap_size_hint = Vector2i(7, 7)
+size = Vector2(0.15, 0.3)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_eyhmi"]
+transparency = 1
+albedo_color = Color(0.7147488, 0.2796334, 1.92523e-07, 1)
+albedo_texture = ExtResource("2_my26j")
+emission_enabled = true
+emission = Color(0.8627179, 0.3817191, 0.015681384, 1)
+billboard_mode = 2
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_1546c"]
+lifetime_randomness = 0.2
+emission_shape = 1
+emission_sphere_radius = 0.2
+gravity = Vector3(0, 1, 0)
+
+[sub_resource type="QuadMesh" id="QuadMesh_0nwau"]
+size = Vector2(0.05, 0.1)
+
+[node name="torch" type="Node3D" unique_id=630165187]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
+
+[node name="Torch" type="MeshInstance3D" parent="." unique_id=21815077]
+transform = Transform3D(0.1, 0, 0, 0, 0.4330127, -0.05, 0, 0.25, 0.08660254, 0, 1, 0)
+mesh = SubResource("CapsuleMesh_5w7kb")
+
+[node name="Flare" type="MeshInstance3D" parent="." unique_id=1397867715]
+transform = Transform3D(0.14999996, 0, 0, 0, 0.06928203, -0.07499998, 0, 0.03999999, 0.12990382, 0, 1.3835531, 0.21402864)
+mesh = SubResource("CylinderMesh_pa17o")
+
+[node name="fire" type="Node3D" parent="." unique_id=874704047]
+transform = Transform3D(0.19999996, 0, 0, 0, 0.19999996, 0, 0, 0, 0.19999996, 0, 1.3838346, 0.2571982)
+
+[node name="GPUParticles3D" type="GPUParticles3D" parent="fire" unique_id=1996664948]
+transform = Transform3D(1.0000001, 0, 0, 0, 1.0000001, 0, 0, 0, 1.0000001, 0, 1.0618997, 0)
+material_override = SubResource("StandardMaterial3D_aq23s")
+amount = 15
+lifetime = 0.19
+explosiveness = 0.2
+randomness = 0.2
+process_material = SubResource("ParticleProcessMaterial_aq23s")
+draw_pass_1 = SubResource("QuadMesh_aq23s")
+
+[node name="GPUParticles3D2" type="GPUParticles3D" parent="fire" unique_id=1438668895]
+transform = Transform3D(1.0000004, 0, 0, 0, 1.0000004, 0, 0, 0, 1.0000004, 0, 0.7430072, 0)
+material_override = SubResource("StandardMaterial3D_eyhmi")
+amount = 15
+lifetime = 0.29000000000000004
+explosiveness = 0.19
+randomness = 0.2
+process_material = SubResource("ParticleProcessMaterial_1546c")
+draw_pass_1 = SubResource("QuadMesh_0nwau")
+
+[node name="OmniLight3D" type="OmniLight3D" parent="fire" unique_id=1809956390]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.97308946, 0)
+light_color = Color(0.8396788, 0.5956198, 3.85046e-07, 1)
+omni_range = 7.0

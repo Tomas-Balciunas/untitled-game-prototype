@@ -3,7 +3,7 @@
 [ext_resource type="MeshLibrary" uid="uid://iknfmk60o8bp" path="res://maps/crypt/mesh/crypt_00.tres" id="1_k72gb"]
 [ext_resource type="Script" uid="uid://qwci85k0novh" path="res://scripts/ChestManager.gd" id="2_52c82"]
 [ext_resource type="Script" uid="uid://7pao6hs651jh" path="res://scripts/EnemyController.gd" id="3_1x1qq"]
-[ext_resource type="PackedScene" uid="uid://m4b7vqdoqd60" path="res://scenes/torch.tscn" id="3_t5wcu"]
+[ext_resource type="PackedScene" uid="uid://m4b7vqdoqd60" path="res://assets/torch/torch.tscn" id="3_t5wcu"]
 [ext_resource type="Script" uid="uid://kf1ly5o4evhs" path="res://scripts/SpawnId.gd" id="4_chn7v"]
 
 [sub_resource type="NavigationMesh" id="NavigationMesh_k72gb"]
@@ -47,11 +47,8 @@ environment = SubResource("Environment_chn7v")
 
 [node name="Torches" type="Node" parent="Crypt" unique_id=1626432811]
 
-[node name="Torch" parent="Crypt/Torches" unique_id=1299771342 instance=ExtResource("3_t5wcu")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.300486, 0.29680318, -12.792891)
-
-[node name="Torch2" parent="Crypt/Torches" unique_id=221071621 instance=ExtResource("3_t5wcu")]
-transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, -10.013159, 0.42176503, 0.7986388)
+[node name="torch" parent="Crypt/Torches" unique_id=630165187 instance=ExtResource("3_t5wcu")]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0.66596234, -0.9029145)
 
 [node name="Enemies" type="Node" parent="." unique_id=390207237]
 script = ExtResource("3_1x1qq")

@@ -1,0 +1,31 @@
+[gd_scene format=3 uid="uid://d4fry77os1qdx"]
+
+[ext_resource type="Script" uid="uid://dbfiub7761eey" path="res://scripts/triggerables/MapTransitionTriggerable.gd" id="1_ncoed"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_g1pjd"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_portal"]
+albedo_color = Color(0.3, 0.6, 1, 1)
+emission_enabled = true
+emission = Color(0.3, 0.6, 1, 1)
+emission_energy_multiplier = 3.0
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_portal"]
+top_radius = 0.4
+bottom_radius = 0.4
+height = 1.6
+
+[node name="Area3D" type="Area3D" unique_id=349481803]
+script = ExtResource("1_ncoed")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=596749323]
+shape = SubResource("BoxShape3D_g1pjd")
+
+[node name="PortalMesh" type="MeshInstance3D" parent="." unique_id=221915766]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.2, 0)
+material_override = SubResource("StandardMaterial3D_portal")
+mesh = SubResource("CylinderMesh_portal")
+
+[node name="PortalLight" type="OmniLight3D" parent="." unique_id=377433550]
+light_color = Color(0.3, 0.6, 1, 1)
+light_energy = 2.0

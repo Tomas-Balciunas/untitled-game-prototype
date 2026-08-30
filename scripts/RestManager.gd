@@ -48,8 +48,7 @@ func enter_rest_area() -> void:
 		rest_character.collision.disabled = true
 		
 	for member in RunState.current.party.members:
-		var manager: ExperienceManager = member.resource.experience_manager
-		manager.level_up_character(member)
+		ExperienceManager.level_up_character(member)
 
 	SaveManager.save_game(0)
 
