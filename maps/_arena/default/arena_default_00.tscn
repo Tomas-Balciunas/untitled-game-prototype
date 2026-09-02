@@ -1,20 +1,11 @@
 [gd_scene format=3 uid="uid://dq6gw6kdq30h2"]
 
 [ext_resource type="MeshLibrary" uid="uid://uso6cfmk5r51" path="res://tileset white.tres" id="1_gu5d0"]
+[ext_resource type="PackedScene" uid="uid://m4b7vqdoqd60" path="res://assets/torch/torch.tscn" id="2_in1h3"]
 
-[sub_resource type="Environment" id="Environment_es1ho"]
-background_mode = 2
-background_color = Color(1, 1, 1, 1)
-ambient_light_color = Color(1, 1, 1, 1)
-ambient_light_sky_contribution = 0.0
-ambient_light_energy = 0.01
-ssao_enabled = true
-ssao_radius = 0.49
-ssao_intensity = 1.66
-fog_enabled = true
-fog_light_color = Color(0.772549, 0.85098, 1, 1)
-fog_light_energy = 0.09
-volumetric_fog_density = 0.0
+[sub_resource type="Environment" id="Environment_in1h3"]
+adjustment_enabled = true
+adjustment_brightness = 1.89
 
 [node name="ArenaDefault" type="GridMap" unique_id=1805042897]
 mesh_library = ExtResource("1_gu5d0")
@@ -26,4 +17,10 @@ data = {
 metadata/_editor_floor_ = Vector3(0, 0, 0)
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=2046163733]
-environment = SubResource("Environment_es1ho")
+environment = SubResource("Environment_in1h3")
+
+[node name="torch" parent="." unique_id=630165187 instance=ExtResource("2_in1h3")]
+transform = Transform3D(-2.1855694e-08, 0, -0.5, 0, 0.5, 0, 0.5, 0, -2.1855694e-08, 5.884502, 0.5, -2)
+
+[node name="torch2" parent="." unique_id=388046756 instance=ExtResource("2_in1h3")]
+transform = Transform3D(1.4901161e-08, 0, 0.5, 0, 0.5, 0, -0.5, 0, 1.4901161e-08, -5.882279, 0.5, -2)

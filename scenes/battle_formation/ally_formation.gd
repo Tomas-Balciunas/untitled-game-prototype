@@ -2,8 +2,8 @@ extends FormationBase
 
 class_name AllyFormation
 
-const ROW_Z          := -8.0
-const SLOT_SPACING_X := 2
+const ROW_Z          := -6.0
+const SLOT_SPACING_X := 0
 const MAX_SLOTS      := 4
 const PLAYER = preload("uid://ed1wo7vfltsb")
 const FORMATION_SLOT = preload("uid://b1jxfg32brb8x")

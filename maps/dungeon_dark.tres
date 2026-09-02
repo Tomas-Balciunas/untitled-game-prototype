@@ -1,0 +1,24 @@
+[gd_resource type="Environment" format=3 uid="uid://b1lhdb20soj3m"]
+
+[resource]
+background_mode = 1
+ambient_light_source = 1
+reflected_light_source = 1
+glow_enabled = true
+glow_intensity = 0.8
+glow_blend_mode = 0
+glow_hdr_threshold = 0.0
+glow_hdr_scale = 0.0
+glow_hdr_luminance_cap = 0.0
+fog_enabled = true
+fog_mode = 1
+fog_light_color = Color(0, 0, 0, 1)
+fog_light_energy = 0.0
+fog_density = 1.0
+fog_sky_affect = 0.0
+fog_depth_curve = 1.5
+fog_depth_begin = 2.0
+fog_depth_end = 8.0
+volumetric_fog_enabled = true
+volumetric_fog_density = 0.01
+volumetric_fog_length = 15.0

@@ -21,8 +21,10 @@
 [ext_resource type="Script" uid="uid://crya7r5lwmvqh" path="res://characters/overworld_npc.gd" id="18_y3577"]
 [ext_resource type="Resource" uid="uid://dh8kad7brt53b" path="res://characters/allies/Lili/Lili.tres" id="19_l6obu"]
 [ext_resource type="Script" uid="uid://dq1k40l227hss" path="res://scenes/ui/door/door_manager.gd" id="19_rna72"]
+[ext_resource type="Environment" uid="uid://b1lhdb20soj3m" path="res://maps/dungeon_dark.tres" id="20_5iua8"]
 [ext_resource type="PackedScene" uid="uid://brmuxif8auto4" path="res://characters/foes/Balmer/_body/Balmet.tscn" id="20_hag8j"]
 [ext_resource type="Resource" uid="uid://bs56ra62hh2us" path="res://characters/npcs/test/test_npc.tres" id="20_rna72"]
+[ext_resource type="PackedScene" uid="uid://m4b7vqdoqd60" path="res://assets/torch/torch.tscn" id="21_tyc16"]
 [ext_resource type="Script" uid="uid://b06vmgrh4qa8i" path="res://gear/ItemResource.gd" id="23_7wpse"]
 [ext_resource type="Script" uid="uid://dcegrpy67vkgu" path="res://scripts/encounter_enemy.gd" id="23_v6bh1"]
 [ext_resource type="Resource" uid="uid://cakblj60r6ir" path="res://gear/weapon/cheat_sword.tres" id="24_5iua8"]
@@ -65,15 +67,6 @@ height = 1.6
 [sub_resource type="BoxMesh" id="BoxMesh_lk5gk"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_bgo3i"]
-
-[sub_resource type="Environment" id="Environment_kjsaj"]
-background_energy_multiplier = 0.28
-ambient_light_energy = 1.14
-fog_enabled = true
-fog_light_color = Color(0.501114, 0.536127, 0.591149, 1)
-fog_light_energy = 0.85
-fog_density = 0.0283
-fog_sky_affect = 0.0
 
 [sub_resource type="Resource" id="Resource_vvgws"]
 script = ExtResource("26_sxx2g")
@@ -204,9 +197,6 @@ event_id = "test_event_000"
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 1, -4)
 shape = SubResource("BoxShape3D_bgo3i")
 
-[node name="WorldEnvironment" type="WorldEnvironment" parent="StartingArea" unique_id=1268670882]
-environment = SubResource("Environment_kjsaj")
-
 [node name="NPC" type="Node" parent="StartingArea" unique_id=1874350952]
 script = ExtResource("16_q33ho")
 
@@ -227,6 +217,14 @@ character = ExtResource("20_rna72")
 
 [node name="Doors" type="Node" parent="StartingArea" unique_id=83144628]
 script = ExtResource("19_rna72")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="StartingArea" unique_id=1268670882]
+environment = ExtResource("20_5iua8")
+
+[node name="Torches" type="Node" parent="StartingArea" unique_id=398576836]
+
+[node name="torch" parent="StartingArea/Torches" unique_id=630165187 instance=ExtResource("21_tyc16")]
+transform = Transform3D(-2.1855694e-08, 0, 0.5, 0, 0.5, 0, -0.5, 0, -2.1855694e-08, -18.905119, 0.32945776, -3.985767)
 
 [node name="Enemies" type="Node" parent="." unique_id=1583926156]
 script = ExtResource("2_g1pjd")

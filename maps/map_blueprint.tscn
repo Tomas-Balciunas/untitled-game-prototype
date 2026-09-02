@@ -5,15 +5,7 @@
 [ext_resource type="Script" uid="uid://dq1k40l227hss" path="res://scenes/ui/door/door_manager.gd" id="3_0kt6l"]
 [ext_resource type="Script" uid="uid://bep2fyftkjcsr" path="res://characters/npc_controller.gd" id="4_7ymah"]
 [ext_resource type="Script" uid="uid://7pao6hs651jh" path="res://scripts/EnemyController.gd" id="9_gbhr8"]
-
-[sub_resource type="Environment" id="Environment_kjsaj"]
-background_energy_multiplier = 0.28
-ambient_light_energy = 1.14
-fog_enabled = true
-fog_light_color = Color(0.501114, 0.536127, 0.591149, 1)
-fog_light_energy = 0.85
-fog_density = 0.0283
-fog_sky_affect = 0.0
+[ext_resource type="Environment" path="res://maps/dungeon_dark.tres" id="10_dark"]
 
 [node name="NavigationRegion3D" type="NavigationRegion3D" unique_id=1243644443]
 
@@ -35,7 +27,7 @@ script = ExtResource("2_31cuy")
 [node name="Events" type="Node" parent="Blueprint" unique_id=132555464]
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="Blueprint" unique_id=1077364392]
-environment = SubResource("Environment_kjsaj")
+environment = ExtResource("10_dark")
 
 [node name="Doors" type="Node" parent="Blueprint" unique_id=1115369001]
 script = ExtResource("3_0kt6l")

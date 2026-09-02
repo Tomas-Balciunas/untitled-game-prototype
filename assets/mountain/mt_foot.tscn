@@ -40,7 +40,7 @@ shadow_mesh = SubResource("ArrayMesh_g5y3g")
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_fg0uq"]
 albedo_texture = ExtResource("1_bkjx0")
 normal_texture = ExtResource("2_ntqmv")
-uv1_scale = Vector3(7, 7, 7)
+uv1_scale = Vector3(20, 25, 30)
 uv1_triplanar = true
 uv1_triplanar_sharpness = 150.0
 

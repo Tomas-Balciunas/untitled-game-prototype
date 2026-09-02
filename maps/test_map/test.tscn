@@ -6,26 +6,9 @@
 [ext_resource type="Script" uid="uid://bep2fyftkjcsr" path="res://characters/npc_controller.gd" id="4_01a7r"]
 [ext_resource type="PackedScene" uid="uid://h7ygbdt4414w" path="res://assets/tiles/_blueprints/door/door.tscn" id="4_x2715"]
 [ext_resource type="Script" uid="uid://7pao6hs651jh" path="res://scripts/EnemyController.gd" id="5_6gkbv"]
+[ext_resource type="Environment" path="res://maps/dungeon_dark.tres" id="6_dark"]
 
 [sub_resource type="NavigationMesh" id="NavigationMesh_70v3f"]
-
-[sub_resource type="Environment" id="Environment_kjsaj"]
-background_energy_multiplier = 0.28
-ambient_light_energy = 1.14
-fog_enabled = true
-fog_light_color = Color(0.501114, 0.536127, 0.591149, 1)
-fog_light_energy = 0.85
-fog_density = 0.0283
-fog_sky_affect = 0.0
-
-[sub_resource type="Sky" id="Sky_eyhmi"]
-
-[sub_resource type="Environment" id="Environment_a4myo"]
-background_mode = 2
-background_energy_multiplier = 1.37
-sky = SubResource("Sky_eyhmi")
-ambient_light_source = 3
-ambient_light_color = Color(0.7317303, 0.57259274, 0.30341846, 1)
 
 [node name="NavigationRegion3D" type="NavigationRegion3D" unique_id=1243644443]
 navigation_mesh = SubResource("NavigationMesh_70v3f")
@@ -51,7 +34,7 @@ script = ExtResource("2_p348t")
 [node name="Events" type="Node" parent="Blueprint" unique_id=132555464]
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="Blueprint" unique_id=1077364392]
-environment = SubResource("Environment_kjsaj")
+environment = ExtResource("6_dark")
 
 [node name="Doors" type="Node" parent="Blueprint" unique_id=1115369001]
 script = ExtResource("3_3xxt0")
@@ -68,4 +51,4 @@ script = ExtResource("4_01a7r")
 script = ExtResource("5_6gkbv")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=492503287]
-environment = SubResource("Environment_a4myo")
+environment = ExtResource("6_dark")

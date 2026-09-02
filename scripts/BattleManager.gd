@@ -252,55 +252,68 @@ func _process_enemy_turn(ctx: ActionContext) -> void:
 		targeting = TargetingManager.TargetType.SINGLE
 		attack_rate = 1
 	
-	var target: Character = null
-	
-	if ctx.force_action:
-		if !ctx.initial_target:
-			push_error("Forced action for %s did not have a target" % current_battler.resource.name)
-			current_state = BattleState.TURN_END
-			return
-			
-		target = ctx.initial_target
+	#var target: Character = null
+	#
+	#if ctx.force_action:
+		#if !ctx.initial_target:
+			#push_error("Forced action for %s did not have a target" % current_battler.resource.name)
+			#current_state = BattleState.TURN_END
+			#return
+			#
+		#target = ctx.initial_target
 
-	if !target:
-		var valid_targets := party.filter(func(p: Character) -> bool: return p.is_dead == false)
-		if valid_targets.is_empty():
-			current_state = BattleState.CHECK_END
-			return
-
-		target = valid_targets.pick_random()
+	#if !target:
+		#var valid_targets := party.filter(func(p: Character) -> bool: return p.is_dead == false)
+		#if valid_targets.is_empty():
+			#current_state = BattleState.CHECK_END
+			#return
+#
+		#target = valid_targets.pick_random()
 	
 	
 	var attacker_slot := get_slot(current_battler)
-	var target_slot := get_slot(target)
+	#var target_slot := get_slot(target)
 	
-	var atk := ActionContext.new()
-	atk.source = CharacterSource.new(current_battler)
-	atk.set_targets(target)
-	atk.actively_cast = true
+	#var atk := ActionContext.new()
+	#atk.source = CharacterSource.new(current_battler)
+	#atk.set_targets(target)
+	#atk.actively_cast = true
 	
-	ChatEventBus.chat_event.emit(ChatterManager.ATTACKING, {
-				"source": current_battler,
-				"target": [target]
-			})
+	#ChatEventBus.chat_event.emit(ChatterManager.ATTACKING, {
+				#"source": current_battler,
+				#"target": [target]
+			#})
 	
 	current_state = BattleState.ANIMATING
 	
-	await get_tree().create_timer(0.6).timeout
-		
-	for i in range(attack_rate):
-		
-		var resolver: DamageResolver = DamageResolver.new(current_battler.stats.attack)
-		var orchertrator: ActionOrchestrator = ActionOrchestrator.new(current_battler, atk, resolver)
-		await orchertrator.execute_action(
-			func (e: ActionEvent) -> void:
-				attacker_slot.perform_attack(e, target_slot)
-		)
-		
-		if i < attack_rate - 1:
-			await get_tree().create_timer(0.18).timeout
+	var behaviour: AiBehaviour = current_battler.resource.ai_behaviour
 	
-	await attacker_slot.position_back()
+	if behaviour == null:
+		behaviour = AiBehaviour.new()
+	
+	var result: Array = behaviour.choose_action(current_battler, party, enemies)
+	var target: Character = result[0]
+	var action: BattleAction = result[1]
+	var target_slot := get_slot(target)
+	
+	await get_tree().create_timer(0.8).timeout
+	await action.execute(current_battler, target, attacker_slot, target_slot)
+	
+	
+		#
+	#for i in range(attack_rate):
+		#
+		#var resolver: DamageResolver = DamageResolver.new(current_battler.stats.attack)
+		#var orchertrator: ActionOrchestrator = ActionOrchestrator.new(current_battler, atk, resolver)
+		#await orchertrator.execute_action(
+			#func (e: ActionEvent) -> void:
+				#attacker_slot.perform_attack(e, target_slot)
+		#)
+		#
+		#if i < attack_rate - 1:
+			#await get_tree().create_timer(0.18).timeout
+	#
+	#await attacker_slot.position_back()
 	
 	current_state = BattleState.ACTION_QUEUE
 

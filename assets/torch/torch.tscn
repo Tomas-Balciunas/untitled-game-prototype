@@ -20,6 +20,7 @@ material = SubResource("StandardMaterial3D_4depb")
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_aq23s"]
 transparency = 1
+disable_fog = true
 albedo_color = Color(0.80854607, 0.6529189, 0, 1)
 albedo_texture = ExtResource("2_my26j")
 emission_enabled = true
@@ -40,6 +41,7 @@ size = Vector2(0.15, 0.3)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_eyhmi"]
 transparency = 1
+disable_fog = true
 albedo_color = Color(0.7147488, 0.2796334, 1.92523e-07, 1)
 albedo_texture = ExtResource("2_my26j")
 emission_enabled = true

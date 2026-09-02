@@ -27,6 +27,7 @@ var is_main: bool = false
 @export var stat_level_growth: Stats
 @export var stat_attribute_growth: StatAttributeGrowth
 
+@export var ai_behaviour: AiBehaviour = null
 @export var battle_events: Array[BattleEvent]
 
 @export var experience_granted: int = 1
