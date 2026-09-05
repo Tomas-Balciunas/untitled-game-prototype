@@ -1,5 +1,6 @@
 [gd_resource type="Resource" script_class="CharacterResource" format=3 uid="uid://cmdq1cvhgys4g"]
 
+[ext_resource type="Script" uid="uid://xw824r85c31r" path="res://scripts/ai_behaviour/ai_behaviour.gd" id="1_koij7"]
 [ext_resource type="Script" uid="uid://bwn4gpkaijqsg" path="res://scripts/CharacterResource.gd" id="1_res"]
 [ext_resource type="Resource" path="res://characters/foes/SkeletonPriest/attributes.tres" id="2_attr"]
 [ext_resource type="Resource" path="res://characters/foes/SkeletonPriest/skeleton_priest_stats.tres" id="3_stats"]
@@ -12,16 +13,23 @@
 [ext_resource type="Script" uid="uid://dq4acpkde276p" path="res://skills/Skill.gd" id="7_skill"]
 [ext_resource type="Resource" path="res://skills/_offensive/smite.tres" id="8_skill_a"]
 [ext_resource type="Resource" uid="uid://bk1ekpvjscjmg" path="res://skills/_defensive/_heal/single heal.tres" id="9_skill_b"]
-[ext_resource type="Resource" uid="uid://cs2tci0dc3vvo" path="res://characters/_class/_Unknown.tres" id="10_fkcnc"]
-[ext_resource type="Resource" uid="uid://lcgngc3c13fc" path="res://characters/_race/_Unknown.tres" id="11_ho04t"]
+[ext_resource type="Resource" uid="uid://b1iclhswpvcyp" path="res://skills/_defensive/_heal/strong heal.tres" id="11_yd401"]
+
+[sub_resource type="Resource" id="Resource_tyc16"]
+script = ExtResource("1_koij7")
+offensive = 0.2
+support = 0.66
+defensive = 0.2
+metadata/_custom_type_script = "uid://xw824r85c31r"
 
 [resource]
 script = ExtResource("1_res")
 attributes = ExtResource("2_attr")
-default_skills = Array[ExtResource("7_skill")]([ExtResource("8_skill_a"), ExtResource("9_skill_b")])
+default_skills = Array[ExtResource("7_skill")]([ExtResource("8_skill_a"), ExtResource("9_skill_b"), ExtResource("11_yd401")])
 base_stats = ExtResource("3_stats")
 stat_level_growth = ExtResource("4_lvl")
 stat_attribute_growth = ExtResource("5_grow")
+ai_behaviour = SubResource("Resource_tyc16")
 experience_granted = 60
 id = "e_skeleton_priest_001"
 name = "Skeleton Priest"

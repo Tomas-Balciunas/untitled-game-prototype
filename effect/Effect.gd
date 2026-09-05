@@ -210,6 +210,9 @@ func can_process_when_target_dead() -> bool:
 func get_priority(_stage: String = "") -> int:
 	return priority
 
+func get_tags() -> Array[String]:
+	return []
+
 
 func game_save() -> Dictionary:
 	var script_path: String = ""

@@ -35,7 +35,7 @@ func run_pipeline(event: HealTriggerEvent) -> void:
 	var mult: float = event.target.stats.healing_received / 100.0
 	if event.ctx.source is CharacterSource:
 		mult *= event.ctx.source.character.stats.healing_done / 100.0
-	event.heal = int(round(event.heal * mult))
+	event.heal = int(round(event.heal * (1.0 + mult)))
 	
 	if event.ctx.turn:
 		event.ctx.turn.healing_done += event.heal

@@ -286,15 +286,19 @@ func _process_enemy_turn(ctx: ActionContext) -> void:
 	
 	current_state = BattleState.ANIMATING
 	
+	var scanner: BattleStateScanner = BattleStateScanner.new(enemies, party)
 	var behaviour: AiBehaviour = current_battler.resource.ai_behaviour
 	
 	if behaviour == null:
 		behaviour = AiBehaviour.new()
 	
-	var result: Array = behaviour.choose_action(current_battler, party, enemies)
+	var result: Array = behaviour.choose_action(current_battler, scanner)
 	var target: Character = result[0]
 	var action: BattleAction = result[1]
-	var target_slot := get_slot(target)
+	var target_slot = null
+	
+	if action.needs_target():
+		target_slot = get_slot(target)
 	
 	await get_tree().create_timer(0.8).timeout
 	await action.execute(current_battler, target, attacker_slot, target_slot)

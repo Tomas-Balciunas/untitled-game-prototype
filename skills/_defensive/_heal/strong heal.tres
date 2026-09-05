@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="HealingSkill" format=3 uid="uid://b1iclhswpvcyp"]
+
+[ext_resource type="Script" uid="uid://bp0biy0knxw2o" path="res://effect/Effect.gd" id="1_o70uo"]
+[ext_resource type="Script" uid="uid://c8rbj8kuxcoqs" path="res://skills/HealingSkill.gd" id="2_bybh3"]
+
+[resource]
+script = ExtResource("2_bybh3")
+healing_amount = 20
+id = "strong_heal"
+name = "strong heal"
+description = "major healing"
+bounce_instances = 3
+salvo_pellets = 3
+tags = Array[String](["health_not_full", "health_under_50"])
+conditions = Array[String](["health_under_50"])
+metadata/_custom_type_script = "uid://c8rbj8kuxcoqs"

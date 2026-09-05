@@ -12,5 +12,6 @@ func on_trigger(_stage: String, event: TriggerEvent) -> void:
 		return
 	
 	var reduction: float = (event as DamageInstance).calculator.damage_reduction
-	var computed: float = maxf(0.0, reduction * 0.5)
+	#var computed: float = maxf(0.0, reduction * 0.5)
+	var computed: float = reduction + 0.5
 	(event as DamageInstance).calculator.damage_reduction = computed

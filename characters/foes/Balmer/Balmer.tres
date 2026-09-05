@@ -7,8 +7,8 @@
 [ext_resource type="Script" uid="uid://bp0biy0knxw2o" path="res://effect/Effect.gd" id="3_qj1j7"]
 [ext_resource type="Script" uid="uid://b06vmgrh4qa8i" path="res://gear/ItemResource.gd" id="4_qj1j7"]
 [ext_resource type="Script" uid="uid://dq4acpkde276p" path="res://skills/Skill.gd" id="4_ta3bf"]
-[ext_resource type="Resource" uid="uid://cs2tci0dc3vvo" path="res://characters/_class/_Unknown.tres" id="6_0q48i"]
-[ext_resource type="Resource" uid="uid://lcgngc3c13fc" path="res://characters/_race/_Unknown.tres" id="7_mwqcq"]
+[ext_resource type="Resource" uid="uid://dtxsm04ecpnkn" path="res://skills/_offensive/power_strike.tres" id="8_0q48i"]
+[ext_resource type="Resource" uid="uid://bd81umfsm4m38" path="res://skills/_offensive/shadow_strike.tres" id="9_mwqcq"]
 [ext_resource type="Resource" uid="uid://gul73mp3xo8s" path="res://characters/foes/Balmer/stat_attribute_growth.tres" id="11_2p1x5"]
 [ext_resource type="Resource" uid="uid://b1balmera001x" path="res://characters/foes/Balmer/attributes.tres" id="12_balm1"]
 [ext_resource type="Resource" uid="uid://b1balmerlvl01" path="res://characters/foes/Balmer/stat_level_growth.tres" id="13_balm2"]
@@ -17,6 +17,7 @@
 script = ExtResource("1_l56jw")
 attributes = ExtResource("12_balm1")
 level = 4
+default_skills = Array[ExtResource("4_ta3bf")]([ExtResource("8_0q48i"), ExtResource("9_mwqcq")])
 base_stats = ExtResource("1_0q48i")
 stat_level_growth = ExtResource("13_balm2")
 stat_attribute_growth = ExtResource("11_2p1x5")

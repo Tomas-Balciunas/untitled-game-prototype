@@ -2,8 +2,16 @@ extends Resource
 
 class_name Skill
 
+enum SkillCategory {
+	DAMAGE,
+	HARM,
+	SUPPORT,
+	SUSTAIN
+}
+
 @export var id: String
 @export var name: String
+@export var category: SkillCategory
 @export var description: String
 #@export var icon: Texture2D
 @export var cost: SkillCost
@@ -18,6 +26,8 @@ class_name Skill
 @export var bounce_instances: int = 1
 ## only matters when salvo targeting is selected
 @export var salvo_pellets: int = 1
+@export var tags: Array[String] = []
+@export var conditions: Array[String] = []
 
 func _get_name() -> String:
 	return name
@@ -51,3 +61,12 @@ func compute_cost(c: Character) -> SkillCost:
 
 func get_damage_type():
 	return null
+
+func get_tags() -> Array[String]:
+	return tags
+
+func get_conditions() -> Array[String]:
+	return conditions
+
+func get_category() -> SkillCategory:
+	return category
