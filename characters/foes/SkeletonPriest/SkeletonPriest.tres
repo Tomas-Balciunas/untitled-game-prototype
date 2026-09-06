@@ -17,9 +17,11 @@
 
 [sub_resource type="Resource" id="Resource_tyc16"]
 script = ExtResource("1_koij7")
-offensive = 0.2
-support = 0.66
-defensive = 0.2
+basic_attack = 0.3
+guard = 0.2
+skill = 1.0
+sustain = 0.8
+support = 0.8
 metadata/_custom_type_script = "uid://xw824r85c31r"
 
 [resource]

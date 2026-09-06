@@ -8,6 +8,7 @@ script = ExtResource("2_uoovt")
 healing_amount = 10
 id = "single_heal"
 name = "single heal"
+category = 3
 description = "Minor healing"
 bounce_instances = 3
 salvo_pellets = 3

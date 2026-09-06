@@ -116,16 +116,16 @@ func _on_turn_start() -> void:
 
 	var ctx: ActionContext = ActionContext.new()
 	var resolver: TurnStageResolver = TurnStageResolver.new(EffectTriggers.ON_TURN_START, current_battler)
-	resolver.execute(ctx)
+	var event: TurnStartEvent = resolver.execute_turn_start(ctx)
 
 	current_battler.on_turn_start()
 
 	if is_party_member:
 		current_state = BattleState.PLAYER_TURN
-		_on_player_turn(ctx)
+		_on_player_turn(event)
 	else:
 		current_state = BattleState.ENEMY_TURN
-		_process_enemy_turn(ctx)
+		_process_enemy_turn(event)
 
 func _on_turn_end() -> void:
 	var ctx: ActionContext = ActionContext.new()
@@ -139,21 +139,21 @@ func _on_turn_end() -> void:
 	current_battler = null
 	current_state = BattleState.CHECK_END
 	
-func _on_player_turn(ctx: ActionContext) -> void:
+func _on_player_turn(event: TriggerEvent) -> void:
 	BattleBus.ally_turn_started.emit(current_battler)
 	
-	if ctx.skip_turn:
-		current_state = BattleState.TURN_END
-		return
-	
-	if ctx.force_action:
-		if !ctx.initial_target:
-			push_error("Forced action for %s did not have a target" % current_battler.resource.name)
-			current_state = BattleState.TURN_END
-			return
+	#if ctx.skip_turn:
+		#current_state = BattleState.TURN_END
+		#return
+	#
+	#if ctx.force_action:
+		#if !ctx.initial_target:
+			#push_error("Forced action for %s did not have a target" % current_battler.resource.name)
+			#current_state = BattleState.TURN_END
+			#return
 		
-		await _run_action(BasicAttack.new(), ctx.initial_target)
-		current_state = BattleState.TURN_END
+		#await _run_action(BasicAttack.new(), ctx.initial_target)
+		#current_state = BattleState.TURN_END
 		
 func _on_player_action_selected(action: BattleAction) -> void:
 	if current_state != BattleState.PLAYER_TURN:
@@ -231,14 +231,16 @@ func await_action_queue() -> void:
 	current_state = BattleState.TURN_END
 
 
-func _process_enemy_turn(ctx: ActionContext) -> void:
+func _process_enemy_turn(event: TriggerEvent) -> void:
 	if current_battler == null:
 		current_state = BattleState.CHECK_END
 		return
+	
+	
 		
-	if ctx.skip_turn:
-		current_state = BattleState.TURN_END
-		return
+	#if ctx.skip_turn:
+		#current_state = BattleState.TURN_END
+		#return
 	
 	var weapon: Weapon = current_battler.equipment["weapon"] if current_battler.equipment["weapon"] else null
 	
@@ -286,13 +288,13 @@ func _process_enemy_turn(ctx: ActionContext) -> void:
 	
 	current_state = BattleState.ANIMATING
 	
-	var scanner: BattleStateScanner = BattleStateScanner.new(enemies, party)
+	var scanner: BattleStateScanner = BattleStateScanner.new(enemies, party, is_party_member(current_battler))
 	var behaviour: AiBehaviour = current_battler.resource.ai_behaviour
 	
 	if behaviour == null:
 		behaviour = AiBehaviour.new()
 	
-	var result: Array = behaviour.choose_action(current_battler, scanner)
+	var result: Array = behaviour.choose_action(current_battler, scanner, event)
 	var target: Character = result[0]
 	var action: BattleAction = result[1]
 	var target_slot = null
@@ -449,3 +451,6 @@ func get_slot(chara: Character) -> FormationSlot:
 	
 	push_error("Orphaned character! - %s" % chara.resource.name)
 	return null
+
+func is_party_member(c: Character) -> bool:
+	return party.has(c)

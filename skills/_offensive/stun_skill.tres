@@ -13,6 +13,7 @@ metadata/_custom_type_script = "uid://b040h4pefkqu"
 script = ExtResource("2_43qm4")
 id = "stun_bash"
 name = "Stun Bash"
+category = 1
 description = "Stuns target"
 effects = Array[ExtResource("1_altg7")]([ExtResource("2_svjdu"), SubResource("Resource_b37rv")])
 metadata/_custom_type_script = "uid://4wkxp72a0kpc"

@@ -1,21 +1,31 @@
-extends Node
+extends RefCounted
 
 class_name BattleStateScanner
 
 var enemies: Array = []
-var party: Array = []
+var allies: Array = []
 
-func _init(_enemies: Array[Character], _party: Array[Character]) -> void:
+func _init(_enemies: Array[Character], _party: Array[Character], actor_party_member: bool) -> void:
 	for enemy: Character in _enemies:
+		if actor_party_member == false:
+			allies.append(scan_battler(enemy))
+			continue
+		
 		enemies.append(scan_battler(enemy))
 	
 	for party_member in _party:
-		party.append(scan_battler(party_member))
+		if actor_party_member == false:
+			enemies.append(scan_battler(party_member))
+			continue
+		
+		allies.append(scan_battler(party_member))
 
 func scan_battler(battler: Character) -> Array:
 	var data: Array = [null, null]
 	data[0] = battler
 	var tags: Array[String] = []
+	
+	## expand conditions when needed
 	
 	var hp_percent = battler.state.current_health / battler.stats.health
 

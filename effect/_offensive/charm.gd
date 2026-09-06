@@ -1,5 +1,5 @@
 extends DebuffEffect
-class_name ConfusionEffect
+class_name CharmEffect
 
 var turns_lasted: int = 0
 
@@ -12,18 +12,18 @@ func can_process(_stage: String, event: TriggerEvent) -> bool:
 	
 func on_apply() -> void:
 	battle_only = true
-	BattleTextLines.print_line("%s is confused!" % owner.resource.name)
+	BattleTextLines.print_line("%s is charmed!" % owner.resource.name)
 
 	
 func on_trigger(stage: String, event: TriggerEvent) -> void:
 	if stage == EffectTriggers.ON_TURN_START:
-		(event as TurnStartEvent).turn_options.allowed_sides = TurnOptions.AllowedSides.BOTH
+		(event as TurnStartEvent).turn_options.allowed_sides = TurnOptions.AllowedSides.INVERTED
 	
 	if stage == EffectTriggers.ON_TURN_END:
 		var r: float = randf()
 		var v: float = float(turns_lasted) / 10
 		if r <= v:
-			BattleTextLines.print_line("%s has recovered from confusion!" % owner.resource.name)
+			BattleTextLines.print_line("%s has recovered from charm!" % owner.resource.name)
 			owner.remove_effect(self)
 			
 			return

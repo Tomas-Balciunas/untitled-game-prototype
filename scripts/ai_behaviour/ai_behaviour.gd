@@ -5,6 +5,9 @@ class_name AiBehaviour
 @export_category('Intentions')
 @export var basic_attack: float = 1.0
 @export var guard: float = 0.33
+@export var skill: float = 0.5
+
+@export_category('Skill intentions')
 @export var damage: float = 0.33
 @export var harm: float = 0.33
 @export var sustain: float = 0.33
@@ -17,21 +20,40 @@ var skill_intention_map = {
 	Skill.SkillCategory.SUPPORT: support
 }
 
-func choose_action(actor: Character, data_pool) -> Array:
+func choose_action(actor: Character, scanner: BattleStateScanner, event: TurnStartEvent) -> Array:
+	var base_action: String = get_weighted_random_result(["1", "2", "3"], [basic_attack, guard, skill])
+	
+	match base_action:
+		"1":
+			var pool = resolve_pool(event, scanner, Skill.SkillCategory.DAMAGE)
+			return [pool.pick_random()[0], BasicAttack.new()]
+		"2":
+			return [null, GuardAction.new()]
+		"3":
+			return choose_skill(scanner, event)
+		_:
+			return []
+	
+
+func choose_skill(scanner: BattleStateScanner, event: TurnStartEvent):
+	var allowed_categories = event.turn_options.allowed_skill_categories
+	if allowed_categories.is_empty():
+		return fallback_action(event, scanner)
+	
 	var skill_intention_roll: float = randf()
 	var skill_intentions: Array[Skill.SkillCategory] = []
 	
 	for intention in skill_intention_map:
-		if skill_intention_map[intention] <= skill_intention_roll:
+		if skill_intention_map[intention] <= skill_intention_roll and intention in allowed_categories:
 			skill_intentions.append(intention)
 	
 	var candidates = []
 	
-	candidates.append([[data_pool.pick_random()[0], BasicAttack.new()], basic_attack])
-	candidates.append([[null, GuardAction.new()], guard])
+	#candidates.append([[data_pool.pick_random()[0], BasicAttack.new()], basic_attack])
+	#candidates.append([[null, GuardAction.new()], guard])
 	
 	for category in skill_intentions:
-		candidates.append_array(get_candidates_for_skill_category(actor, data_pool, category))
+		candidates.append_array(get_candidates_for_skill_category(event, scanner, category))
 	
 	var values = []
 	var weights = []
@@ -40,84 +62,24 @@ func choose_action(actor: Character, data_pool) -> Array:
 		values.append(candidate[0])
 		weights.append(candidate[1])
 	
+	if candidates.is_empty():
+		return fallback_action(event, scanner)
+	
 	return get_weighted_random_result(values, weights)
 	
-	#
-	#var total: float = offense + defense
-	#var rand_range: float = randf_range(0.0, total)
-	#
-	#var choices: Array = [
-		#[OFFENSIVE_INTENTION, offense],
-		#[DEFENSIVE_INTENTION, defense],
-	#]
-	#
-	#var choice: String = OFFENSIVE_INTENTION
-	#var cumulative: float = 0.0
-	#
-	#for val: Array in choices:
-		#cumulative += val[1]
-		#if rand_range <= cumulative:
-			#choice = val[0]
-			#break
-	#
-	#match choice:
-		#OFFENSIVE_INTENTION:
-			#return pick_offensive_action(actor, scanner)
-		#DEFENSIVE_INTENTION:
-			#return pick_defensive_action(actor, scanner)
-		#_:
-			#return [scanner.party.pick_random()[0], BasicAttack.new()]
-
-
-#func pick_offensive_action(actor: Character, scanner: BattleStateScanner):
-	#if actor.learnt_skills.is_empty():
-		#return [scanner.party.pick_random()[0], BasicAttack.new()]
-	#
-	#var offensive_choice = get_weighted_random_result(["basic", "skill"], [0.7, 0.5])
-	#
-	#match offensive_choice:
-		#"basic":
-			#return [scanner.party.pick_random()[0], BasicAttack.new()]
-		#"skill":
-			#return [scanner.party.pick_random()[0], SkillAction.new(actor.learnt_skills.pick_random())]
-	#
-	#return [scanner.party.pick_random()[0], BasicAttack.new()]
-
-
-#func pick_defensive_action(actor: Character, scanner: BattleStateScanner):
-	#var candidates = []
-	#for category in [Skill.SkillCategory.SUPPORT, Skill.SkillCategory.SUSTAIN]:
-		#candidates.append_array(get_candidates_for_skill_category(actor, scanner, category))
-	#
-	#if candidates.is_empty():
-		#var rand = randf()
-		#
-		#if rand > 0.5:
-			#return [null, GuardAction.new()]
-		#else:
-			#return pick_offensive_action(actor, scanner)
-		#
-	#
-	#var values = []
-	#var weights = []
-	#
-	#for candidate in candidates:
-		#values.append(candidate[0])
-		#weights.append(candidate[1])
-	#
-	#return get_weighted_random_result(values, weights)
-	
-func get_candidates_for_skill_category(actor: Character, data_pool, category: Skill.SkillCategory):
+func get_candidates_for_skill_category(event: TurnStartEvent, scanner: BattleStateScanner, category: Skill.SkillCategory):
 	var candidates = []
 	
-	for skill in actor.learnt_skills:
+	for skill in event.turn_options.actor.learnt_skills:
 		if skill.get_category() != category:
 			continue
 		
-		if skill.can_use(actor) == false:
+		if skill.can_use(event.turn_options.actor) == false:
 			continue
+		
+		var pool = resolve_pool(event, scanner, category)
 
-		for battler_data in data_pool:
+		for battler_data in pool:
 			var battler = battler_data[0]
 			var battler_tags = battler_data[1]
 			
@@ -128,6 +90,23 @@ func get_candidates_for_skill_category(actor: Character, data_pool, category: Sk
 			
 	return candidates
 	
+func resolve_pool(event: TurnStartEvent, scanner: BattleStateScanner, category: Skill.SkillCategory) -> Array:
+	match event.turn_options.allowed_sides:
+			TurnOptions.AllowedSides.DEFAULT:
+				if category in [Skill.SkillCategory.DAMAGE, Skill.SkillCategory.HARM]:
+					return scanner.enemies
+				else:
+					return scanner.allies
+			TurnOptions.AllowedSides.BOTH:
+				return scanner.enemies + scanner.allies
+			TurnOptions.AllowedSides.INVERTED:
+				if category in [Skill.SkillCategory.DAMAGE, Skill.SkillCategory.HARM]:
+					return scanner.allies
+				else:
+					return scanner.enemies
+			_:
+				push_error("Error in resolving character pool")
+				return []
 
 func get_random_target(pool: Array[Character]) -> Character:
 	return pool.pick_random()
@@ -151,8 +130,13 @@ func get_weighted_random_result(values: Array, weights: Array):
 
 
 
-func fallback_action():
-	pass
+func fallback_action(event: TurnStartEvent, scanner: BattleStateScanner):
+	var val = randf()
+	if val > 0.3:
+		var pool = resolve_pool(event, scanner, Skill.SkillCategory.DAMAGE)
+		return [pool.pick_random()[0], BasicAttack.new()]
+	else:
+		return [null, GuardAction.new()]
 
 func matching_tags(skill_tags, battler_tags) -> int:
 	var amt: int = 0

@@ -8,6 +8,7 @@ script = ExtResource("2_bybh3")
 healing_amount = 20
 id = "strong_heal"
 name = "strong heal"
+category = 3
 description = "major healing"
 bounce_instances = 3
 salvo_pellets = 3

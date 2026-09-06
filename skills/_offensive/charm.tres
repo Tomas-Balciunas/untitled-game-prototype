@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CastSkill" format=3 uid="uid://buom3t2gul0w1"]
+
+[ext_resource type="Script" uid="uid://crtgf85erq0u4" path="res://effect/_offensive/charm.gd" id="1_5s2yp"]
+[ext_resource type="Script" uid="uid://bp0biy0knxw2o" path="res://effect/Effect.gd" id="2_iur1o"]
+[ext_resource type="Script" uid="uid://dyfab3mccm3i2" path="res://skills/CastSkill.gd" id="3_s231u"]
+
+[sub_resource type="Resource" id="Resource_o85ab"]
+script = ExtResource("1_5s2yp")
+id = "charm"
+name = "charm"
+description = "charm"
+expires_after_battle = true
+single_instance = true
+expire_phase = 2
+metadata/_custom_type_script = "uid://crtgf85erq0u4"
+
+[resource]
+script = ExtResource("3_s231u")
+effect = SubResource("Resource_o85ab")
+id = "charm_skill"
+name = "charm"
+category = 1
+description = "charms target"
+metadata/_custom_type_script = "uid://dyfab3mccm3i2"

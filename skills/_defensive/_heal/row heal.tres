@@ -14,6 +14,7 @@ script = ExtResource("2_c4285")
 healing_amount = 10
 id = "row_heal"
 name = "row heal"
+category = 3
 cost = SubResource("Resource_8opuj")
 targeting_type = 3
 metadata/_custom_type_script = "uid://c8rbj8kuxcoqs"

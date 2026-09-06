@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="CastSkill" load_steps=4 format=3 uid="uid://drqy6f6xdgohu"]
+[gd_resource type="Resource" script_class="CastSkill" format=3 uid="uid://drqy6f6xdgohu"]
 
 [ext_resource type="Resource" uid="uid://bqt23mfnx3n6x" path="res://effect/_offensive/ConfusionEffect.tres" id="1_a61sf"]
 [ext_resource type="Script" uid="uid://bp0biy0knxw2o" path="res://effect/Effect.gd" id="1_e0uqk"]
@@ -9,6 +9,6 @@ script = ExtResource("2_a61sf")
 effect = ExtResource("1_a61sf")
 id = "confuse_skill"
 name = "Mind Scramble"
+category = 1
 description = "Confuses target"
-mp_cost = 5
 metadata/_custom_type_script = "uid://dyfab3mccm3i2"

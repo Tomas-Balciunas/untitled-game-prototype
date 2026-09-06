@@ -9,6 +9,7 @@ script = ExtResource("2_2s4wi")
 effect = ExtResource("1_2s4wi")
 id = "row_attack_buff"
 name = "Row AttackBuff"
+category = 2
 description = "more attack"
 targeting_type = 3
 metadata/_custom_type_script = "uid://dyfab3mccm3i2"
