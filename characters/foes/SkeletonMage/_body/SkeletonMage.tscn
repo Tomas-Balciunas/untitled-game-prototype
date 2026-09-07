@@ -1,12 +1,14 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://bb0b5fsfucxcl"]
 
 [ext_resource type="Script" uid="uid://dr1sxm5h6jdqr" path="res://scenes/CharacterBody.gd" id="1_body"]
 [ext_resource type="Texture2D" uid="uid://i63ktx555svy" path="res://characters/foes/Skeltal/_body/6979b672-301b-43dc-bcd8-88825ad75f9d.png" id="2_tex"]
 [ext_resource type="PackedScene" uid="uid://cvlg8i4oihok1" path="res://scenes/damage_numbers/3d/number_display_3d.tscn" id="3_num"]
 [ext_resource type="PackedScene" uid="uid://l8b2sorte2wn" path="res://scenes/StatusEffectAnimations.tscn" id="4_status"]
-[ext_resource type="PackedScene" uid="uid://dor542xt7xq0o" path="res://characters/Healthbar.tscn" id="5_hpbar"]
+[ext_resource type="PackedScene" uid="uid://dor542xt7xq0o" path="res://characters/ResourceBar.tscn" id="5_hpbar"]
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_col"]
+height = 1.3916016
+radius = 0.38183594
 
 [sub_resource type="Animation" id="Animation_reset"]
 length = 0.001
@@ -104,37 +106,51 @@ _data = {
 &"run_right": SubResource("Animation_run_right")
 }
 
-[node name="CharacterBody" type="CharacterBody3D"]
+[node name="CharacterBody" type="CharacterBody3D" unique_id=1151755269]
 collision_layer = 4
 script = ExtResource("1_body")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=110425736]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6958008, 0)
 shape = SubResource("CylinderShape3D_col")
 disabled = true
 
-[node name="Sprite" type="Sprite3D" parent="."]
-transform = Transform3D(2.0, 0, 0, 0, 2.0, 0, 0, 0, 2.0, 0, 0.732, 0)
+[node name="Sprite" type="Sprite3D" parent="." unique_id=1116603072]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0.732, 0)
 modulate = Color(0.5, 0.6, 1, 1)
 pixel_size = 0.0006
 billboard = 2
 texture_filter = 0
 texture = ExtResource("2_tex")
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1264268748]
 deterministic = true
 libraries/ = SubResource("AnimationLibrary_lib")
 
-[node name="NumberDisplay" parent="." instance=ExtResource("3_num")]
+[node name="NumberDisplay" parent="." unique_id=39740417 instance=ExtResource("3_num")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
 
-[node name="ProjectileSpawn" type="Node3D" parent="."]
+[node name="ProjectileSpawn" type="Node3D" parent="." unique_id=1405003561]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.85, 0)
 
-[node name="StatusEffectAnimations" parent="." instance=ExtResource("4_status")]
+[node name="StatusEffectAnimations" parent="." unique_id=779899717 instance=ExtResource("4_status")]
 
-[node name="Healthbar" parent="." instance=ExtResource("5_hpbar")]
+[node name="Healthbar" parent="." unique_id=1305423560 instance=ExtResource("5_hpbar")]
 
-[node name="Name" type="Label3D" parent="."]
+[node name="Manabar" parent="." unique_id=607362974 instance=ExtResource("5_hpbar")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.09, 0)
+stat = 2
+fill_color = Color(0.21568628, 0.45490196, 0.9019608, 1)
+background_color = Color(0.078431375, 0.09803922, 0.24705882, 1)
+bar_size = Vector2i(100, 6)
+
+[node name="Spbar" parent="." unique_id=1492539521 instance=ExtResource("5_hpbar")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.16, 0)
+stat = 3
+fill_color = Color(0.9019608, 0.72156864, 0.19607843, 1)
+background_color = Color(0.23529412, 0.1764706, 0.05490196, 1)
+bar_size = Vector2i(100, 6)
+
+[node name="Name" type="Label3D" parent="." unique_id=348040010]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.22, 0)
 billboard = 2

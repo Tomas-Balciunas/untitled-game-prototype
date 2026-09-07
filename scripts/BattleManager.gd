@@ -116,7 +116,7 @@ func _on_turn_start() -> void:
 
 	var ctx: ActionContext = ActionContext.new()
 	var resolver: TurnStageResolver = TurnStageResolver.new(EffectTriggers.ON_TURN_START, current_battler)
-	var event: TurnStartEvent = resolver.execute_turn_start(ctx)
+	var event: TurnStateEvent = resolver.execute_turn_start(ctx)
 
 	current_battler.on_turn_start()
 
@@ -139,22 +139,18 @@ func _on_turn_end() -> void:
 	current_battler = null
 	current_state = BattleState.CHECK_END
 	
-func _on_player_turn(event: TriggerEvent) -> void:
-	BattleBus.ally_turn_started.emit(current_battler)
+func _on_player_turn(event: TurnStateEvent) -> void:
+	if event.turn_options.pass_turn:
+		current_state = BattleState.ACTION_QUEUE
+		return
 	
-	#if ctx.skip_turn:
-		#current_state = BattleState.TURN_END
-		#return
-	#
-	#if ctx.force_action:
-		#if !ctx.initial_target:
-			#push_error("Forced action for %s did not have a target" % current_battler.resource.name)
-			#current_state = BattleState.TURN_END
-			#return
-		
-		#await _run_action(BasicAttack.new(), ctx.initial_target)
-		#current_state = BattleState.TURN_END
-		
+	if event.turn_options.coerce_turn:
+		await perform_ai_driven_action(event)
+		current_state = BattleState.ACTION_QUEUE
+		return
+	
+	BattleBus.ally_turn_started.emit(current_battler)
+
 func _on_player_action_selected(action: BattleAction) -> void:
 	if current_state != BattleState.PLAYER_TURN:
 		return
@@ -170,6 +166,16 @@ func _on_player_action_selected(action: BattleAction) -> void:
 	else:
 		await _run_action(action, null)
 
+func _process_enemy_turn(event: TurnStateEvent) -> void:
+	if event.turn_options.pass_turn:
+		current_state = BattleState.ACTION_QUEUE
+		return
+	
+	current_state = BattleState.ANIMATING
+	
+	await perform_ai_driven_action(event)
+	
+	current_state = BattleState.ACTION_QUEUE
 
 func _on_control_selected(kind: String) -> void:
 	if current_state != BattleState.PLAYER_TURN:
@@ -215,6 +221,30 @@ func _run_action(action: BattleAction, target: Character = null) -> void:
 	else:
 		current_state = BattleState.PLAYER_TURN
 
+func perform_ai_driven_action(event: TurnStateEvent) -> void:
+	var scanner: BattleStateScanner = BattleStateScanner.new(enemies, party, is_party_member(current_battler))
+	var behaviour: AiBehaviour = current_battler.resource.ai_behaviour
+	
+	if behaviour == null:
+		behaviour = AiBehaviour.new()
+	
+	var result: Array = behaviour.choose_action(current_battler, scanner, event)
+	
+	if result.is_empty():
+		push_error("Failed to choose action")
+		current_state = BattleState.ACTION_QUEUE
+		return
+	
+	var target: Character = result[0]
+	var action: BattleAction = result[1]
+	var attacker_slot := get_slot(current_battler)
+	var target_slot: FormationSlot = null
+	
+	if action.needs_target():
+		target_slot = get_slot(target)
+	
+	await get_tree().create_timer(0.8).timeout
+	await action.execute(current_battler, target, attacker_slot, target_slot)
 
 func await_action_queue() -> void:
 	var remaining: Array[ActionEvent] = []
@@ -230,98 +260,6 @@ func await_action_queue() -> void:
 	
 	current_state = BattleState.TURN_END
 
-
-func _process_enemy_turn(event: TriggerEvent) -> void:
-	if current_battler == null:
-		current_state = BattleState.CHECK_END
-		return
-	
-	
-		
-	#if ctx.skip_turn:
-		#current_state = BattleState.TURN_END
-		#return
-	
-	var weapon: Weapon = current_battler.equipment["weapon"] if current_battler.equipment["weapon"] else null
-	
-	var targeting: TargetingManager.TargetType
-	var attack_rate: int
-	
-	if weapon:
-		targeting = weapon.targeting
-		attack_rate = weapon.attack_rate
-	else:
-		targeting = TargetingManager.TargetType.SINGLE
-		attack_rate = 1
-	
-	#var target: Character = null
-	#
-	#if ctx.force_action:
-		#if !ctx.initial_target:
-			#push_error("Forced action for %s did not have a target" % current_battler.resource.name)
-			#current_state = BattleState.TURN_END
-			#return
-			#
-		#target = ctx.initial_target
-
-	#if !target:
-		#var valid_targets := party.filter(func(p: Character) -> bool: return p.is_dead == false)
-		#if valid_targets.is_empty():
-			#current_state = BattleState.CHECK_END
-			#return
-#
-		#target = valid_targets.pick_random()
-	
-	
-	var attacker_slot := get_slot(current_battler)
-	#var target_slot := get_slot(target)
-	
-	#var atk := ActionContext.new()
-	#atk.source = CharacterSource.new(current_battler)
-	#atk.set_targets(target)
-	#atk.actively_cast = true
-	
-	#ChatEventBus.chat_event.emit(ChatterManager.ATTACKING, {
-				#"source": current_battler,
-				#"target": [target]
-			#})
-	
-	current_state = BattleState.ANIMATING
-	
-	var scanner: BattleStateScanner = BattleStateScanner.new(enemies, party, is_party_member(current_battler))
-	var behaviour: AiBehaviour = current_battler.resource.ai_behaviour
-	
-	if behaviour == null:
-		behaviour = AiBehaviour.new()
-	
-	var result: Array = behaviour.choose_action(current_battler, scanner, event)
-	var target: Character = result[0]
-	var action: BattleAction = result[1]
-	var target_slot = null
-	
-	if action.needs_target():
-		target_slot = get_slot(target)
-	
-	await get_tree().create_timer(0.8).timeout
-	await action.execute(current_battler, target, attacker_slot, target_slot)
-	
-	
-		#
-	#for i in range(attack_rate):
-		#
-		#var resolver: DamageResolver = DamageResolver.new(current_battler.stats.attack)
-		#var orchertrator: ActionOrchestrator = ActionOrchestrator.new(current_battler, atk, resolver)
-		#await orchertrator.execute_action(
-			#func (e: ActionEvent) -> void:
-				#attacker_slot.perform_attack(e, target_slot)
-		#)
-		#
-		#if i < attack_rate - 1:
-			#await get_tree().create_timer(0.18).timeout
-	#
-	#await attacker_slot.position_back()
-	
-	current_state = BattleState.ACTION_QUEUE
 
 func _handle_defend() -> void:
 	print(current_battler.resource.name, " is defending!")

@@ -25,6 +25,7 @@
 [ext_resource type="PackedScene" uid="uid://brmuxif8auto4" path="res://characters/foes/Balmer/_body/Balmet.tscn" id="20_hag8j"]
 [ext_resource type="Resource" uid="uid://bs56ra62hh2us" path="res://characters/npcs/test/test_npc.tres" id="20_rna72"]
 [ext_resource type="PackedScene" uid="uid://m4b7vqdoqd60" path="res://assets/torch/torch.tscn" id="21_tyc16"]
+[ext_resource type="PackedScene" uid="uid://h7ygbdt4414w" path="res://assets/tiles/_blueprints/door/door.tscn" id="22_vvgws"]
 [ext_resource type="Script" uid="uid://b06vmgrh4qa8i" path="res://gear/ItemResource.gd" id="23_7wpse"]
 [ext_resource type="Script" uid="uid://dcegrpy67vkgu" path="res://scripts/encounter_enemy.gd" id="23_v6bh1"]
 [ext_resource type="Resource" uid="uid://cakblj60r6ir" path="res://gear/weapon/cheat_sword.tres" id="24_5iua8"]
@@ -217,6 +218,9 @@ character = ExtResource("20_rna72")
 
 [node name="Doors" type="Node" parent="StartingArea" unique_id=83144628]
 script = ExtResource("19_rna72")
+
+[node name="DoorInteractable" parent="StartingArea/Doors" unique_id=169355905 instance=ExtResource("22_vvgws")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 0, -0.9510316)
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="StartingArea" unique_id=1268670882]
 environment = ExtResource("20_5iua8")

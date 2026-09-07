@@ -8,7 +8,6 @@ signal hit_confirmed
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
 @onready var number_display: FormationSlotNumbers = $NumberDisplay
 @onready var projectile_spawn: Node3D
-@export var health_bar: HealthBar
 
 var body_owner: Character = null
 var death_shader = preload("uid://crlilwavkuu5u")
@@ -19,14 +18,11 @@ func _ready() -> void:
 	
 	CharacterBus.character_damaged.connect(_on_damaged)
 	CharacterBus.character_healed.connect(_on_healed)
-	CharacterBus.health_changed.connect(on_health_changed)
+	CharacterBus.stat_changed.connect(_on_stat_changed)
 	ChatEventBus.chat.connect(_on_chat)
-	
-	if body_owner and has_node("Healthbar"):
-		var health_bar = get_node("Healthbar") as HealthBar
-		health_bar.set_max_value(body_owner.stats.health)
-		health_bar.set_value(body_owner.state.current_health)
-	
+
+	refresh_bars()
+
 	if body_owner and has_node("Name"):
 		var level_and_name: Label3D = get_node("Name")
 		level_and_name.text = "Lvl. %s %s" % [body_owner.level, body_owner.resource.name]
@@ -42,11 +38,16 @@ func _on_healed(c: Character, amt: int) -> void:
 	if body_owner and c == body_owner:
 		number_display.display_heal(amt)
 
-func on_health_changed(c: Character, old: int, new: int) -> void:
-	if body_owner and has_node("Healthbar"):
-		var health_bar = get_node("Healthbar") as HealthBar
-		health_bar.set_max_value(body_owner.stats.health)
-		health_bar.set_value(body_owner.state.current_health)
+func _on_stat_changed(c: Character, _stat: Stats.StatRef) -> void:
+	if c == body_owner:
+		refresh_bars()
+
+func refresh_bars() -> void:
+	if not body_owner:
+		return
+
+	for bar in find_children("*", "ResourceBar"):
+		bar.refresh(body_owner)
 
 func _on_chat(c: Character, text: String) -> void:
 	if c == body_owner and has_node("SmallChatter"):

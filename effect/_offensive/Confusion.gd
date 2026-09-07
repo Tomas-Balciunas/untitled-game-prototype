@@ -17,7 +17,8 @@ func on_apply() -> void:
 	
 func on_trigger(stage: String, event: TriggerEvent) -> void:
 	if stage == EffectTriggers.ON_TURN_START:
-		(event as TurnStartEvent).turn_options.allowed_sides = TurnOptions.AllowedSides.BOTH
+		(event as TurnStateEvent).turn_options.allowed_sides = TurnOptions.AllowedSides.BOTH
+		(event as TurnStateEvent).turn_options.coerce_turn = true
 	
 	if stage == EffectTriggers.ON_TURN_END:
 		var r: float = randf()

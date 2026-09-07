@@ -15,8 +15,10 @@ var allowed_skill_categories: Array[Skill.SkillCategory] = [
 		Skill.SkillCategory.SUPPORT,
 		Skill.SkillCategory.SUSTAIN
 	]
+var forced_targets: Array = []
 var forced_actions: Array = []
 var allowed_sides: AllowedSides = AllowedSides.DEFAULT
+## CC check basically
 var pass_turn: bool = false
 ## for player - forces an ai to act instead manual choice
 var coerce_turn: bool = false

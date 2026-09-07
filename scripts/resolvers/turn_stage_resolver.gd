@@ -18,8 +18,8 @@ func execute(ctx: ActionContext) -> ActionContext:
 
 	return event.ctx
 
-func execute_turn_start(ctx: ActionContext) -> TurnStartEvent:
-	var event: TurnStartEvent = build_turn_start_event(ctx)
+func execute_turn_start(ctx: ActionContext) -> TurnStateEvent:
+	var event: TurnStateEvent = build_turn_start_event(ctx)
 	
 	EffectRunner.process_trigger(stage, event)
 
@@ -32,8 +32,8 @@ func build_event(ctx: ActionContext) -> TriggerEvent:
 	
 	return event
 
-func build_turn_start_event(ctx: ActionContext) -> TurnStartEvent:
-	var event: TurnStartEvent = TurnStartEvent.new(TurnOptions.new(actor))
+func build_turn_start_event(ctx: ActionContext) -> TurnStateEvent:
+	var event: TurnStateEvent = TurnStateEvent.new(TurnOptions.new(actor))
 	event.ctx = ctx
 	event.source = CharacterSource.new(actor)
 	

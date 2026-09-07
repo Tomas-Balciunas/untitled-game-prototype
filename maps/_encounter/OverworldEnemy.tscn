@@ -3,11 +3,12 @@
 [ext_resource type="Script" uid="uid://domtntexnhum4" path="res://maps/_encounter/DungeonEncounter.gd" id="1_4v8qg"]
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_4v8qg"]
+height = 3.3374023
 radius = 5.0
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_0p10e"]
 radius = 0.3
-height = 1.6
+height = 1.3294433
 
 [node name="Enemy" type="CharacterBody3D" unique_id=1946343672 groups=["overworld_enemy"]]
 collision_layer = 2
@@ -20,12 +21,13 @@ radius = 1.0
 [node name="Detection" type="Area3D" parent="." unique_id=835527733]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Detection" unique_id=1568497526]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6687012, 0)
 shape = SubResource("CylinderShape3D_4v8qg")
 
 [node name="ChaseTimer" type="Timer" parent="." unique_id=553832978]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1815463563]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.66472167, 0)
 shape = SubResource("CapsuleShape3D_0p10e")
 
 [node name="IdleTimer" type="Timer" parent="." unique_id=1357898847]

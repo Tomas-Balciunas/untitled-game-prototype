@@ -1,6 +1,6 @@
 extends TriggerEvent
 
-class_name TurnStartEvent
+class_name TurnStateEvent
 
 var turn_options: TurnOptions
 

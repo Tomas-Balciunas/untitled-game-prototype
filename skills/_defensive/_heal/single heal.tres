@@ -1,7 +1,13 @@
 [gd_resource type="Resource" script_class="HealingSkill" format=3 uid="uid://bk1ekpvjscjmg"]
 
 [ext_resource type="Script" uid="uid://bp0biy0knxw2o" path="res://effect/Effect.gd" id="1_f8q35"]
+[ext_resource type="Script" uid="uid://e2eu5fed8nv8" path="res://skills/skill_cost.gd" id="1_uoovt"]
 [ext_resource type="Script" uid="uid://c8rbj8kuxcoqs" path="res://skills/HealingSkill.gd" id="2_uoovt"]
+
+[sub_resource type="Resource" id="Resource_vvgws"]
+script = ExtResource("1_uoovt")
+mana = 5.0
+metadata/_custom_type_script = "uid://e2eu5fed8nv8"
 
 [resource]
 script = ExtResource("2_uoovt")
@@ -10,6 +16,7 @@ id = "single_heal"
 name = "single heal"
 category = 3
 description = "Minor healing"
+cost = SubResource("Resource_vvgws")
 bounce_instances = 3
 salvo_pellets = 3
 tags = Array[String](["health_not_full"])

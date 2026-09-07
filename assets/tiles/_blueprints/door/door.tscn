@@ -1,18 +1,12 @@
 [gd_scene format=3 uid="uid://h7ygbdt4414w"]
 
 [ext_resource type="Script" uid="uid://06dsdpcwkunk" path="res://scripts/interactables/door_interactable.gd" id="1_11vop"]
-[ext_resource type="Script" uid="uid://c0nnjlcyyp2p4" path="res://gear/QuestItemResource.gd" id="2_seflw"]
 [ext_resource type="Script" uid="uid://thpvb0l1cx3w" path="res://scripts/Door.gd" id="3_g0nqe"]
 [ext_resource type="Texture2D" uid="uid://bof7itr03d6g8" path="res://maps/test_map/generic_dungeon.png" id="4_ase26"]
 [ext_resource type="Texture2D" uid="uid://b0bamt4drcatx" path="res://assets/plank/wood_texture.jpg" id="4_seflw"]
 
-[sub_resource type="Resource" id="Resource_shjaa"]
-script = ExtResource("2_seflw")
-metadata/_custom_type_script = "uid://c0nnjlcyyp2p4"
-
 [sub_resource type="Resource" id="Resource_ctxwy"]
 script = ExtResource("3_g0nqe")
-key = SubResource("Resource_shjaa")
 metadata/_custom_type_script = "uid://thpvb0l1cx3w"
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_2sg8f"]
