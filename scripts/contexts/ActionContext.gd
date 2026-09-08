@@ -31,6 +31,13 @@ func set_targets(initial: Character, all_targets: Array[Character] = []) -> void
 	if all_targets.is_empty():
 		targets.append(initial_target)
 
+## Per-action instances; copying keeps owner/source off the item/skill templates.
+func set_temporary_effects(arr: Array[Effect]) -> void:
+	temporary_effects = []
+
+	for e: Effect in arr:
+		temporary_effects.append(e.duplicate(true))
+
 func duplicate() -> ActionContext:
 	var copy := ActionContext.new()
 

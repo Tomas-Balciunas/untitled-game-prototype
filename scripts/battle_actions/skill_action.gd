@@ -20,7 +20,7 @@ func build_context(actor: Character, target: Character) -> ActionContext:
 	ctx.source = SkillSource.new(actor, skill)
 	ctx.set_targets(target, targets)
 	ctx.actively_cast = true
-	ctx.temporary_effects = skill.effects
+	ctx.set_temporary_effects(skill.effects)
 	ctx.targeting = skill.targeting_type
 	
 	if skill.uses_weapons_attack_rate and weapon != null:

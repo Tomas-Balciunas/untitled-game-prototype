@@ -19,7 +19,7 @@ func build_context(actor: Character, target: Character) -> ActionContext:
 	var cons := ActionContext.new()
 	cons.source = ItemSource.new(actor, item)
 	cons.set_targets(target, targets)
-	cons.temporary_effects = item.get_all_effects()
+	cons.set_temporary_effects(item.get_all_effects())
 	cons.actively_cast = true
 
 	return cons

@@ -100,8 +100,6 @@ func game_load(data: Dictionary) -> void:
 
 	var party_data: Array = data["party"]
 
-	# Pass 1: instantiate all characters (sans effects) so cross-references
-	# (e.g. an effect's source pointing at another party member) can resolve in pass 2.
 	for char_data: Dictionary in party_data:
 		var inst := Character.create_from_save(char_data)
 		if inst:
@@ -112,7 +110,6 @@ func game_load(data: Dictionary) -> void:
 			else:
 				push_error("Adding character to formation error: no free slots")
 
-	# Pass 2: restore effects now that every member is in the party.
 	for i: int in range(members.size()):
 		if i < party_data.size():
 			members[i].game_load_effects(party_data[i])

@@ -2,6 +2,9 @@
 extends Resource
 class_name Effect
 
+# whatever gets set automatically on load
+const _SKIP_PROPS: Array[String] = ["owner", "source"]
+
 enum EffectCategory {
 	PASSIVE,
 	BUFF,
@@ -44,7 +47,7 @@ enum TurnPhase {
 ## if true, will be removed after battle
 @export var expires_after_battle: bool = false
 
-## triggered immediately and removed during the same state
+## triggered immediately and removed during the same run
 @export var immediate_trigger: bool = false
 
 ## only one instance can be carried by a character
@@ -60,7 +63,7 @@ enum TurnPhase {
 
 @export var duration_turns: int = -1
 
-## if custom, should override and implement custom logic
+## if custom, should override and implement custom logic, otherwise select NONE
 @export var expire_phase: TurnPhase = TurnPhase.TURN_END
 
 var remaining_turns: int = -1
@@ -225,6 +228,8 @@ func game_save() -> Dictionary:
 		var usage: int = prop.usage
 		if usage & PROPERTY_USAGE_STORAGE and usage & PROPERTY_USAGE_SCRIPT_VARIABLE:
 			var prop_name: String = prop.name
+			if prop_name in _SKIP_PROPS:
+				continue
 			props[prop_name] = get(prop_name)
 
 	var data := {

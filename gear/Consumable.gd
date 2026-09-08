@@ -10,7 +10,7 @@ func use_item(user: Character) -> void:
 	ctx.source = ItemSource.new(user, self)
 	ctx.set_targets(user)
 	ctx.actively_cast = true
-	ctx.temporary_effects = effects
+	ctx.set_temporary_effects(effects)
 
 	## TODO: fix targeting
 	ConsumableResolver.new(self).execute(ctx)

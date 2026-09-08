@@ -7,7 +7,7 @@
 [ext_resource type="Resource" uid="uid://bk1ekpvjscjmg" path="res://skills/_defensive/_heal/single heal.tres" id="5_bxk1o"]
 [ext_resource type="Resource" uid="uid://do6wbjdno4olf" path="res://characters/_class/class_priest/priest_attribute_contribution.tres" id="6_yla1s"]
 [ext_resource type="Resource" path="res://characters/_class/class_priest/priest_stat_growth_per_level.tres" id="7_65e7e"]
-[ext_resource type="Resource" path="res://skills/_offensive/smite.tres" id="8_skill"]
+[ext_resource type="Resource" uid="uid://54nm6r1og2gl" path="res://skills/_offensive/smite.tres" id="8_skill"]
 [ext_resource type="Resource" path="res://effect/_passive/divine_favor/divine_favor.tres" id="9_effect"]
 
 [sub_resource type="Resource" id="Resource_lyfav"]

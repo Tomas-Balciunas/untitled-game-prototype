@@ -52,6 +52,10 @@ Key methods / hooks:
   was renamed/moved it falls back to `EffectRegistry.get_effect(props.id)` and
   duplicates the prototype (so registered effects survive script renames).
   Unrestorable effects go through `SaveManager.report_load_issue`.
+  `owner` and `source` are excluded from the reflected `props` (`_SKIP_PROPS`)
+  — `source` persists separately as a `ContextSource` dict, and both are
+  re-wired by `Character.game_load_effects` *before* `game_load` runs, so
+  neither is ever stored as a raw object reference.
 
 ### Templates — `effect/templates/`
 Set `category` + sensible flag defaults in `_init` (subclasses overriding
@@ -128,6 +132,12 @@ owner-dead + target-was-dead checks) and `can_process`, calling `on_trigger`;
 effects `remove_self()` after firing. `ctx.stop_processing` short-circuits.
 > Temporary + persistent effects are **unified** into this single pass
 > (priority + stop_processing apply to both).
+> The owner/source binding lands on **per-action copies**, not on the
+> definitions: build the list via `ActionContext.set_temporary_effects()`
+> (which `duplicate(true)`s each entry), never by assigning `skill.effects` or
+> `item.get_all_effects()` straight onto `ctx`. Assigning them live let a used
+> item's own template effects keep an `ItemSource` pointing back at that item,
+> which made the save graph cyclic — see *Save / load* below.
 
 Stage constants: `effect/EffectTriggers.gd` (ON_TURN_START/END, ON_MOVEMENT,
 ON_*_DAMAGE_*, ON_HEAL/RECEIVE_HEAL, ON_*_APPLY_EFFECT, ON_EXPIRE,
@@ -420,6 +430,66 @@ All mutable run-scoped state lives on a single `Run` object (`Run.gd`,
 - `EventManager` stays a real autoload — its `choices`/`subject` are per-event
   transients and it needs `get_tree().paused` and `await`.
 
+## Event pipeline — `events/`
+- Entry point is `EventManager.process_event(data, subject)` (autoload,
+  `PROCESS_MODE_ALWAYS`). `data` is an event id `String`, an `EventResource`,
+  or a raw `Array[EventStep]`.
+- **Serialized, never re-entrant.** Every call wraps its args in an
+  `EventRequest` (`events/EventRequest.gd` — `data`, `subject`, `completed`,
+  `signal finished`) and appends it to `_queue`. Only the first call starts
+  `_drain()`; nested calls (from a step, or from
+  `EncounterManager.end_encounter` asking for reward events) just queue and
+  `await request.finished`. So `await process_event(...)` always means "wait
+  until *my* event finished", whether it ran immediately or was queued.
+- **`_drain()` owns the global mode** for the whole batch: `GameState.set_event()`
+  + `pause_tree()` on entry, then `run_tree()` / `set_idle()` /
+  `ConversationBus.event_concluded` once when the queue empties — *not* per
+  event. Nothing toggles them between queued events, so the UI can't flip to
+  overworld mid-batch.
+- **`_run()` has a single exit.** Bad or already-completed data leaves `steps`
+  empty and falls through the same tail as a normal event; there is no early
+  `return`, so `request.complete()` can't be skipped. The previous
+  `_finish_empty()` early-exits leaked `event_running = true` and permanently
+  wedged the queue (every later event queued, nothing drained) — that failure
+  mode is unrepresentable in this shape.
+- The `if not request.completed` guard before the `await` matters: an event with
+  no steps completes *synchronously* inside `_drain()`, before the caller ever
+  reaches its await. Awaiting an already-emitted signal would hang.
+
+### Pause is the event system's tool — battles must opt out
+- `get_tree().paused` exists to freeze the dungeon behind a textbox. It pauses
+  **everything**: all ~38 autoloads, the whole `UIRoot` subtree, and every
+  node-bound `create_tween()`.
+- A battle is a separate game mode, not a modal overlay, and its UI lives
+  *outside* the battle scene — `BattleInterface`, `PartyInterface`,
+  `BattleTextLines` and `StatusEffectsWindow` all sit under `Main/UIRoot`, while
+  `BattleScene` is added under `Main` at runtime. `PROCESS_MODE_ALWAYS` on
+  `BattleScene` therefore covers nothing the player clicks or reads. **Do not**
+  try to fix pause interactions by tagging process modes node-by-node.
+- So `EncounterStep` brackets the battle instead: `manager.run_tree()` before
+  emitting `EncounterBus.encounter_started`, then `GameState.set_event()` +
+  `manager.pause_tree()` after `encounter_ended`. The `set_event()` is required,
+  not defensive — `EncounterManager.start_encounter` guards on
+  `current_state in [IDLE, EVENT]`, so without it a *second* `EncounterStep` in
+  the same event silently no-ops while state is still `IN_BATTLE`.
+- Diagnostic when something hangs on an `await` under pause:
+  `SceneTree.create_timer()` defaults to `process_always = true` and keeps
+  ticking, but a node-bound `create_tween()` stops dead, and an *unbound*
+  `get_tree().create_tween()` defaults to `TWEEN_PAUSE_BOUND`, which degrades to
+  `STOP`. Logic advancing while visuals and input do nothing is the signature.
+
+### Known gaps here
+- Reward events run *after* the rest of the parent event, not right after the
+  battle: `EncounterStep` awaits `encounter_ended`, but `end_encounter` does its
+  reward work off that same signal, so the reward sits outside the step's span.
+  Fixing it means splitting "battle over" from "encounter fully resolved" on
+  `EncounterBus`.
+- `EncounterStep` hardcodes `data.id = "event_encounter"`, which
+  `end_encounter` feeds to `mark_encounter_cleared()` — every event encounter
+  marks the same id.
+- `events/event_context.gd` (`EventContext`) is dead: `process_event` returns
+  `void` and no caller ever read `ctx.choices`.
+
 ## Save / load — `scripts/SaveManager.gd` (autoload)
 - `build_game_state()` delegates to `RunState.current.game_save()` (which
   cascades into `party` / `map` / `tags` / `flags`) and stamps `"version"`;
@@ -438,6 +508,15 @@ All mutable run-scoped state lives on a single `Run` object (`Run.gd`,
   resource / skill id), `ContextSource`. `load_issues` is UI-surfaceable.
 - Party load is two-phase (characters first, then effects) so cross-character
   effect sources resolve — see `Party.game_load` / `game_load_effects`.
+- **A `ContextSource` persists ids, never an inlined object.** Every source
+  saves scalars only (`character_id`, `skill_id`, `item_id` + `item_name`);
+  `ItemSource` keeps `item_name` as its attribution fallback because a consumed
+  item is gone and there is no item registry to resolve `item_id` against.
+  Inlining an object is what makes the save graph cyclic: `ItemSource` used to
+  embed `item.game_save()`, whose effects carry sources pointing back at that
+  same item, so `Effect.game_save` recursed until the 1024-frame stack blew.
+  The save graph must stay a tree — if a new source type needs a rich object,
+  persist its id and resolve it on load.
 - Save keys are `game_state` / `party` / `dungeon` / `interaction_state` /
   `event_flags`. All reads are `has()`-guarded, so adding a key needs no
   `SAVE_VERSION` bump — only a change to an *existing* key's shape does.

@@ -2,11 +2,6 @@ extends RefCounted
 
 class_name BattleSession
 
-## One battle. Replaced wholesale by Run.begin_battle / Run.end_battle, so every
-## field returns to its default — the old clear_context() left the four flags
-## below untouched and they leaked into the next battle.
-## Named Session, not State, because BattleManager already has an inner
-## `enum BattleState` for turn phases.
 
 var in_battle: bool = false
 var event_running: bool = false

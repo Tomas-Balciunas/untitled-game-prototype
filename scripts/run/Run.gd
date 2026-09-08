@@ -2,8 +2,6 @@ extends RefCounted
 
 class_name Run
 
-## One playthrough. Starting a new run replaces this object rather than
-## resetting fields, so new run-scoped state can't be forgotten.
 
 var party := Party.new()
 var map := DungeonState.new()
@@ -11,8 +9,6 @@ var tags := InteractionTags.new()
 var flags := EventFlagState.new()
 var gold: int = 0
 
-## Nested one level down: a battle happens within a run. Always non-null, and
-## replaced rather than cleared so no flag can survive a battle.
 var battle := BattleSession.new()
 
 var current_state: GameState.States = GameState.States.IDLE
@@ -28,6 +24,7 @@ func begin_battle(m: BattleManager, enemies: EnemyFormation, allies: AllyFormati
 
 func end_battle() -> void:
 	battle = BattleSession.new()
+	TargetingManager.end()
 
 func add_gold(amount: int) -> void:
 	if amount <= 0:
