@@ -14,9 +14,9 @@ static func recalculate_all_stats(c: Character) -> void:
 
 
 static func _recalculate_modified(c: Character, s: Stats.StatRef) -> void:
-	if Stats.is_percentage_stat(s):
-		_recalculate_percentage_stat(c, s)
-		return
+	#if Stats.is_percentage_stat(s):
+		#_recalculate_percentage_stat(c, s)
+		#return
 
 	var gear_value: float = 0.0
 
@@ -40,9 +40,16 @@ static func _recalculate_modified(c: Character, s: Stats.StatRef) -> void:
 	for mod: StatModifier in c.state.get_modifiers():
 		if mod.stat != s or mod.depends_on_another_stat:
 			continue
+		
+		if mod.type == StatModifier.Type.MULTIPLICATIVE and s in Stats.PERCENTAGE_STATS:
+			push_error("multiplicative modifier not allowed on percentage stat %s (modifier '%s')" % [Stats.get_stat_name(s), mod.id])
+			continue
+		
 		mod_bonus += mod.compute_value(c, computed)
 
-	c.modified_stats.set_stat(s, computed + mod_bonus)
+	var modified_value: float = computed + mod_bonus
+	c.modified_stats.set_stat(s, modified_value)
+	_set_final(c, s, modified_value)
 
 
 static func _apply_dependent_modifiers(c: Character, s: Stats.StatRef) -> void:
@@ -77,23 +84,23 @@ static func _apply_weapon_scaling(c: Character, s: Stats.StatRef) -> void:
 	_set_final(c, s, round(c.stats.get_stat_raw(s) + scaling_total))
 
 
-static func _recalculate_percentage_stat(c: Character, s: Stats.StatRef) -> void:
-	c.computed_stats.set_stat(s, Stats.PERCENTAGE_BASE)
-
-	var total: float = c.stats.get_stat(s)
-
-	for mod: StatModifier in c.state.get_modifiers():
-		if mod.stat != s:
-			continue
-		if mod.type == StatModifier.Type.ADDITIVE:
-			push_error("Flat (ADDITIVE) modifier not allowed on percentage stat %s (modifier '%s')" % [Stats.get_stat_name(s), mod.id])
-			continue
-		
-		total += (100 - mod.compute_value(c, Stats.PERCENTAGE_BASE))
-
-	c.modified_stats.set_stat(s, total)
-
-	_set_final(c, s, round(total))
+#static func _recalculate_percentage_stat(c: Character, s: Stats.StatRef) -> void:
+	#c.computed_stats.set_stat(s, Stats.PERCENTAGE_BASE)
+#
+	#var total: float = c.stats.get_stat(s)
+#
+	#for mod: StatModifier in c.state.get_modifiers():
+		#if mod.stat != s:
+			#continue
+		#if mod.type == StatModifier.Type.ADDITIVE:
+			#push_error("Flat (ADDITIVE) modifier not allowed on percentage stat %s (modifier '%s')" % [Stats.get_stat_name(s), mod.id])
+			#continue
+#
+		#total += (100 - mod.compute_value(c, Stats.PERCENTAGE_BASE))
+#
+	#c.modified_stats.set_stat(s, total)
+#
+	#_set_final(c, s, round(total))
 
 
 static func _set_final(c: Character, s: Stats.StatRef, value: float) -> void:

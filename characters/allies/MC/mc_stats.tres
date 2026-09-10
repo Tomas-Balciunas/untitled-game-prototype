@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_vgvfo")
 attack = 1.0
-health = 500.0
+health = 50000.0
 mana = 10.0
 sp = 10.0
 action_points = 10.0
@@ -17,4 +17,5 @@ magic_defense = 10.0
 resistance = 10.0
 accuracy = 10.0
 evasion = 10.0
+healing_received = 50.0
 metadata/_custom_type_script = "uid://bqln4xpkkidja"

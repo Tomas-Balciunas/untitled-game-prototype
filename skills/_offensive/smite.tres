@@ -6,7 +6,6 @@
 
 [sub_resource type="Resource" id="Resource_tyc16"]
 script = ExtResource("1_8bx5o")
-mana = 9.0
 metadata/_custom_type_script = "uid://e2eu5fed8nv8"
 
 [resource]

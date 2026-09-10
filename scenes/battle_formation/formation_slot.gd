@@ -41,6 +41,10 @@ func bind(character: Character) -> void:
 	body_instance = body_scene
 	animation_player = body_instance.get_node("AnimationPlayer") as AnimationPlayer
 	animation_player.animation_finished.connect(_on_anim_finish)
+	
+	if RunState.current.party.has_member(character.resource.id):
+		body_instance.visible = false
+	
 	self.add_child(body_instance)
 	
 	if character.is_main:

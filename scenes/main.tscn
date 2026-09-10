@@ -555,6 +555,18 @@ text = "Critical Damage:"
 layout_mode = 2
 size_flags_horizontal = 3
 
+[node name="Aggravation" type="HBoxContainer" parent="UIRoot/OverworldInterface/CharacterMenu/StatsUI/Stats" unique_id=1939902709]
+layout_mode = 2
+
+[node name="AggravationKey" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/StatsUI/Stats/Aggravation" unique_id=1326846468]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Aggravation:"
+
+[node name="AggravationValue" type="Label" parent="UIRoot/OverworldInterface/CharacterMenu/StatsUI/Stats/Aggravation" unique_id=1443344969]
+layout_mode = 2
+size_flags_horizontal = 3
+
 [node name="EffectsUI" type="PanelContainer" parent="UIRoot/OverworldInterface/CharacterMenu" unique_id=1787143395]
 unique_name_in_owner = true
 visible = false

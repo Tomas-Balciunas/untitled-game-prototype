@@ -7,27 +7,12 @@
 [ext_resource type="Script" uid="uid://b06vmgrh4qa8i" path="res://gear/ItemResource.gd" id="4_jti2u"]
 [ext_resource type="Resource" uid="uid://b2movrdrkxno7" path="res://characters/allies/MC/test_sword.tres" id="6_jti2u"]
 [ext_resource type="Script" uid="uid://dq4acpkde276p" path="res://skills/Skill.gd" id="6_lkn2v"]
-[ext_resource type="Resource" uid="uid://c7nmidhbqovfy" path="res://effect/_passive/consumable_discount/discount.tres" id="6_up1d2"]
-[ext_resource type="Resource" uid="uid://beawinixonrnb" path="res://effect/bleed/bleed_effects/reduce_enemy_bleed_consumption/reduce_enemy_bleed_consumption.tres" id="7_up1d2"]
-[ext_resource type="Resource" uid="uid://ddltekb7f2a12" path="res://effect/bleed/bleed_effects/active_attacks_increase_bleed_stacks/active_attacks_increase_bleed_stacks.tres" id="8_ghhp2"]
-[ext_resource type="Resource" uid="uid://b6feokcsb2ttg" path="res://effect/poison/poison_resolution_on_hit.tres" id="9_xghbj"]
-[ext_resource type="Resource" uid="uid://yjlsmld4jg7y" path="res://effect/_passive/basic_attack_ap_cost_reduce/reduce_basic_attack_ap_cost.tres" id="10_dr5ls"]
 [ext_resource type="Script" uid="uid://bwn4gpkaijqsg" path="res://scripts/CharacterResource.gd" id="10_fb0jw"]
-[ext_resource type="Resource" uid="uid://b5i710vervft" path="res://effect/flee/flee_success_increase.tres" id="11_dr5ls"]
-[ext_resource type="Script" uid="uid://bd5627jmfps6a" path="res://effect/heal_on_kill/heal_on_kill.gd" id="11_l3irn"]
 [ext_resource type="Script" uid="uid://bqln4xpkkidja" path="res://stat/_stats/stats.gd" id="12_jti2u"]
 [ext_resource type="Resource" uid="uid://bd81umfsm4m38" path="res://skills/_offensive/shadow_strike.tres" id="15_wur0s"]
 [ext_resource type="Resource" uid="uid://drqy6f6xdgohu" path="res://skills/_offensive/confusion.tres" id="16_fb0jw"]
 [ext_resource type="Resource" uid="uid://riijdkc770g2" path="res://stat/DefaultStatAttributeGrowth.tres" id="16_up1d2"]
 [ext_resource type="Resource" uid="uid://buom3t2gul0w1" path="res://skills/_offensive/charm.tres" id="17_dr5ls"]
-
-[sub_resource type="Resource" id="Resource_0p10e"]
-script = ExtResource("11_l3irn")
-name = "heal on kill"
-native = true
-show_in_status = false
-expire_phase = 3
-metadata/_custom_type_script = "uid://bd5627jmfps6a"
 
 [sub_resource type="Resource" id="Resource_uxndi"]
 script = ExtResource("12_jti2u")
@@ -48,7 +33,6 @@ metadata/_custom_type_script = "uid://bqln4xpkkidja"
 [resource]
 script = ExtResource("10_fb0jw")
 default_skills = Array[ExtResource("6_lkn2v")]([ExtResource("15_wur0s"), ExtResource("16_fb0jw"), ExtResource("17_dr5ls")])
-default_effects = Array[ExtResource("4_2usx5")]([ExtResource("6_up1d2"), ExtResource("7_up1d2"), ExtResource("8_ghhp2"), ExtResource("9_xghbj"), ExtResource("10_dr5ls"), ExtResource("11_dr5ls"), SubResource("Resource_0p10e")])
 default_items = Array[ExtResource("4_jti2u")]([ExtResource("6_jti2u")])
 base_stats = ExtResource("1_ghhp2")
 stat_level_growth = SubResource("Resource_uxndi")

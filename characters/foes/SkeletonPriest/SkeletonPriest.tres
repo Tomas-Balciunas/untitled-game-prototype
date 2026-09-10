@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://xw824r85c31r" path="res://scripts/ai_behaviour/ai_behaviour.gd" id="1_koij7"]
 [ext_resource type="Script" uid="uid://bwn4gpkaijqsg" path="res://scripts/CharacterResource.gd" id="1_res"]
 [ext_resource type="Resource" path="res://characters/foes/SkeletonPriest/attributes.tres" id="2_attr"]
-[ext_resource type="Resource" path="res://characters/foes/SkeletonPriest/skeleton_priest_stats.tres" id="3_stats"]
+[ext_resource type="Resource" uid="uid://pb65e8aur3do" path="res://characters/foes/SkeletonPriest/skeleton_priest_stats.tres" id="3_stats"]
 [ext_resource type="Script" uid="uid://cbelvg2fndssu" path="res://scripts/BattleEvent.gd" id="3_yd401"]
 [ext_resource type="Resource" path="res://characters/foes/SkeletonPriest/stat_level_growth.tres" id="4_lvl"]
 [ext_resource type="Resource" uid="uid://cfsvb5he1u2it" path="res://characters/foes/SkeletonPriest/stat_attribute_growth.tres" id="5_grow"]
@@ -12,22 +12,22 @@
 [ext_resource type="PackedScene" uid="uid://6565i582lfyv" path="res://characters/foes/SkeletonPriest/_body/SkeletonPriest.tscn" id="6_body"]
 [ext_resource type="Script" uid="uid://dq4acpkde276p" path="res://skills/Skill.gd" id="7_skill"]
 [ext_resource type="Resource" uid="uid://54nm6r1og2gl" path="res://skills/_offensive/smite.tres" id="8_skill_a"]
-[ext_resource type="Resource" uid="uid://bk1ekpvjscjmg" path="res://skills/_defensive/_heal/single heal.tres" id="9_skill_b"]
-[ext_resource type="Resource" uid="uid://b1iclhswpvcyp" path="res://skills/_defensive/_heal/strong heal.tres" id="11_yd401"]
 
 [sub_resource type="Resource" id="Resource_tyc16"]
 script = ExtResource("1_koij7")
-basic_attack = 0.3
-guard = 0.2
+basic_attack = 0.0
+guard = 0.0
 skill = 1.0
-sustain = 0.8
-support = 0.8
+damage = 1.0
+harm = 0.0
+sustain = 0.0
+support = 0.0
 metadata/_custom_type_script = "uid://xw824r85c31r"
 
 [resource]
 script = ExtResource("1_res")
 attributes = ExtResource("2_attr")
-default_skills = Array[ExtResource("7_skill")]([ExtResource("8_skill_a"), ExtResource("9_skill_b"), ExtResource("11_yd401")])
+default_skills = Array[ExtResource("7_skill")]([ExtResource("8_skill_a")])
 base_stats = ExtResource("3_stats")
 stat_level_growth = ExtResource("4_lvl")
 stat_attribute_growth = ExtResource("5_grow")

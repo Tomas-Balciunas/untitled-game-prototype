@@ -16,6 +16,7 @@ extends Node
 @onready var healing_done_value: Label     = $Stats/HealingDone/HealingDoneValue
 @onready var healing_received_value: Label = $Stats/HealingReceived/HealingReceivedValue
 @onready var critical_damage_value: Label  = $Stats/CriticalDamage/CriticalDamageValue
+@onready var aggravation_value: Label = $Stats/Aggravation/AggravationValue
 
 func bind_character(character: Character) -> void:
 	var s := character.stats
@@ -33,8 +34,9 @@ func bind_character(character: Character) -> void:
 	divine_power_value.text  = str(s.get_stat(Stats.StatRef.DIVINE_POWER))
 	magic_defense_value.text = str(s.get_stat(Stats.StatRef.MAGIC_DEFENSE))
 	resistance_value.text    = str(s.get_stat(Stats.StatRef.RESISTANCE))
-	accuracy_value.text = str(s.get_stat(Stats.StatRef.ACCURACY))
-	evasion_value.text = str(s.get_stat(Stats.StatRef.EVASION))
+	accuracy_value.text      = str(s.get_stat(Stats.StatRef.ACCURACY))
+	evasion_value.text       = str(s.get_stat(Stats.StatRef.EVASION))
 	healing_done_value.text     = "%d%%" % s.get_stat(Stats.StatRef.HEALING_DONE)
 	healing_received_value.text = "%d%%" % s.get_stat(Stats.StatRef.HEALING_RECEIVED)
 	critical_damage_value.text  = "%d%%" % roundi(s.get_critical_multiplier() * 100.0)
+	aggravation_value.text      = "%d%%" % (s.get_stat(Stats.StatRef.AGGRAVATION))

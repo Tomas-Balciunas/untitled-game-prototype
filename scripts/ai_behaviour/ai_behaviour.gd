@@ -4,8 +4,8 @@ class_name AiBehaviour
 
 @export_category('Intentions')
 @export var basic_attack: float = 1.0
-@export var guard: float = 0.33
-@export var skill: float = 0.5
+@export var guard: float = 0.2
+@export var skill: float = 0.7
 
 @export_category('Skill intentions')
 @export var damage: float = 0.33
@@ -77,13 +77,24 @@ func get_candidates_for_skill_category(
 		var pool = resolve_pool(event, scanner, category)
 
 		for battler_data in pool:
-			var battler = battler_data[0]
+			var battler = battler_data[0] as Character
 			var battler_tags = battler_data[1]
 			
 			if !skill.get_conditions().is_empty() and !matches_all_conditions(skill.get_conditions(), battler_tags):
 				continue
 			
-			candidates.append([[battler, SkillAction.new(skill)], base_weight + (matching_tags(skill.tags, battler_tags) * 0.5)])
+			## TODO: move to helper function and use it for healing resolved too
+			var aggro_stat: float = battler.stats.get_stat(Stats.StatRef.AGGRAVATION)
+			var computed_aggro = base_weight + (matching_tags(skill.tags, battler_tags) * 0.5)
+			var final_aggro: float = computed_aggro
+			var aggro_mult: float = 1 + absf(aggro_stat) / 100
+			
+			if aggro_stat > 0.0:
+				final_aggro = computed_aggro * aggro_mult
+			elif aggro_stat < 0.0:
+				final_aggro = computed_aggro / aggro_mult
+			
+			candidates.append([[battler, SkillAction.new(skill)], final_aggro])
 			
 	return candidates
 	
@@ -129,7 +140,6 @@ func get_weighted_random_result(values: Array, weights: Array) -> Variant:
 			return val[0]
 	
 	return null
-
 
 
 func fallback_action(event: TurnStateEvent, scanner: BattleStateScanner) -> Array:

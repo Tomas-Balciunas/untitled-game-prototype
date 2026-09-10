@@ -36,12 +36,13 @@ var battle_events: Array[BattleEvent]
 var interactions: CharacterInteraction
 var interaction_controller: InteractionController
 var chatter: CharacterChatter
-
+var test: int = 0
 var equipment: Equipment = null
 
 func _init(res: CharacterResource, override_level: int = 0) -> void:
 	resource = res
 	resource._setup_character()
+	name = res.name
 	
 	job = res.job.duplicate(true)
 	race = res.race.duplicate(true)
@@ -94,10 +95,6 @@ func _init(res: CharacterResource, override_level: int = 0) -> void:
 			inventory.add_item(cons)
 			
 			continue
-		
-		#var inst := Item.new()
-		#inst.template = item
-		#inventory.add_item(inst)
 	
 	damage_type = res.default_damage_type
 	
@@ -157,6 +154,8 @@ func set_current_health(new_health: int, damage_event: DamageInstance = null, em
 			emit_signal("died", self)
 	
 	if damage_event:
+		test += 1
+		print("%s took %s hits" % [name, test])
 		CharacterBus.character_damaged.emit(self, damage_event)
 	
 	CharacterBus.health_changed.emit(self, old, new)

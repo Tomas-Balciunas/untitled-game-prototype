@@ -7,7 +7,6 @@ static func build() -> EventResource:
 	ev.steps = EventBuilder.new() \
 		.say("Someone Else", ["Test"]) \
 		.encounter("arena_default_00", ["e_enemy_002", "0000"]) \
-		.say("Unknown Entity", ["Well done", "You may pass"]) \
-		.encounter("arena_default_00", ["e_enemy_002", "0000"]) \
+		.say("Unknown Entity", ["done"]) \
 		.build()
 	return ev

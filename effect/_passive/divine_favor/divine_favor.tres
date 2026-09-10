@@ -1,13 +1,14 @@
-[gd_resource type="Resource" script_class="HealBoost" format=3]
+[gd_resource type="Resource" script_class="StatBonusEffect" format=3 uid="uid://b5txv23y2e5qh"]
 
-[ext_resource type="Script" uid="uid://ox6r65cjqnmt" path="res://effect/_passive/healing/heal_boost.gd" id="1"]
+[ext_resource type="Script" uid="uid://blnamtlk5hc0q" path="res://effect/templates/stat_bonus_effect.gd" id="1_ui22j"]
 
 [resource]
-script = ExtResource("1")
-modifier = 0.3
+script = ExtResource("1_ui22j")
+stat = 13
+value = 10
+name = "heal boost"
+native = true
+show_in_status = false
 battle_only = false
-id = "divine_favor"
-name = "Divine Favor"
-description = "The gods smile upon the devoted — all healing done is significantly amplified."
-category = 0
-duration_turns = -1
+expire_phase = 3
+metadata/_custom_type_script = "uid://blnamtlk5hc0q"

@@ -17,15 +17,16 @@ enum StatRef {
 	EVASION,
 	HEALING_DONE,
 	HEALING_RECEIVED,
-	CRITICAL_DAMAGE
+	CRITICAL_DAMAGE,
+	AGGRAVATION
 }
 
-const PERCENTAGE_BASE := 100.0
 const CRITICAL_DAMAGE_BASE := 150.0
 
 const PERCENTAGE_STATS: Array[StatRef] = [
 	StatRef.HEALING_DONE,
 	StatRef.HEALING_RECEIVED,
+	StatRef.AGGRAVATION
 ]
 
 static func is_percentage_stat(stat: StatRef) -> bool:
@@ -47,7 +48,8 @@ const STAT_NAMES := {
 	StatRef.EVASION:       "Evasion",
 	StatRef.HEALING_DONE:  "Healing Done",
 	StatRef.HEALING_RECEIVED: "Healing Received",
-	StatRef.CRITICAL_DAMAGE: "Critical Damage"
+	StatRef.CRITICAL_DAMAGE: "Critical Damage",
+	StatRef.AGGRAVATION: "Aggravation"
 }
 
 @export var attack: float = 0.0
@@ -66,6 +68,7 @@ const STAT_NAMES := {
 @export var healing_done: float = 0.0
 @export var healing_received: float = 0.0
 @export var critical_damage: float = 0.0
+@export var aggravation: float = 0.0
 
 
 func add(other: Stats) -> void:
@@ -85,88 +88,93 @@ func add(other: Stats) -> void:
 	healing_done      += other.healing_done
 	healing_received  += other.healing_received
 	critical_damage   += other.critical_damage
+	aggravation       += other.aggravation
 
 
 func get_stat(stat: StatRef) -> int:
 	match stat:
-		StatRef.ATTACK:        return roundi(attack)
-		StatRef.HEALTH:        return roundi(health)
-		StatRef.MANA:          return roundi(mana)
-		StatRef.SP:            return roundi(sp)
-		StatRef.ACTION_POINTS: return roundi(action_points)
-		StatRef.SPEED:         return roundi(speed)
-		StatRef.DEFENSE:       return roundi(defense)
-		StatRef.MAGIC_POWER:   return roundi(magic_power)
-		StatRef.DIVINE_POWER:  return roundi(divine_power)
-		StatRef.MAGIC_DEFENSE: return roundi(magic_defense)
-		StatRef.RESISTANCE:    return roundi(resistance)
-		StatRef.ACCURACY:      return roundi(accuracy)
-		StatRef.EVASION:       return roundi(evasion)
+		StatRef.ATTACK:           return roundi(attack)
+		StatRef.HEALTH:           return roundi(health)
+		StatRef.MANA:             return roundi(mana)
+		StatRef.SP:               return roundi(sp)
+		StatRef.ACTION_POINTS:    return roundi(action_points)
+		StatRef.SPEED:            return roundi(speed)
+		StatRef.DEFENSE:          return roundi(defense)
+		StatRef.MAGIC_POWER:      return roundi(magic_power)
+		StatRef.DIVINE_POWER:     return roundi(divine_power)
+		StatRef.MAGIC_DEFENSE:    return roundi(magic_defense)
+		StatRef.RESISTANCE:       return roundi(resistance)
+		StatRef.ACCURACY:         return roundi(accuracy)
+		StatRef.EVASION:          return roundi(evasion)
 		StatRef.HEALING_DONE:     return roundi(healing_done)
 		StatRef.HEALING_RECEIVED: return roundi(healing_received)
 		StatRef.CRITICAL_DAMAGE:  return roundi(critical_damage)
-		_:                     return 0
+		StatRef.AGGRAVATION:      return roundi(aggravation)
+		_:                        return 0
 
 
 func get_stat_raw(stat: StatRef) -> float:
 	match stat:
-		StatRef.ATTACK:        return attack
-		StatRef.HEALTH:        return health
-		StatRef.MANA:          return mana
-		StatRef.SP:            return sp
-		StatRef.ACTION_POINTS: return action_points
-		StatRef.SPEED:         return speed
-		StatRef.DEFENSE:       return defense
-		StatRef.MAGIC_POWER:   return magic_power
-		StatRef.DIVINE_POWER:  return divine_power
-		StatRef.MAGIC_DEFENSE: return magic_defense
-		StatRef.RESISTANCE:    return resistance
-		StatRef.ACCURACY:      return accuracy
-		StatRef.EVASION:       return evasion
+		StatRef.ATTACK:           return attack
+		StatRef.HEALTH:           return health
+		StatRef.MANA:             return mana
+		StatRef.SP:               return sp
+		StatRef.ACTION_POINTS:    return action_points
+		StatRef.SPEED:            return speed
+		StatRef.DEFENSE:          return defense
+		StatRef.MAGIC_POWER:      return magic_power
+		StatRef.DIVINE_POWER:     return divine_power
+		StatRef.MAGIC_DEFENSE:    return magic_defense
+		StatRef.RESISTANCE:       return resistance
+		StatRef.ACCURACY:         return accuracy
+		StatRef.EVASION:          return evasion
 		StatRef.HEALING_DONE:     return healing_done
 		StatRef.HEALING_RECEIVED: return healing_received
 		StatRef.CRITICAL_DAMAGE:  return critical_damage
-		_:                     return 0.0
+		StatRef.AGGRAVATION:      return aggravation
+		_:                        return 0.0
 
 
 func set_stat(stat: StatRef, value: float) -> void:
 	match stat:
-		StatRef.ATTACK:        attack        = value
-		StatRef.HEALTH:        health        = value
-		StatRef.MANA:          mana          = value
-		StatRef.SP:            sp            = value
-		StatRef.ACTION_POINTS: action_points = value
-		StatRef.SPEED:         speed         = value
-		StatRef.DEFENSE:       defense       = value
-		StatRef.MAGIC_POWER:   magic_power   = value
-		StatRef.DIVINE_POWER:  divine_power  = value
-		StatRef.MAGIC_DEFENSE: magic_defense = value
-		StatRef.RESISTANCE:    resistance    = value
-		StatRef.ACCURACY:      accuracy      = value
-		StatRef.EVASION:       evasion       = value
+		StatRef.ATTACK:           attack           = value
+		StatRef.HEALTH:           health           = value
+		StatRef.MANA:             mana             = value
+		StatRef.SP:               sp               = value
+		StatRef.ACTION_POINTS:    action_points    = value
+		StatRef.SPEED:            speed            = value
+		StatRef.DEFENSE:          defense          = value
+		StatRef.MAGIC_POWER:      magic_power      = value
+		StatRef.DIVINE_POWER:     divine_power     = value
+		StatRef.MAGIC_DEFENSE:    magic_defense    = value
+		StatRef.RESISTANCE:       resistance       = value
+		StatRef.ACCURACY:         accuracy         = value
+		StatRef.EVASION:          evasion          = value
 		StatRef.HEALING_DONE:     healing_done     = value
 		StatRef.HEALING_RECEIVED: healing_received = value
 		StatRef.CRITICAL_DAMAGE:  critical_damage  = value
+		StatRef.AGGRAVATION:      aggravation      = value
 
 
 func add_stat(stat: StatRef, value: float) -> void:
 	match stat:
-		StatRef.ATTACK:        attack        += value
-		StatRef.HEALTH:        health        += value
-		StatRef.MANA:          mana          += value
-		StatRef.SP:            sp            += value
-		StatRef.ACTION_POINTS: action_points += value
-		StatRef.SPEED:         speed         += value
-		StatRef.DEFENSE:       defense       += value
-		StatRef.MAGIC_POWER:   magic_power   += value
-		StatRef.DIVINE_POWER:  divine_power  += value
-		StatRef.MAGIC_DEFENSE: magic_defense += value
-		StatRef.RESISTANCE:    resistance    += value
-		StatRef.ACCURACY:      accuracy      += value
-		StatRef.EVASION:       evasion       += value
+		StatRef.ATTACK:           attack           += value
+		StatRef.HEALTH:           health           += value
+		StatRef.MANA:             mana             += value
+		StatRef.SP:               sp               += value
+		StatRef.ACTION_POINTS:    action_points    += value
+		StatRef.SPEED:            speed            += value
+		StatRef.DEFENSE:          defense          += value
+		StatRef.MAGIC_POWER:      magic_power      += value
+		StatRef.DIVINE_POWER:     divine_power     += value
+		StatRef.MAGIC_DEFENSE:    magic_defense    += value
+		StatRef.RESISTANCE:       resistance       += value
+		StatRef.ACCURACY:         accuracy         += value
+		StatRef.EVASION:          evasion          += value
 		StatRef.HEALING_DONE:     healing_done     += value
 		StatRef.HEALING_RECEIVED: healing_received += value
 		StatRef.CRITICAL_DAMAGE:  critical_damage  += value
+		StatRef.AGGRAVATION:      aggravation      += value
 
 
 func get_critical_multiplier() -> float:
@@ -185,24 +193,25 @@ func game_save() -> Dictionary:
 		"divine_power": divine_power, "magic_defense": magic_defense,
 		"resistance": resistance, "accuracy": accuracy, "evasion": evasion,
 		"healing_done": healing_done, "healing_received": healing_received,
-		"critical_damage": critical_damage,
+		"critical_damage": critical_damage, "aggravation": aggravation
 	}
 
 
 func game_load(data: Dictionary) -> void:
-	attack        = data.get("attack", 0.0)
-	health        = data.get("health", 0.0)
-	mana          = data.get("mana", 0.0)
-	action_points = data.get("action_points", 0.0)
-	sp            = data.get("sp", 0.0)
-	speed         = data.get("speed", 0.0)
-	defense       = data.get("defense", 0.0)
-	magic_power   = data.get("magic_power", 0.0)
-	divine_power  = data.get("divine_power", 0.0)
-	magic_defense = data.get("magic_defense", 0.0)
-	resistance    = data.get("resistance", 0.0)
-	accuracy      = data.get("accuracy", 0.0)
-	evasion       = data.get("evasion", 0.0)
+	attack           = data.get("attack", 0.0)
+	health           = data.get("health", 0.0)
+	mana             = data.get("mana", 0.0)
+	action_points    = data.get("action_points", 0.0)
+	sp               = data.get("sp", 0.0)
+	speed            = data.get("speed", 0.0)
+	defense          = data.get("defense", 0.0)
+	magic_power      = data.get("magic_power", 0.0)
+	divine_power     = data.get("divine_power", 0.0)
+	magic_defense    = data.get("magic_defense", 0.0)
+	resistance       = data.get("resistance", 0.0)
+	accuracy         = data.get("accuracy", 0.0)
+	evasion          = data.get("evasion", 0.0)
 	healing_done     = data.get("healing_done", 0.0)
 	healing_received = data.get("healing_received", 0.0)
 	critical_damage  = data.get("critical_damage", 0.0)
+	aggravation      = data.get("aggravation", 0.0)

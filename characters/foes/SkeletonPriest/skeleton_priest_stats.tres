@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="Stats" format=3]
+[gd_resource type="Resource" script_class="Stats" format=3 uid="uid://pb65e8aur3do"]
 
 [ext_resource type="Script" uid="uid://bqln4xpkkidja" path="res://stat/_stats/stats.gd" id="1_stats"]
 
@@ -9,7 +9,7 @@ health = 34.0
 mana = 32.0
 sp = 8.0
 action_points = 10.0
-speed = 4.0
+speed = 5.0
 defense = 5.0
 magic_power = 4.0
 divine_power = 11.0

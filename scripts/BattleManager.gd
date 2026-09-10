@@ -243,7 +243,7 @@ func perform_ai_driven_action(event: TurnStateEvent) -> void:
 	if action.needs_target():
 		target_slot = get_slot(target)
 	
-	await get_tree().create_timer(0.8).timeout
+	#await get_tree().create_timer(0.8).timeout
 	await action.execute(current_battler, target, attacker_slot, target_slot)
 
 func await_action_queue() -> void:

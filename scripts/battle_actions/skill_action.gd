@@ -17,7 +17,8 @@ func build_context(actor: Character, target: Character) -> ActionContext:
 	var weapon: Weapon = actor.equipment.weapon if actor.equipment.weapon else null
 
 	var ctx := ActionContext.new()
-	ctx.source = SkillSource.new(actor, skill)
+	ctx.source = CharacterSource.new(actor)
+	ctx.source.skill = skill
 	ctx.set_targets(target, targets)
 	ctx.actively_cast = true
 	ctx.set_temporary_effects(skill.effects)
