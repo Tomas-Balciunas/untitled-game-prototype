@@ -73,7 +73,7 @@ func get_adjacent_allies(current: Character) -> Array[Character]:
 
 func get_mass_allies() -> Array[Character]:
 	var mass: Array[Character] = []
-	for slot in formation:
+	for slot: FormationSlot in formation:
 		if slot != null:
 			mass.append(slot)
 	return mass

@@ -44,6 +44,7 @@ func bind(character: Character) -> void:
 	
 	if RunState.current.party.has_member(character.resource.id):
 		body_instance.visible = false
+		targeting_area.queue_free()
 	
 	self.add_child(body_instance)
 	

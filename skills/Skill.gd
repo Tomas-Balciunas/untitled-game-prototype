@@ -70,3 +70,6 @@ func get_conditions() -> Array[String]:
 
 func get_category() -> SkillCategory:
 	return category
+
+func is_skill_offensive() -> bool:
+	return category in [Skill.SkillCategory.DAMAGE, Skill.SkillCategory.HARM]

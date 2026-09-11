@@ -36,7 +36,6 @@ var battle_events: Array[BattleEvent]
 var interactions: CharacterInteraction
 var interaction_controller: InteractionController
 var chatter: CharacterChatter
-var test: int = 0
 var equipment: Equipment = null
 
 func _init(res: CharacterResource, override_level: int = 0) -> void:
@@ -154,8 +153,6 @@ func set_current_health(new_health: int, damage_event: DamageInstance = null, em
 			emit_signal("died", self)
 	
 	if damage_event:
-		test += 1
-		print("%s took %s hits" % [name, test])
 		CharacterBus.character_damaged.emit(self, damage_event)
 	
 	CharacterBus.health_changed.emit(self, old, new)

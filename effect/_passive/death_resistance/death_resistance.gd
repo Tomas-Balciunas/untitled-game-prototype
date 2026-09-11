@@ -15,7 +15,7 @@ func listened_triggers() -> Array:
 func can_process(_stage: String, event: TriggerEvent) -> bool:
 	return owner_is_target(event)
 
-func on_trigger(_stage: String, event: TriggerEvent) -> void:
+func on_trigger(_stage: String, _event: TriggerEvent) -> void:
 	if stacks <= 0:
 		on_expire()
 	

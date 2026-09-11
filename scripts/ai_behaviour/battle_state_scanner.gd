@@ -2,8 +2,8 @@ extends RefCounted
 
 class_name BattleStateScanner
 
-var enemies: Array = []
-var allies: Array = []
+var enemies: Array[BattleScanEntry] = []
+var allies: Array[BattleScanEntry] = []
 
 func _init(_enemies: Array[Character], _party: Array[Character], actor_party_member: bool) -> void:
 	for enemy: Character in _enemies:
@@ -20,26 +20,22 @@ func _init(_enemies: Array[Character], _party: Array[Character], actor_party_mem
 		
 		allies.append(scan_battler(party_member))
 
-func scan_battler(battler: Character) -> Array:
-	var data: Array = [null, null]
-	data[0] = battler
-	var tags: Array[String] = []
+func scan_battler(battler: Character) -> BattleScanEntry:
+	var entry: BattleScanEntry = BattleScanEntry.new(battler)
 	
-	## expand conditions when needed
+	## expand conditions later
 	
 	var hp_percent = battler.state.current_health / battler.stats.health
 
 	if hp_percent < 1.0:
-		tags.append(StateTags.HEALTH_NOT_FULL)
+		entry.tags.append(StateTags.HEALTH_NOT_FULL)
 		
 		if hp_percent < 0.5:
-			tags.append(StateTags.HEALTH_UNDER_50)
+			entry.tags.append(StateTags.HEALTH_UNDER_50)
 	else:
-		tags.append(StateTags.HEALTH_FULL)
+		entry.tags.append(StateTags.HEALTH_FULL)
 	
 	for effect: Effect in battler.effects:
-		tags.append_array(effect.get_tags())
+		entry.tags.append_array(effect.get_tags())
 	
-	data[1] = tags
-	
-	return data
+	return entry

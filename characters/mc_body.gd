@@ -6,7 +6,7 @@ class_name MainCharacterBody
 @onready var camera_3d: Camera3D = $Camera3D
 
 
-func play_attack(event: ActionEvent, target_pos: Vector3) -> void:
+func play_attack(event: ActionEvent, _target_pos: Vector3) -> void:
 	if animation_player.has_animation("attack"):
 		animation_player.stop()
 		melee_attack.global_position = get_viewport().size / 2

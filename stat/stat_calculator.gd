@@ -14,10 +14,6 @@ static func recalculate_all_stats(c: Character) -> void:
 
 
 static func _recalculate_modified(c: Character, s: Stats.StatRef) -> void:
-	#if Stats.is_percentage_stat(s):
-		#_recalculate_percentage_stat(c, s)
-		#return
-
 	var gear_value: float = 0.0
 
 	for slot: Gear in c.equipment.get_all_equipment():
@@ -84,25 +80,6 @@ static func _apply_weapon_scaling(c: Character, s: Stats.StatRef) -> void:
 	_set_final(c, s, round(c.stats.get_stat_raw(s) + scaling_total))
 
 
-#static func _recalculate_percentage_stat(c: Character, s: Stats.StatRef) -> void:
-	#c.computed_stats.set_stat(s, Stats.PERCENTAGE_BASE)
-#
-	#var total: float = c.stats.get_stat(s)
-#
-	#for mod: StatModifier in c.state.get_modifiers():
-		#if mod.stat != s:
-			#continue
-		#if mod.type == StatModifier.Type.ADDITIVE:
-			#push_error("Flat (ADDITIVE) modifier not allowed on percentage stat %s (modifier '%s')" % [Stats.get_stat_name(s), mod.id])
-			#continue
-#
-		#total += (100 - mod.compute_value(c, Stats.PERCENTAGE_BASE))
-#
-	#c.modified_stats.set_stat(s, total)
-#
-	#_set_final(c, s, round(total))
-
-
 static func _set_final(c: Character, s: Stats.StatRef, value: float) -> void:
 	if c.stats.get_stat_raw(s) == value:
 		return
@@ -132,3 +109,20 @@ static func get_attribute_contribution(stat: Stats.StatRef, c: Character) -> flo
 
 static func get_level_contribution(stat: Stats.StatRef, c: Character) -> float:
 	return c.job.get_stat_level_growth().get_stat(stat) * (c.level - 1) + c.resource.get_stat_level_growth().get_stat(stat) * (c.level - 1)
+
+static func apply_percentage_stat_multiplier(_stat: Stats.StatRef, character: Character, value: float) -> float:
+	if Stats.is_percentage_stat(_stat) == false:
+		push_error("%s is not a percentage stat!" % Stats.get_stat_name(_stat))
+		
+		return 1.0
+	
+	var stat: float = character.stats.get_stat_raw(_stat)
+	var stat_multiplier: float = (1 + absf(stat) / 100.0)
+	var final_value: float = value
+	
+	if stat < 0.0:
+		final_value = value / stat_multiplier
+	elif stat > 0.0:
+		final_value = value * stat_multiplier
+	
+	return final_value

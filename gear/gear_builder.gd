@@ -24,9 +24,9 @@ func get_stats(range_data: Dictionary) -> Stats:
 	if range_data.is_empty():
 		return stats
 	for stat: Stats.StatRef in range_data:
-		var min: float = range_data[stat][0]
-		var max: float = range_data[stat][1]
-		stats.set_stat(stat, randf_range(min, max))
+		var minimum: float = range_data[stat][0]
+		var maximum: float = range_data[stat][1]
+		stats.set_stat(stat, randf_range(minimum, maximum))
 	return stats
 
 
@@ -48,12 +48,12 @@ func get_modifiers(tier: String, applicable: Array[Stats.StatRef], quality: Item
 			mod_type = StatModifier.Type.MULTIPLICATIVE
 		else:
 			mod_type = [StatModifier.Type.ADDITIVE, StatModifier.Type.MULTIPLICATIVE].pick_random()
-		var range: Array = StatModifierConfig.get_range(stat, mod_type, quality)
+		var mod_range: Array = StatModifierConfig.get_range(stat, mod_type, quality)
 		var value: Variant
 		if mod_type == StatModifier.Type.ADDITIVE:
-			value = randi_range(range[0], range[1])
+			value = randi_range(mod_range[0], mod_range[1])
 		else:
-			value = randf_range(range[0], range[1])
+			value = randf_range(mod_range[0], mod_range[1])
 		var mod: StatModifier = StatModifier.new()
 		mod.stat = stat
 		mod.type = mod_type

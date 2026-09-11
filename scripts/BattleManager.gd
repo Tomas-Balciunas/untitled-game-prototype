@@ -228,23 +228,23 @@ func perform_ai_driven_action(event: TurnStateEvent) -> void:
 	if behaviour == null:
 		behaviour = AiBehaviour.new()
 	
-	var result: Array = behaviour.choose_action(current_battler, scanner, event)
+	var result: AiActionCandidate = behaviour.choose_action(scanner, event)
 	
-	if result.is_empty():
+	if !result.action:
 		push_error("Failed to choose action")
 		current_state = BattleState.ACTION_QUEUE
 		return
 	
-	var target: Character = result[0]
-	var action: BattleAction = result[1]
-	var attacker_slot := get_slot(current_battler)
+	var target: Character = result.battler
+	var action: BattleAction = result.action
+	var actor_slot := get_slot(current_battler)
 	var target_slot: FormationSlot = null
 	
 	if action.needs_target():
 		target_slot = get_slot(target)
 	
-	#await get_tree().create_timer(0.8).timeout
-	await action.execute(current_battler, target, attacker_slot, target_slot)
+	await get_tree().create_timer(0.8).timeout
+	await action.execute(current_battler, target, actor_slot, target_slot)
 
 func await_action_queue() -> void:
 	var remaining: Array[ActionEvent] = []

@@ -20,39 +20,39 @@ var skill_intention_map: Dictionary = {
 	Skill.SkillCategory.SUPPORT: support
 }
 
-func choose_action(actor: Character, scanner: BattleStateScanner, event: TurnStateEvent) -> Array:
+func choose_action(scanner: BattleStateScanner, event: TurnStateEvent) -> AiActionCandidate:
 	var base_action: String = get_weighted_random_result(["1", "2", "3"], [basic_attack, guard, skill])
 	
+	## TODO need to figure out self targeting restrictions
 	match base_action:
 		"1":
-			var pool = resolve_pool(event, scanner, Skill.SkillCategory.DAMAGE)
-			return [pool.pick_random()[0], BasicAttack.new()]
+			return choose_basic_attack(event, scanner)
 		"2":
-			return [null, GuardAction.new()]
+			return AiActionCandidate.new(GuardAction.new())
 		"3":
 			return choose_skill(scanner, event)
 		_:
-			return []
+			return null
 	
 
-func choose_skill(scanner: BattleStateScanner, event: TurnStateEvent) -> Array:
-	var allowed_categories = event.turn_options.allowed_skill_categories
+func choose_skill(scanner: BattleStateScanner, event: TurnStateEvent) -> AiActionCandidate:
+	var allowed_categories: Array[Skill.SkillCategory] = event.turn_options.allowed_skill_categories
+	
 	if allowed_categories.is_empty():
 		return fallback_action(event, scanner)
 	
-	
-	var candidates = []
+	var candidates: Array[AiActionCandidate] = []
 	
 	for category: Skill.SkillCategory in event.turn_options.allowed_skill_categories:
 		var base_weight: float = skill_intention_map[category]
 		candidates.append_array(get_candidates_for_skill_category(event, scanner, category, base_weight))
 	
-	var values = []
-	var weights = []
+	var values: Array[AiActionCandidate] = []
+	var weights: Array[float] = []
 	
 	for candidate in candidates:
-		values.append(candidate[0])
-		weights.append(candidate[1])
+		values.append(candidate)
+		weights.append(candidate.target_weight)
 	
 	if candidates.is_empty():
 		return fallback_action(event, scanner)
@@ -64,8 +64,8 @@ func get_candidates_for_skill_category(
 		scanner: BattleStateScanner,
 		category: Skill.SkillCategory,
 		base_weight: float
-	) -> Array:
-	var candidates = []
+	) -> Array[AiActionCandidate]:
+	var candidates: Array[AiActionCandidate] = []
 	
 	for skill in event.turn_options.actor.learnt_skills:
 		if skill.get_category() != category:
@@ -74,44 +74,66 @@ func get_candidates_for_skill_category(
 		if skill.can_use(event.turn_options.actor) == false:
 			continue
 		
-		var pool = resolve_pool(event, scanner, category)
+		var is_offensive: bool = skill.is_skill_offensive()
+		
+		var pool: Array[BattleScanEntry] = resolve_pool(event, scanner, is_offensive)
 
-		for battler_data in pool:
-			var battler = battler_data[0] as Character
-			var battler_tags = battler_data[1]
-			
-			if !skill.get_conditions().is_empty() and !matches_all_conditions(skill.get_conditions(), battler_tags):
+		for entry in pool:
+			if !skill.get_conditions().is_empty() and !matches_all_conditions(skill.get_conditions(), entry.tags):
 				continue
 			
-			## TODO: move to helper function and use it for healing resolved too
-			var aggro_stat: float = battler.stats.get_stat(Stats.StatRef.AGGRAVATION)
-			var computed_aggro = base_weight + (matching_tags(skill.tags, battler_tags) * 0.5)
-			var final_aggro: float = computed_aggro
-			var aggro_mult: float = 1 + absf(aggro_stat) / 100
+			var computed_aggro: float = base_weight + (float(matching_tags(skill.tags, entry.tags)) * 0.5)
+			var final_aggro: float = StatCalculator.apply_percentage_stat_multiplier(Stats.StatRef.AGGRAVATION, entry.battler, computed_aggro)
 			
-			if aggro_stat > 0.0:
-				final_aggro = computed_aggro * aggro_mult
-			elif aggro_stat < 0.0:
-				final_aggro = computed_aggro / aggro_mult
-			
-			candidates.append([[battler, SkillAction.new(skill)], final_aggro])
+			candidates.append(AiActionCandidate.new(SkillAction.new(skill),entry.battler, final_aggro))
 			
 	return candidates
+
+func choose_basic_attack(event: TurnStateEvent, scanner: BattleStateScanner,) -> AiActionCandidate:
+	var candidates: Array[AiActionCandidate] = get_candidates_for_basic_attack(event, scanner)
 	
-func resolve_pool(event: TurnStateEvent, scanner: BattleStateScanner, category: Skill.SkillCategory) -> Array:
+	if candidates.is_empty():
+		push_error("Basic attack couldn't find targets!")
+		
+		return AiActionCandidate.new(GuardAction.new())
+	
+	var values: Array[AiActionCandidate] = []
+	var weights: Array[float] = []
+	
+	for candidate in candidates:
+		values.append(candidate)
+		weights.append(candidate.target_weight)
+	
+	return get_weighted_random_result(values, weights)
+
+func get_candidates_for_basic_attack(
+		event: TurnStateEvent,
+		scanner: BattleStateScanner,
+	) -> Array[AiActionCandidate]:
+	var candidates: Array[AiActionCandidate] = []
+	var pool: Array[BattleScanEntry] = resolve_pool(event, scanner, true)
+	
+	for entry in pool:
+		var final_aggro: float = StatCalculator.apply_percentage_stat_multiplier(Stats.StatRef.AGGRAVATION, entry.battler, basic_attack)
+		
+		candidates.append(AiActionCandidate.new(BasicAttack.new(), entry.battler, final_aggro))
+	
+	return candidates
+
+func resolve_pool(event: TurnStateEvent, scanner: BattleStateScanner, is_offensive: bool) -> Array[BattleScanEntry]:
 	if event.turn_options.forced_targets.is_empty() == false:
 		return event.turn_options.forced_targets
 	
 	match event.turn_options.allowed_sides:
 		TurnOptions.AllowedSides.DEFAULT:
-			if category in [Skill.SkillCategory.DAMAGE, Skill.SkillCategory.HARM]:
+			if is_offensive:
 				return scanner.enemies
 			else:
 				return scanner.allies
 		TurnOptions.AllowedSides.BOTH:
 			return scanner.enemies + scanner.allies
 		TurnOptions.AllowedSides.INVERTED:
-			if category in [Skill.SkillCategory.DAMAGE, Skill.SkillCategory.HARM]:
+			if is_offensive:
 				return scanner.allies
 			else:
 				return scanner.enemies
@@ -131,7 +153,7 @@ func get_weighted_random_result(values: Array, weights: Array) -> Variant:
 	var total: float = weights.reduce(func (accum, number): return accum + number, 0)
 	var rand_range: float = randf_range(0.0, total)
 	
-	var choice = values[0]
+	var choice: Variant = values[0]
 	var cumulative: float = 0.0
 	
 	for val: Array in container:
@@ -142,24 +164,23 @@ func get_weighted_random_result(values: Array, weights: Array) -> Variant:
 	return null
 
 
-func fallback_action(event: TurnStateEvent, scanner: BattleStateScanner) -> Array:
-	var val = randf()
-	if val > 0.3:
-		var pool = resolve_pool(event, scanner, Skill.SkillCategory.DAMAGE)
-		return [pool.pick_random()[0], BasicAttack.new()]
+func fallback_action(event: TurnStateEvent, scanner: BattleStateScanner) -> AiActionCandidate:
+	var val: float = randf()
+	if val > 0.2:
+		return choose_basic_attack(event, scanner)
 	else:
-		return [null, GuardAction.new()]
+		return AiActionCandidate.new(GuardAction.new())
 
-func matching_tags(skill_tags, battler_tags) -> int:
+func matching_tags(skill_tags: Array[String], battler_tags: Array[String]) -> int:
 	var amt: int = 0
 	
-	for tag in skill_tags:
+	for tag: String in skill_tags:
 		if battler_tags.has(tag):
 			amt += 1
 	
 	return amt
 		
-func matches_all_conditions(conditions, tags) -> bool:
+func matches_all_conditions(conditions: Array[String], tags: Array[String]) -> bool:
 	for condition in conditions:
 		if !tags.has(condition):
 			return false

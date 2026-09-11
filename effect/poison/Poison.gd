@@ -44,13 +44,13 @@ func trigger(power: float = 1.0) -> void:
 	var tick_ctx: ActionContext = ActionContext.new()
 	tick_ctx.source = source
 	tick_ctx.set_targets(owner)
-	var resolver = DamageResolver.new(amount)
+	var resolver: DamageResolver = DamageResolver.new(amount)
 
 	#TODO: play for allies too
 	if RunState.current.battle.in_battle:
-		var slot = RunState.current.battle.enemy_formation.get_slot_for(owner)
+		var slot: FormationSlot = RunState.current.battle.enemy_formation.get_slot_for(owner)
 		if slot:
-			var orchestrator = ActionOrchestrator.new(owner, tick_ctx, resolver)
+			var orchestrator: ActionOrchestrator = ActionOrchestrator.new(owner, tick_ctx, resolver)
 			orchestrator.execute_action(
 				func (e: ActionEvent) -> void:
 					slot.body_instance.play_poison(e),

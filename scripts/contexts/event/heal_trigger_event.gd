@@ -2,7 +2,7 @@ extends TriggerEvent
 
 class_name HealTriggerEvent
 
-var heal: int
+var heal: float
 var scaling: float
 
 func _init(c: ActionContext, t: Character, amount: int, scale: float = 0.0) -> void:

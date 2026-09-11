@@ -32,12 +32,21 @@ func run_pipeline(event: DamageInstance) -> void:
 	
 	EffectRunner.process_trigger(EffectTriggers.ON_DAMAGE_ABOUT_TO_BE_APPLIED, event)
 	
-	BattleTextLines.print_line("%s dealt %f %s damage to %s" % [
-		event.source.get_source_name(), 
-		event.calculator.get_final_damage(), 
-		DamageTypes.to_str(event.calculator.type), 
-		event.target.resource.name
-		])
+	if event.source.skill:
+		BattleTextLines.print_line("%s dealt %f %s damage to %s with %s" % [
+			event.source.get_source_name(), 
+			event.calculator.get_final_damage(), 
+			DamageTypes.to_str(event.calculator.type), 
+			event.target.resource.name,
+			event.source.skill._get_name()
+			])
+	else:
+		BattleTextLines.print_line("%s dealt %f %s damage to %s" % [
+			event.source.get_source_name(), 
+			event.calculator.get_final_damage(), 
+			DamageTypes.to_str(event.calculator.type), 
+			event.target.resource.name
+			])
 	
 	if event.ctx.turn:
 		event.ctx.turn.damage_dealt += event.calculator.get_final_damage()
