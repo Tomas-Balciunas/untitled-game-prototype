@@ -4,13 +4,11 @@
 [ext_resource type="Script" uid="uid://blqk30gl013xc" path="res://stat/_attribute/attributes.gd" id="1_lgdsj"]
 [ext_resource type="Script" uid="uid://bwn4gpkaijqsg" path="res://scripts/CharacterResource.gd" id="1_tuon3"]
 [ext_resource type="Script" uid="uid://cbelvg2fndssu" path="res://scripts/BattleEvent.gd" id="2_715sk"]
-[ext_resource type="Resource" uid="uid://eiwm6khdbjki" path="res://characters/_race/Human.tres" id="2_gmj68"]
 [ext_resource type="Resource" uid="uid://bc8uaff10qpoj" path="res://characters/allies/Lili/lili_stats.tres" id="2_wayk2"]
 [ext_resource type="PackedScene" uid="uid://dr6mixlbl8nmf" path="res://characters/allies/Lili/_body/Lili.tscn" id="3_tttne"]
 [ext_resource type="Resource" uid="uid://by14sh5h8t7hf" path="res://characters/allies/Lili/lili_controller.tres" id="4_tttne"]
 [ext_resource type="Script" uid="uid://b06vmgrh4qa8i" path="res://gear/ItemResource.gd" id="6_7lkq3"]
 [ext_resource type="Script" uid="uid://cyhrh3l20i5dm" path="res://stat/StatModifier.gd" id="7_715sk"]
-[ext_resource type="Resource" uid="uid://br55c33pop4ux" path="res://characters/_class/class_priest/class_priest.tres" id="8_23xqr"]
 [ext_resource type="Script" uid="uid://c2lpfe7ep4fuv" path="res://gear/chest/chestpiece_resource.gd" id="8_tttne"]
 [ext_resource type="Resource" uid="uid://coilrntx01n8m" path="res://characters/allies/Lili/new_resource.tres" id="10_pwtr7"]
 [ext_resource type="Script" uid="uid://dq4acpkde276p" path="res://skills/Skill.gd" id="10_tttne"]
@@ -49,8 +47,6 @@ metadata/_custom_type_script = "uid://c2lpfe7ep4fuv"
 
 [resource]
 script = ExtResource("1_tuon3")
-race = ExtResource("2_gmj68")
-job = ExtResource("8_23xqr")
 attributes = SubResource("Resource_n7wih")
 default_items = Array[ExtResource("6_7lkq3")]([SubResource("Resource_715sk")])
 base_stats = ExtResource("2_wayk2")

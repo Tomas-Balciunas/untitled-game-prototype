@@ -10,8 +10,6 @@
 [ext_resource type="PackedScene" path="res://characters/foes/Hobgoblin/_body/Hobgoblin.tscn" id="6_body"]
 [ext_resource type="Script" uid="uid://b06vmgrh4qa8i" path="res://gear/ItemResource.gd" id="6_uyqgr"]
 [ext_resource type="Script" uid="uid://dq4acpkde276p" path="res://skills/Skill.gd" id="7_l8qtf"]
-[ext_resource type="Resource" uid="uid://cs2tci0dc3vvo" path="res://characters/_class/_Unknown.tres" id="8_dphow"]
-[ext_resource type="Resource" uid="uid://lcgngc3c13fc" path="res://characters/_race/_Unknown.tres" id="9_uiaim"]
 
 [resource]
 script = ExtResource("1_res")

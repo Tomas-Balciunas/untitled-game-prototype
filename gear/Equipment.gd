@@ -73,7 +73,7 @@ func unequip_slot(type: ItemTypes.GearType) -> bool:
 	return true
 
 func can_equip(item: Gear) -> bool:
-	return not owner.job.get_unequippable_gear().has(item.get_gear_type())
+	return not owner.resource.unequippable_gear.has(item.get_gear_type())
 
 func set_equipment(item: Gear) -> void:
 	match item.get_gear_type():

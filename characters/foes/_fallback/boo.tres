@@ -7,8 +7,6 @@
 [ext_resource type="Script" uid="uid://bp0biy0knxw2o" path="res://effect/Effect.gd" id="3_xdmfg"]
 [ext_resource type="Script" uid="uid://dq4acpkde276p" path="res://skills/Skill.gd" id="4_y8skw"]
 [ext_resource type="Script" uid="uid://b06vmgrh4qa8i" path="res://gear/ItemResource.gd" id="5_7mwlc"]
-[ext_resource type="Resource" uid="uid://cs2tci0dc3vvo" path="res://characters/_class/_Unknown.tres" id="6_7mwlc"]
-[ext_resource type="Resource" uid="uid://lcgngc3c13fc" path="res://characters/_race/_Unknown.tres" id="7_rbf6s"]
 [ext_resource type="Resource" uid="uid://tgnewt42jjbw" path="res://characters/foes/_fallback/stat_attribute_growth.tres" id="11_d1mbr"]
 [ext_resource type="Resource" uid="uid://d1booattr0001" path="res://characters/foes/_fallback/attributes.tres" id="12_boo1"]
 [ext_resource type="Resource" uid="uid://d1boolvl00001" path="res://characters/foes/_fallback/stat_level_growth.tres" id="13_boo2"]

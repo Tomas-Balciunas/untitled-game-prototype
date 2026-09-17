@@ -7,8 +7,6 @@
 [ext_resource type="Script" uid="uid://bqln4xpkkidja" path="res://stat/_stats/stats.gd" id="2_smc4f"]
 [ext_resource type="PackedScene" uid="uid://dqivkvbyr6ra" path="res://characters/foes/Skeltal/_body/Skeltal.tscn" id="3_tl2ml"]
 [ext_resource type="Script" uid="uid://b06vmgrh4qa8i" path="res://gear/ItemResource.gd" id="5_mpmjy"]
-[ext_resource type="Resource" uid="uid://cs2tci0dc3vvo" path="res://characters/_class/_Unknown.tres" id="6_mpmjy"]
-[ext_resource type="Resource" uid="uid://lcgngc3c13fc" path="res://characters/_race/_Unknown.tres" id="7_gcpvx"]
 [ext_resource type="Resource" uid="uid://d0teo8fy4hnlf" path="res://characters/foes/Skeltal/skeltal_interactions.tres" id="10_07eh6"]
 [ext_resource type="Resource" uid="uid://y06tpwicaj0j" path="res://characters/foes/Skeltal/stat_attribute_growth.tres" id="13_07eh6"]
 [ext_resource type="Resource" uid="uid://j2iols3j2tne" path="res://characters/foes/Skeltal/attributes.tres" id="14_skel1"]

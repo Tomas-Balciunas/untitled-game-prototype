@@ -10,26 +10,6 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_hps7s")
 
-[node name="Overview" type="VBoxContainer" parent="." unique_id=594643533]
-layout_mode = 1
-anchors_preset = 6
-anchor_left = 1.0
-anchor_top = 0.5
-anchor_right = 1.0
-anchor_bottom = 0.5
-offset_left = -335.0
-offset_top = -279.0
-offset_bottom = 226.0
-grow_horizontal = 0
-grow_vertical = 2
-size_flags_horizontal = 8
-
-[node name="Job" type="Label" parent="Overview" unique_id=2089714324]
-layout_mode = 2
-
-[node name="Race" type="Label" parent="Overview" unique_id=1338822181]
-layout_mode = 2
-
 [node name="Create" type="Button" parent="." unique_id=1779907078]
 layout_mode = 1
 anchors_preset = 7
@@ -46,30 +26,6 @@ grow_vertical = 0
 size_flags_vertical = 8
 focus_mode = 0
 text = "Create"
-
-[node name="Classes" type="VBoxContainer" parent="." unique_id=1809524799]
-layout_mode = 1
-anchors_preset = 4
-anchor_top = 0.5
-anchor_bottom = 0.5
-offset_left = 90.0
-offset_top = -113.0
-offset_right = 195.0
-offset_bottom = 97.0
-grow_vertical = 2
-size_flags_horizontal = 0
-size_flags_vertical = 0
-
-[node name="Races" type="VBoxContainer" parent="." unique_id=967387524]
-layout_mode = 1
-anchors_preset = 4
-anchor_top = 0.5
-anchor_bottom = 0.5
-offset_left = 261.0
-offset_top = -106.0
-offset_right = 367.0
-offset_bottom = 61.0
-grow_vertical = 2
 
 [node name="Attributes" type="GridContainer" parent="." unique_id=947732637]
 layout_mode = 1

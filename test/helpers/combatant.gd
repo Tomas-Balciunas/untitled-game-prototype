@@ -18,15 +18,6 @@ static func make_resource() -> CharacterResource:
 	res.id = "gut_fixture"
 	res.name = "Gut Fixture"
 
-	res.race = Race.new()
-	res.race.attributes = Attributes.new()
-	res.race.stat_attribute_growth = StatAttributeGrowth.new()
-
-	res.job = Job.new()
-	res.job.attributes = Attributes.new()
-	res.job.stat_level_growth = Stats.new()
-	res.job.stat_attribute_growth = StatAttributeGrowth.new()
-
 	res.attributes = Attributes.new()
 	res.attributes.strength = STRENGTH
 

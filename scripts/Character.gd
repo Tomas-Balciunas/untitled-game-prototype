@@ -29,8 +29,6 @@ var damage_type: DamageTypes.Type
 var attributes: Attributes
 var level_up_attributes: Attributes
 var starting_attributes: Attributes
-var job: Job
-var race: Race
 var inventory: Inventory
 var battle_events: Array[BattleEvent]
 var interactions: CharacterInteraction
@@ -44,9 +42,7 @@ func _init(res: CharacterResource, override_level: int = 0) -> void:
 	resource._setup_character()
 	name = res.name
 	battle_events = res.battle_events.duplicate(true)
-	job = res.job.duplicate(true)
-	race = res.race.duplicate(true)
-	
+
 	if resource.character_body:
 		body = resource.character_body
 		
@@ -105,20 +101,10 @@ func _init(res: CharacterResource, override_level: int = 0) -> void:
 		if learnt_skills.has(skill):
 			continue
 		learnt_skills.append(skill)
-		
-	if res.job:
-		for skill in res.job.skills:
-			if learnt_skills.has(skill):
-				continue
-			learnt_skills.append(skill)
-	
+
 	for effect in res.default_effects:
 		apply_effect(effect, CharacterSource.new(self))
 
-	if res.job:
-		for effect in res.job.effects:
-			apply_effect(effect, CharacterSource.new(self))
-	
 	StatCalculator.recalculate_all_stats(self)
 	full_heal()
 
@@ -262,11 +248,7 @@ func get_effect_by_id(id: String) -> Effect:
 func fill_attributes() -> void:
 	attributes = Attributes.new()
 	attributes.add(resource.attributes)
-	
-	if resource.race:
-		attributes.add(resource.race.attributes)
-	if resource.job:
-		attributes.add(resource.job.attributes)
+
 	if level_up_attributes:
 		attributes.add(level_up_attributes)
 	if starting_attributes:
@@ -331,8 +313,6 @@ func game_save() -> Dictionary:
 		"sp": state.current_sp,
 		"dead": is_dead,
 		"damage_type": damage_type,
-		"race": race.name,
-		"job": job.name,
 		"main": is_main,
 		"unspent_points": unspent_attribute_points,
 		"attributes": attributes.game_save(),
@@ -354,18 +334,6 @@ static func create_from_save(data: Dictionary) -> Character:
 
 	var res: CharacterResource = proto.duplicate()
 	res.name = data.get("name", proto.name)
-
-	var race_res := RaceRegistry.get_by_name(RaceRegistry.type_to_string(data.get("race", Race.Name.UNKNOWN)))
-	if race_res:
-		res.race = race_res
-	else:
-		SaveManager.report_load_issue("Race not found for %s, keeping %s's default" % [data.get("race"), proto.id])
-
-	var job_res := JobRegistry.get_by_name(JobRegistry.type_to_string(data.get("job", Job.Name.UNKNOWN)))
-	if job_res:
-		res.job = job_res
-	else:
-		SaveManager.report_load_issue("Job not found for %s, keeping %s's default" % [data.get("job"), proto.id])
 
 	var inst := Character.new(res)
 	inst.game_load(data)

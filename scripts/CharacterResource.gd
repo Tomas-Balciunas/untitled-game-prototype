@@ -2,15 +2,10 @@ extends BaseCharacterResource
 
 class_name CharacterResource
 
-const DEFAULT_RACE_PATH := "res://characters/_race/_Unknown.tres"
-const DEFAULT_JOB_PATH := "res://characters/_class/_Unknown.tres"
 const DEFAULT_STATS_PATH := "uid://57fo0cycgjne"
 const DEFAULT_STAT_GROWTH_PATH := "uid://s8gs3fa65s30"
 
 var is_main: bool = false
-
-@export var race: Race = load(DEFAULT_RACE_PATH)
-@export var job: Job = load(DEFAULT_JOB_PATH)
 
 @export var attributes: Attributes
 
@@ -22,6 +17,7 @@ var is_main: bool = false
 @export var level_effects: Dictionary = {}
 @export var default_damage_type: DamageTypes.Type
 @export var default_items: Array[ItemResource] = []
+@export var unequippable_gear: Array[ItemTypes.GearType] = []
 
 @export var base_stats: Stats = load(DEFAULT_STATS_PATH)
 @export var stat_level_growth: Stats
@@ -57,6 +53,18 @@ func get_effects_for_level(lvl: int) -> Array[Effect]:
 	if entry is Effect:
 		return [entry] as Array[Effect]
 	return []
+
+func get_skills_until_level(lvl: int) -> Array[Skill]:
+	var entries: Array[Skill] = []
+	for i in range(1, lvl + 1):
+		entries.append_array(get_skills_for_level(i))
+	return entries
+
+func get_effects_until_level(lvl: int) -> Array[Effect]:
+	var entries: Array[Effect] = []
+	for i in range(1, lvl + 1):
+		entries.append_array(get_effects_for_level(i))
+	return entries
 
 func get_stat_level_growth() -> Stats:
 	if !stat_level_growth:

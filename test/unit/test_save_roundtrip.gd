@@ -72,8 +72,6 @@ func _make_character(char_name: String) -> Character:
 	var proto: CharacterResource = CharacterRegistry.get_character("mc")
 	var res: CharacterResource = proto.duplicate()
 	res.name = char_name
-	res.race = RaceRegistry.get_by_name("Human")
-	res.job = JobRegistry.get_by_name("Fighter")
 	return Character.new(res)
 
 
@@ -107,11 +105,6 @@ func test_character_keeps_gear_and_death() -> void:
 	var found := restored.inventory.get_item_by_id("tmp_sword")
 	assert_not_null(found, "gear must still be in the inventory")
 	assert_true(found is Weapon)
-
-
-func test_unknown_race_and_job_resolve() -> void:
-	assert_not_null(RaceRegistry.get_by_name(RaceRegistry.type_to_string(Race.Name.UNKNOWN)))
-	assert_not_null(JobRegistry.get_by_name(JobRegistry.type_to_string(Job.Name.UNKNOWN)))
 
 
 func test_formation_order_survives() -> void:

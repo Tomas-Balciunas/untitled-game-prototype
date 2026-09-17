@@ -90,25 +90,16 @@ static func _set_final(c: Character, s: Stats.StatRef, value: float) -> void:
 
 
 static func get_attribute_contribution(stat: Stats.StatRef, c: Character) -> float:
-	var total: float = 0.0
+	var growth: StatAttributeGrowth = c.resource.stat_attribute_growth
 
-	var sources: Array = [
-		[c.job.stat_attribute_growth, "job '%s'" % c.job.name],
-		[c.resource.stat_attribute_growth, "character '%s'" % c.resource.name],
-		[c.race.stat_attribute_growth, "race '%s'" % c.race.name],
-	]
+	if not growth:
+		push_error("StatAttributeGrowth missing on character '%s'" % c.resource.name)
+		return 0.0
 
-	for source in sources:
-		var growth: StatAttributeGrowth = source[0]
-		if not growth:
-			push_error("StatAttributeGrowth missing on %s" % source[1])
-			continue
-		total += growth.get_contribution(stat, c.attributes)
-
-	return total
+	return growth.get_contribution(stat, c.attributes)
 
 static func get_level_contribution(stat: Stats.StatRef, c: Character) -> float:
-	return c.job.get_stat_level_growth().get_stat(stat) * (c.level - 1) + c.resource.get_stat_level_growth().get_stat(stat) * (c.level - 1)
+	return c.resource.get_stat_level_growth().get_stat(stat) * (c.level - 1)
 
 static func apply_percentage_stat_multiplier(_stat: Stats.StatRef, character: Character, value: float) -> float:
 	if Stats.is_percentage_stat(_stat) == false:

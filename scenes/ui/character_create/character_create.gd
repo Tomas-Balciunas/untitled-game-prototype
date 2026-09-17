@@ -3,12 +3,6 @@ extends Control
 const MAX_POINTS := 10
 const MC = preload("uid://dvky7cvffgf22")
 
-@onready var job_ov: Label = $Overview/Job
-@onready var race_ov: Label = $Overview/Race
-
-@onready var classes_list: VBoxContainer = $Classes
-@onready var races_list: VBoxContainer = $Races
-
 @onready var str_attr: Label = $Attributes/Values/STR/Value
 @onready var iq_attr: Label  = $Attributes/Values/IQ/Value
 @onready var pie_attr: Label = $Attributes/Values/PIE/Value
@@ -40,12 +34,6 @@ const MC = preload("uid://dvky7cvffgf22")
 
 @onready var points_display: Label = $Points
 
-var jobs: Array[Job] = []
-var chosen_job: Job = null
-
-var races: Array[Race] = []
-var chosen_race: Race = null
-
 var chosen_attributes: Attributes = null
 var display_attributes: Attributes = null
 
@@ -55,25 +43,7 @@ var points: int = 0
 func _ready() -> void:
 	chosen_attributes = Attributes.new()
 	points = MAX_POINTS
-	
-	jobs = JobRegistry.get_all()
-	for j: Job in jobs:
-		var btn := Button.new()
-		btn.focus_mode = Control.FOCUS_NONE
-		btn.text = JobRegistry.type_to_string(j.name)
-		btn.pressed.connect(_on_job_selected.bind(j))
-		classes_list.add_child(btn)
-	_on_job_selected(jobs[0])
-	
-	races = RaceRegistry.get_all()
-	for r: Race in races:
-		var btn := Button.new()
-		btn.focus_mode = Control.FOCUS_NONE
-		btn.text = RaceRegistry.type_to_string(r.name)
-		btn.pressed.connect(_on_race_selected.bind(r))
-		races_list.add_child(btn)
-	_on_race_selected(races[0])
-	
+
 	update_attributes()
 	_setup_attribute_buttons()
 	update_points()
@@ -152,39 +122,17 @@ func _update_attribute_labels() -> void:
 	luk_attr.text = str(display_attributes.luck)
 	
 
-func _on_job_selected(j: Job) -> void:
-	chosen_job = j
-	job_ov.text = JobRegistry.type_to_string(j.name)
-	update_attributes()
-	_update_attribute_labels()
-	
-	
-func _on_race_selected(r: Race) -> void:
-	chosen_race = r
-	race_ov.text = RaceRegistry.type_to_string(r.name)
-	update_attributes()
-	_update_attribute_labels()
-	
-
 func update_attributes() -> void:
 	var attr := Attributes.new()
-	
-	if chosen_job:
-		attr.add(chosen_job.attributes)
-		
-	if chosen_race:
-		attr.add(chosen_race.attributes)
-		
+
 	if chosen_attributes:
 		attr.add(chosen_attributes)
-		
+
 	display_attributes = attr
 
 func _on_create_pressed() -> void:
 	var res: CharacterResource = MC.duplicate(true)
 	res.name = "Test"
-	res.job = chosen_job
-	res.race = chosen_race
 	res.attributes = Attributes.new()
 	res.is_main = true
 	var inst := RunState.current.party.add_member(res)

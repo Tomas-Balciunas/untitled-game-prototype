@@ -338,6 +338,16 @@ deliberately not a `PERCENTAGE_STAT`: those use a fixed 100 baseline, drop gear
 contributions, and reject flat modifiers. (`Stats` is shared with `Gear`, so any
 non-zero default on the resource would be re-added per equipped item.)
 
+**Growth has exactly one source per character.** `get_attribute_contribution`
+reads `c.resource.stat_attribute_growth` and `get_level_contribution` reads
+`c.resource.get_stat_level_growth()` — nothing else. Both used to sum three
+sources (job + character + race), which is how `DefaultStatAttributeGrowth.tres`
+got counted **three times** on MC, Lili and Coura (it was their own growth
+resource *and* the one on `_Unknown`/`Human`): accuracy was DEX×3 and evasion
+SPD×1.5 rather than the authored ×1 and ×0.5. Removing job/race dropped that to
+a single count, so post-removal accuracy/evasion numbers are ~1/3 of what they
+were and need re-tuning per character.
+
 ### Authoring stat resources — two invariants
 
 **`StatGrowthEntry.stat` is a raw `Stats.StatRef` index.** All four
@@ -406,6 +416,47 @@ modifiers only (ADDITIVE is push_error-guarded), resolved in loop 1 and skipped
 by loop 2. Known gaps: gear-borne percentage stats are silently dropped, and a
 `depends_on_another_stat` modifier on a percentage stat would evaluate against
 an unfilled `modified_stats`. Neither is reachable with current content.
+
+---
+
+## Characters — `scripts/CharacterResource.gd`, `scripts/Character.gd`
+
+**There is no job/class or race system.** Removed 2026-09-17 in favour of
+hand-authored, individually-balanced characters. `CharacterResource` is now the
+single source for everything a character is: `attributes`, `base_stats`,
+`stat_level_growth`, `stat_attribute_growth`, `default_skills`, `level_skills`,
+`default_effects`, `level_effects`, `unequippable_gear`. Nothing is inherited or
+summed across layers any more, so tuning one character cannot move another.
+
+- `characters/_class/` and `characters/_race/` are **dead code pending deletion**
+  (the editor had them locked at removal time). Nothing outside those two
+  folders references `Job`, `Race`, `JobRegistry` or `RaceRegistry` — verify with
+  a grep before adding anything that does.
+- **Level unlocks** live in the `level_skills` / `level_effects` dictionaries
+  (`{level: Skill}` or `{level: Array}`). `get_skills_for_level` /
+  `get_effects_for_level` read one level; `get_skills_until_level` /
+  `get_effects_until_level` accumulate 1..lvl and are what
+  `ExperienceManager.set_character_level` uses when a character is built above
+  level 1. (The old `Job` path had a copy-paste bug here — the skills loop called
+  `get_effects_until_level` — so a character created above level 1 never learned
+  its job skills. Fixed by the rewrite.)
+- **Gear restrictions** are `CharacterResource.unequippable_gear`
+  (`Array[ItemTypes.GearType]`), read by `Equipment.can_equip`. It replaced
+  `Job.get_unequippable_gear()`, which every class returned `[]` from, so nothing
+  is actually restricted today.
+- **Content orphaned by the removal** — these `.tres` still exist but are granted
+  to nobody until re-attached to a character's skill/effect lists: power_strike,
+  battle_hardened, cleave, counter_strike (was Fighter → Skelly); shield_bash,
+  fortified, warded, holy_strike (Knight → Coura); single heal, smite,
+  divine_favor, row heal (Priest → Lili); arcane_bolt, arcane_resonance,
+  arcane_blast, spell_mastery (Mage, unused); poison_strike, evasive,
+  shadow_strike, shadow_veil (Thief, unused).
+- **Save compatibility**: `game_save` no longer writes `"race"` / `"job"` and
+  `create_from_save` no longer reads them. Pre-removal saves keep those keys and
+  they are simply ignored — no `SAVE_VERSION` bump was needed because every read
+  on that dict is `has()`/`get()`-guarded.
+- Character creation (`scenes/ui/character_create/`) is now name + 10 attribute
+  points; the class and race pickers and the Overview labels are gone.
 
 ---
 
@@ -545,7 +596,7 @@ All mutable run-scoped state lives on a single `Run` object (`Run.gd`,
   later member's effects onto the wrong character.
 - **`Character.create_from_save` works on a `duplicate()` of the registry
   resource.** `CharacterRegistry` entries are shared by every run in the
-  session, so writing `name` / `race` / `job` straight onto one leaked the
+  session, so writing `name` straight onto one leaked the
   loaded save's values into the next new game. The character's display name
   lives on `resource.name` (that's what every UI reads) and is persisted under
   `"name"`; without it a loaded character fell back to the `.tres` default
@@ -650,14 +701,15 @@ All mutable run-scoped state lives on a single `Run` object (`Run.gd`,
 These all produce errors far from their cause, usually at boot.
 
 - **Never `preload` a `.tres` whose script is a type the same script also
-  depends on.** `CharacterResource.gd` had `const DEFAULT_JOB =
-  preload("_Unknown.tres")` (scripted with `Job.gd`) *and* `@export var job:
-  Job`. The analyzer needs `Job.gd` for the annotation while resolving the
-  preload, so the loader returns the resource **script-less** — a bare
-  `Resource` — and every `@implicit_new` then fails with *"Trying to assign
-  value of type 'Resource' to a variable of type 'Job.gd'"*. Use a path const
+  depends on.** (Historical case, since removed with jobs: `CharacterResource.gd`
+  had `const DEFAULT_JOB = preload("_Unknown.tres")` (scripted with `Job.gd`)
+  *and* `@export var job: Job`.) The analyzer needs the annotation's script while
+  resolving the preload, so the loader returns the resource **script-less** — a
+  bare `Resource` — and every `@implicit_new` then fails with *"Trying to assign
+  value of type 'Resource' to a variable of type 'X.gd'"*. Use a path const
   plus `load()` in the initializer; `load()` hits the ResourceLoader cache, so
-  it's the same shared instance `preload` gave you.
+  it's the same shared instance `preload` gave you. `DEFAULT_STATS_PATH` /
+  `DEFAULT_STAT_GROWTH_PATH` on `CharacterResource` still follow this shape.
 - **A `const preload` of a scene pulls in that scene's whole preload graph at
   script-load time.** A `preload` of `game_over.tscn` in `GameState.gd` (the
   first autoload) transitively dragged in MainMenu → CharacterCreate → item
@@ -724,7 +776,7 @@ Compile + run main scene a few frames, exit 0 = clean:
 Redirect stderr — script errors go there, not stdout. After adding a
 `class_name`, run `--headless --import` first to rebuild the class cache.
 
-Full GUT suite (baseline at time of writing: 106 tests, 71 pass, 35 fail — see
+Full GUT suite (baseline 2026-09-17: 113 tests, 78 pass, 35 fail — see
 *Known gaps*):
 ```
 & "C:\Users\Tomas\Desktop\Godot_v4.7-stable_win64.exe" --headless --path "<project>" -s addons/gut/gut_cmdln.gd

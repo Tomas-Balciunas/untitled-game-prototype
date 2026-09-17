@@ -12,8 +12,6 @@
 [ext_resource type="Script" uid="uid://dq4acpkde276p" path="res://skills/Skill.gd" id="7_skill"]
 [ext_resource type="Resource" path="res://skills/_offensive/arcane_bolt.tres" id="8_skill_a"]
 [ext_resource type="Resource" path="res://skills/_offensive/arcane_blast.tres" id="9_skill_b"]
-[ext_resource type="Resource" uid="uid://cs2tci0dc3vvo" path="res://characters/_class/_Unknown.tres" id="10_tneit"]
-[ext_resource type="Resource" uid="uid://lcgngc3c13fc" path="res://characters/_race/_Unknown.tres" id="11_6fjst"]
 
 [resource]
 script = ExtResource("1_res")

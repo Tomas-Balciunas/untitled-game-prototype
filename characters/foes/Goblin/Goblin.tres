@@ -11,8 +11,6 @@
 [ext_resource type="PackedScene" uid="uid://5r0hwtkk272a" path="res://characters/foes/Goblin/_body/Goblin.tscn" id="6_body"]
 [ext_resource type="Script" uid="uid://utx0i8g3d20x" path="res://effect/_passive/death_resistance/death_resistance.gd" id="6_c4vdi"]
 [ext_resource type="Script" uid="uid://dq4acpkde276p" path="res://skills/Skill.gd" id="7_o6oaa"]
-[ext_resource type="Resource" uid="uid://cs2tci0dc3vvo" path="res://characters/_class/_Unknown.tres" id="8_akg0d"]
-[ext_resource type="Resource" uid="uid://lcgngc3c13fc" path="res://characters/_race/_Unknown.tres" id="9_nholw"]
 
 [sub_resource type="Resource" id="Resource_6xfs4"]
 script = ExtResource("6_c4vdi")
