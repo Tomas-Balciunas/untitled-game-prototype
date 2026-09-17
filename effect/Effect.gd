@@ -187,8 +187,9 @@ func _modifies_shop_price() -> bool:
 func modify_shop_price(_item: Item, _is_buy: bool, price: int) -> int:
 	return price
 
-# Value transformer: return the adjusted AP cost. Must be pure (no side effects)
-# — it runs on every cost preview as well as actual consumption.
+# value transformer: return the adjusted AP cost. Must be pure (no side effects)
+# — it runs on every cost preview as well as actual consumption
+# TODO should be moved to its own separate logic along with every other effect of this type that doesn't subscribe to effect runner 
 func _modifies_action_point_cost() -> bool:
 	return false
 
@@ -224,18 +225,28 @@ func game_save() -> Dictionary:
 		script_path = script.resource_path
 
 	var props: Dictionary = {}
+	var res_props: Dictionary = {}
 	for prop in get_property_list():
 		var usage: int = prop.usage
 		if usage & PROPERTY_USAGE_STORAGE and usage & PROPERTY_USAGE_SCRIPT_VARIABLE:
 			var prop_name: String = prop.name
 			if prop_name in _SKIP_PROPS:
 				continue
-			props[prop_name] = get(prop_name)
+			var value: Variant = get(prop_name)
+			if prop.type == TYPE_OBJECT or value is Object:
+				var res: Resource = value as Resource
+				if res and not res.resource_path.is_empty():
+					res_props[prop_name] = res.resource_path
+				continue
+			props[prop_name] = value
 
 	var data := {
 		"script": script_path,
 		"props": props,
+		"remaining_turns": remaining_turns,
 	}
+	if not res_props.is_empty():
+		data["res_props"] = res_props
 	if source:
 		data["source"] = source.game_save()
 	return data
@@ -245,6 +256,15 @@ func game_load(data: Dictionary) -> void:
 	var props: Dictionary = data.get("props", {})
 	for prop_name: String in props.keys():
 		set(prop_name, props[prop_name])
+
+	var res_props: Dictionary = data.get("res_props", {})
+	for prop_name: String in res_props.keys():
+		var path: String = res_props[prop_name]
+		if ResourceLoader.exists(path):
+			set(prop_name, load(path))
+
+	# After props, so duration_turns is already restored for the fallback.
+	remaining_turns = data.get("remaining_turns", duration_turns)
 
 	if data.has("source"):
 		var restored := ContextSource.create_from_save(data["source"])

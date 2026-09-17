@@ -25,5 +25,10 @@ static func get_by_name(value: String) -> Job:
 	var path := "res://characters/_class/%s/%s.tres" % [dir_name, dir_name]
 	if ResourceLoader.exists(path):
 		return load(path)
+
+	var fallback := "res://characters/_class/_%s.tres" % value
+	if ResourceLoader.exists(fallback):
+		return load(fallback)
+
 	push_error("Job resource not found for '%s'" % value)
 	return null

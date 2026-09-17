@@ -77,8 +77,12 @@ func _build_buy() -> void:
 		var price := _buy_price_for(entry)
 		var row: ShopRow = ROW_SCENE.instantiate()
 		item_list.add_child(row)
-		row.bind_buy(entry, price)
+		row.bind_buy(entry, price, _stock_for(entry))
 		row.buy_pressed.connect(_on_buy.bind(entry, price))
+
+
+func _stock_for(entry: ShopEntry) -> int:
+	return RunState.current.get_shop_stock(_shop.get_save_id(), entry)
 
 
 func _build_sell() -> void:
@@ -132,7 +136,7 @@ func _get_leader() -> Character:
 
 
 func _on_buy(entry: ShopEntry, price: int) -> void:
-	if entry.stock == 0:
+	if _stock_for(entry) == 0:
 		NotificationBus.notification_requested.emit("Out of stock")
 		return
 	if GameState.gold < price:
@@ -156,8 +160,7 @@ func _on_buy(entry: ShopEntry, price: int) -> void:
 		return
 
 	leader.inventory.add_item(instance)
-	if not entry.is_infinite():
-		entry.stock -= 1
+	RunState.current.consume_shop_stock(_shop.get_save_id(), entry)
 
 	NotificationBus.notification_requested.emit("Bought %s for %d g" % [instance.get_item_name(), price])
 	_rebuild()

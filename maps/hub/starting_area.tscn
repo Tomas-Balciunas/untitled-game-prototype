@@ -83,27 +83,6 @@ level = 2
 stat_modifiers = Array[ExtResource("26_sxx2g")]([SubResource("Resource_vvgws")])
 metadata/_custom_type_script = "uid://dcegrpy67vkgu"
 
-[sub_resource type="Resource" id="Resource_16jax"]
-script = ExtResource("26_sxx2g")
-stat = 1
-type = 1
-value = 0.5
-metadata/_custom_type_script = "uid://cyhrh3l20i5dm"
-
-[sub_resource type="Resource" id="Resource_7wpse"]
-script = ExtResource("26_sxx2g")
-value = 10.0
-metadata/_custom_type_script = "uid://cyhrh3l20i5dm"
-
-[sub_resource type="Resource" id="Resource_tyc16"]
-script = ExtResource("23_v6bh1")
-resource = ExtResource("27_tyc16")
-level = 2
-stat_modifiers = Array[ExtResource("26_sxx2g")]([SubResource("Resource_16jax"), SubResource("Resource_7wpse")])
-experience_multiplier = 3.0
-name_override = "Elite Skelly mage"
-metadata/_custom_type_script = "uid://dcegrpy67vkgu"
-
 [sub_resource type="Resource" id="Resource_l6obu"]
 script = ExtResource("25_tyc16")
 metadata/_custom_type_script = "uid://h6yx81uchl61"
@@ -112,7 +91,7 @@ metadata/_custom_type_script = "uid://h6yx81uchl61"
 script = ExtResource("31_2ljck")
 id = "starting_area_02"
 description = "whatever"
-enemies = Array[ExtResource("23_v6bh1")]([SubResource("Resource_5iua8"), SubResource("Resource_tyc16")])
+enemies = Array[ExtResource("23_v6bh1")]([SubResource("Resource_5iua8"), SubResource("Resource_5iua8")])
 gold_reward = 500
 item_rewards = Array[ExtResource("23_7wpse")]([ExtResource("24_5iua8")])
 reward_event = SubResource("Resource_l6obu")

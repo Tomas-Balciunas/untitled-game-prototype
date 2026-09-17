@@ -29,4 +29,17 @@ func run_pipeline(event: EffectApplicationTriggerEvent) -> void:
 	
 	event.target.apply_effect(effect, event.source)
 	
+	if event.source.skill:
+		BattleTextLines.print_line("%s cast %s on %s" % [
+				event.source.get_source_name(),
+				event.source.skill._get_name(),
+				event.target.resource.name,
+			])
+	else:
+		BattleTextLines.print_line("%s applied %s on %s" % [
+			event.source.get_source_name(),
+			effect._get_name(),
+			event.target.resource.name,
+		])
+	
 	EffectRunner.process_trigger(EffectTriggers.ON_APPLY_EFFECT, event)

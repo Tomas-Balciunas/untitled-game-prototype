@@ -9,6 +9,8 @@ var tags := InteractionTags.new()
 var flags := EventFlagState.new()
 var gold: int = 0
 
+var shop_stock: Dictionary = {}
+
 var battle := BattleSession.new()
 
 var current_state: GameState.States = GameState.States.IDLE
@@ -25,6 +27,19 @@ func begin_battle(m: BattleManager, enemies: EnemyFormation, allies: AllyFormati
 func end_battle() -> void:
 	battle = BattleSession.new()
 	TargetingManager.end()
+
+## -1 means unlimited.
+func get_shop_stock(shop_id: String, entry: ShopEntry) -> int:
+	if entry.is_infinite() or entry.item == null:
+		return -1
+	return shop_stock.get(shop_id, {}).get(entry.item.id, entry.stock)
+
+func consume_shop_stock(shop_id: String, entry: ShopEntry) -> void:
+	if entry.is_infinite() or entry.item == null:
+		return
+	if not shop_stock.has(shop_id):
+		shop_stock[shop_id] = {}
+	shop_stock[shop_id][entry.item.id] = max(0, get_shop_stock(shop_id, entry) - 1)
 
 func add_gold(amount: int) -> void:
 	if amount <= 0:
@@ -46,6 +61,7 @@ func game_save() -> Dictionary:
 		"dungeon": map.game_save(),
 		"interaction_state": tags.game_save(),
 		"event_flags": flags.game_save(),
+		"shops": shop_stock,
 	}
 
 func game_load(state: Dictionary) -> void:
@@ -59,3 +75,4 @@ func game_load(state: Dictionary) -> void:
 		tags.game_load(state["interaction_state"])
 	if state.has("event_flags"):
 		flags.game_load(state["event_flags"])
+	shop_stock = state.get("shops", {})

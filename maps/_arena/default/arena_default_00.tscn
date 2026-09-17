@@ -17,3 +17,9 @@ transform = Transform3D(-2.1855694e-08, 0, -0.5, 0, 0.5, 0, 0.5, 0, -2.1855694e-
 
 [node name="torch2" parent="." unique_id=388046756 instance=ExtResource("2_in1h3")]
 transform = Transform3D(1.4901161e-08, 0, 0.5, 0, 0.5, 0, -0.5, 0, 1.4901161e-08, -5.882279, 0.5, -2)
+
+[node name="torch3" parent="." unique_id=444756458 instance=ExtResource("2_in1h3")]
+transform = Transform3D(-2.1855694e-08, 0, -0.5, 0, 0.5, 0, 0.5, 0, -2.1855694e-08, 1.8845019, 0.5, 6)
+
+[node name="torch4" parent="." unique_id=1451820531 instance=ExtResource("2_in1h3")]
+transform = Transform3D(1.4901161e-08, 0, 0.5, 0, 0.5, 0, -0.5, 0, 1.4901161e-08, -1.8822789, 0.5, 6)

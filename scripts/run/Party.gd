@@ -90,7 +90,12 @@ func game_save() -> Dictionary:
 	var members_data := []
 	for member in members:
 		members_data.append(member.game_save())
-	return {"party": members_data}
+
+	var slots := []
+	for slot in formation:
+		slots.append(members.find(slot) if slot != null else -1)
+
+	return {"party": members_data, "formation": slots}
 
 func game_load(data: Dictionary) -> void:
 	members.clear()
@@ -99,17 +104,26 @@ func game_load(data: Dictionary) -> void:
 	if not data.has("party"): return
 
 	var party_data: Array = data["party"]
+	var loaded: Array = []
 
 	for char_data: Dictionary in party_data:
 		var inst := Character.create_from_save(char_data)
+		loaded.append(inst)
 		if inst:
 			members.append(inst)
-			var slot_i := add_member_to_formation(inst)
-			if slot_i >= 0:
-				print("Character added to party: %s" % inst.resource.name)
-			else:
-				push_error("Adding character to formation error: no free slots")
+			print("Character added to party: %s" % inst.resource.name)
 
-	for i: int in range(members.size()):
-		if i < party_data.size():
-			members[i].game_load_effects(party_data[i])
+	var slots: Array = data.get("formation", [])
+	if slots.size() == formation.size():
+		for i: int in range(slots.size()):
+			var idx: int = slots[i]
+			if idx >= 0 and idx < loaded.size() and loaded[idx] != null:
+				formation[i] = loaded[idx]
+
+	for m: Character in members:
+		if not formation.has(m) and add_member_to_formation(m) < 0:
+			push_error("Adding character to formation error: no free slots")
+
+	for i: int in range(loaded.size()):
+		if loaded[i] != null:
+			loaded[i].game_load_effects(party_data[i])

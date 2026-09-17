@@ -2,7 +2,7 @@ extends BattleAction
 class_name FleeAction
 
 
-var success_rate: float = 0.5
+var success_rate: float = 1
 
 func _init() -> void:
 	action_point_cost = 2

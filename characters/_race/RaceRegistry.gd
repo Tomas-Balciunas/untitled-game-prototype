@@ -4,6 +4,7 @@ class_name RaceRegistry
 static var races: Array[Race] = []
 
 static func get_all() -> Array[Race]:
+	races.clear()
 	for file in DirAccess.get_files_at("res://characters/_race/"):
 		if file.ends_with(".tres") and not file.begins_with("_Unknown"):
 			var res: Race = load("res://characters/_race/" + file)
@@ -15,12 +16,11 @@ static func type_to_string(value: int) -> String:
 		if Race.Name[key] == value:	
 			return key.capitalize()
 	return "Unknown"
-	
-static func get_by_name(value: String) -> Resource:
-	for file in DirAccess.get_files_at("res://characters/_race/"):
-		if file.ends_with(".tres") and file.begins_with(value):
-			var res: Race = load("res://characters/_race/" + file)
-			
-			return res
-		
+
+static func get_by_name(value: String) -> Race:
+	for path: String in ["res://characters/_race/%s.tres" % value, "res://characters/_race/_%s.tres" % value]:
+		if ResourceLoader.exists(path):
+			return load(path)
+
+	push_error("Race resource not found for '%s'" % value)
 	return null

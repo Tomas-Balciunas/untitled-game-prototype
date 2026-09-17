@@ -62,7 +62,7 @@ func _refresh_debug_overlay() -> void:
 	var enemies_node: Node = current_map_scene.get_node_or_null("Enemies")
 	if enemies_node:
 		for child in enemies_node.get_children():
-			# Spawners that haven't been freed are alive enemies (or pending spawns).
+			# spawners that haven't been freed are alive enemies (or pending spawns).
 			if child.has_method("update_target_location"):
 				enemy_count += 1
 	var enemies_custom_node: Node = current_map_scene.get_node_or_null("EnemiesCustom")
@@ -101,12 +101,14 @@ func _refresh_debug_overlay() -> void:
 	lines.append("FPS: %d" % int(Engine.get_frames_per_second()))
 	_debug_label.text = "\n".join(lines)
 
-func load_map(map_id: String = "", load_data: Dictionary = {}) -> void:
+func load_map(map_id: String = "") -> void:
 	#TODO: safety
 	var map_data := MapManager.get_map_data(map_id)
 	_current_map_data = map_data
 
 	_kill_map()
+
+	var restored: bool = RunState.current.map.consume_restore_flag()
 
 	if RunState.current.map.map_id != map_id or not RunState.current.map.map_id:
 		print("Dungeon: Loading new map")
@@ -114,12 +116,9 @@ func load_map(map_id: String = "", load_data: Dictionary = {}) -> void:
 	elif RunState.current.map.available_enemies.is_empty():
 		RunState.current.map.hydrate_enemy_pool(map_data)
 
-	if !load_data.is_empty():
-		RunState.current.map.hydrate_from_load(load_data)
-
 	var generation: String = map_data.get("generation", "handcrafted")
 	if generation == "procedural":
-		current_map_scene = _build_procedural_map(map_data, load_data.is_empty())
+		current_map_scene = _build_procedural_map(map_data, not restored)
 	else:
 		var map_scene := MapManager.get_map(map_id)
 

@@ -13,12 +13,6 @@ class_name AiBehaviour
 @export var sustain: float = 0.33
 @export var support: float = 0.33
 
-var skill_intention_map: Dictionary = {
-	Skill.SkillCategory.DAMAGE: damage,
-	Skill.SkillCategory.HARM: harm,
-	Skill.SkillCategory.SUSTAIN: sustain,
-	Skill.SkillCategory.SUPPORT: support
-}
 
 func choose_action(scanner: BattleStateScanner, event: TurnStateEvent) -> AiActionCandidate:
 	var base_action: String = get_weighted_random_result(["1", "2", "3"], [basic_attack, guard, skill])
@@ -44,8 +38,20 @@ func choose_skill(scanner: BattleStateScanner, event: TurnStateEvent) -> AiActio
 	var candidates: Array[AiActionCandidate] = []
 	
 	for category: Skill.SkillCategory in event.turn_options.allowed_skill_categories:
-		var base_weight: float = skill_intention_map[category]
-		candidates.append_array(get_candidates_for_skill_category(event, scanner, category, base_weight))
+		var cat_candidates := get_candidates_for_skill_category(
+				event.turn_options.actor.learnt_skills,
+				event,
+				scanner,
+				category,
+				intention_for(category)
+			)
+		
+		if cat_candidates.is_empty():
+			continue
+		for c in cat_candidates:
+			c.target_weight /= cat_candidates.size()
+		
+		candidates.append_array(cat_candidates)
 	
 	var values: Array[AiActionCandidate] = []
 	var weights: Array[float] = []
@@ -60,6 +66,7 @@ func choose_skill(scanner: BattleStateScanner, event: TurnStateEvent) -> AiActio
 	return get_weighted_random_result(values, weights)
 	
 func get_candidates_for_skill_category(
+		skill_pool: Array[Skill],
 		event: TurnStateEvent,
 		scanner: BattleStateScanner,
 		category: Skill.SkillCategory,
@@ -67,7 +74,7 @@ func get_candidates_for_skill_category(
 	) -> Array[AiActionCandidate]:
 	var candidates: Array[AiActionCandidate] = []
 	
-	for skill in event.turn_options.actor.learnt_skills:
+	for skill in skill_pool:
 		if skill.get_category() != category:
 			continue
 		
@@ -141,7 +148,7 @@ func resolve_pool(event: TurnStateEvent, scanner: BattleStateScanner, is_offensi
 			push_error("Error in resolving character pool")
 			return []
 
-func get_random_target(pool: Array[Character]) -> Character:
+func get_random_target(pool: Array[BattleScanEntry]) -> BattleScanEntry:
 	return pool.pick_random()
 
 func get_weighted_random_result(values: Array, weights: Array) -> Variant:
@@ -186,3 +193,11 @@ func matches_all_conditions(conditions: Array[String], tags: Array[String]) -> b
 			return false
 	
 	return true
+
+func intention_for(category: Skill.SkillCategory) -> float:
+	match category:
+		Skill.SkillCategory.DAMAGE: return damage
+		Skill.SkillCategory.HARM: return harm
+		Skill.SkillCategory.SUSTAIN: return sustain
+		Skill.SkillCategory.SUPPORT: return support
+	return 0.0

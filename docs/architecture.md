@@ -56,6 +56,21 @@ Key methods / hooks:
   — `source` persists separately as a `ContextSource` dict, and both are
   re-wired by `Character.game_load_effects` *before* `game_load` runs, so
   neither is ever stored as a raw object reference.
+- **"Storage vars" means `@export` vars and nothing else.** A plain `var` on a
+  GDScript class reports `PROPERTY_USAGE_STORAGE = false`, so the reflection
+  loop never sees it. `remaining_turns` is a plain var and is therefore written
+  out explicitly by `game_save` / restored by `game_load` (falling back to
+  `duration_turns`). Before that it silently reset to `-1` on load, which made
+  the next `consume_duration()` expire the effect immediately. Any other
+  non-exported runtime state an effect needs across a load has to be handled
+  the same way.
+- **Object-typed props can't be persisted at all** — see *Save / load* below.
+  `game_save` skips them: a `Resource` with a `resource_path` goes into a
+  separate `res_props` map (path in, `load()` back out — this is how `icon`
+  survives), and anything else (a runtime `StatModifier`, say) is dropped and
+  must be rebuilt by the subclass's `game_load`. `StatBonusEffect` and
+  `AttackBuff` both do this. An effect that stores a runtime object and does
+  *not* override `game_load` silently loses it.
 
 ### Templates — `effect/templates/`
 Set `category` + sensible flag defaults in `_init` (subclasses overriding
@@ -496,9 +511,19 @@ All mutable run-scoped state lives on a single `Run` object (`Run.gd`,
   binary `store_var` to `user://save_slot_N.save`. `apply_game_state()` calls
   `RunState.load_from()`, so **loading a save also starts from a fresh `Run`**
   and can't inherit state from the run you were in.
-- **Versioned**: root carries `"version"` (`SAVE_VERSION`, currently 1; missing
+- **Versioned**: root carries `"version"` (`SAVE_VERSION`, currently 2; missing
   = 0). `apply_game_state` runs `_migrate()` (a v→v+1 chain) before applying.
   Bump `SAVE_VERSION` + add a `_migrate_vN_to_vN+1` on any format change.
+  v1 saves carry no usable gear: `Gear.game_save` wrote `get_class()`, which
+  reports the *engine* class — `Item` has no `extends`, so every weapon and
+  every piece of armour was tagged `"RefCounted"` and `create_from_save` threw
+  it away. The tag is now `get_script().get_global_name()`. **Never use
+  `get_class()` for a save-side type tag.**
+- **Quicksave/quickload only work in the dungeon** (`_can_use_slots`):
+  `apply_game_state` swaps `RunState` but never changes scene, and battle state
+  isn't persisted at all, so loading from a battle or the main menu would leave
+  a restored run sitting under the wrong scene. `RunState.current.battle` and
+  `current_state` are deliberately not in the save.
 - **Atomic writes**: saves go to `<path>.tmp` then swap; `load_game` recovers
   from an orphaned `.tmp` if a crash hit between write and swap. Non-Dictionary
   payloads are rejected as corrupt.
@@ -506,8 +531,41 @@ All mutable run-scoped state lives on a single `Run` object (`Run.gd`,
   (warn + collect into `load_issues`, cleared per load) instead of silent
   drops — used by `Effect.create_from_save`, `Character` (missing character
   resource / skill id), `ContextSource`. `load_issues` is UI-surfaceable.
+- **`store_var` cannot carry objects.** `SaveManager` writes with the default
+  `full_objects = false`, which encodes an `Object` as a bare instance id;
+  `get_var()` hands it back as an `EncodedObjectAsID`, and assigning *that* to
+  a typed property **silently does nothing** — no error, no warning, the value
+  just stays at its default. So nothing anywhere in a `game_save()` dict may be
+  an object: persist a `resource_path`, an id, or the scalars needed to rebuild
+  it. See `Effect.game_save`'s `res_props` for the resource-path pattern.
 - Party load is two-phase (characters first, then effects) so cross-character
-  effect sources resolve — see `Party.game_load` / `game_load_effects`.
+  effect sources resolve — see `Party.game_load` / `game_load_effects`. The
+  effect phase indexes a `loaded` array that is parallel to the saved entries
+  (null where a character failed), so one unloadable member can't shift every
+  later member's effects onto the wrong character.
+- **`Character.create_from_save` works on a `duplicate()` of the registry
+  resource.** `CharacterRegistry` entries are shared by every run in the
+  session, so writing `name` / `race` / `job` straight onto one leaked the
+  loaded save's values into the next new game. The character's display name
+  lives on `resource.name` (that's what every UI reads) and is persisted under
+  `"name"`; without it a loaded character fell back to the `.tres` default
+  (`"Unnamed"` for MC.tres).
+- **Hardcoded registry manifests are a save-load hazard.** `SkillRegistry`,
+  `CharacterRegistry` and `ItemsRegistry` list their resources by path, and
+  anything missing from the list is silently dropped on load (skills go through
+  `report_load_issue`, so at least it's logged). `charm`, `confusion`,
+  `strong heal` and `row_attack_buff` were all absent — MC.tres carries charm
+  and confusion, so those two vanished on every save/load cycle. Adding a skill
+  resource means adding it to the manifest. `EffectRegistry` avoids this by
+  scanning directories instead; the others could follow.
+- **Formation is persisted as slot→member-index**, not rebuilt front-to-back,
+  so a reordered or gapped formation survives. `Party.game_load` falls back to
+  first-free-slot for members with no saved slot (legacy saves).
+- **Procedural maps must not respawn you on load.** `DungeonState.game_load`
+  sets `_restored_from_save`; `dungeon.load_map` consumes it via
+  `consume_restore_flag()` and passes `fresh_entry = false`, which stops
+  `_build_procedural_map` from overwriting the restored position with the
+  generator's own spawn point.
 - **A `ContextSource` persists ids, never an inlined object.** Every source
   saves scalars only (`character_id`, `skill_id`, `item_id` + `item_name`);
   `ItemSource` keeps `item_name` as its attribution fallback because a consumed
@@ -518,8 +576,18 @@ All mutable run-scoped state lives on a single `Run` object (`Run.gd`,
   The save graph must stay a tree — if a new source type needs a rich object,
   persist its id and resolve it on load.
 - Save keys are `game_state` / `party` / `dungeon` / `interaction_state` /
-  `event_flags`. All reads are `has()`-guarded, so adding a key needs no
-  `SAVE_VERSION` bump — only a change to an *existing* key's shape does.
+  `event_flags` / `shops`. All reads are `has()`- or `get()`-guarded, so adding
+  a key needs no `SAVE_VERSION` bump — only a change to an *existing* key's
+  shape does.
+- **Shop stock lives on the `Run`, not on `ShopData`.** `ShopEntry.stock` is
+  the authored starting amount; the remaining count is
+  `Run.shop_stock[shop_id][item_id]`, keyed by `ShopData.get_save_id()` (its
+  `id`, or `shop_name` when unset). The UI used to decrement `entry.stock`
+  directly, which mutated the shared `.tres` — depleted stock then carried into
+  the next new game and was never saved.
+- Regression coverage for the above lives in `test/unit/test_save_roundtrip.gd`
+  (it pushes dicts through a real save file, so the `store_var` object
+  behaviour is actually exercised).
 
 ## Doors, locks and keys
 - **Blocking is a collider, not a rule.** Player movement is gated by four

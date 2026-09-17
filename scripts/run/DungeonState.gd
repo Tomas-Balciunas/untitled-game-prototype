@@ -8,7 +8,6 @@ var theme: String = ""
 var player_position: Vector2i = Vector2i()
 var player_previous_position: Vector2i = Vector2i()
 var player_facing: Vector3 = Vector3.FORWARD
-var triggered_events := {}
 var encounters := {}
 var cleared_encounters: Dictionary = {}
 var transitions := {}
@@ -21,6 +20,8 @@ var door_state: Dictionary = {}
 var granted_keys: Dictionary = {}
 var pending_keys: Dictionary = {}
 var expected_keys: Dictionary = {}
+
+var _restored_from_save: bool = false
 
 func hydrate_from_resource(map_data: Dictionary) -> void:
 	map_id = map_data.id
@@ -47,18 +48,10 @@ func set_player_spawn(pos: Vector2i, facing: Vector3 = Vector3.FORWARD) -> void:
 	player_previous_position = pos
 	player_facing = facing
 
-func hydrate_from_load(load_data: Dictionary) -> void:
-	if load_data.has("dungeon"):
-		var dungeon: Dictionary = load_data["dungeon"]
-		player_previous_position = str_to_var("Vector2i" + dungeon["player_position"])
-		player_position = str_to_var("Vector2i" + dungeon["player_position"])
-		player_facing = dungeon["player_facing"]
-		cleared_encounters = dungeon["cleared_encounters"]
-		chest_state = dungeon["chest_state"]
-		door_state = dungeon.get("door_state", {})
-		granted_keys = dungeon.get("granted_keys", {})
-		pending_keys = dungeon.get("pending_keys", {})
-		expected_keys = dungeon.get("expected_keys", {})
+func consume_restore_flag() -> bool:
+	var was := _restored_from_save
+	_restored_from_save = false
+	return was
 
 func update_player_position(pos: Vector2i, facing: Vector3) -> void:
 	player_previous_position = player_position
@@ -191,7 +184,6 @@ func game_save() -> Dictionary:
 		"player_position": player_position,
 		"player_previous_position": player_previous_position,
 		"player_facing": player_facing,
-		"triggered_events": triggered_events,
 		"cleared_encounters": cleared_encounters,
 		"encounters": encounters,
 		"chest_state": chest_state,
@@ -207,16 +199,16 @@ func game_load(data: Dictionary) -> void:
 	map_id = dungeon.get("id", "")
 	current_map_name = dungeon.get("name", "")
 	theme = dungeon.get("theme", "")
-	player_position = dungeon["player_position"]
+	player_position = dungeon.get("player_position", Vector2i())
 	player_previous_position = dungeon.get("player_previous_position", player_position)
-	player_facing = dungeon["player_facing"]
-	triggered_events = dungeon.get("triggered_events", {})
-	cleared_encounters = dungeon["cleared_encounters"]
-	encounters = dungeon["encounters"]
-	chest_state = dungeon["chest_state"]
+	player_facing = dungeon.get("player_facing", Vector3.FORWARD)
+	cleared_encounters = dungeon.get("cleared_encounters", {})
+	encounters = dungeon.get("encounters", {})
+	chest_state = dungeon.get("chest_state", {})
 	seeds = dungeon.get("seeds", {})
 	door_state = dungeon.get("door_state", {})
 	granted_keys = dungeon.get("granted_keys", {})
 	pending_keys = dungeon.get("pending_keys", {})
 	expected_keys = dungeon.get("expected_keys", {})
+	_restored_from_save = true
 	LoadBus.loaded.emit(map_id)

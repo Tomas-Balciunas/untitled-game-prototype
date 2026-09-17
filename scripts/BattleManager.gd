@@ -46,10 +46,9 @@ func begin(_enemies: Array[Character]) -> void:
 		b.action_value = 10000 / (100 + b.stats.speed)
 		_register_battler(b)
 		b.prepare_for_battle()
-		for e: BattleEvent in b.resource.battle_events:
-			var inst := e.duplicate(true)
-			inst.prepare(b)
-			b.battle_events.append(inst)
+		if !b.battle_events.is_empty():
+			for ev: BattleEvent in b.battle_events:
+				ev.prepare(b)
 	
 	BattleBus.battle_start.emit()
 	current_state = BattleState.CHECK_END
@@ -223,7 +222,7 @@ func _run_action(action: BattleAction, target: Character = null) -> void:
 
 func perform_ai_driven_action(event: TurnStateEvent) -> void:
 	var scanner: BattleStateScanner = BattleStateScanner.new(enemies, party, is_party_member(current_battler))
-	var behaviour: AiBehaviour = current_battler.resource.ai_behaviour
+	var behaviour: AiBehaviour = current_battler.ai_behaviour
 	
 	if behaviour == null:
 		behaviour = AiBehaviour.new()

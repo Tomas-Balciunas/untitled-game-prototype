@@ -76,7 +76,7 @@ func game_save() -> Dictionary:
 		extra_mods.append(_modifier_to_dict(mod))
 
 	return {
-		"class":             get_class(),
+		"class":             get_script().get_global_name(),
 		"id":                id,
 		"name":              item_name,
 		"description":       item_description,

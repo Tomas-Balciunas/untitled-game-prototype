@@ -37,12 +37,13 @@ var interactions: CharacterInteraction
 var interaction_controller: InteractionController
 var chatter: CharacterChatter
 var equipment: Equipment = null
+var ai_behaviour: AiBehaviour = null
 
 func _init(res: CharacterResource, override_level: int = 0) -> void:
 	resource = res
 	resource._setup_character()
 	name = res.name
-	
+	battle_events = res.battle_events.duplicate(true)
 	job = res.job.duplicate(true)
 	race = res.race.duplicate(true)
 	
@@ -57,6 +58,9 @@ func _init(res: CharacterResource, override_level: int = 0) -> void:
 
 	if resource.chatter:
 		chatter = resource.chatter
+	
+	if resource.ai_behaviour:
+		ai_behaviour = resource.ai_behaviour.duplicate(true)
 	
 	level_up_attributes = Attributes.new()
 	starting_attributes = res.attributes.duplicate(true)
@@ -297,8 +301,6 @@ func game_save() -> Dictionary:
 	for item: Item in inventory.get_all_items():
 		inventory_arr.append(item.game_save())
 
-	# Skip effects that came from equipped gear — they'll be re-applied
-	# when equipment is re-equipped on load.
 	var gear_effect_set := {}
 	for key: int in gear_effects.keys():
 		for ge: Effect in gear_effects[key]:
@@ -307,6 +309,8 @@ func game_save() -> Dictionary:
 	var effect_arr := []
 	for effect: Effect in effects:
 		if gear_effect_set.has(effect.get_instance_id()):
+			continue
+		if effect.expires_after_battle:
 			continue
 		effect_arr.append(effect.game_save())
 
@@ -319,11 +323,13 @@ func game_save() -> Dictionary:
 
 	return {
 		"id": resource.id,
+		"name": resource.name,
 		"level": level,
 		"xp": current_experience,
 		"hp": state.current_health,
 		"mp": state.current_mana,
 		"sp": state.current_sp,
+		"dead": is_dead,
 		"damage_type": damage_type,
 		"race": race.name,
 		"job": job.name,
@@ -334,19 +340,33 @@ func game_save() -> Dictionary:
 		"starting_attributes": starting_attributes.game_save(),
 		"equipment": equip_dict,
 		"inventory": inventory_arr,
+		"max_slots": inventory.max_slots,
 		"effects": effect_arr,
 		"skills": skills_arr
 	}
 
 
 static func create_from_save(data: Dictionary) -> Character:
-	var res: CharacterResource = CharacterRegistry.get_character(data["id"])
-	if res == null:
+	var proto: CharacterResource = CharacterRegistry.get_character(data["id"])
+	if proto == null:
 		SaveManager.report_load_issue("Character resource not found for id %s" % data["id"])
 		return null
 
-	res.race = RaceRegistry.get_by_name(RaceRegistry.type_to_string(data["race"]))
-	res.job = JobRegistry.get_by_name(JobRegistry.type_to_string(data["job"]))
+	var res: CharacterResource = proto.duplicate()
+	res.name = data.get("name", proto.name)
+
+	var race_res := RaceRegistry.get_by_name(RaceRegistry.type_to_string(data.get("race", Race.Name.UNKNOWN)))
+	if race_res:
+		res.race = race_res
+	else:
+		SaveManager.report_load_issue("Race not found for %s, keeping %s's default" % [data.get("race"), proto.id])
+
+	var job_res := JobRegistry.get_by_name(JobRegistry.type_to_string(data.get("job", Job.Name.UNKNOWN)))
+	if job_res:
+		res.job = job_res
+	else:
+		SaveManager.report_load_issue("Job not found for %s, keeping %s's default" % [data.get("job"), proto.id])
+
 	var inst := Character.new(res)
 	inst.game_load(data)
 	return inst
@@ -355,6 +375,10 @@ static func create_from_save(data: Dictionary) -> Character:
 func game_load(data: Dictionary) -> void:
 	if data.has("main"):
 		is_main = data["main"]
+
+	if data.has("name"):
+		name = data["name"]
+		resource.name = data["name"]
 
 	level = data.get("level", 1)
 	current_experience = data.get("xp", 0)
@@ -370,7 +394,6 @@ func game_load(data: Dictionary) -> void:
 	if data.has("starting_attributes"):
 		starting_attributes.game_load(data["starting_attributes"])
 
-	# Reset effects gathered during _init — saved effects are the source of truth.
 	for e: Effect in effects.duplicate():
 		EffectRunner.unsubscribe(e)
 	effects = []
@@ -384,6 +407,8 @@ func game_load(data: Dictionary) -> void:
 				SaveManager.report_load_issue("Skill not found: %s" % skill_id)
 				continue
 			learnt_skills.append(skill)
+
+	inventory.max_slots = data.get("max_slots", inventory.max_slots)
 
 	if data.has("inventory"):
 		inventory.slots = []
@@ -404,11 +429,9 @@ func game_load(data: Dictionary) -> void:
 	state.current_health = data.get("hp", stats.health)
 	state.current_mana = data.get("mp", stats.mana)
 	state.current_sp = data.get("sp", stats.sp)
+	is_dead = data.get("dead", state.current_health <= 0)
 
 
-# Two-phase load: effects are restored *after* all party characters exist,
-# so cross-character source references (e.g. ally A's skill poisons ally B)
-# can resolve via RunState.current.party.
 func game_load_effects(data: Dictionary) -> void:
 	if not data.has("effects"):
 		return
@@ -416,12 +439,9 @@ func game_load_effects(data: Dictionary) -> void:
 		var eff := Effect.create_from_save(entry)
 		if not eff:
 			continue
-		# Wire up the effect as if it were already applied — no on_apply.
-		# Owner must be set before game_load so subclasses can use it to
-		# re-wire side effects (e.g. StatBonusEffect re-adds its modifier).
+			
 		eff.set_owner(self)
 		eff.set_source(CharacterSource.new(self))
 		effects.append(eff)
 		EffectRunner.subscribe(eff)
-		# game_load may override source with the persisted one (TrapSource, etc.)
 		eff.game_load(entry)

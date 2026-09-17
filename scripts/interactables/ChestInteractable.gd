@@ -181,6 +181,7 @@ func game_save() -> Dictionary:
 		"key_name": chest.key.get_item_name() if chest.key else "",
 		"trap_id": chest.trap.id if chest.trap else "",
 		"was_locked": chest.was_locked,
+		"was_trapped": chest.was_trapped,
 	}
 
 func game_load(data: Dictionary) -> Chest:
@@ -195,10 +196,11 @@ func game_load(data: Dictionary) -> Chest:
 			items.append(item)
 
 	var updated_chest := Chest.new()
-	updated_chest.id = data.get("id")
-	updated_chest.was_opened = data.get("was_opened")
+	updated_chest.id = data.get("id", id)
+	updated_chest.was_opened = data.get("was_opened", false)
 	updated_chest.items = items
 	updated_chest.was_locked = data.get("was_locked", false)
+	updated_chest.was_trapped = data.get("was_trapped", false)
 
 	var key_id: String = data.get("key_id", "")
 

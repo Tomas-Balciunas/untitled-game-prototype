@@ -28,6 +28,12 @@ func on_expire() -> void:
 		StatCalculator.recalculate_all_stats(owner)
 	super()
 
+func game_load(data: Dictionary) -> void:
+	super.game_load(data)
+	if owner:
+		modifier = null
+		on_apply()
+
 func listened_triggers() -> Array:
 	return []
 

@@ -3,7 +3,7 @@ extends Node
 signal party_reloaded
 
 const SAVE_PATH := "user://save_slot_%d.save"
-const SAVE_VERSION := 1
+const SAVE_VERSION := 2
 
 # Issues collected during the last load (missing effects/skills/characters).
 var load_issues: Array[String] = []
@@ -75,6 +75,8 @@ func _migrate(state: Dictionary) -> void:
 		match version:
 			0:
 				_migrate_v0_to_v1(state)
+			1:
+				_migrate_v1_to_v2(state)
 		version += 1
 	state["version"] = version
 
@@ -82,10 +84,30 @@ func _migrate(state: Dictionary) -> void:
 func _migrate_v0_to_v1(_state: Dictionary) -> void:
 	pass
 
+# v1 wrote every Gear's "class" as "RefCounted" (Item.get_class() reported the
+# engine class, not the script's), so its gear can't be reconstructed. Nothing
+# to migrate — the loaders' has()-guarded defaults cover the added keys.
+func _migrate_v1_to_v2(_state: Dictionary) -> void:
+	pass
+
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("quicksave"):
+		if not _can_use_slots():
+			NotificationBus.notification_requested.emit("Can't save right now")
+			return
 		save_game(0)
 	if event.is_action_pressed("quickload"):
+		if not _can_use_slots():
+			NotificationBus.notification_requested.emit("Can't load right now")
+			return
 		var state := load_game(0)
 		if state.size() > 0:
 			apply_game_state(state)
+
+# Only the dungeon is safe: apply_game_state swaps RunState but never changes
+# scene, so loading from a battle or the menu would leave the restored run
+# sitting under the wrong scene. Battle state isn't persisted either.
+func _can_use_slots() -> bool:
+	if RunState.current.battle.in_battle:
+		return false
+	return get_tree().get_root().get_node_or_null("Main/Dungeon") != null

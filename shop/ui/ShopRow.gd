@@ -12,12 +12,13 @@ signal sell_pressed
 @onready var action_button: Button = %Action
 
 
-func bind_buy(entry: ShopEntry, price: int) -> void:
+## -1 means unlimited.
+func bind_buy(entry: ShopEntry, price: int, stock: int) -> void:
 	name_label.text = entry.item.name if entry.item else "<missing>"
 	price_label.text = "%d g" % price
-	stock_label.text = "inf" if entry.is_infinite() else "x%d" % entry.stock
+	stock_label.text = "inf" if stock < 0 else "x%d" % stock
 	action_button.text = "Buy"
-	action_button.disabled = entry.stock == 0
+	action_button.disabled = stock == 0
 	action_button.pressed.connect(buy_pressed.emit)
 
 

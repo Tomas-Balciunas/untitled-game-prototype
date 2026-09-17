@@ -12,6 +12,10 @@ func _register_all() -> void:
 		"res://skills/_offensive/stun_skill.tres",
 		"res://skills/_defensive/_heal/single heal.tres",
 		"res://skills/_defensive/_heal/row heal.tres",
+		"res://skills/_defensive/_heal/strong heal.tres",
+		"res://skills/_offensive/charm.tres",
+		"res://skills/_offensive/confusion.tres",
+		"res://skills/_offensive/row_attack_buff.tres",
 		# fighter
 		"res://skills/_offensive/power_strike.tres",
 		"res://skills/_offensive/cleave.tres",
