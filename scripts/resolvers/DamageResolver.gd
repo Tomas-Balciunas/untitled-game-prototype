@@ -15,11 +15,11 @@ func execute(ctx: ActionContext) -> ActionContext:
 		
 		var event: DamageInstance = build_event(ctx, target)
 		run_pipeline(event)
-	
-	for i in len(ctx.additional_procs):
-		ctx.additional_procs[i]["resolver"].execute(ctx.additional_procs[i]["ctx"])
 		
-	ctx.additional_procs = []
+		while event.ctx.immediate_procs.is_empty() == false:
+			var entry: BattleQueueEntry = event.ctx.immediate_procs.pop_front()
+			await entry.run_queue_entry()
+		
 	return ctx
 
 

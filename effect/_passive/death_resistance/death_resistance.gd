@@ -19,8 +19,7 @@ func on_trigger(_stage: String, _event: TriggerEvent) -> void:
 	if stacks <= 0:
 		on_expire()
 	
-	owner.is_dead = false
-	owner.set_current_health(roundi(owner.stats.get_stat(Stats.StatRef.HEALTH) * 0.5))
+	owner.revive(roundi(owner.stats.get_stat(Stats.StatRef.HEALTH) * 0.5))
 	stacks -= 1
 	
 	if stacks <= 0:
@@ -34,3 +33,6 @@ func _get_name() -> String:
 
 func get_priority(_stage: String = "") -> int:
 	return 9999
+
+func can_process_when_owner_dead() -> bool:
+	return true

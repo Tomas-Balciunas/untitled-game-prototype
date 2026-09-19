@@ -12,6 +12,10 @@ func _init(_skill: Skill) -> void:
 	action_point_cost = _skill.action_point_cost
 
 
+func get_target_state() -> TargetingManager.TargetState:
+	return skill.target_state
+
+
 func build_context(actor: Character, target: Character) -> ActionContext:
 	var targets := TargetingManager.get_applicable_targets(target, skill.targeting_type)
 	var weapon: Weapon = actor.equipment.weapon if actor.equipment.weapon else null

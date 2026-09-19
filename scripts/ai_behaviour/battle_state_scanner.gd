@@ -25,7 +25,10 @@ func scan_battler(battler: Character) -> BattleScanEntry:
 	
 	## expand conditions later
 	
-	var hp_percent = battler.state.current_health / battler.stats.health
+	entry.tags.append(StateTags.DEAD if battler.is_dead else StateTags.ALIVE)
+
+	var max_health: int = battler.stats.health
+	var hp_percent: float = float(battler.state.current_health) / max_health if max_health > 0 else 0.0
 
 	if hp_percent < 1.0:
 		entry.tags.append(StateTags.HEALTH_NOT_FULL)

@@ -5,6 +5,7 @@ class_name Character
 signal mana_consumed(amount: int, source: Character)
 signal mana_restored(amount: int, source: Character)
 signal died(ded: Character)
+signal revived(risen: Character)
 
 var is_dead: bool = false
 var is_main: bool = false
@@ -146,7 +147,21 @@ func set_current_health(new_health: int, damage_event: DamageInstance = null, em
 		CharacterBus.character_damaged.emit(self, damage_event)
 	
 	CharacterBus.health_changed.emit(self, old, new)
-		
+
+func revive(health: int = -1) -> void:
+	if not is_dead:
+		return
+
+	is_dead = false
+
+	var restored: int = health
+
+	if restored < 0:
+		restored = roundi(stats.get_stat(Stats.StatRef.HEALTH) * 0.5)
+
+	set_current_health(clamp(1, restored, stats.get_stat(Stats.StatRef.HEALTH)))
+	revived.emit(self)
+
 func get_body() -> CharacterBody:
 	if !body:
 		push_warning("Missing body for %s" % resource.name)
@@ -208,6 +223,17 @@ func cleanup_after_battle() -> void:
 
 	state.temporary_modifiers = []
 	StatCalculator.recalculate_all_stats(self)
+
+func learn_skill(skill: Skill) -> void:
+	for current_skill in learnt_skills:
+		if !skill.id or skill.id == "":
+			push_error("Skill %s is missing id" % skill.name)
+		
+		if skill.id == current_skill.id:
+			NotificationBus.notification_requested.emit("%s already has %s" % [name, skill.name])
+			return
+	
+	learnt_skills.append(skill.duplicate(true))
 
 func apply_effect(effect: Effect, source: ContextSource) -> Effect:
 	var inst: Effect = effect.duplicate(true)

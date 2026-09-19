@@ -21,7 +21,8 @@ var skip_turn: bool = false
 var force_action: bool = false
 var forced_skill: Skill = null
 
-var additional_procs: Array = []
+var immediate_procs: Array[BattleQueueEntry] = []
+var deferred_procs: Array[BattleQueueEntry] = []
 
 
 func set_targets(initial: Character, all_targets: Array[Character] = []) -> void:
@@ -55,6 +56,7 @@ func duplicate() -> ActionContext:
 	copy.skip_turn = skip_turn
 	copy.force_action = force_action
 	copy.forced_skill = forced_skill
-	copy.additional_procs = additional_procs.duplicate()
+	copy.immediate_procs = immediate_procs
+	copy.deferred_procs = deferred_procs
 
 	return copy

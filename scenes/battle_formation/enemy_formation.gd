@@ -4,7 +4,6 @@ class_name EnemyFormation
 const ROW_Z          := -2.0
 const SLOT_SPACING_X := 2
 const MAX_SLOTS      := 5
-const FORMATION_SLOT = preload("uid://b1jxfg32brb8x")
 
 
 func _ready() -> void:
@@ -57,10 +56,4 @@ func place_all_enemies(enemies: Array[Character]) -> void:
 
 	var start := int((MAX_SLOTS - to_place.size()) * 0.5)
 	for i in range(to_place.size()):
-		var slot := FORMATION_SLOT.instantiate() as FormationSlot
-		var idx := start + i
-		slot.position = positions[idx]
-		add_child(slot)
-		slot.bind(to_place[i])
-		slot.capture_home()
-		slots[idx] = slot
+		add_slot_at(start + i, to_place[i])

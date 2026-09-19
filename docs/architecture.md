@@ -227,7 +227,78 @@ ids warn and last-one-wins.
 - `ActionContext` (`scripts/contexts/ActionContext.gd`): per-action bag —
   `source`, `targets`, `temporary_effects`, `stop_processing`, `skip_turn`,
   `force_action`, `should_tick_consume_duration`, `tick_power`,
-  `additional_procs`, etc. (Tends toward a god-object — many ad-hoc flags.)
+  `immediate_procs` / `deferred_procs`, etc. (Tends toward a god-object — many
+  ad-hoc flags.)
+
+### Battle queue (procs outside the resolver pipelines)
+`scripts/BattleQueueEntry.gd` wraps `(resolver, ctx, actor)` and runs it through
+its own `ActionOrchestrator`. Effects queue entries onto one of two lists on
+`ActionContext`:
+- **`immediate_procs`** — drained by `DamageResolver.execute` after
+  `run_pipeline` for each target. On-hit riders that should land inside the
+  in-flight action.
+- **`deferred_procs`** — drained by `BattleAction.execute` after `perform`
+  returns, before the `BattleActionEvent` reaches `BattleManager`. State changes
+  that should observe the *finished* action (resurrection, on-death payouts).
+  The drain runs before `ends_turn` / `ends_battle` are read, so a deferred
+  revive can still change the outcome.
+
+> Recursion: a proc that spawns a context which re-triggers the same effect
+> loops forever. There is no depth/lineage guard yet — effects currently self-
+> gate with `ctx.actively_cast`, which is a stand-in, not a real guard (it does
+> not stop A→B→A).
+
+### Death, revival and summons
+**Death is non-destructive.** `Character.set_current_health` flips `is_dead` on
+the 0-crossing and emits `died`; nothing is removed from the battle.
+`BattleManager._on_battler_died` drops the battler from `turn_queue` and records
+it in `_death_sequence` (death order) + `_pending_death_fx` (visuals owed).
+`_play_pending_deaths()` runs from `_process` when not `ANIMATING` and only
+plays `FormationSlot.perform_death()` — it skips anyone revived in the meantime.
+Corpses stay in `battlers` / `enemies` with their slot intact for the whole
+battle, so `get_slot` keeps resolving for them.
+
+- `Character.revive(health = -1)` is the **only** way back (defaults to 50% max
+  HP). It clears `is_dead` *before* healing — `set_current_health` will not
+  resurrect on its own, so a lingering HoT can't raise the dead — then emits
+  `revived`. `DeathResistance` and `BattleEvent` both go through it.
+- `BattleManager._on_battler_revived` cancels the owed death visual and calls
+  `FormationSlot.perform_revive()` → `CharacterBody.play_revive()`. **That must
+  mirror `play_dead()` exactly**: `play_dead` disables collision, pauses the
+  animation player, swaps in a dissolve `material_override`, and its tween ends
+  by setting `visible = false`. `play_revive` kills that tween (`_death_tween`)
+  and undoes all four — `play_idle()` alone leaves the body invisible.
+- `_check_end_conditions` tests `enemies.all(is_dead)`, not `enemies.is_empty()`.
+- `BattleManager.remove_battler(c)` is the explicit teardown death no longer
+  performs: disconnects signals, erases from every array, frees the slot. Called
+  by summon eviction, not by dying.
+- `BattleManager.summon_enemy(resource, level)` takes
+  `FormationBase.first_free_index()`, and **when the formation is full it
+  cannibalizes the oldest corpse** (`_death_sequence` order) via
+  `remove_battler` — so a summon can destroy a corpse a raise-dead was saving.
+  Fails (returns null) only when every slot holds a living enemy.
+
+> `place_all_enemies` centers the group, so with < MAX_SLOTS enemies the free
+> indices are the outer ones — a summon lands at the edge of the row, not
+> adjacent to the group.
+
+### Target state — `scripts/TargetingManager.gd`
+`TargetingManager.TargetState` (LIVING / DEAD / ANY) is the **hard legality rule**
+for what an action may aim at, distinct from the `Skill.conditions` /
+`BattleScanEntry.tags` soft-preference matching. It sits beside `TargetType` so
+targeting has one vocabulary, and `matches_state(kind, character)` follows the
+existing `same_side()` predicate shape.
+`BattleAction.get_target_state()` defaults to LIVING;
+`SkillAction` returns `skill.target_state` (`@export`, defaults LIVING, so no
+existing `.tres` needs editing).
+- **Player**: `BattleManager.enable_all_targeting(kind)` stamps
+  `FormationSlot.is_slot_targeting_enabled` per slot from the selected action.
+  `perform_death` no longer latches that flag off — that's what lets a raise-dead
+  be aimed at a corpse. Right-click status inspection sits above the gate, so
+  corpses stay inspectable.
+- **AI**: `BattleStateScanner` scans everyone and tags `StateTags.ALIVE/DEAD`;
+  filtering happens in `ai_behaviour`'s candidate builders via
+  `TargetingManager.matches_state`.
 
 ## Multi-hit targeting — `scripts/battle_actions/action_targeting_behaviour/`
 The projectile launchers reborn **without projectiles**: an abstract
@@ -268,9 +339,10 @@ commit 8c38cec, reintroduced character-based in f6135e5.)
 
 ## Skills — `skills/Skill.gd`
 `Skill` resource: `cost`, `effects: Array[Effect]` (passed as temporary effects),
-`get_resolver(ctx)`. `AttackSkill.gd` → `DamageResolver`. Reactive skill effects
-(e.g. `PoisonOnHit`) listen on damage stages and queue follow-ups via
-`ctx.additional_procs`. `SkillResolver` fires ON_BEFORE/POST_SKILL_USE and runs
+`get_resolver(ctx)`, `targeting_type`, `target_state` (see *Target state*).
+`AttackSkill.gd` → `DamageResolver`. Reactive skill effects (e.g. `PoisonOnHit`)
+listen on damage stages and queue follow-ups via `ctx.immediate_procs` /
+`ctx.deferred_procs`. `SkillResolver` fires ON_BEFORE/POST_SKILL_USE and runs
 the resolver.
 
 ## UI surfaces for effects
@@ -720,6 +792,14 @@ These all produce errors far from their cause, usually at boot.
   `ConsumableResource`, `QuestItemResource` all call `GameState.generate_id()`).
   It only works if no `.tres` loads before autoloads finish; any new const
   preload can break that ordering.
+- **Never `const preload` a scene from a base class that the scene's own script
+  depends on.** Moving the `FormationSlot.tscn` preload from `EnemyFormation` /
+  `AllyFormation` up into `FormationBase` produced *"Could not resolve class
+  FormationBase"*: base → slot scene → `formation_slot.gd` → `BattleSession`
+  (typed `enemy_formation: EnemyFormation`) → `EnemyFormation extends
+  FormationBase`, which is still mid-parse. Same fix as the `.tres` case — path
+  const + lazy `load()` (`FormationBase.FORMATION_SLOT_PATH` / `_slot_scene`).
+  Preloading from the *subclasses* was fine because nothing pointed back at them.
 - **New `class_name`s need a filesystem rescan.** Headless runs read
   `.godot/global_script_class_cache.cfg` and don't rescan, so a fresh
   `class_name` fails with *"Could not find type X"* until the editor opens or

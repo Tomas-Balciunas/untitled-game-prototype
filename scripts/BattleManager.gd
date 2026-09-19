@@ -28,10 +28,16 @@ var enemies: Array[Character] = []
 var battlers: Array[Character] = []
 var turn_queue: Array[Character] = []
 var enemy_slots: Array[Node] = []
-var _to_cleanup: Array[Character] = []
+# for death animations to play
+var _pending_death_fx: Array[Character] = []
+# corpses
+var _death_sequence: Array[Character] = []
 var current_battler: Character = null
 var turn_state: TurnState = null
+# for chains, to prevent action from ending too early while effects/animations still process
 var action_queue: Array[ActionEvent] = []
+var immediate_queue: Array = []
+var post_action_queue: Array = []
 
 
 func begin(_enemies: Array[Character]) -> void:
@@ -54,11 +60,9 @@ func begin(_enemies: Array[Character]) -> void:
 	current_state = BattleState.CHECK_END
 
 func _process(_delta: float) -> void:
-	# cleanup has potential to fuck up battle state if states arent managed carefully
-	if _to_cleanup.size() > 0 and current_state != BattleState.ANIMATING:
-		# TODO consider processing on death effects here
-		_corpse_janny()
-		
+	if _pending_death_fx.size() > 0 and current_state != BattleState.ANIMATING:
+		_play_pending_deaths()
+
 		return
 		
 	if RunState.current.battle.event_running:
@@ -161,7 +165,7 @@ func _on_player_action_selected(action: BattleAction) -> void:
 	turn_state.current_action = action
 
 	if action.needs_target():
-		enable_all_targeting()
+		enable_all_targeting(action.get_target_state())
 	else:
 		await _run_action(action, null)
 
@@ -193,8 +197,9 @@ func _on_target_selected(target: Character) -> void:
 		current_state = BattleState.PLAYER_TURN
 		return
 
+	turn_state.current_action = null
+
 	await _run_action(action, target)
-	enable_all_targeting()
 
 
 func _run_action(action: BattleAction, target: Character = null) -> void:
@@ -266,7 +271,7 @@ func _handle_defend() -> void:
 func _check_end_conditions() -> void:
 	if party.all(func(p: Character) -> bool: return p.is_dead):
 		current_state = BattleState.LOSE
-	elif enemies.is_empty():
+	elif enemies.all(func(e: Character) -> bool: return e.is_dead):
 		current_state = BattleState.WIN
 	else:
 		current_state = BattleState.PROCESS_TURNS
@@ -280,24 +285,26 @@ func _handle_end(result: String) -> void:
 		"flee":
 			_handle_flee()
 
+## corpses stay registered for the whole battle now, so enemies unsubscribe here
+func _cleanup_battlers() -> void:
+	for battler: Character in battlers:
+		battler.cleanup_after_battle()
+
 func _handle_win() -> void:
-	for member: Character in party:
-		member.cleanup_after_battle()
+	_cleanup_battlers()
 	BattleBus.battle_end.emit()
 	EncounterBus.encounter_ended.emit("win", RunState.current.battle.encounter_data)
 	current_state = BattleState.IDLE
 
 func _handle_lose() -> void:
-	for member: Character in party:
-		member.cleanup_after_battle()
+	_cleanup_battlers()
 	BattleBus.battle_end.emit()
 	EncounterBus.encounter_ended.emit("lose", RunState.current.battle.encounter_data)
 	current_state = BattleState.IDLE
 
 func _handle_flee() -> void:
-	for member: Character in party:
-		member.cleanup_after_battle()
-	
+	_cleanup_battlers()
+
 	BattleBus.battle_end.emit()
 	EncounterBus.encounter_ended.emit("flee", RunState.current.battle.encounter_data)
 	current_state = BattleState.IDLE
@@ -311,33 +318,100 @@ func _register_battler(battler: Character) -> void:
 		enemies.append(battler)
 		
 	battler.died.connect(Callable(self, "_on_battler_died"))
-	
+	battler.revived.connect(Callable(self, "_on_battler_revived"))
+
 func _on_battler_died(rip: Character) -> void:
-	if rip not in party:
-		_to_cleanup.append(rip)
-	
-func _corpse_janny() -> void:
-	for dead in _to_cleanup:
-		var slot = get_slot(dead)
-		if !slot:
-			push_error("missing slot for %s, probably already freed" % dead.resource.name)
+	turn_queue.erase(rip)
+
+	if rip not in _death_sequence:
+		_death_sequence.append(rip)
+
+	if rip not in _pending_death_fx:
+		_pending_death_fx.append(rip)
+
+func _on_battler_revived(risen: Character) -> void:
+	_pending_death_fx.erase(risen)
+	_death_sequence.erase(risen)
+
+	var slot: FormationSlot = get_slot(risen)
+
+	if slot:
+		slot.perform_revive()
+
+func _play_pending_deaths() -> void:
+	for dead: Character in _pending_death_fx:
+		if not dead.is_dead:
 			continue
-		
-		await slot.perform_death()
-		dead.cleanup_after_battle()
-		battlers.erase(dead)
-		#party.erase(dead)
-		enemies.erase(dead)
-		turn_queue.erase(dead)
-		#battle_ui.remove_character(dead)
-	_to_cleanup.clear()
+
+		var slot: FormationSlot = get_slot(dead)
+
+		if !slot:
+			push_error("missing slot for %s" % dead.resource.name)
+			continue
+
+		slot.perform_death()
+
+	_pending_death_fx.clear()
+
+func remove_battler(c: Character) -> void:
+	var was_party: bool = party.has(c)
+
+	if c.died.is_connected(_on_battler_died):
+		c.died.disconnect(_on_battler_died)
+
+	if c.revived.is_connected(_on_battler_revived):
+		c.revived.disconnect(_on_battler_revived)
+
+	_pending_death_fx.erase(c)
+	_death_sequence.erase(c)
+	turn_queue.erase(c)
+	battlers.erase(c)
+	enemies.erase(c)
+	party.erase(c)
+
+	if was_party:
+		ally_grid.remove_slot_for(c)
+	else:
+		enemy_grid.remove_slot_for(c)
+
+func summon_enemy(resource: CharacterResource, level: int) -> Character:
+	var index: int = enemy_grid.first_free_index()
+
+	if index == -1:
+		var corpse: Character = _oldest_corpse()
+
+		if corpse == null:
+			return null
+
+		index = enemy_grid.slots.find(get_slot(corpse))
+		remove_battler(corpse)
+
+	var summoned: Character = Character.new(resource, level)
+	StatCalculator.recalculate_all_stats(summoned)
+	summoned.full_heal()
+
+	_register_battler(summoned)
+	summoned.prepare_for_battle()
+	enemy_grid.add_slot_at(index, summoned)
+
+	return summoned
+
+func _oldest_corpse() -> Character:
+	for c: Character in _death_sequence:
+		if c in enemies:
+			return c
+
+	return null
 
 func disable_all_targeting() -> void:
 	RunState.current.battle.enemy_targeting_enabled = false
 	RunState.current.battle.ally_targeting_enabled = false
 	TargetingManager.end()
 
-func enable_all_targeting() -> void:
+func enable_all_targeting(kind: TargetingManager.TargetState = TargetingManager.TargetState.LIVING) -> void:
+	for slot: FormationSlot in enemy_grid.get_all_slots() + ally_grid.get_all_slots():
+		slot.is_slot_targeting_enabled = TargetingManager.matches_state(kind, slot.character_instance)
+
 	RunState.current.battle.enemy_targeting_enabled = true
 	RunState.current.battle.ally_targeting_enabled = true
 	TargetingManager.begin(TargetingManager.Mode.BATTLE)
@@ -359,26 +433,7 @@ func _on_event_concluded() -> void:
 	RunState.current.battle.event_running = false
 
 func process_queue() -> void:
-	# TODO need to consider clean up and end checks
 	pass
-	#while action_queue.size() > 0:
-		#var a: ActionContext = action_queue[0]
-		#var target := get_slot(a.target)
-		#var attacker: FormationSlot = get_slot(a.source.character)
-		#
-		#if !attacker:
-			#continue
-		#
-		#await attacker.perform_run_towards_target(target)
-		#attacker.perform_attack()
-		#var timed_out: bool = await SignalFailsafe.await_signal_or_timeout(self, BattleBus.attack_connected, ATTACK_CONNECTED_TIMEOUT)
-#
-		#if timed_out:
-			#push_error("Attack connected signal timed out for character: %s, %s " % [current_battler.resource.name, current_battler.resource.id])
-		#
-		#await DamageResolver.new().execute(a)
-		#await attacker.position_back()
-		#action_queue.pop_front()
 		
 func get_slot(chara: Character) -> FormationSlot:
 	if enemies.has(chara):

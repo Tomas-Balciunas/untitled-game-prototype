@@ -1,6 +1,6 @@
-[gd_resource type="Resource" script_class="EncounterData" load_steps=3 format=3 uid="uid://ff62172t6ot"]
+[gd_resource type="Resource" script_class="EncounterData" format=3 uid="uid://ff62172t6ot"]
 
-[ext_resource type="Script" uid="uid://bwn4gpkaijqsg" path="res://scripts/CharacterResource.gd" id="1_3m7ep"]
+[ext_resource type="Script" uid="uid://bwn4gpkaijqsg" path="res://characters/CharacterResource.gd" id="1_3m7ep"]
 [ext_resource type="Script" uid="uid://bsiblcov0noq8" path="res://maps/_encounter/EncounterData.gd" id="2_pdm8l"]
 
 [resource]

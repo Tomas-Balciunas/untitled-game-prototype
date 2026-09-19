@@ -12,9 +12,8 @@ var is_main: bool = false
 @export var level: int = 1
 @export var slot_width: int = 1
 @export var default_skills: Array[Skill] = []
-@export var level_skills: Dictionary = {}
+@export var level_rewards: Array[LevelReward] = []
 @export var default_effects: Array[Effect] = []
-@export var level_effects: Dictionary = {}
 @export var default_damage_type: DamageTypes.Type
 @export var default_items: Array[ItemResource] = []
 @export var unequippable_gear: Array[ItemTypes.GearType] = []
@@ -39,31 +38,35 @@ func _init() -> void:
 		stat_level_growth = Stats.new()
 
 func get_skills_for_level(lvl: int) -> Array[Skill]:
-	var entry = level_skills.get(lvl, null)
-	if entry is Array:
-		return entry as Array[Skill]
-	if entry is Skill:
-		return [entry] as Array[Skill]
+	for entry in level_rewards:
+		if entry.level == lvl:
+			return entry.skills
+	
 	return []
 
 func get_effects_for_level(lvl: int) -> Array[Effect]:
-	var entry = level_effects.get(lvl, null)
-	if entry is Array:
-		return entry as Array[Effect]
-	if entry is Effect:
-		return [entry] as Array[Effect]
+	for entry in level_rewards:
+		if entry.level == lvl:
+			return entry.effects
+	
 	return []
 
 func get_skills_until_level(lvl: int) -> Array[Skill]:
 	var entries: Array[Skill] = []
-	for i in range(1, lvl + 1):
-		entries.append_array(get_skills_for_level(i))
+	
+	for entry in level_rewards:
+		if entry.level <= lvl:
+			entries.append_array(entry.skills)
+		
 	return entries
 
 func get_effects_until_level(lvl: int) -> Array[Effect]:
 	var entries: Array[Effect] = []
-	for i in range(1, lvl + 1):
-		entries.append_array(get_effects_for_level(i))
+	
+	for entry in level_rewards:
+		if entry.level <= lvl:
+			entries.append_array(entry.effects)
+		
 	return entries
 
 func get_stat_level_growth() -> Stats:

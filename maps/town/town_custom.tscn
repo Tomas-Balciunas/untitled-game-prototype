@@ -5,7 +5,7 @@
 [ext_resource type="Script" uid="uid://dq1k40l227hss" path="res://scenes/ui/door/door_manager.gd" id="2_a7ax1"]
 [ext_resource type="Script" uid="uid://bep2fyftkjcsr" path="res://characters/npc_controller.gd" id="3_1iv5r"]
 [ext_resource type="PackedScene" uid="uid://d4fry77os1qdx" path="res://scenes/dungeon/portal/portal.tscn" id="3_aotbt"]
-[ext_resource type="Script" uid="uid://bwn4gpkaijqsg" path="res://scripts/CharacterResource.gd" id="4_ogoal"]
+[ext_resource type="Script" uid="uid://bwn4gpkaijqsg" path="res://characters/CharacterResource.gd" id="4_ogoal"]
 [ext_resource type="Script" uid="uid://7pao6hs651jh" path="res://scripts/EnemyController.gd" id="4_pd010"]
 [ext_resource type="Script" uid="uid://i6llluly1w8" path="res://scripts/MapData.gd" id="5_u4odn"]
 [ext_resource type="PackedScene" uid="uid://b3uqs565nntfj" path="res://assets/mountain/mt_foot.tscn" id="6_pd010"]

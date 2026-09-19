@@ -18,10 +18,10 @@ func run() -> void:
 # TODO: and ability to add battle events
 
 func on_death(_own: Character) -> void:
-	
+	_own.died.disconnect(on_death)
 	var builer: EventBuilder = EventBuilder.new()
 	builer.say("%s" % _own.name, ["test line"])
 	var event = builer.build()
-	_own.is_dead = false
-	_own.set_current_health(200)
+	
 	EventManager.process_event(event)
+	_own.revive(200)

@@ -33,8 +33,8 @@ func _process(_delta: float) -> void:
 	var dist := player.global_position.distance_to(global_position)
 	var in_range := dist <= interact_distance
 	
-	if highlight_on_hover and player != null:
-		_set_highlight(dist <= interact_distance)
+	#if highlight_on_hover and player != null:
+		#_set_highlight(dist <= interact_distance)
 		
 	if was_in_range and not in_range:
 		InteractableBus.interactable_area_left.emit(self)

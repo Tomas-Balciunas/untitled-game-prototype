@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="CharacterResource" format=3 uid="uid://b4xj17te4gxww"]
 
-[ext_resource type="Script" uid="uid://bwn4gpkaijqsg" path="res://scripts/CharacterResource.gd" id="1_res"]
+[ext_resource type="Script" uid="uid://bwn4gpkaijqsg" path="res://characters/CharacterResource.gd" id="1_res"]
 [ext_resource type="Resource" path="res://characters/foes/Hobgoblin/attributes.tres" id="2_attr"]
 [ext_resource type="Script" uid="uid://cbelvg2fndssu" path="res://scripts/BattleEvent.gd" id="3_0v83d"]
 [ext_resource type="Resource" path="res://characters/foes/Hobgoblin/hobgoblin_stats.tres" id="3_stats"]

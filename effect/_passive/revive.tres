@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="Revive" format=3 uid="uid://b8u6j3i7o4vx4"]
+
+[ext_resource type="Script" uid="uid://bya0ma76gxvwx" path="res://effect/_passive/revive.gd" id="1_l76o6"]
+
+[resource]
+script = ExtResource("1_l76o6")
+id = "revive"
+name = "revive"
+battle_only = false
+expires_after_battle = true
+immediate_trigger = true
+expire_phase = 2
+metadata/_custom_type_script = "uid://bya0ma76gxvwx"

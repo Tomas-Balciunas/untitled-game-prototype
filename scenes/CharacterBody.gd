@@ -12,6 +12,7 @@ signal hit_confirmed
 var body_owner: Character = null
 var death_shader = preload("uid://crlilwavkuu5u")
 var blood_particle_material = null
+var _death_tween: Tween = null
 
 func _ready() -> void:
 	play_idle()
@@ -58,7 +59,6 @@ func play_idle() -> void:
 		animation_player.play("idle")
 
 func play_dead() -> void:
-	collision.disabled = true
 	animation_player.pause()
 	
 	var h: int = sprite.hframes
@@ -82,6 +82,7 @@ func play_dead() -> void:
 	material.set_shader_parameter("uv_offset", uv_offset)
 	
 	var tween := create_tween()
+	_death_tween = tween
 	tween.tween_method(
 		func(v): material.set_shader_parameter("death_progress", v),
 		0.0,
@@ -129,6 +130,16 @@ func play_dead() -> void:
 		particles.queue_free()
 		visible = false
 	)
+
+## undoes every part of play_dead - dissolve shader, hidden node, collision, pause
+func play_revive() -> void:
+	if _death_tween and _death_tween.is_valid():
+		_death_tween.kill()
+
+	_death_tween = null
+	sprite.material_override = null
+	visible = true
+	play_idle()
 
 func play_run() -> void:
 	if animation_player.has_animation("run_front"):

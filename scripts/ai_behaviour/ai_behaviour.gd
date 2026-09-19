@@ -86,6 +86,9 @@ func get_candidates_for_skill_category(
 		var pool: Array[BattleScanEntry] = resolve_pool(event, scanner, is_offensive)
 
 		for entry in pool:
+			if not TargetingManager.matches_state(skill.target_state, entry.battler):
+				continue
+
 			if !skill.get_conditions().is_empty() and !matches_all_conditions(skill.get_conditions(), entry.tags):
 				continue
 			
@@ -121,8 +124,11 @@ func get_candidates_for_basic_attack(
 	var pool: Array[BattleScanEntry] = resolve_pool(event, scanner, true)
 	
 	for entry in pool:
+		if not TargetingManager.matches_state(TargetingManager.TargetState.LIVING, entry.battler):
+			continue
+
 		var final_aggro: float = StatCalculator.apply_percentage_stat_multiplier(Stats.StatRef.AGGRAVATION, entry.battler, basic_attack)
-		
+
 		candidates.append(AiActionCandidate.new(BasicAttack.new(), entry.battler, final_aggro))
 	
 	return candidates

@@ -14,6 +14,12 @@ enum TargetType {
 	SALVO
 }
 
+enum TargetState {
+	LIVING,
+	DEAD,
+	ANY
+}
+
 enum Mode {
 	DISABLED,
 	NONE,
@@ -81,6 +87,19 @@ func get_applicable_targets(target: Character, type: TargetType) -> Array[Charac
 		#TODO: bounce targeting
 	
 	return [target]
+
+
+func matches_state(kind: TargetState, c: Character) -> bool:
+	if c == null:
+		return false
+
+	match kind:
+		TargetState.LIVING:
+			return not c.is_dead
+		TargetState.DEAD:
+			return c.is_dead
+		_:
+			return true
 
 
 func same_side(a: Character, b: Character) -> bool:

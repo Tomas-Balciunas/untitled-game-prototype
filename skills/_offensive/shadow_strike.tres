@@ -16,7 +16,7 @@ metadata/_custom_type_script = "uid://didkw804ef454"
 
 [resource]
 script = ExtResource("1")
-attack_scale = 0.5
+attack_scale = 5.0
 id = "shadow_strike"
 name = "Shadow Strike"
 description = "A precise strike from the shadows, exploiting gaps in the target's defenses."

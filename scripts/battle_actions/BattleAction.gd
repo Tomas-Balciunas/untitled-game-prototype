@@ -34,6 +34,9 @@ func can_afford(actor: Character, turn: TurnState) -> bool:
 func needs_target() -> bool:
 	return true
 
+func get_target_state() -> TargetingManager.TargetState:
+	return TargetingManager.TargetState.LIVING
+
 @abstract
 func build_context(actor: Character, target: Character) -> ActionContext
 
@@ -56,6 +59,10 @@ func execute(actor: Character, target: Character, attacker_slot: FormationSlot, 
 
 	await perform(ctx, actor, attacker_slot, target_slot, event)
 
+	while event.ctx.deferred_procs.is_empty() == false:
+		var entry: BattleQueueEntry = event.ctx.deferred_procs.pop_front()
+		await entry.run_queue_entry()
+	
 	return event
 
 func consume_action_points(ctx: ActionContext) -> BattleActionEvent:

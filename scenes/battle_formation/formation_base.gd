@@ -1,12 +1,39 @@
 extends Node3D
 class_name FormationBase
 
+const FORMATION_SLOT_PATH := "uid://b1jxfg32brb8x"
+
+static var _slot_scene: PackedScene = null
+
 var row_z: float
 var slot_spacing_x: int
 var max_slots: int
 
 var slots: Array[FormationSlot] = []
 var positions := []
+
+func add_slot_at(index: int, character: Character) -> FormationSlot:
+	if index < 0 or index >= max_slots or slots[index] != null:
+		return null
+
+	if _slot_scene == null:
+		_slot_scene = load(FORMATION_SLOT_PATH)
+
+	var slot := _slot_scene.instantiate() as FormationSlot
+	add_child(slot)
+	slot.position = positions[index]
+	slot.bind(character)
+	slot.capture_home()
+	slots[index] = slot
+
+	return slot
+
+func first_free_index() -> int:
+	for i in range(max_slots):
+		if slots[i] == null:
+			return i
+
+	return -1
 
 func remove_slot_for(character: Character) -> void:
 	for i in range(max_slots):

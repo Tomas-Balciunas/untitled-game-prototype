@@ -1,0 +1,8 @@
+[gd_resource type="Resource" script_class="StatAttributeGrowth" format=3 uid="uid://dreyr8pi4gptv"]
+
+[ext_resource type="Script" uid="uid://1soxj0rvfy7j" path="res://stat/StatGrowthEntry.gd" id="1_furj5"]
+[ext_resource type="Script" uid="uid://iowso0enbtmd" path="res://stat/StatAttributeGrowth.gd" id="2_df8g5"]
+
+[resource]
+script = ExtResource("2_df8g5")
+metadata/_custom_type_script = "uid://iowso0enbtmd"

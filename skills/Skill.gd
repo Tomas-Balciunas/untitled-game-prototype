@@ -18,6 +18,7 @@ enum SkillCategory {
 @export var action_point_cost: int = 1
 @export var effects: Array[Effect] = []
 @export var targeting_type: TargetingManager.TargetType = TargetingManager.TargetType.SINGLE
+@export var target_state: TargetingManager.TargetState = TargetingManager.TargetState.LIVING
 @export var animation_name: String
 @export var owner_only: bool = false
 @export var attack_rate: int = 1

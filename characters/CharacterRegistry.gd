@@ -12,7 +12,7 @@ func _register_all() -> void:
 		"res://characters/allies/Skelly/Skelly.tres",
 		"res://characters/foes/Skeltal/Skeltal.tres",
 		"res://characters/foes/Balmer/Balmer.tres",
-		"res://characters/allies/Coura/Coura.tres",
+		"res://characters/allies/character_01/character_01.tres",
 		"res://characters/foes/_fallback/boo.tres",
 		"res://characters/foes/Rat/Rat.tres",
 		"res://characters/foes/Goblin/Goblin.tres",

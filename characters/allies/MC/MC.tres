@@ -5,14 +5,27 @@
 [ext_resource type="PackedScene" uid="uid://bbixalnsv3np6" path="res://characters/allies/MC/_body/MC.tscn" id="3_2usx5"]
 [ext_resource type="Script" uid="uid://bp0biy0knxw2o" path="res://effect/Effect.gd" id="4_2usx5"]
 [ext_resource type="Script" uid="uid://b06vmgrh4qa8i" path="res://gear/ItemResource.gd" id="4_jti2u"]
+[ext_resource type="Resource" uid="uid://coh4v1rnn3h3v" path="res://characters/allies/MC/queue_test.tres" id="5_l36pt"]
 [ext_resource type="Resource" uid="uid://b2movrdrkxno7" path="res://characters/allies/MC/test_sword.tres" id="6_jti2u"]
 [ext_resource type="Script" uid="uid://dq4acpkde276p" path="res://skills/Skill.gd" id="6_lkn2v"]
-[ext_resource type="Script" uid="uid://bwn4gpkaijqsg" path="res://scripts/CharacterResource.gd" id="10_fb0jw"]
+[ext_resource type="Script" uid="uid://bwn4gpkaijqsg" path="res://characters/CharacterResource.gd" id="10_fb0jw"]
 [ext_resource type="Script" uid="uid://bqln4xpkkidja" path="res://stat/_stats/stats.gd" id="12_jti2u"]
+[ext_resource type="Script" uid="uid://b86lw2pwd1yko" path="res://characters/level_reward.gd" id="12_up1d2"]
+[ext_resource type="Resource" uid="uid://b8u6j3i7o4vx4" path="res://effect/_passive/revive.tres" id="12_xghbj"]
+[ext_resource type="Script" uid="uid://dyfab3mccm3i2" path="res://skills/CastSkill.gd" id="13_ghhp2"]
 [ext_resource type="Resource" uid="uid://bd81umfsm4m38" path="res://skills/_offensive/shadow_strike.tres" id="15_wur0s"]
 [ext_resource type="Resource" uid="uid://drqy6f6xdgohu" path="res://skills/_offensive/confusion.tres" id="16_fb0jw"]
 [ext_resource type="Resource" uid="uid://riijdkc770g2" path="res://stat/DefaultStatAttributeGrowth.tres" id="16_up1d2"]
 [ext_resource type="Resource" uid="uid://buom3t2gul0w1" path="res://skills/_offensive/charm.tres" id="17_dr5ls"]
+
+[sub_resource type="Resource" id="Resource_l76o6"]
+script = ExtResource("13_ghhp2")
+effect = ExtResource("12_xghbj")
+id = "rez"
+name = "resurrect"
+category = 2
+target_state = 1
+metadata/_custom_type_script = "uid://dyfab3mccm3i2"
 
 [sub_resource type="Resource" id="Resource_uxndi"]
 script = ExtResource("12_jti2u")
@@ -32,7 +45,8 @@ metadata/_custom_type_script = "uid://bqln4xpkkidja"
 
 [resource]
 script = ExtResource("10_fb0jw")
-default_skills = Array[ExtResource("6_lkn2v")]([ExtResource("15_wur0s"), ExtResource("16_fb0jw"), ExtResource("17_dr5ls")])
+default_skills = Array[ExtResource("6_lkn2v")]([ExtResource("15_wur0s"), ExtResource("16_fb0jw"), ExtResource("17_dr5ls"), SubResource("Resource_l76o6")])
+default_effects = Array[ExtResource("4_2usx5")]([ExtResource("5_l36pt")])
 default_items = Array[ExtResource("4_jti2u")]([ExtResource("6_jti2u")])
 base_stats = ExtResource("1_ghhp2")
 stat_level_growth = SubResource("Resource_uxndi")

@@ -25,7 +25,7 @@ static func level_up_character(character: Character) -> void:
 		BattleTextLines.print_line("%s has leveled up to %s!" % [character.resource.name, character.level])
 
 		for skill: Skill in character.resource.get_skills_for_level(character.level):
-			character.learnt_skills.append(skill)
+			character.learn_skill(skill)
 			BattleTextLines.print_line("%s has learnt %s!" % [character.resource.name, skill._get_name()])
 
 		for effect: Effect in character.resource.get_effects_for_level(character.level):
@@ -42,7 +42,7 @@ static func grant_experience_to_character(character: Character, amount: int) -> 
 
 static func set_character_level(character: Character, level: int) -> void:
 	for skill: Skill in character.resource.get_skills_until_level(level):
-		character.learnt_skills.append(skill)
+		character.learn_skill(skill)
 
 	for effect: Effect in character.resource.get_effects_until_level(level):
 		character.apply_effect(effect, CharacterSource.new(character))

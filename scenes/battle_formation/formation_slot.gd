@@ -205,9 +205,12 @@ func capture_home() -> void:
 	home_global = global_position
 
 func perform_death() -> void:
-	is_slot_targeting_enabled = false
 	_hide_turn_indicator()
 	body_instance.play_dead()
+
+func perform_revive() -> void:
+	body_instance.play_revive()
+	is_slot_targeting_enabled = true
 
 func _on_mouse_entered() -> void:
 	if not character_instance:
@@ -220,12 +223,12 @@ func _on_mouse_exited() -> void:
 	unhover()
 
 func _on_input_event(_camera: Camera3D, event: InputEvent, _position: Vector3, _normal: Vector3, _shape_idx: int) -> void:
-	if not is_slot_targeting_enabled:
-		return
-	
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and event.pressed:
 		if character_instance:
 			CharacterBus.display_status_effects.emit(character_instance)
+		return
+
+	if not is_slot_targeting_enabled:
 		return
 
 	var is_ally := character_instance != null and RunState.current.party.has_member(character_instance.resource.id)

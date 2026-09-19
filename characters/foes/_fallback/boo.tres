@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="CharacterResource" format=3 uid="uid://btr7k6tmwt3qi"]
 
-[ext_resource type="Script" uid="uid://bwn4gpkaijqsg" path="res://scripts/CharacterResource.gd" id="1_04kyn"]
+[ext_resource type="Script" uid="uid://bwn4gpkaijqsg" path="res://characters/CharacterResource.gd" id="1_04kyn"]
 [ext_resource type="Resource" path="res://characters/foes/_fallback/boo_stats.tres" id="1_7mwlc"]
 [ext_resource type="Script" uid="uid://cbelvg2fndssu" path="res://scripts/BattleEvent.gd" id="2_y8skw"]
 [ext_resource type="PackedScene" uid="uid://cygiaifldp3mm" path="res://characters/foes/_fallback/_body/Fallback.tscn" id="3_d1mbr"]

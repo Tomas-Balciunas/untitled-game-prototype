@@ -6,7 +6,7 @@
 [ext_resource type="Script" uid="uid://kf1ly5o4evhs" path="res://scripts/SpawnId.gd" id="3_w2sle"]
 [ext_resource type="Resource" uid="uid://mptwinive2u3" path="res://scenes/test_chest_locked.tres" id="4_y3577"]
 [ext_resource type="PackedScene" uid="uid://d4fry77os1qdx" path="res://scenes/dungeon/portal/portal.tscn" id="5_7wpse"]
-[ext_resource type="Script" uid="uid://bwn4gpkaijqsg" path="res://scripts/CharacterResource.gd" id="6_bgo3i"]
+[ext_resource type="Script" uid="uid://bwn4gpkaijqsg" path="res://characters/CharacterResource.gd" id="6_bgo3i"]
 [ext_resource type="Script" uid="uid://dbfiub7761eey" path="res://scripts/triggerables/MapTransitionTriggerable.gd" id="7_lk5gk"]
 [ext_resource type="Script" uid="uid://i6llluly1w8" path="res://scripts/MapData.gd" id="8_uo6qj"]
 [ext_resource type="Script" uid="uid://8n2g1of6dlbp" path="res://scripts/interactables/RestAreaInteractable.gd" id="9_kjsaj"]
