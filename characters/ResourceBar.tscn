@@ -16,7 +16,7 @@ visible = false
 script = ExtResource("1_i2ixw")
 
 [node name="Viewport" type="SubViewport" parent="." unique_id=1653725645]
-size = Vector2i(100, 10)
+size = Vector2i(70, 7)
 
 [node name="ProgressBar" type="ProgressBar" parent="Viewport" unique_id=1766564323]
 anchors_preset = 15

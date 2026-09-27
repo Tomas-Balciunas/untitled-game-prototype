@@ -12,6 +12,7 @@ class_name CharacterMenu
 @onready var item_info_panel: VBoxContainer = %ItemInfoPanel
 
 @onready var name_label: Label = $Name
+@onready var character_image: TextureRect = %CharacterImage
 
 var character_instance: Character
 
@@ -24,7 +25,10 @@ func bind(character: Character) -> void:
 		return
 		
 	character_instance = character
-	name_label.text = character.resource.name
+	if name_label:
+		name_label.text = character.resource.name
+	if character_image:
+		character_image.texture = character.resource.character_image
 	stats_tab.bind_character(character_instance)
 		
 	show_tab("stats")

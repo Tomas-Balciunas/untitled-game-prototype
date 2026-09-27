@@ -11,8 +11,6 @@
 [ext_resource type="Script" uid="uid://b06vmgrh4qa8i" path="res://gear/ItemResource.gd" id="6_5x8bx"]
 [ext_resource type="PackedScene" uid="uid://6565i582lfyv" path="res://characters/foes/SkeletonPriest/_body/SkeletonPriest.tscn" id="6_body"]
 [ext_resource type="Script" uid="uid://dq4acpkde276p" path="res://skills/Skill.gd" id="7_skill"]
-[ext_resource type="Resource" uid="uid://coh4v1rnn3h3v" path="res://characters/allies/MC/queue_test.tres" id="7_yd401"]
-[ext_resource type="Resource" uid="uid://54nm6r1og2gl" path="res://skills/_offensive/smite.tres" id="8_skill_a"]
 [ext_resource type="Script" uid="uid://b86lw2pwd1yko" path="res://characters/level_reward.gd" id="10_koij7"]
 
 [sub_resource type="Resource" id="Resource_vvgws"]
@@ -22,8 +20,6 @@ metadata/_custom_type_script = "uid://cpu70uq74dhq5"
 [resource]
 script = ExtResource("1_res")
 attributes = ExtResource("2_attr")
-default_skills = Array[ExtResource("7_skill")]([ExtResource("8_skill_a")])
-default_effects = Array[ExtResource("5_qs1q1")]([ExtResource("7_yd401")])
 base_stats = ExtResource("3_stats")
 stat_level_growth = ExtResource("4_lvl")
 stat_attribute_growth = ExtResource("5_grow")

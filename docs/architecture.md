@@ -353,6 +353,15 @@ the resolver.
   `scenes/ui/party/party_member_slot_interface.gd` → `CharacterBus.display_status_effects`.
 - Character menu Effects tab: `scenes/ui/character/CharacterEffectsUI.gd` — lists
   `effects` where `show_in_character_menu()`.
+- **`CharacterMenu` is duplicated, not instanced.** `scenes/main.tscn`
+  (`UIRoot/OverworldInterface/CharacterMenu`) holds its own fully inlined copy of
+  every node from `scenes/ui/character/character_menu.tscn` (`type="Panel"` +
+  children with matching `unique_id`s), not an `instance=ExtResource(...)` of
+  that file. Editing `character_menu.tscn` alone does nothing at runtime — any
+  node added/changed there (and its `%UniqueName` used by `CharacterMenu.gd`)
+  must be mirrored by hand into `main.tscn`, or the `@onready var = %Name`
+  lookup silently resolves to `null` and the first assignment to it throws
+  *"Invalid assignment ... on a base object of type 'null instance'"*.
 
 ## Buses (signals, for notifications — not ordered resolution)
 `scripts/bus/CharacterBus.gd` (`display_character_menu`, `display_status_effects`,

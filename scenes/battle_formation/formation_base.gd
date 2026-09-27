@@ -6,7 +6,7 @@ const FORMATION_SLOT_PATH := "uid://b1jxfg32brb8x"
 static var _slot_scene: PackedScene = null
 
 var row_z: float
-var slot_spacing_x: int
+var slot_spacing_x: float
 var max_slots: int
 
 var slots: Array[FormationSlot] = []

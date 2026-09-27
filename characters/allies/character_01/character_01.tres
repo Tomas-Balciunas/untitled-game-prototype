@@ -4,6 +4,7 @@
 [ext_resource type="Resource" uid="uid://bntn1ychxv6ev" path="res://characters/allies/character_01/_stat_resources/base_stats_character_01.tres" id="2_6i2x5"]
 [ext_resource type="Script" uid="uid://cbelvg2fndssu" path="res://scripts/BattleEvent.gd" id="3_rojrd"]
 [ext_resource type="PackedScene" uid="uid://dqjihmjf45spx" path="res://characters/allies/character_01/_body/character_01.tscn" id="4_edc66"]
+[ext_resource type="Texture2D" uid="uid://bl86y4mem8vgx" path="res://characters/allies/character_01/character_01_attempt_02.png" id="5_6i2x5"]
 [ext_resource type="Script" uid="uid://bp0biy0knxw2o" path="res://effect/Effect.gd" id="5_qhwrb"]
 [ext_resource type="Script" uid="uid://b06vmgrh4qa8i" path="res://gear/ItemResource.gd" id="6_g0q0y"]
 [ext_resource type="Script" uid="uid://dq4acpkde276p" path="res://skills/Skill.gd" id="7_t5rpr"]
@@ -24,5 +25,6 @@ stat_level_growth = ExtResource("11_36xao")
 stat_attribute_growth = ExtResource("10_0u32i")
 id = "character_01"
 name = "character_01"
+character_image = ExtResource("5_6i2x5")
 character_body = ExtResource("4_edc66")
 metadata/_custom_type_script = "uid://bwn4gpkaijqsg"

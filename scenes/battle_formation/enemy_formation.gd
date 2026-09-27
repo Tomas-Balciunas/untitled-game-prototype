@@ -1,8 +1,8 @@
 extends FormationBase
 class_name EnemyFormation
 
-const ROW_Z          := -2.0
-const SLOT_SPACING_X := 2
+const ROW_Z          := -4
+const SLOT_SPACING_X := 1.2
 const MAX_SLOTS      := 5
 
 
