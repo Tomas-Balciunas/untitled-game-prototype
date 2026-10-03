@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bl86y4mem8vgx"
-path="res://.godot/imported/character_01_attempt_02.png-0d6fefa396e8cd0db3f70ae5e0e1dd09.ctex"
+uid="uid://2in5thk10hje"
+path="res://.godot/imported/character_01_test.png-c2c2b6470efeacc5294adb82fe61e379.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://characters/allies/character_01/character_01_attempt_02.png"
-dest_files=["res://.godot/imported/character_01_attempt_02.png-0d6fefa396e8cd0db3f70ae5e0e1dd09.ctex"]
+source_file="res://characters/allies/character_01/character_01_test.png"
+dest_files=["res://.godot/imported/character_01_test.png-c2c2b6470efeacc5294adb82fe61e379.ctex"]
 
 [params]
 
