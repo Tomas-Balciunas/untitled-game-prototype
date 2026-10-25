@@ -21,9 +21,16 @@ enum BattleState {
 	LOSE
 }
 
+enum Role {
+	PARTY,
+	MINION,
+	ENEMY
+}
+
 var current_state := BattleState.IDLE
 
 var party: Array[Character] = []
+var minions: Array[Character] = []
 var enemies: Array[Character] = []
 var battlers: Array[Character] = []
 var turn_queue: Array[Character] = []
@@ -49,8 +56,9 @@ func begin(_enemies: Array[Character]) -> void:
 	var party_members := RunState.current.party.members
 	
 	for b: Character in party_members + _enemies:
+		var role: Role = Role.PARTY if b in party_members else Role.ENEMY
 		b.action_value = 10000 / (100 + b.stats.speed)
-		_register_battler(b)
+		_register_battler(b, role)
 		b.prepare_for_battle()
 		if !b.battle_events.is_empty():
 			for ev: BattleEvent in b.battle_events:
@@ -114,8 +122,7 @@ func _on_turn_start() -> void:
 	disable_all_targeting()
 	turn_state = TurnState.new(current_battler)
 	
-	var is_party_member: bool = current_battler in party
-	BattleBus.turn_started.emit(current_battler, is_party_member)
+	BattleBus.turn_started.emit(current_battler, is_player_side(current_battler))
 
 	var ctx: ActionContext = ActionContext.new()
 	var resolver: TurnStageResolver = TurnStageResolver.new(EffectTriggers.ON_TURN_START, current_battler)
@@ -123,7 +130,7 @@ func _on_turn_start() -> void:
 
 	current_battler.on_turn_start()
 
-	if is_party_member:
+	if is_player_controlled(current_battler):
 		current_state = BattleState.PLAYER_TURN
 		_on_player_turn(event)
 	else:
@@ -226,7 +233,7 @@ func _run_action(action: BattleAction, target: Character = null) -> void:
 		current_state = BattleState.PLAYER_TURN
 
 func perform_ai_driven_action(event: TurnStateEvent) -> void:
-	var scanner: BattleStateScanner = BattleStateScanner.new(enemies, party, is_party_member(current_battler))
+	var scanner: BattleStateScanner = BattleStateScanner.new(enemies, party + minions, is_player_side(current_battler))
 	var behaviour: AiBehaviour = current_battler.ai_behaviour
 	
 	if behaviour == null:
@@ -309,13 +316,17 @@ func _handle_flee() -> void:
 	EncounterBus.encounter_ended.emit("flee", RunState.current.battle.encounter_data)
 	current_state = BattleState.IDLE
 	
-func _register_battler(battler: Character) -> void:
+func _register_battler(battler: Character, role: Role) -> void:
 	battlers.append(battler)
-	
-	if battler in RunState.current.party.members:
-		party.append(battler)
-	else:
-		enemies.append(battler)
+
+	match role:
+		Role.PARTY:
+			party.append(battler)
+		Role.MINION:
+			minions.append(battler)
+			BattleBus.minion_added.emit(battler)
+		Role.ENEMY:
+			enemies.append(battler)
 		
 	battler.died.connect(Callable(self, "_on_battler_died"))
 	battler.revived.connect(Callable(self, "_on_battler_revived"))
@@ -354,7 +365,8 @@ func _play_pending_deaths() -> void:
 	_pending_death_fx.clear()
 
 func remove_battler(c: Character) -> void:
-	var was_party: bool = party.has(c)
+	var was_player_side: bool = is_player_side(c)
+	var was_minion: bool = minions.has(c)
 
 	if c.died.is_connected(_on_battler_died):
 		c.died.disconnect(_on_battler_died)
@@ -368,8 +380,12 @@ func remove_battler(c: Character) -> void:
 	battlers.erase(c)
 	enemies.erase(c)
 	party.erase(c)
+	minions.erase(c)
 
-	if was_party:
+	if was_minion:
+		BattleBus.minion_removed.emit(c)
+
+	if was_player_side:
 		ally_grid.remove_slot_for(c)
 	else:
 		enemy_grid.remove_slot_for(c)
@@ -390,7 +406,7 @@ func summon_enemy(resource: CharacterResource, level: int) -> Character:
 	StatCalculator.recalculate_all_stats(summoned)
 	summoned.full_heal()
 
-	_register_battler(summoned)
+	_register_battler(summoned, Role.ENEMY)
 	summoned.prepare_for_battle()
 	enemy_grid.add_slot_at(index, summoned)
 
@@ -438,11 +454,14 @@ func process_queue() -> void:
 func get_slot(chara: Character) -> FormationSlot:
 	if enemies.has(chara):
 		return enemy_grid.get_slot_for(chara)
-	if party.has(chara):
+	if is_player_side(chara):
 		return ally_grid.get_slot_for(chara)
-	
+
 	push_error("Orphaned character! - %s" % chara.resource.name)
 	return null
 
-func is_party_member(c: Character) -> bool:
+func is_player_side(c: Character) -> bool:
+	return party.has(c) or minions.has(c)
+
+func is_player_controlled(c: Character) -> bool:
 	return party.has(c)

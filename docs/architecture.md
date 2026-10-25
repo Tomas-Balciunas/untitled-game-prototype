@@ -208,7 +208,7 @@ ids warn and last-one-wins.
 - **Turn indicator**: acting *enemy* gets a pulsing red ring at its feet —
   `FormationSlot.turn_indicator` (`scenes/battle_formation/formation_slot.gd`),
   built in code (no .tscn edit), driven by `BattleBus.turn_started(battler,
-  is_party_member)` / `turn_ended`; hidden on `perform_death()` / `clear()`.
+  is_player_side)` / `turn_ended`; hidden on `perform_death()` / `clear()`.
 - **Party hit flash**: red vignette flash (edges in, clear center; inline
   canvas shader) when a party member takes damage —
   `scenes/ui/hit_flash_overlay.gd` (`HitFlashOverlay`, ColorRect), code-mounted
@@ -281,6 +281,68 @@ battle, so `get_slot` keeps resolving for them.
 > `place_all_enemies` centers the group, so with < MAX_SLOTS enemies the free
 > indices are the outer ones — a summon lands at the edge of the row, not
 > adjacent to the group.
+
+### Sides & minions
+**`BattleManager`'s lists are the one authority on which side a battler is on.**
+Nothing in battle should re-derive side from `RunState.current.party.members`
+(the old way — it was by `resource.id`, so an enemy built from a party member's
+resource counted as an ally).
+- `enum Role { PARTY, MINION, ENEMY }`. `_register_battler(battler, role)` files
+  the battler into `party` (real members, player-controlled), `minions`
+  (player side, AI-controlled, not in the party: summons / raised corpses) or
+  `enemies`. `begin()` is the only place that maps from `party.members`;
+  `summon_enemy` registers as `ENEMY`.
+- Two questions, deliberately separate: `is_player_side(c)` (`party` or
+  `minions`) answers *whose side* — targeting, formation grid, turn ring;
+  `is_player_controlled(c)` (`party` only) answers *who picks the action* —
+  `_on_turn_start` routes controlled battlers to the menu and everyone else
+  down the AI path. `BattleBus.turn_started` carries `is_player_side`.
+- **Lose** is still `party.all(is_dead)` and **win** `enemies.all(is_dead)`, so
+  minions never keep a lost battle alive. An enemy-side summon lives in
+  `enemies` and therefore has to die for a win.
+- `TargetingManager.is_player_side(c)` is the outside-battle-safe entry point:
+  in battle it asks the manager, otherwise it falls back to
+  `party.has_member_by_object`. `same_side`, `get_applicable_targets` and the
+  bounce/salvo launchers go through it. ROW/MASS on the player side append
+  `manager.minions`; BLAST/ADJACENT use party formation adjacency for members
+  and return just the minion for a minion.
+- `BattleSession.get_allies_all` returns `party + minions`, so
+  `get_valid_battlers(true)` includes minions.
+- `BattleManager` announces minions on `BattleBus.minion_added` /
+  `minion_removed` (from `_register_battler` / `remove_battler`); the minion HUD
+  (see *Party UI*) is driven purely by those, so anything that registers a
+  `Role.MINION` battler gets a clickable HUD entry for free.
+- `FormationSlot` decides hidden-body / targeting-area / `is_ally` by the grid
+  it lives in (`get_parent() is AllyFormation`), not by a party lookup. Ally
+  bodies are intentionally invisible, but a minion still needs an ally-grid slot
+  with a body scene: `_run_action` returns early on a null slot and
+  `FormationSlot.perform_*` assume a `body_instance`.
+- `BattleStateScanner` is unchanged (it flips perspective on its
+  `actor_party_member` flag); the caller passes `party + minions` as the
+  player-side list and `is_player_side(actor)` as the flag.
+
+**Not built yet** (design agreed, no code): `summon_ally(resource, level)`
+(mirror of `summon_enemy`; must seed `action_value`, which defaults to 0 and
+would otherwise act first), `raise_as_ally(corpse)` (move the slot from the
+enemy grid to the ally grid, flip lists, `revive()`), a targetless skill path
+(`SkillAction` inherits `needs_target() = true`), a bigger ally grid
+(`AllyFormation.MAX_SLOTS = 4` is full with a full party; slot spacing is 0, so
+this is a data cap only), and an AI target-side flag on `Skill` (`resolve_pool` derives side from
+`is_skill_offensive()`, so a non-offensive raise only sees its own corpses).
+
+**Persistent summons** would live on the `Run`, not the battle: a
+`Party.companions` list beside `members` (never inside it — `members` is capped
+at 4 and ~30 sites assume a human party member: XP, loot, chest/door openers,
+shops, traps). At battle start `begin()` registers `companions` as `MINION`;
+a temporary summon is simply a minion that is never added to `companions`.
+Needs: a `"companions"` key in `Party.game_save` (no `SAVE_VERSION` bump),
+companions in the two-phase effect load, entries in the hardcoded
+`CharacterRegistry` / `SkillRegistry` manifests (otherwise dropped on load),
+inclusion in `RestManager` / `DungeonState.update_player_position` /
+`ExperienceManager` (all iterate `members` only), and instance-keyed rather
+than id-keyed lookups (`ContextSource._find_character_by_id` and
+`Party.has_member` assume one character per resource id). Open rules: death,
+level source, cap/upkeep, summoner leaving, persist-by-skill vs by-resource.
 
 ### Target state — `scripts/TargetingManager.gd`
 `TargetingManager.TargetState` (LIVING / DEAD / ANY) is the **hard legality rule**
@@ -362,6 +424,39 @@ the resolver.
   must be mirrored by hand into `main.tscn`, or the `@onready var = %Name`
   lookup silently resolves to `null` and the first assignment to it throws
   *"Invalid assignment ... on a base object of type 'null instance'"*.
+
+## Party UI — `scenes/ui/party/`
+`PartyContainerInterface.tscn` (instanced, not inlined, in `main.tscn`) holds 4
+`PartyMemberSlotInterface.tscn` slots; `party_container_interface.gd` binds
+`RunState.current.party.formation[i]` → slot `i` via `PartyMemberSlot.bind()`.
+- Slot layout: `MarginContainer/HBoxContainer` → `%Portrait` (52×52
+  TextureRect, keep-aspect-covered) | `GridContainer` (name on top, then
+  HP/MP/SP labels | values).
+- Portrait reads `BaseCharacterResource.portrait` (separate from the full-body
+  `character_image` used by the character menu). Null → empty space, layout
+  unchanged. Currently a hand-cropped PNG, e.g. `character_01-portrait.png`.
+- **Minion strip** — `minion_row.gd` (`MinionRow`, an `HFlowContainer`) is
+  code-mounted by `party_container_interface.gd._ready` as the first child of
+  `PanelContainer/PartyContainer`, so it sits above `PartyRow` (which is
+  expand + shrink-end, i.e. pinned to the bottom of that ~90px of otherwise
+  empty VBox). No `.tscn` edit. Hidden while empty; spawns one `MinionSlot`
+  (`minion_slot.gd`, a `PanelContainer` built entirely in code: name + `cur/max`
+  HP) per `BattleBus.minion_added`, frees it on `minion_removed`, clears on
+  `battle_end`. No cap — it wraps, and overflows the panel at roughly 13+
+  minions (4 per row, ~3 rows of room).
+- `MinionSlot` mirrors `PartyMemberSlot`'s input: right-click opens the status
+  window; left-click calls `TargetingManager.emit_selection` only when mode is
+  `BATTLE`, `ally_targeting_enabled` is set, **and** the current action's
+  `get_target_state()` matches the minion (so a corpse can't be picked for a
+  living-only action — `PartyMemberSlot` itself doesn't check this). It dims on
+  death/revive (`died` / `revived`) and tints yellow on its own turn
+  (`BattleBus.turn_started`), since minions are AI-driven and never fire
+  `ally_turn_started`.
+- **Width budget is tight.** The slot root is a plain `Panel`, so its children
+  don't drive its size — `custom_minimum_size` (168×85) must be kept ≥ the
+  content min by hand or content spills past the border. 4 slots + margins =
+  708px inside the ~720px `PanelContainer` (anchors 0.312–0.687 at 1920 wide).
+  Widen those anchors before adding anything horizontal to a slot.
 
 ## Buses (signals, for notifications — not ordered resolution)
 `scripts/bus/CharacterBus.gd` (`display_character_menu`, `display_status_effects`,
@@ -825,6 +920,10 @@ These all produce errors far from their cause, usually at boot.
   `RestManager.gd:51` and written by `test/helpers/combatant.gd:43`. The helper
   throws, leaving every fixture half-built — this is the sole cause of the 35
   failing GUT tests. `RestManager` will fail the same way at runtime.
+- **`Party.get_mass_allies` looks broken (unverified):** it loops
+  `for slot: FormationSlot in formation` but `formation` holds `Character`s, so
+  the typed loop variable should throw on a non-null entry. Player-side
+  ROW/MASS targeting goes through it (`TargetingManager._player_side_all`).
 - The run-state shims (`PartyManager`, `MapInstance`, `InteractionTagManager`,
   `EventFlags`) are transitional — see *Run lifetime*.
 
@@ -836,7 +935,12 @@ Run headless: `./run_tests.ps1` (or see `test/README.md`). Current coverage:
   `Bleed`, `PoisonEffect`, `EffectRunner` pipeline (priority + `stop_processing`).
 - **Resolvers**: `DamageResolver`, `HealingResolver`, `EffectApplicationResolver`,
   `TurnStageResolver`.
-- **BattleManager**: `_check_end_conditions`, turn-queue ordering.
+- **BattleManager**: `_check_end_conditions` (incl. minions not preventing a
+  loss), turn-queue ordering, role registration and the side helpers.
+- **Minion HUD**: `MinionRow` / `MinionSlot` spawn, dedupe, hide-when-empty,
+  clear on battle end, HP text and death dimming (driven through the bus with a
+  `FakeCharacter` + hand-built `Stats`, so it doesn't hit the `Combatant`
+  breakage).
 - **Stats**: `Stats`/`Attributes` math + save/load, `StatModifier`,
   `StatCalculator` (additive/multiplicative/percentage stats, temp-modifier
   cleanup, weapon scaling), `WeaponScaling` (contributions + save/load).

@@ -9,6 +9,11 @@ extends Panel
 
 
 func _ready() -> void:
+	var party_container: VBoxContainer = $PanelContainer/PartyContainer
+	var minion_row := MinionRow.new()
+	party_container.add_child(minion_row)
+	party_container.move_child(minion_row, 0)
+
 	SaveManager.connect("party_reloaded", Callable(self, "_on_party_reloaded"))
 	PartyBus.party_member_added.connect(_on_member_added)
 	_on_party_reloaded()

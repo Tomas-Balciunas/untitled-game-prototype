@@ -4,6 +4,7 @@ class_name PartyMemberSlot
 
 @onready var number_display: UISlotNumbers = $NumberDisplay
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
+@onready var portrait: TextureRect = %Portrait
 
 var character_instance: Character
 var targeting_enabled := false
@@ -21,14 +22,14 @@ func _ready() -> void:
 func bind(character: Character) -> void:
 	character_instance = character
 
-	#$Portrait.texture = character.resource.portrait
-	$MarginContainer/GridContainer/NameContainer/Name.text = character.resource.name
-	$MarginContainer/GridContainer/LabelValueContainer/Values/HPContainer/CurrentHP.text = str(character.state.current_health)
-	$MarginContainer/GridContainer/LabelValueContainer/Values/HPContainer/MaxHP.text = str(character.stats.get_stat(Stats.StatRef.HEALTH))
-	$MarginContainer/GridContainer/LabelValueContainer/Values/MPContainer/CurrentMP.text = str(character.state.current_mana)
-	$MarginContainer/GridContainer/LabelValueContainer/Values/MPContainer/MaxMP.text = str(character.stats.get_stat(Stats.StatRef.MANA))
-	$MarginContainer/GridContainer/LabelValueContainer/Values/SPContainer/CurrentSP.text = str(character.state.current_sp)
-	$MarginContainer/GridContainer/LabelValueContainer/Values/SPContainer/MaxSP.text = str(character.stats.get_stat(Stats.StatRef.SP))
+	portrait.texture = character.resource.portrait
+	$MarginContainer/HBoxContainer/GridContainer/NameContainer/Name.text = character.resource.name
+	$MarginContainer/HBoxContainer/GridContainer/LabelValueContainer/Values/HPContainer/CurrentHP.text = str(character.state.current_health)
+	$MarginContainer/HBoxContainer/GridContainer/LabelValueContainer/Values/HPContainer/MaxHP.text = str(character.stats.get_stat(Stats.StatRef.HEALTH))
+	$MarginContainer/HBoxContainer/GridContainer/LabelValueContainer/Values/MPContainer/CurrentMP.text = str(character.state.current_mana)
+	$MarginContainer/HBoxContainer/GridContainer/LabelValueContainer/Values/MPContainer/MaxMP.text = str(character.stats.get_stat(Stats.StatRef.MANA))
+	$MarginContainer/HBoxContainer/GridContainer/LabelValueContainer/Values/SPContainer/CurrentSP.text = str(character.state.current_sp)
+	$MarginContainer/HBoxContainer/GridContainer/LabelValueContainer/Values/SPContainer/MaxSP.text = str(character.stats.get_stat(Stats.StatRef.SP))
 	
 	show_info()
 	
@@ -67,16 +68,16 @@ func _on_stat_changed(who: Character, stat: Stats.StatRef) -> void:
 
 
 func _on_health_changed() -> void:
-	$MarginContainer/GridContainer/LabelValueContainer/Values/HPContainer/CurrentHP.text = str(character_instance.state.current_health)
-	$MarginContainer/GridContainer/LabelValueContainer/Values/HPContainer/MaxHP.text = str(character_instance.stats.health)
+	$MarginContainer/HBoxContainer/GridContainer/LabelValueContainer/Values/HPContainer/CurrentHP.text = str(character_instance.state.current_health)
+	$MarginContainer/HBoxContainer/GridContainer/LabelValueContainer/Values/HPContainer/MaxHP.text = str(character_instance.stats.health)
 
 func _on_mana_changed() -> void:
-	$MarginContainer/GridContainer/LabelValueContainer/Values/MPContainer/CurrentMP.text = str(character_instance.state.current_mana)
-	$MarginContainer/GridContainer/LabelValueContainer/Values/MPContainer/MaxMP.text = str(character_instance.stats.mana)
+	$MarginContainer/HBoxContainer/GridContainer/LabelValueContainer/Values/MPContainer/CurrentMP.text = str(character_instance.state.current_mana)
+	$MarginContainer/HBoxContainer/GridContainer/LabelValueContainer/Values/MPContainer/MaxMP.text = str(character_instance.stats.mana)
 
 func _on_sp_changed() -> void:
-	$MarginContainer/GridContainer/LabelValueContainer/Values/SPContainer/CurrentSP.text = str(character_instance.state.current_sp)
-	$MarginContainer/GridContainer/LabelValueContainer/Values/SPContainer/MaxSP.text = str(character_instance.stats.sp)
+	$MarginContainer/HBoxContainer/GridContainer/LabelValueContainer/Values/SPContainer/CurrentSP.text = str(character_instance.state.current_sp)
+	$MarginContainer/HBoxContainer/GridContainer/LabelValueContainer/Values/SPContainer/MaxSP.text = str(character_instance.stats.sp)
 
 
 func _on_gui_input(event: InputEvent) -> void:

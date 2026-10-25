@@ -42,6 +42,58 @@ func test_otherwise_processes_turns() -> void:
 	assert_eq(bm.current_state, BattleManager.BattleState.PROCESS_TURNS)
 
 
+func test_minions_do_not_prevent_lose() -> void:
+	var bm := _bm()
+	bm.party = [_battler(0, true)]
+	bm.minions = [_battler()]
+	bm.enemies = [_battler()]
+	bm._check_end_conditions()
+	assert_eq(bm.current_state, BattleManager.BattleState.LOSE)
+
+
+# --- sides ---
+
+func test_register_battler_sorts_by_role() -> void:
+	var bm := _bm()
+	var member := _battler()
+	var minion := _battler()
+	var enemy := _battler()
+	bm._register_battler(member, BattleManager.Role.PARTY)
+	bm._register_battler(minion, BattleManager.Role.MINION)
+	bm._register_battler(enemy, BattleManager.Role.ENEMY)
+	assert_eq(bm.party, [member])
+	assert_eq(bm.minions, [minion])
+	assert_eq(bm.enemies, [enemy])
+	assert_eq(bm.battlers.size(), 3)
+
+
+func test_only_minions_are_announced_to_the_hud() -> void:
+	var bm := _bm()
+	var minion := _battler()
+	var enemy := _battler()
+	watch_signals(BattleBus)
+	bm._register_battler(enemy, BattleManager.Role.ENEMY)
+	assert_signal_not_emitted(BattleBus, "minion_added")
+	bm._register_battler(minion, BattleManager.Role.MINION)
+	assert_signal_emitted_with_parameters(BattleBus, "minion_added", [minion])
+
+
+func test_minion_is_player_side_but_not_player_controlled() -> void:
+	var bm := _bm()
+	var member := _battler()
+	var minion := _battler()
+	var enemy := _battler()
+	bm._register_battler(member, BattleManager.Role.PARTY)
+	bm._register_battler(minion, BattleManager.Role.MINION)
+	bm._register_battler(enemy, BattleManager.Role.ENEMY)
+	assert_true(bm.is_player_side(member))
+	assert_true(bm.is_player_controlled(member))
+	assert_true(bm.is_player_side(minion))
+	assert_false(bm.is_player_controlled(minion))
+	assert_false(bm.is_player_side(enemy))
+	assert_false(bm.is_player_controlled(enemy))
+
+
 # --- _process_turn_queue ---
 
 func test_lowest_action_value_acts_first() -> void:

@@ -56,7 +56,7 @@ func get_allies_all() -> Array[Character]:
 		push_error("Trying to get all allies on null manager")
 		return []
 
-	return manager.party
+	return manager.party + manager.minions
 
 
 func get_battlers_all() -> Array[Character]:

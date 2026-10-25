@@ -1,0 +1,60 @@
+[gd_resource type="Resource" script_class="CharacterResource" format=3 uid="uid://dh8kad7brt53b"]
+
+[ext_resource type="Script" uid="uid://blqk30gl013xc" path="res://stat/_attribute/attributes.gd" id="1_r4tvo"]
+[ext_resource type="Resource" uid="uid://bc8uaff10qpoj" path="res://characters/allies/character_02/stats.tres" id="2_yovpo"]
+[ext_resource type="Script" uid="uid://cbelvg2fndssu" path="res://scripts/BattleEvent.gd" id="3_frwen"]
+[ext_resource type="PackedScene" uid="uid://dr6mixlbl8nmf" path="res://characters/allies/character_02/_body/character_02.tscn" id="4_fjuhi"]
+[ext_resource type="Script" uid="uid://bp0biy0knxw2o" path="res://effect/Effect.gd" id="5_vasrm"]
+[ext_resource type="Texture2D" uid="uid://did1785vwn5fd" path="res://characters/allies/character_02/character_02_cropped_test.png" id="5_yovpo"]
+[ext_resource type="Script" uid="uid://b06vmgrh4qa8i" path="res://gear/ItemResource.gd" id="6_247ij"]
+[ext_resource type="Script" uid="uid://cyhrh3l20i5dm" path="res://stat/StatModifier.gd" id="7_6hcnm"]
+[ext_resource type="Script" uid="uid://c2lpfe7ep4fuv" path="res://gear/chest/chestpiece_resource.gd" id="8_gbtsv"]
+[ext_resource type="Script" uid="uid://dq4acpkde276p" path="res://skills/Skill.gd" id="9_oihur"]
+[ext_resource type="Resource" uid="uid://coilrntx01n8m" path="res://characters/allies/character_02/new_resource.tres" id="10_8v51c"]
+[ext_resource type="Script" uid="uid://b86lw2pwd1yko" path="res://characters/level_reward.gd" id="11_qt0oq"]
+[ext_resource type="Script" uid="uid://bwn4gpkaijqsg" path="res://characters/CharacterResource.gd" id="12_08skv"]
+[ext_resource type="Resource" uid="uid://riijdkc770g2" path="res://stat/DefaultStatAttributeGrowth.tres" id="13_5m0dj"]
+
+[sub_resource type="Resource" id="Resource_n7wih"]
+script = ExtResource("1_r4tvo")
+strength = 2
+intelligence = 2
+piety = 2
+vitality = 2
+dexterity = 2
+speed = 2
+luck = 2
+metadata/_custom_type_script = "uid://blqk30gl013xc"
+
+[sub_resource type="Resource" id="Resource_v6bh1"]
+script = ExtResource("7_6hcnm")
+name = "healing done"
+stat = 13
+value = -20.0
+metadata/_custom_type_script = "uid://cyhrh3l20i5dm"
+
+[sub_resource type="Resource" id="Resource_vvgws"]
+script = ExtResource("7_6hcnm")
+name = "healing received"
+stat = 14
+value = -30.0
+metadata/_custom_type_script = "uid://cyhrh3l20i5dm"
+
+[sub_resource type="Resource" id="Resource_715sk"]
+script = ExtResource("8_gbtsv")
+modifiers = Array[ExtResource("7_6hcnm")]([SubResource("Resource_v6bh1"), SubResource("Resource_vvgws")])
+name = "uhh"
+metadata/_custom_type_script = "uid://c2lpfe7ep4fuv"
+
+[resource]
+script = ExtResource("12_08skv")
+attributes = SubResource("Resource_n7wih")
+default_items = Array[ExtResource("6_247ij")]([SubResource("Resource_715sk")])
+base_stats = ExtResource("2_yovpo")
+stat_attribute_growth = ExtResource("13_5m0dj")
+id = "a_lili_1"
+name = "Lili"
+character_image = ExtResource("5_yovpo")
+character_body = ExtResource("4_fjuhi")
+interactions = ExtResource("10_8v51c")
+metadata/_custom_type_script = "uid://bwn4gpkaijqsg"

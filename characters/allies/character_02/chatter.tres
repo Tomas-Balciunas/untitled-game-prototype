@@ -1,0 +1,6 @@
+[gd_resource type="Resource" script_class="LiliChatter" format=3]
+
+[ext_resource type="Script" uid="uid://cqhi5nwchqhqg" path="res://characters/allies/character_02/chatter.gd" id="1_lc"]
+
+[resource]
+script = ExtResource("1_lc")

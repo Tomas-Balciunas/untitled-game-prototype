@@ -10,7 +10,7 @@ func _init(_resolver: EffectResolver, _ctx: ActionContext) -> void:
 	resolver = _resolver
 	ctx = _ctx
 	initial_target = ctx.initial_target
-	is_ally = RunState.current.party.has_member(initial_target.resource.id)
+	is_ally = TargetingManager.is_player_side(initial_target)
 	actor = ctx.source.get_actor()
 	
 	assert(initial_target)

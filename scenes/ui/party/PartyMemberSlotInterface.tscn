@@ -49,7 +49,7 @@ _data = {
 }
 
 [node name="PartyMemberSlot" type="Panel" unique_id=846505463]
-custom_minimum_size = Vector2(130, 80)
+custom_minimum_size = Vector2(168, 85)
 anchors_preset = -1
 anchor_right = 0.103
 anchor_bottom = 0.104
@@ -71,24 +71,38 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
-theme_override_constants/margin_left = 10
+theme_override_constants/margin_left = 8
 theme_override_constants/margin_top = 5
-theme_override_constants/margin_right = 10
+theme_override_constants/margin_right = 8
 theme_override_constants/margin_bottom = 5
 
-[node name="GridContainer" type="GridContainer" parent="MarginContainer" unique_id=48873880]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer" unique_id=1873402517]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 6
+
+[node name="Portrait" type="TextureRect" parent="MarginContainer/HBoxContainer" unique_id=1873402516]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(52, 52)
+layout_mode = 2
+size_flags_vertical = 4
+mouse_filter = 2
+expand_mode = 1
+stretch_mode = 6
+
+[node name="GridContainer" type="GridContainer" parent="MarginContainer/HBoxContainer" unique_id=48873880]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 mouse_filter = 2
 
-[node name="NameContainer" type="GridContainer" parent="MarginContainer/GridContainer" unique_id=1395233021]
+[node name="NameContainer" type="GridContainer" parent="MarginContainer/HBoxContainer/GridContainer" unique_id=1395233021]
 layout_mode = 2
 size_flags_horizontal = 6
 size_flags_vertical = 3
 mouse_filter = 2
 
-[node name="Name" type="Label" parent="MarginContainer/GridContainer/NameContainer" unique_id=1552434072]
+[node name="Name" type="Label" parent="MarginContainer/HBoxContainer/GridContainer/NameContainer" unique_id=1552434072]
 z_index = 5
 layout_mode = 2
 theme_override_font_sizes/font_size = 14
@@ -96,114 +110,114 @@ text = "Unnamed"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="LabelValueContainer" type="GridContainer" parent="MarginContainer/GridContainer" unique_id=1078893254]
+[node name="LabelValueContainer" type="GridContainer" parent="MarginContainer/HBoxContainer/GridContainer" unique_id=1078893254]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 mouse_filter = 2
 columns = 2
 
-[node name="Labels" type="GridContainer" parent="MarginContainer/GridContainer/LabelValueContainer" unique_id=1641250284]
+[node name="Labels" type="GridContainer" parent="MarginContainer/HBoxContainer/GridContainer/LabelValueContainer" unique_id=1641250284]
 layout_mode = 2
 size_flags_horizontal = 6
 mouse_filter = 2
 theme_override_constants/h_separation = 4
 theme_override_constants/v_separation = 0
 
-[node name="HP" type="Label" parent="MarginContainer/GridContainer/LabelValueContainer/Labels" unique_id=78847740]
+[node name="HP" type="Label" parent="MarginContainer/HBoxContainer/GridContainer/LabelValueContainer/Labels" unique_id=78847740]
 z_index = 5
 layout_mode = 2
 theme_override_font_sizes/font_size = 12
 text = "HP"
 
-[node name="MP" type="Label" parent="MarginContainer/GridContainer/LabelValueContainer/Labels" unique_id=122152990]
+[node name="MP" type="Label" parent="MarginContainer/HBoxContainer/GridContainer/LabelValueContainer/Labels" unique_id=122152990]
 z_index = 5
 layout_mode = 2
 theme_override_font_sizes/font_size = 12
 text = "MP"
 
-[node name="SP" type="Label" parent="MarginContainer/GridContainer/LabelValueContainer/Labels" unique_id=696007241]
+[node name="SP" type="Label" parent="MarginContainer/HBoxContainer/GridContainer/LabelValueContainer/Labels" unique_id=696007241]
 layout_mode = 2
 theme_override_font_sizes/font_size = 12
 text = "SP"
 
-[node name="Values" type="GridContainer" parent="MarginContainer/GridContainer/LabelValueContainer" unique_id=231892560]
-custom_minimum_size = Vector2(90, 0)
+[node name="Values" type="GridContainer" parent="MarginContainer/HBoxContainer/GridContainer/LabelValueContainer" unique_id=231892560]
+custom_minimum_size = Vector2(70, 0)
 layout_mode = 2
 size_flags_horizontal = 6
 mouse_filter = 2
 theme_override_constants/v_separation = 0
 
-[node name="HPContainer" type="GridContainer" parent="MarginContainer/GridContainer/LabelValueContainer/Values" unique_id=909738901]
+[node name="HPContainer" type="GridContainer" parent="MarginContainer/HBoxContainer/GridContainer/LabelValueContainer/Values" unique_id=909738901]
 layout_mode = 2
 size_flags_horizontal = 4
 mouse_filter = 2
 columns = 4
 
-[node name="CurrentHP" type="Label" parent="MarginContainer/GridContainer/LabelValueContainer/Values/HPContainer" unique_id=1506257211]
+[node name="CurrentHP" type="Label" parent="MarginContainer/HBoxContainer/GridContainer/LabelValueContainer/Values/HPContainer" unique_id=1506257211]
 z_index = 5
 layout_mode = 2
 theme_override_font_sizes/font_size = 12
 text = "9999"
 horizontal_alignment = 2
 
-[node name="Slash" type="Label" parent="MarginContainer/GridContainer/LabelValueContainer/Values/HPContainer" unique_id=111037037]
+[node name="Slash" type="Label" parent="MarginContainer/HBoxContainer/GridContainer/LabelValueContainer/Values/HPContainer" unique_id=111037037]
 z_index = 5
 layout_mode = 2
 theme_override_font_sizes/font_size = 12
 text = "/"
 
-[node name="MaxHP" type="Label" parent="MarginContainer/GridContainer/LabelValueContainer/Values/HPContainer" unique_id=188436628]
+[node name="MaxHP" type="Label" parent="MarginContainer/HBoxContainer/GridContainer/LabelValueContainer/Values/HPContainer" unique_id=188436628]
 z_index = 5
 layout_mode = 2
 theme_override_font_sizes/font_size = 12
 text = "9999"
 
-[node name="MPContainer" type="GridContainer" parent="MarginContainer/GridContainer/LabelValueContainer/Values" unique_id=554513502]
+[node name="MPContainer" type="GridContainer" parent="MarginContainer/HBoxContainer/GridContainer/LabelValueContainer/Values" unique_id=554513502]
 layout_mode = 2
 size_flags_horizontal = 6
 size_flags_vertical = 3
 mouse_filter = 2
 columns = 4
 
-[node name="CurrentMP" type="Label" parent="MarginContainer/GridContainer/LabelValueContainer/Values/MPContainer" unique_id=1531701373]
+[node name="CurrentMP" type="Label" parent="MarginContainer/HBoxContainer/GridContainer/LabelValueContainer/Values/MPContainer" unique_id=1531701373]
 z_index = 5
 layout_mode = 2
 theme_override_font_sizes/font_size = 12
 text = "50"
 
-[node name="Slash" type="Label" parent="MarginContainer/GridContainer/LabelValueContainer/Values/MPContainer" unique_id=885561261]
+[node name="Slash" type="Label" parent="MarginContainer/HBoxContainer/GridContainer/LabelValueContainer/Values/MPContainer" unique_id=885561261]
 z_index = 5
 layout_mode = 2
 theme_override_font_sizes/font_size = 12
 text = "/"
 
-[node name="MaxMP" type="Label" parent="MarginContainer/GridContainer/LabelValueContainer/Values/MPContainer" unique_id=262791161]
+[node name="MaxMP" type="Label" parent="MarginContainer/HBoxContainer/GridContainer/LabelValueContainer/Values/MPContainer" unique_id=262791161]
 z_index = 5
 layout_mode = 2
 theme_override_font_sizes/font_size = 12
 text = "80"
 
-[node name="SPContainer" type="GridContainer" parent="MarginContainer/GridContainer/LabelValueContainer/Values" unique_id=750541369]
+[node name="SPContainer" type="GridContainer" parent="MarginContainer/HBoxContainer/GridContainer/LabelValueContainer/Values" unique_id=750541369]
 layout_mode = 2
 size_flags_horizontal = 4
 mouse_filter = 2
 columns = 4
 
-[node name="CurrentSP" type="Label" parent="MarginContainer/GridContainer/LabelValueContainer/Values/SPContainer" unique_id=670567245]
+[node name="CurrentSP" type="Label" parent="MarginContainer/HBoxContainer/GridContainer/LabelValueContainer/Values/SPContainer" unique_id=670567245]
 z_index = 5
 layout_mode = 2
 theme_override_font_sizes/font_size = 12
 text = "9999"
 horizontal_alignment = 2
 
-[node name="Slash" type="Label" parent="MarginContainer/GridContainer/LabelValueContainer/Values/SPContainer" unique_id=551287109]
+[node name="Slash" type="Label" parent="MarginContainer/HBoxContainer/GridContainer/LabelValueContainer/Values/SPContainer" unique_id=551287109]
 z_index = 5
 layout_mode = 2
 theme_override_font_sizes/font_size = 12
 text = "/"
 
-[node name="MaxSP" type="Label" parent="MarginContainer/GridContainer/LabelValueContainer/Values/SPContainer" unique_id=124963270]
+[node name="MaxSP" type="Label" parent="MarginContainer/HBoxContainer/GridContainer/LabelValueContainer/Values/SPContainer" unique_id=124963270]
 z_index = 5
 layout_mode = 2
 theme_override_font_sizes/font_size = 12

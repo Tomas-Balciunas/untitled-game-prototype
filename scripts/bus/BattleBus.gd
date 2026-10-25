@@ -14,8 +14,10 @@ signal control_selected(kind: String)
 signal battle_start
 signal battle_end
 signal ally_turn_started(ally: Character)
-signal turn_started(battler: Character, is_party_member: bool)
+signal turn_started(battler: Character, is_player_side: bool)
 signal turn_ended
+signal minion_added(minion: Character)
+signal minion_removed(minion: Character)
 signal enemy_died(dead: Character)
 signal attack_connected
 signal action_points_changed(ap_points: int)

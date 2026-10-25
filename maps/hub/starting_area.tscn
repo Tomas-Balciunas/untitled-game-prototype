@@ -19,7 +19,7 @@
 [ext_resource type="PackedScene" uid="uid://sln6ve4lf8c2" path="res://characters/OverworldNPC.tscn" id="17_p4hwn"]
 [ext_resource type="PackedScene" uid="uid://c8fyl6fq4crr0" path="res://maps/_encounter/OverworldEnemy.tscn" id="18_bko6l"]
 [ext_resource type="Script" uid="uid://crya7r5lwmvqh" path="res://characters/overworld_npc.gd" id="18_y3577"]
-[ext_resource type="Resource" uid="uid://dh8kad7brt53b" path="res://characters/allies/Lili/Lili.tres" id="19_l6obu"]
+[ext_resource type="Resource" uid="uid://dh8kad7brt53b" path="res://characters/allies/character_02/character_02.tres" id="19_l6obu"]
 [ext_resource type="Script" uid="uid://dq1k40l227hss" path="res://scenes/ui/door/door_manager.gd" id="19_rna72"]
 [ext_resource type="Environment" uid="uid://b1lhdb20soj3m" path="res://maps/dungeon_dark.tres" id="20_5iua8"]
 [ext_resource type="PackedScene" uid="uid://brmuxif8auto4" path="res://characters/foes/Balmer/_body/Balmet.tscn" id="20_hag8j"]

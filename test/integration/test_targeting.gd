@@ -28,3 +28,7 @@ func test_group_targeting_falls_back_to_target_outside_battle() -> void:
 
 func test_same_side_for_two_non_party_characters() -> void:
 	assert_true(TargetingManager.same_side(_make(), _make()))
+
+
+func test_non_member_is_not_player_side_outside_battle() -> void:
+	assert_false(TargetingManager.is_player_side(_make()))

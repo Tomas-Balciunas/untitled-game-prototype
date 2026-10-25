@@ -51,42 +51,67 @@ func emit_selection(target: Character) -> void:
 	end()
 	
 
+func is_player_side(c: Character) -> bool:
+	var battle: BattleSession = RunState.current.battle
+
+	if battle.in_battle and battle.manager:
+		return battle.manager.is_player_side(c)
+
+	return RunState.current.party.has_member_by_object(c)
+
+
 func get_applicable_targets(target: Character, type: TargetType) -> Array[Character]:
-	var is_party_member: bool = RunState.current.party.has_member(target.resource.id)
+	var party: Party = RunState.current.party
+	var player_side: bool = is_player_side(target)
+	var in_party: bool = party.has_member_by_object(target)
 	var enemy_grid: EnemyFormation = RunState.current.battle.enemy_formation
 	var in_battle: bool = RunState.current.battle.in_battle and enemy_grid != null
-	
+
 	match type:
 		TargetType.SINGLE:
 			return [target]
 		TargetType.COLUMN:
-			if is_party_member:
-				return RunState.current.party.get_column_allies(target)
+			if player_side:
+				return party.get_column_allies(target)
 			if in_battle:
 				return enemy_grid.get_column(target)
 		TargetType.ROW:
-			if is_party_member:
-				return RunState.current.party.get_row_allies(target)
+			if player_side:
+				return _player_side_all()
 			if in_battle:
 				return enemy_grid.get_row(target)
 		TargetType.BLAST:
-			if is_party_member:
-				return RunState.current.party.get_blast_allies(target)
+			if in_party:
+				return party.get_blast_allies(target)
+			if player_side:
+				return [target]
 			if in_battle:
 				return enemy_grid.get_blast(target)
 		TargetType.ADJACENT:
-			if is_party_member:
-				return RunState.current.party.get_adjacent_allies(target)
+			if in_party:
+				return party.get_adjacent_allies(target)
+			if player_side:
+				return [target]
 			if in_battle:
 				return enemy_grid.get_adjacent(target)
 		TargetType.MASS:
-			if is_party_member:
-				return RunState.current.party.get_mass_allies()
+			if player_side:
+				return _player_side_all()
 			if in_battle:
 				return enemy_grid.get_mass()
 		#TODO: bounce targeting
-	
+
 	return [target]
+
+
+func _player_side_all() -> Array[Character]:
+	var all: Array[Character] = RunState.current.party.get_mass_allies()
+	var battle: BattleSession = RunState.current.battle
+
+	if battle.in_battle and battle.manager:
+		all.append_array(battle.manager.minions)
+
+	return all
 
 
 func matches_state(kind: TargetState, c: Character) -> bool:
@@ -103,6 +128,4 @@ func matches_state(kind: TargetState, c: Character) -> bool:
 
 
 func same_side(a: Character, b: Character) -> bool:
-	var party: Array[Character] = RunState.current.party.members
-	
-	return (a in party) == (b in party)
+	return is_player_side(a) == is_player_side(b)

@@ -42,7 +42,7 @@ func bind(character: Character) -> void:
 	animation_player = body_instance.get_node("AnimationPlayer") as AnimationPlayer
 	animation_player.animation_finished.connect(_on_anim_finish)
 	
-	if RunState.current.party.has_member(character.resource.id):
+	if get_parent() is AllyFormation:
 		body_instance.visible = false
 		targeting_area.queue_free()
 	
@@ -71,8 +71,8 @@ func _create_turn_indicator() -> void:
 	add_child(turn_indicator)
 
 
-func _on_turn_started(battler: Character, is_party_member: bool) -> void:
-	if is_party_member or battler != character_instance:
+func _on_turn_started(battler: Character, is_player_side: bool) -> void:
+	if is_player_side or battler != character_instance:
 		_hide_turn_indicator()
 		return
 
@@ -231,7 +231,7 @@ func _on_input_event(_camera: Camera3D, event: InputEvent, _position: Vector3, _
 	if not is_slot_targeting_enabled:
 		return
 
-	var is_ally := character_instance != null and RunState.current.party.has_member(character_instance.resource.id)
+	var is_ally := character_instance != null and get_parent() is AllyFormation
 	var targeting_enabled := RunState.current.battle.ally_targeting_enabled if is_ally else RunState.current.battle.enemy_targeting_enabled
 
 	if not targeting_enabled:
