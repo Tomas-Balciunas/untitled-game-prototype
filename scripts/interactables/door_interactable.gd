@@ -16,6 +16,9 @@ const LOCKED_TINT := Color(0.62, 0.60, 0.56)
 @export var seal_name: String = ""
 @export var trap_id: String = ""
 
+## Navmesh strip across the doorway (procedural maps); enabled while open.
+var nav_region: NavigationRegion3D = null
+
 var _highlight_meshes: Array = []
 var _base_albedo: Dictionary = {}
 
@@ -107,6 +110,9 @@ func _close() -> void:
 
 func _set_blocking(blocking: bool) -> void:
 	blocker.disabled = not blocking
+
+	if nav_region:
+		nav_region.enabled = not blocking
 
 func apply_restored_state(is_open: bool) -> void:
 	if door == null:

@@ -1026,14 +1026,15 @@ func apply_to_scene(scene_root: Node, result: Result, tileset: String, return_ma
 	for cell_key in result.wall_tiles.keys():
 		_set_player_tile(gridmap, cell_key, TilesetRegistry.ITEM_WALL)
 
+	var door_nav: Dictionary = {}
 	if bake_navmesh:
-		_build_combined_navmesh(scene_root, result.floor_tiles)
+		door_nav = _build_combined_navmesh(scene_root, result.floor_tiles, result.door_spawns)
 	if merge_walls:
 		_build_merged_wall_colliders(scene_root, result.wall_tiles)
 
 	_populate_enemies(scene_root, result)
 	_populate_chests(gridmap, result)
-	_populate_doors(gridmap, result.door_spawns)
+	_populate_doors(gridmap, result.door_spawns, door_nav)
 	_populate_transition(gridmap, result.return_tile, return_map_id)
 	if result.has_end and not end_map_id.is_empty():
 		_populate_transition(gridmap, result.end_tile, end_map_id)
@@ -1083,7 +1084,10 @@ func _tile_bounds_resolver(gridmap: GridMap) -> Callable:
 # rectangular polygons so the navmesh has tens or hundreds of polygons instead
 # of one-per-cell. NavigationAgent A* cost is roughly proportional to polygon
 # count, so this is the dominant perf win for AI on large maps.
-func _build_combined_navmesh(scene_root: Node, floor_tiles: Dictionary) -> void:
+## Returns door id -> the NavigationRegion3D strip bridging that door, which the
+## door toggles. Door tiles are kept out of the merged mesh so a closed door
+## really splits the navmesh.
+func _build_combined_navmesh(scene_root: Node, floor_tiles: Dictionary, doors: Array = []) -> Dictionary:
 	var nav_region: NavigationRegion3D = scene_root if scene_root is NavigationRegion3D else null
 	if nav_region == null:
 		for child in scene_root.get_children():
@@ -1092,12 +1096,17 @@ func _build_combined_navmesh(scene_root: Node, floor_tiles: Dictionary) -> void:
 				break
 	if nav_region == null:
 		push_warning("MapGenerator: no NavigationRegion3D; navmesh bake skipped")
-		return
+		return {}
 
 	var gridmap: GridMap = _find_gridmap(scene_root)
 	var bounds: Callable = _tile_bounds_resolver(gridmap)
 
-	var rects: Array = _greedy_rectangles(floor_tiles)
+	var door_sides: Dictionary = _door_tile_sides(doors)
+	var main_tiles: Dictionary = floor_tiles.duplicate()
+	for tile in door_sides.keys():
+		main_tiles.erase(tile)
+
+	var rects: Array = _greedy_rectangles(main_tiles)
 
 	# Godot merges navmesh edges by quantized endpoint POSITION, so coincident
 	# corners already match. What does not match is a T-junction: a wide room
@@ -1154,6 +1163,102 @@ func _build_combined_navmesh(scene_root: Node, floor_tiles: Dictionary) -> void:
 
 	navmesh.vertices = verts
 	nav_region.navigation_mesh = navmesh
+
+	return _build_door_navigation(nav_region, bounds, doors, door_sides, y)
+
+# Half the gap left on each side of a door line. Total gap (1.0) must exceed the
+# map's edge_connection_margin (0.25) so the two sides never auto-connect.
+const DOOR_NAV_GAP: float = 0.5
+
+## tile -> directions (Vector2i) in which that tile touches a door.
+func _door_tile_sides(doors: Array) -> Dictionary:
+	var sides: Dictionary = {}
+
+	for entry in doors:
+		var a: Vector2i = entry["a"]
+		var b: Vector2i = entry["b"]
+
+		if not sides.has(a):
+			sides[a] = []
+		if not sides.has(b):
+			sides[b] = []
+
+		sides[a].append(b - a)
+		sides[b].append(a - b)
+
+	return sides
+
+## Each door tile becomes its own region, pulled back from its door line(s); they
+## join the main mesh through edge connections. A disabled strip per door spans
+## the gap and is enabled while the door is open.
+func _build_door_navigation(nav_region: NavigationRegion3D, bounds: Callable, doors: Array, door_sides: Dictionary, y: float) -> Dictionary:
+	var door_nav: Dictionary = {}
+
+	if doors.is_empty():
+		return door_nav
+
+	var holder := Node3D.new()
+	holder.name = "DoorNavigation"
+	nav_region.add_child(holder)
+
+	for tile in door_sides.keys():
+		var b: Dictionary = _tile_world_bounds(bounds, tile)
+
+		for dir: Vector2i in door_sides[tile]:
+			if dir.x > 0:
+				b.hi_x -= DOOR_NAV_GAP
+			elif dir.x < 0:
+				b.lo_x += DOOR_NAV_GAP
+			elif dir.y > 0:
+				b.hi_z -= DOOR_NAV_GAP
+			elif dir.y < 0:
+				b.lo_z += DOOR_NAV_GAP
+
+		holder.add_child(_quad_region("DoorTile_%d_%d" % [tile.x, tile.y], b.lo_x, b.hi_x, b.lo_z, b.hi_z, y, true))
+
+	for entry in doors:
+		var a: Vector2i = entry["a"]
+		var dir: Vector2i = entry["b"] - a
+		var ab: Dictionary = _tile_world_bounds(bounds, a)
+		var strip: NavigationRegion3D
+
+		if dir.x != 0:
+			var line_x: float = ab.hi_x if dir.x > 0 else ab.lo_x
+			strip = _quad_region("DoorStrip_" + str(entry["id"]), line_x - DOOR_NAV_GAP, line_x + DOOR_NAV_GAP, ab.lo_z, ab.hi_z, y, false)
+		else:
+			var line_z: float = ab.hi_z if dir.y > 0 else ab.lo_z
+			strip = _quad_region("DoorStrip_" + str(entry["id"]), ab.lo_x, ab.hi_x, line_z - DOOR_NAV_GAP, line_z + DOOR_NAV_GAP, y, false)
+
+		holder.add_child(strip)
+		door_nav[entry["id"]] = strip
+
+	return door_nav
+
+func _tile_world_bounds(bounds: Callable, tile: Vector2i) -> Dictionary:
+	var rect := Rect.new()
+	rect.x = tile.x
+	rect.y = tile.y
+	rect.w = 1
+	rect.h = 1
+
+	return bounds.call(rect)
+
+func _quad_region(region_name: String, lo_x: float, hi_x: float, lo_z: float, hi_z: float, y: float, enabled: bool) -> NavigationRegion3D:
+	var navmesh := NavigationMesh.new()
+	navmesh.vertices = PackedVector3Array([
+		Vector3(lo_x, y, lo_z),
+		Vector3(hi_x, y, lo_z),
+		Vector3(hi_x, y, hi_z),
+		Vector3(lo_x, y, hi_z),
+	])
+	navmesh.add_polygon(PackedInt32Array([0, 1, 2, 3]))
+
+	var region := NavigationRegion3D.new()
+	region.name = region_name
+	region.navigation_mesh = navmesh
+	region.enabled = enabled
+
+	return region
 
 ## One side of a rectangle, as boundary indices: the start corner followed by any
 ## neighbour-introduced breaks strictly inside it. The end corner belongs to the
@@ -1584,7 +1689,7 @@ func _populate_chests(gridmap: GridMap, result: Result) -> void:
 		chests_node.add_child(chest)
 		idx += 1
 
-func _populate_doors(gridmap: GridMap, doors: Array) -> void:
+func _populate_doors(gridmap: GridMap, doors: Array, door_nav: Dictionary = {}) -> void:
 	if doors.is_empty():
 		return
 	var doors_node: Node = gridmap.get_node_or_null("Doors")
@@ -1612,6 +1717,7 @@ func _populate_doors(gridmap: GridMap, doors: Array) -> void:
 		node.key_name = entry["key_name"]
 		node.seal_name = entry["seal_name"]
 		node.trap_id = _pick_trap_id(entry["trapped"])
+		node.nav_region = door_nav.get(entry["id"])
 		doors_node.add_child(node)
 
 func _pick_trap_id(is_trapped: bool) -> String:

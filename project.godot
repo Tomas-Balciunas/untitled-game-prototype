@@ -69,6 +69,10 @@ gdscript/warnings/untyped_declaration=1
 window/size/viewport_width=1920
 window/size/viewport_height=1080
 
+[dotnet]
+
+project/assembly_name="crawler"
+
 [editor]
 
 version_control/plugin_name="GitPlugin"

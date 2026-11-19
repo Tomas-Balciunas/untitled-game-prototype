@@ -49,12 +49,16 @@ _data = {
 }
 
 [node name="PartyMemberSlot" type="Panel" unique_id=846505463]
-custom_minimum_size = Vector2(168, 85)
+custom_minimum_size = Vector2(268, 155)
 anchors_preset = -1
-anchor_right = 0.103
-anchor_bottom = 0.104
-offset_right = 6.400009
-offset_bottom = -3.2000046
+anchor_left = -0.017
+anchor_top = -0.021000002
+anchor_right = 0.123
+anchor_bottom = 0.12200001
+offset_left = 32.640003
+offset_top = 23.680002
+offset_right = 31.839996
+offset_bottom = 24.23999
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
@@ -85,7 +89,7 @@ theme_override_constants/separation = 6
 unique_name_in_owner = true
 custom_minimum_size = Vector2(52, 52)
 layout_mode = 2
-size_flags_vertical = 4
+size_flags_horizontal = 3
 mouse_filter = 2
 expand_mode = 1
 stretch_mode = 6

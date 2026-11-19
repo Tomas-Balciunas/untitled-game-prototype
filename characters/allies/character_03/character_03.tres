@@ -1,0 +1,33 @@
+[gd_resource type="Resource" script_class="CharacterResource" format=3 uid="uid://bbddeexd37t5i"]
+
+[ext_resource type="Script" uid="uid://bp0biy0knxw2o" path="res://effect/Effect.gd" id="1_l3iqv"]
+[ext_resource type="Script" uid="uid://blqk30gl013xc" path="res://stat/_attribute/attributes.gd" id="1_ohgca"]
+[ext_resource type="Script" uid="uid://bwn4gpkaijqsg" path="res://characters/CharacterResource.gd" id="1_s17id"]
+[ext_resource type="Script" uid="uid://dq4acpkde276p" path="res://skills/Skill.gd" id="1_yod8j"]
+[ext_resource type="Script" uid="uid://cbelvg2fndssu" path="res://scripts/BattleEvent.gd" id="2_4twd5"]
+[ext_resource type="Resource" uid="uid://bverpnd866j7c" path="res://characters/allies/character_03/_stat_resources/base_stats_character_03.tres" id="2_v34tb"]
+[ext_resource type="PackedScene" uid="uid://cvja2deox1khy" path="res://characters/allies/character_03/_body/Skelly.tscn" id="3_bv0l2"]
+[ext_resource type="Script" uid="uid://b06vmgrh4qa8i" path="res://gear/ItemResource.gd" id="4_yu6ia"]
+[ext_resource type="Texture2D" uid="uid://8qkqfruodgmp" path="res://characters/allies/character_03/character_03_cropped_lower_res.png" id="5_wrx6d"]
+[ext_resource type="Script" uid="uid://b86lw2pwd1yko" path="res://characters/level_reward.gd" id="8_xytup"]
+[ext_resource type="Texture2D" uid="uid://vx5kja8enrka" path="res://characters/allies/character_03/character_03_portrait.png" id="10_ieijw"]
+[ext_resource type="Resource" uid="uid://ll8r2c6cicks" path="res://characters/allies/character_03/_stat_resources/stat_attribute_growth_character_03.tres" id="10_xytup"]
+[ext_resource type="Resource" uid="uid://u7fowff2eegi" path="res://characters/allies/character_03/_stat_resources/stat_level_growth_character_03.tres" id="11_wrx6d"]
+
+[sub_resource type="Resource" id="Resource_rhf32"]
+script = ExtResource("1_ohgca")
+metadata/_custom_type_script = "uid://blqk30gl013xc"
+
+[resource]
+script = ExtResource("1_s17id")
+attributes = SubResource("Resource_rhf32")
+default_damage_type = 1
+base_stats = ExtResource("2_v34tb")
+stat_level_growth = ExtResource("11_wrx6d")
+stat_attribute_growth = ExtResource("10_xytup")
+id = "character_03"
+name = "character_03"
+portrait = ExtResource("10_ieijw")
+character_image = ExtResource("5_wrx6d")
+character_body = ExtResource("3_bv0l2")
+metadata/_custom_type_script = "uid://bwn4gpkaijqsg"

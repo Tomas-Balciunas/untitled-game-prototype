@@ -9,7 +9,7 @@ func _register_all() -> void:
 	var res_paths := [
 		"res://characters/allies/MC/MC.tres",
 		"res://characters/allies/character_02/character_02.tres",
-		"res://characters/allies/Skelly/Skelly.tres",
+		"res://characters/allies/character_03/character_03.tres",
 		"res://characters/foes/Skeltal/Skeltal.tres",
 		"res://characters/foes/Balmer/Balmer.tres",
 		"res://characters/allies/character_01/character_01.tres",
