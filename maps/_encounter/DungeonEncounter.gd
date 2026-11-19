@@ -42,7 +42,7 @@ const STUCK_INTERVAL := 1.0
 const STUCK_MIN_PROGRESS := 0.15
 const POINT_TRIES := 6
 
-var visual: CharacterBody3D
+#var visual: CharacterBody3D
 var origin: Vector3
 var state := State.IDLE
 var last_seen := Vector3.ZERO
@@ -65,7 +65,7 @@ var _stuck_anchor := Vector3.ZERO
 
 func _ready() -> void:
 	assert(encounter_data)
-	assert(enemy_scene)
+	#assert(enemy_scene)
 	EncounterBus.encounter_ended.connect(_on_encounter_ended)
 	navigation_agent_3d.velocity_computed.connect(_on_velocity_computed)
 
@@ -75,8 +75,9 @@ func _ready() -> void:
 		queue_free()
 		return
 
-	visual = enemy_scene.instantiate()
-	add_child(visual)
+	# disabled for now, just using shadowy forms for enemies for now
+	#visual = enemy_scene.instantiate()
+	#add_child(visual)
 
 	origin = global_transform.origin
 	_enter_idle()

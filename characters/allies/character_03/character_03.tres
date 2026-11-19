@@ -10,7 +10,7 @@
 [ext_resource type="Script" uid="uid://b06vmgrh4qa8i" path="res://gear/ItemResource.gd" id="4_yu6ia"]
 [ext_resource type="Texture2D" uid="uid://8qkqfruodgmp" path="res://characters/allies/character_03/character_03_cropped_lower_res.png" id="5_wrx6d"]
 [ext_resource type="Script" uid="uid://b86lw2pwd1yko" path="res://characters/level_reward.gd" id="8_xytup"]
-[ext_resource type="Texture2D" uid="uid://vx5kja8enrka" path="res://characters/allies/character_03/character_03_portrait.png" id="10_ieijw"]
+[ext_resource type="Texture2D" uid="uid://dbj23go0my21a" path="res://characters/allies/character_03/character_03_portrait_lower_res.png" id="10_wrx6d"]
 [ext_resource type="Resource" uid="uid://ll8r2c6cicks" path="res://characters/allies/character_03/_stat_resources/stat_attribute_growth_character_03.tres" id="10_xytup"]
 [ext_resource type="Resource" uid="uid://u7fowff2eegi" path="res://characters/allies/character_03/_stat_resources/stat_level_growth_character_03.tres" id="11_wrx6d"]
 
@@ -27,7 +27,7 @@ stat_level_growth = ExtResource("11_wrx6d")
 stat_attribute_growth = ExtResource("10_xytup")
 id = "character_03"
 name = "character_03"
-portrait = ExtResource("10_ieijw")
+portrait = ExtResource("10_wrx6d")
 character_image = ExtResource("5_wrx6d")
 character_body = ExtResource("3_bv0l2")
 metadata/_custom_type_script = "uid://bwn4gpkaijqsg"

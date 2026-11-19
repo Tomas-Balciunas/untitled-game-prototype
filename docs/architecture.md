@@ -429,6 +429,16 @@ the resolver.
 `PartyContainerInterface.tscn` (instanced, not inlined, in `main.tscn`) holds 4
 `PartyMemberSlotInterface.tscn` slots; `party_container_interface.gd` binds
 `RunState.current.party.formation[i]` → slot `i` via `PartyMemberSlot.bind()`.
+- Bottom bar layout (`main.tscn`): `UIRoot/PartyInterface` covers the bottom
+  16.6% of the screen (anchor_top 0.834) → full-rect `HBoxContainer`
+  (separation 0) → `PartyPanel` (stretch_ratio 4, ~80%) | `BattleTextLines`
+  (stretch_ratio 1, ~20%). Fully anchor/container driven, no fixed pixel sizes.
+- `PartyPanel` root is a plain `Control` (script on root) → `PartyRow`
+  (full-rect HBox, separation 0) → `Slot1..4` (`MarginContainer`, 0 margin,
+  expand) → `PartyMember` instance. Slots split the width evenly and fill the
+  full height. **Keep the wrappers:** the slot's `damaged`/`RESET` animations key
+  absolute `position`, so a slot sitting directly in the HBox would jump to the
+  row's origin when shaken.
 - Slot layout: `MarginContainer/HBoxContainer` → `%Portrait` (52×52
   TextureRect, keep-aspect-covered) | `GridContainer` (name on top, then
   HP/MP/SP labels | values).
@@ -436,14 +446,13 @@ the resolver.
   `character_image` used by the character menu). Null → empty space, layout
   unchanged. Currently a hand-cropped PNG, e.g. `character_01-portrait.png`.
 - **Minion strip** — `minion_row.gd` (`MinionRow`, an `HFlowContainer`) is
-  code-mounted by `party_container_interface.gd._ready` as the first child of
-  `PanelContainer/PartyContainer`, so it sits above `PartyRow` (which is
-  expand + shrink-end, i.e. pinned to the bottom of that ~90px of otherwise
-  empty VBox). No `.tscn` edit. Hidden while empty; spawns one `MinionSlot`
+  code-mounted by `party_container_interface.gd._ready` as a child of the
+  panel root, anchored top-wide with `grow_vertical = BEGIN`, so it floats
+  above the panel and grows upward over the 3D view — slots never shrink.
+  No `.tscn` edit. Hidden while empty; spawns one `MinionSlot`
   (`minion_slot.gd`, a `PanelContainer` built entirely in code: name + `cur/max`
   HP) per `BattleBus.minion_added`, frees it on `minion_removed`, clears on
-  `battle_end`. No cap — it wraps, and overflows the panel at roughly 13+
-  minions (4 per row, ~3 rows of room).
+  `battle_end`. No cap — it wraps, each extra row stacking higher up.
 - `MinionSlot` mirrors `PartyMemberSlot`'s input: right-click opens the status
   window; left-click calls `TargetingManager.emit_selection` only when mode is
   `BATTLE`, `ally_targeting_enabled` is set, **and** the current action's
@@ -452,11 +461,10 @@ the resolver.
   death/revive (`died` / `revived`) and tints yellow on its own turn
   (`BattleBus.turn_started`), since minions are AI-driven and never fire
   `ally_turn_started`.
-- **Width budget is tight.** The slot root is a plain `Panel`, so its children
-  don't drive its size — `custom_minimum_size` (168×85) must be kept ≥ the
-  content min by hand or content spills past the border. 4 slots + margins =
-  708px inside the ~720px `PanelContainer` (anchors 0.312–0.687 at 1920 wide).
-  Widen those anchors before adding anything horizontal to a slot.
+- **Slot min size is manual.** The slot root is a plain `Panel`, so its
+  children don't drive its size — `custom_minimum_size` (180×90) must be kept ≥
+  the content min by hand or content spills past the border on narrow windows.
+  At 1920 wide each slot is ~384px, so there's plenty of room in practice.
 
 ## Buses (signals, for notifications — not ordered resolution)
 `scripts/bus/CharacterBus.gd` (`display_character_menu`, `display_status_effects`,
@@ -815,6 +823,28 @@ All mutable run-scoped state lives on a single `Run` object (`Run.gd`,
 - Regression coverage for the above lives in `test/unit/test_save_roundtrip.gd`
   (it pushes dicts through a real save file, so the `store_var` object
   behaviour is actually exercised).
+
+## Overworld enemies — `maps/_encounter/`
+- `OverworldEnemy.tscn` (CharacterBody3D, group `overworld_enemy`, layer 2) +
+  `DungeonEncounter.gd`: nav-agent AI with states IDLE / PATROL / CHASE /
+  SEARCH / GUARD / RETURN / STUNNED; sleeps beyond `ACTIVATION_DISTANCE` (20)
+  while idle/patrolling; contact within 1 m (and in sight) emits
+  `EncounterBus.encounter_started`. Freed when its encounter is cleared;
+  stunned + grace period after a flee.
+- Spawned by `scripts/EnemyController.gd` (also sets `encounter_data` and
+  `enemy_scene` = first enemy's `character_body`), or placed by hand in maps.
+- **Visual = `ShadowVisual.tscn`**, a single Y-billboard quad with
+  `shadow_smoke.gdshader` (unshaded; ~6 samples of a shared 128²
+  `NoiseTexture2D`; domain-warped, ragged/leaning silhouette; UVs snapped to a
+  pixel grid, Bayer 4×4 dithered alpha via `discard`, posterized colour,
+  stepped time; world position offsets the noise so instances aren't in sync).
+  Noise sampler has no mipmaps on purpose (quantized UVs break derivatives).
+  Tunables: `core_color`, `edge_color`, `opacity`, `flow_speed`, `distortion`,
+  `pixel_columns`, `anim_fps` (0 = smooth), `color_steps`.
+- The old per-enemy sprite visual (instantiating `enemy_scene` as `visual`) is
+  commented out in `DungeonEncounter._ready`; `enemy_scene` export and its
+  EnemyController assignment are still live, so re-enabling is uncommenting
+  3 spots (`var visual`, the assert, the instantiate/add_child).
 
 ## Doors, locks and keys
 - **Blocking is a collider, not a rule.** Player movement is gated by four

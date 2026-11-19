@@ -76,9 +76,9 @@ script = ExtResource("4_trceg")
 
 [node name="OverworldInterface" type="Control" parent="UIRoot" unique_id=1416117088]
 layout_mode = 3
-anchors_preset = 15
 anchor_right = 1.0
-anchor_bottom = 1.0
+anchor_bottom = 0.83300006
+offset_bottom = 180.35992
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
@@ -1153,26 +1153,29 @@ script = ExtResource("11_eb6dy")
 
 [node name="PartyInterface" type="Control" parent="UIRoot" unique_id=1964900156]
 layout_mode = 3
-anchors_preset = 12
-anchor_top = 1.0
+anchor_top = 0.834
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 0
 script = ExtResource("11_dp3eg")
 
-[node name="PartyPanel" parent="UIRoot/PartyInterface" unique_id=1945293516 instance=ExtResource("5_85g3d")]
+[node name="HBoxContainer" type="HBoxContainer" parent="UIRoot/PartyInterface" unique_id=951990990]
 layout_mode = 1
-anchors_preset = 10
-anchor_top = 0.0
-anchor_bottom = 0.0
-offset_top = -180.0
-grow_vertical = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 mouse_filter = 2
+theme_override_constants/separation = 0
 
-[node name="BattleTextLines" parent="UIRoot/PartyInterface" unique_id=166178460 instance=ExtResource("25_yq6so")]
-layout_mode = 1
-offset_top = -181.0
+[node name="PartyPanel" parent="UIRoot/PartyInterface/HBoxContainer" unique_id=1945293516 instance=ExtResource("5_85g3d")]
+layout_mode = 2
+size_flags_stretch_ratio = 4.0
+
+[node name="BattleTextLines" parent="UIRoot/PartyInterface/HBoxContainer" unique_id=166178460 instance=ExtResource("25_yq6so")]
+layout_mode = 2
 
 [node name="StatusEffectsWindow" parent="UIRoot" unique_id=350077927 instance=ExtResource("31_sew0")]
 

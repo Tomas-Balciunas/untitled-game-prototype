@@ -1,18 +1,18 @@
-extends Panel
+extends Control
 
 @onready var formation := [
-	$PanelContainer/PartyContainer/PartyRow/PartyMemberSlot1/PartyMember,
-	$PanelContainer/PartyContainer/PartyRow/PartyMemberSlot2/PartyMember,
-	$PanelContainer/PartyContainer/PartyRow/PartyMemberSlot3/PartyMember,
-	$PanelContainer/PartyContainer/PartyRow/PartyMemberSlot4/PartyMember,
+	$PartyRow/Slot1/PartyMember,
+	$PartyRow/Slot2/PartyMember,
+	$PartyRow/Slot3/PartyMember,
+	$PartyRow/Slot4/PartyMember,
 ]
 
 
 func _ready() -> void:
-	var party_container: VBoxContainer = $PanelContainer/PartyContainer
 	var minion_row := MinionRow.new()
-	party_container.add_child(minion_row)
-	party_container.move_child(minion_row, 0)
+	add_child(minion_row)
+	minion_row.set_anchors_and_offsets_preset(Control.PRESET_TOP_WIDE)
+	minion_row.grow_vertical = Control.GROW_DIRECTION_BEGIN
 
 	SaveManager.connect("party_reloaded", Callable(self, "_on_party_reloaded"))
 	PartyBus.party_member_added.connect(_on_member_added)
