@@ -6,6 +6,7 @@ var current_map_scene: Node = null
 
 const TILE_SIZE = 2.0
 const DEBUG_UPDATE_INTERVAL: float = 0.25
+const FALL_DAMAGE_PER_UNIT: float = 0.1
 
 var _debug_layer: CanvasLayer = null
 var _debug_label: Label = null
@@ -17,6 +18,7 @@ func _ready() -> void:
 	EncounterBus.connect("encounter_started", Callable(self, "_on_encounter_started"))
 	EncounterBus.connect("encounter_ended", Callable(self, "_on_encounter_ended"))
 	player.connect("player_moved", Callable(self, "_on_player_moved"))
+	player.connect("player_fell", Callable(self, "_on_player_fell"))
 	TransitionManager.connect("map_transition_started", Callable(self, "transition_to_map"))
 
 	transition_rect.modulate.a = 0.0
@@ -131,6 +133,7 @@ func load_map(map_id: String = "") -> void:
 	self.add_child(current_map_scene)
 	var player_position: Vector2i = RunState.current.map.player_previous_position
 	var player_facing: Vector3 = RunState.current.map.player_facing
+	var player_height: float = RunState.current.map.player_previous_height
 
 	if current_map_scene.has_node("Enemies"):
 		if current_map_scene.get_node("Enemies").has_method("populate_enemy_spawn_points"):
@@ -139,8 +142,8 @@ func load_map(map_id: String = "") -> void:
 			push_error("Missing enemy spawn populate method!")
 	else:
 		push_error("Missing Enemies node!")
-	
-	player.set_grid_pos(player_position, player_facing, TILE_SIZE)
+
+	player.set_grid_pos(player_position, player_facing, TILE_SIZE, player_height)
 	MapBus.map_finished_loading.emit(map_data)
 
 func _on_encounter_started(_data: EncounterData) -> void:
@@ -164,7 +167,29 @@ func transition_to_map(map_id: String) -> void:
 	TransitionManager.transit_to_map_end()
 
 func _on_player_moved(data: Dictionary) -> void:
-	RunState.current.map.update_player_position(data["grid_position"], data["grid_direction"])
+	RunState.current.map.update_player_position(data["grid_position"], data["grid_direction"], data.get("height", 0.0))
+	_trigger_hazards(data["grid_position"], data.get("height", 0.0))
+
+func _trigger_hazards(tile: Vector2i, height: float) -> void:
+	var applied: Dictionary = {}
+	for node in get_tree().get_nodes_in_group(HazardTile.GROUP):
+		var patch := node as HazardTile
+		if patch == null or patch.hazard == null or applied.has(patch.hazard):
+			continue
+		if patch.covers(tile, height):
+			applied[patch.hazard] = true
+			patch.hazard.apply_to_party(RunState.current.party.members)
+
+func _on_player_fell(height: float) -> void:
+	for member: Character in RunState.current.party.members:
+		if member.is_dead:
+			continue
+		var amount: int = maxi(1, roundi(member.stats.health * FALL_DAMAGE_PER_UNIT * height))
+		var ctx := ActionContext.new()
+		ctx.source = MovementSource.new("Fall")
+		ctx.actively_cast = false
+		ctx.set_targets(member)
+		DamageResolver.new(amount).execute(ctx)
 
 func _on_encounter_ended(result: String, _data: EncounterData) -> void:
 	print("Back from battle with result:", result)
@@ -172,7 +197,7 @@ func _on_encounter_ended(result: String, _data: EncounterData) -> void:
 	process_mode = Node.PROCESS_MODE_INHERIT
 	var player_position: Vector2i = RunState.current.map.player_previous_position
 	var player_facing: Vector3 = RunState.current.map.player_facing
-	player.set_grid_pos(player_position, player_facing, TILE_SIZE)
+	player.set_grid_pos(player_position, player_facing, TILE_SIZE, RunState.current.map.player_previous_height)
 
 func _kill_map() -> void:
 	if current_map_scene:
@@ -196,7 +221,11 @@ func _build_procedural_map(map_data: Dictionary, fresh_entry: bool) -> Node:
 	var result: MapGenerator.Result = gen.generate()
 	gen.apply_to_scene(scene_root, result, tileset, return_map_id, end_map_id)
 
+	var state: DungeonState = RunState.current.map
 	if fresh_entry:
-		RunState.current.map.set_player_spawn(result.spawn)
+		state.set_player_spawn(result.spawn, Vector3.FORWARD, result.surface_y(result.spawn))
+	else:
+		state.player_height = result.surface_y(state.player_position)
+		state.player_previous_height = result.surface_y(state.player_previous_position)
 
 	return scene_root

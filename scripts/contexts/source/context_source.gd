@@ -2,7 +2,7 @@
 extends Resource
 class_name ContextSource
 
-enum SourceType { CHARACTER, ITEM, SKILL, TRAP, MOVEMENT, EFFECT, UNKNOWN }
+enum SourceType { CHARACTER, ITEM, SKILL, TRAP, MOVEMENT, EFFECT, UNKNOWN, HAZARD }
 
 var character: Character = null
 var skill: Skill = null
@@ -19,6 +19,9 @@ func get_source_name() -> String
 
 func get_actor() -> Character:
 	return character
+
+func get_damage_type() -> DamageTypes.Type:
+	return DamageTypes.Type.PHYSICAL
 
 
 func game_save() -> Dictionary:
@@ -38,6 +41,8 @@ static func create_from_save(data: Dictionary) -> ContextSource:
 			return TrapSource.from_save(data)
 		SourceType.MOVEMENT:
 			return MovementSource.new()
+		SourceType.HAZARD:
+			return HazardSource.from_save(data)
 	SaveManager.report_load_issue("ContextSource.create_from_save: unknown source type %s" % t)
 	return null
 

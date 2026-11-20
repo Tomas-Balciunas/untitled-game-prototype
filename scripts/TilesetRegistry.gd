@@ -12,6 +12,11 @@ const ITEM_CEILING: int = 2
 # y-layer of the GridMap where ceiling cells live (cell_size.y = 1 so layer 2 sits at world y=2).
 const CEILING_Y: int = 2
 
+const LEVEL_HEIGHT: float = 1.0
+const WALL_LEVELS: int = 2
+
+const GROUND_LAYER: int = 16
+
 # Filesystem convention for per-theme art overrides. If a file exists at
 # `<TILE_ASSET_ROOT>/<theme>/<slot>.<ext>` it is loaded and used in place of the
 # procedural BoxMesh below. Slots are "floor", "wall", "ceiling". Supported
@@ -148,6 +153,13 @@ func _first_mesh_in(node: Node) -> Mesh:
 		if m != null:
 			return m
 	return null
+
+func get_floor_material(theme: String) -> Material:
+	var key: String = theme if THEMES.has(theme) else "default"
+	var cache_key: String = "%s|floor_mat" % key
+	if not _cache.has(cache_key):
+		_cache[cache_key] = _make_material(THEMES[key]["floor_color"])
+	return _cache[cache_key]
 
 func _make_material(c: Color) -> StandardMaterial3D:
 	var m := StandardMaterial3D.new()

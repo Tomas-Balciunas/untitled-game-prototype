@@ -824,6 +824,98 @@ All mutable run-scoped state lives on a single `Run` object (`Run.gd`,
   (it pushes dicts through a real save file, so the `store_var` object
   behaviour is actually exercised).
 
+## Overworld movement & elevation — `scenes/player/player.gd`
+- **Grid**: tiles are 2×2 world units (`TILE_SIZE`), each 2×2 GridMap cells of
+  `CELL_SIZE` 1; tile `(a, b)` is centred at world `(2a, y, 2b)`. Position state
+  is still a `Vector2i` — there are **no stacked floors**, so height rides
+  alongside the tile: `DungeonState.player_height` / `player_previous_height`
+  (saved under their own keys, `get`-guarded, no `SAVE_VERSION` bump).
+- **A move** (`_try_move`): the four horizontal `RayCast3D`s (mask 1, ~0.45 above
+  the feet) still veto walls/doors/chests. Then `_ground_height` casts a ray
+  **down** at the destination tile centre, from `PROBE_UP` (1.5) above the feet,
+  mask `1 | 16`. Rise > `MAX_STEP_UP` (0.6) → blocked; drop > `MAX_STEP_DOWN`
+  (0.6) → **fall**: walk to the tile at the current height, then drop with an
+  ease-in tween, emit `player_fell(height)`. No hit → keep the current height, which is why maps without
+  floor collision behave exactly as before. Standing height is the hit point, so
+  on procedural floors the feet sit at `level + FLOOR_THICKNESS` (0.1).
+- **Slopes (custom stairs, ramps)**: a surface whose normal has
+  `0.5 <= y < 0.98` (up to 60°) is a slope. `_blocked(ray)` replaces
+  `RayCast3D.is_colliding()`: it re-casts past slope hits and blocks only on
+  steeper faces, so stairs on layer 1 aren't walls. It runs inside `_try_move`
+  **after** the height check, lifted by the rise (`max(rise, 0)`), so the cast
+  is measured from the destination floor: a small lip where one staircase meets
+  the next sits below it and doesn't block. If the party stands on a
+  slope or is stepping onto one, a move may rise or drop up to `MAX_STAIR_RISE`
+  (2.5) as a smooth walk, never a fall. A second probe from
+  `STAIR_PROBE_UP` (2.6) finds treads above the normal probe start, but only
+  accepts a slope there, so a flat ceiling can't become ground. One convex
+  collider over the steps (as `assets/stairs.tscn` has) works as-is; the floors
+  at both ends need collision. Limitation: stepping off stairs onto a *flat*
+  floor more than 1.5 above the feet isn't found, so a staircase's top should
+  meet its floor.
+- **Fall damage** — `dungeon.gd::_on_player_fell`: every living member takes
+  `max(1, round(max HP × FALL_DAMAGE_PER_UNIT (0.1) × height))`, one
+  `DamageResolver` hit each with a `MovementSource("Fall")`, the same path as
+  trap damage. So defense softening, damage-reduction and death-resistance
+  effects apply, the party hit flash fires, and **a fall can kill** (a wipe goes
+  to game over via `GameState.on_character_death`). Procedural maps never make
+  ledges, so only handcrafted drops trigger it today. `MovementSource`'s label is
+  display-only and isn't saved.
+- `player_moved` now carries `"height"`. `set_grid_pos(pos, facing, tile_size,
+  height)` trusts the stored height, then `_settle()` re-probes for a few
+  physics frames: Jolt doesn't expose bodies added this frame to queries, so a
+  same-frame probe after a map load would miss. Procedural loads overwrite the
+  stored height from the generator (`Result.surface_y`), which also fixes saves
+  that predate elevation.
+- **Physics layers**: 1 world/walls (blocks movement rays), 2 overworld enemies,
+  3 battle bodies, 4 interactables (chests use 1+4), **5 `ground`**
+  (`TilesetRegistry.GROUND_LAYER` = 16): floors and ramps. Ramps must stay off
+  layer 1, or the movement ray hits the slope and calls it a wall.
+- **`RampTile`** (`maps/_ramp/ramp_tile.gd`, `@tool`): one-tile slope climbing
+  toward local -Z, origin at tile centre on the low level. `RAMP` or `STAIRS`
+  mesh, but collision is always a smooth convex wedge so the probe reads the
+  same height on both (ramp centre = low + half a level). Optional own
+  `NavigationRegion3D`. Children are generated, unowned, never saved.
+- **Ramp ↔ enemy**: overworld enemies move flat (`direction.y = 0`, mask 1
+  only, so they pass through ramp collision); `DungeonEncounter._follow_ground`
+  snaps their y to `NavigationServer3D.map_get_closest_point` after each
+  `move_and_slide`. Sight aims at the player's eye height (no longer levelled),
+  and contact also needs `|dy| <= CONTACT_HEIGHT` (1.0).
+- Procedural elevation (ramp placement rule, wall/ceiling stacking,
+  per-level navmesh) is documented in `maps/MAP_CONFIG.md` → *Elevation*.
+
+## Floor hazards — `hazard/`
+- **`Hazard`** (`hazard/Hazard.gd`, `.tres` data): `damage` + `max_hp_ratio` ×
+  max HP per step, `damage_type`, optional `effect`, plus look fields.
+  `apply_to(member)` = one `DamageResolver` hit with a `HazardSource`, then
+  the effect via `EffectApplicationResolver`. **Reapply policy**: if the member
+  already has an effect with the same script, its `remaining_turns` is raised
+  to the template's `duration_turns` instead of a second instance being
+  applied, because `Character.apply_effect` stacks unconditionally (see
+  *Known gaps*). Defaults: `poison_floor` (Poison 3/step for 4 steps, refreshed
+  while you stand in it) and `fire_floor` (4 + 5% max HP FIRE per step).
+- **`HazardRegistry`** (`hazard/HazardRegistry.gd`): a **static class, not an
+  autoload**. It scans `res://hazard/` (with `.remap` stripping) on first use,
+  so MapGenerator and save loading can resolve ids without touching an autoload.
+- **`HazardSource`**: `SourceType.HAZARD` (appended to the enum — **the enum is
+  saved as ints, so append, never reorder**). Persists `hazard_id` only, so a
+  poison applied by a hazard keeps its source across save/load.
+  `ContextSource.get_damage_type()` (PHYSICAL by default) is now what
+  `DamageCalculator.set_damage_type` falls back to when no skill sets a type,
+  which is how hazard hits — and DoT ticks from hazard-applied effects —
+  come out FIRE/POISON.
+- **`HazardTile`** (`hazard/hazard_tile.gd`, `@tool`, group `hazard_tile`):
+  origin at the centre of its first tile, covers `size` tiles toward +X/+Z,
+  and builds an unowned overlay quad (`hazard_floor.gdshader`: world-space
+  pixel-snapped noise, edge fade, unshaded) plus a tinted `OmniLight3D`.
+  `covers(tile, height)` uses a ±0.75 height tolerance.
+- **Trigger**: `dungeon.gd::_on_player_moved` → `update_player_position` (fires
+  `ON_MOVEMENT`, so existing DoTs tick first) → `_trigger_hazards`: every
+  patch in the group whose `covers()` matches, deduped per `Hazard`, calls
+  `apply_to_party`. Only completed steps trigger (falls included); turning,
+  loading and post-battle placement don't. Overworld enemies are unaffected.
+- Procedural placement: `maps/MAP_CONFIG.md` → *Floor hazards*.
+
 ## Overworld enemies — `maps/_encounter/`
 - `OverworldEnemy.tscn` (CharacterBody3D, group `overworld_enemy`, layer 2) +
   `DungeonEncounter.gd`: nav-agent AI with states IDLE / PATROL / CHASE /
@@ -868,9 +960,15 @@ All mutable run-scoped state lives on a single `Run` object (`Run.gd`,
   → `door_opener_chosen` → on success `door_unlocked` + `door_state_changed`.
   `DoorManager` holds no node reference, which is why unlocking is a broadcast
   the owning `DoorInteractable` matches by instance.
-- **Bump-to-open**: there is no `interact` action in `project.godot`, so
-  `player.gd::_try_bump` opens the door whose `StaticBody3D` a blocked movement
-  ray hit. Mouse click remains the fallback. `E` is already `strafe_right`.
+- **Bump-to-open is not implemented** (an earlier note described a
+  `player.gd::_try_bump`; no such code exists as of 2026-11-20). Doors open by
+  mouse click. There is no `interact` action in `project.godot`, and `E` is
+  already `strafe_right`.
+- **Door nav strips may not connect (unverified in game):** in a headless
+  check with every `DoorStrip` enabled, `NavigationServer3D.map_get_path`
+  still failed to cross some doors (same doors with elevation on or off), so
+  enemies may be unable to path through an open door.
+- Doors sit at their tile's elevation level; generated ramps never touch a door tile.
 - **Persistence**: `MapInstance.door_state[map_id][door_id]`, written by
   `DoorPivot` on `door_state_changed` and restored via
   `apply_restored_state()` (no animation, so a door already opened does not pop).
@@ -888,9 +986,12 @@ All mutable run-scoped state lives on a single `Run` object (`Run.gd`,
 - **Every generator draw must come from `_rng`.** Enemy and chest state is keyed
   by positional index, so an unseeded shuffle rebinds saved state to the wrong
   objects on the next entry — procedural maps regenerate from a stored seed on
-  *every* entry.
-- **Generation pipeline** (`MapGenerator._build_doors`, last step of
-  `generate()`): collect candidates → cut the floor graph at them to get regions
+  *every* entry. New draws go at the **end** of `generate()` so existing seeds
+  keep everything before them. Trap ids are picked later in `_populate_doors`
+  from a copy of `_rng` saved right after `_build_doors` (`_trap_rng_state`),
+  so the ramp/hazard draws after it never reshuffle traps.
+- **Generation pipeline** (`MapGenerator._build_doors`, followed only by
+  `_build_elevation` and `_build_hazards`): collect candidates → cut the floor graph at them to get regions
   → build one edge per candidate → find bridges → assign door locks by frontier
   BFS from spawn → assign chest locks → roll which candidates become doors.
   Invariants and config keys are documented in `maps/MAP_CONFIG.md`.
@@ -899,9 +1000,43 @@ All mutable run-scoped state lives on a single `Run` object (`Run.gd`,
   anywhere in `MapGenerator.gd` prevents the script loading outside a running
   project. This is why trap selection lives in `_populate_doors`.
 - **Headless preview**: `maps/tools/gen_preview.tscn` runs the generator without
-  playing the game and asserts the lock/key invariants across many seeds. It is
+  playing the game and asserts the lock/key, elevation, hazard and portal
+  invariants (every pair of neighbouring floor tiles meets at one height; no
+  ramp on a tile that must stay flat; no portal is the only way between two
+  parts of the floor) across many seeds, printing ramp count and level span. It is
   a *scene*, not a `-s` script, for the autoload reason above:
   `godot --headless --path . maps/tools/gen_preview.tscn -- --map random_crypt_01 --count 25`
+  `--fingerprint` prints an MD5 of each seed's whole `Result` plus a total:
+  record it before a generator refactor and diff after, to prove no seed moved.
+- **Generator perf notes**: `_room_of` (tile → room index) and `_cut_tiles()`
+  (articulation points of `_floor`, iterative Tarjan, memoized) are built once
+  per generate and shared by ramps, hazards, enemies, door candidates and
+  portal placement — don't reintroduce per-tile room scans or per-candidate
+  floods. Row-major sorts go through `_sorted_row_major` (native sort on
+  swapped `Vector2i`s, no script comparator). Merged wall/floor colliders are
+  shape owners on one `StaticBody3D` with boxes shared by size, not
+  `CollisionShape3D` children.
+- **Layout quality rules** (config keys in `maps/MAP_CONFIG.md`): pillars are
+  carved out of `_floor` (and `_corridor_path`) right after branches, so
+  everything downstream sees them as walls — room-tile pickers must check
+  `_floor.has(p)`, not just the room rect. Chests block movement: every room
+  chest (incl. `_ensure_region_chest`'s reward chests) goes through
+  `_chest_blocks`, a flood fill from the spawn. `_spawn_dist` (walking distance
+  from spawn) drives enemy clearance and `Result.enemy_depths`, which
+  `_populate_enemies` turns into per-marker `level_range`. `gen_preview` checks
+  that chests never wall off floor.
+- **Corridor routing** (`_route`, costs in `MAP_CONFIG.md` → *Corridor
+  routing*): weighted A* per leg over (tile, heading) states, with a
+  hand-rolled binary heap and packed arrays sized once per generate
+  (`_init_routing`). `_cell` (one int per tile: `CELL_ROCK`, `CELL_CORRIDOR`
+  or the room index) is the carving-time map the costs read; `_carve_room` /
+  `_mark_corridor` / `_add_pillars` keep it in sync with `_floor`, and
+  `_carve_room` also fills `_room_of`. The search draws nothing from `_rng`;
+  `_carve_corridor` still makes its one `randi() % 2` draw (now an L-bend tie
+  break), so the waypoint draw pattern is unchanged. Each leg is handed the
+  previous leg's arrival heading and may not reverse out of it — dropping that
+  roughly doubled dead ends (overshoot stubs). Cost: about +3 ms on
+  `random_crypt_01`, about +70 ms on a 140×140 30-room maze.
 
 ## Script / resource load-order gotchas
 These all produce errors far from their cause, usually at boot.
@@ -941,7 +1076,8 @@ These all produce errors far from their cause, usually at boot.
 
 ## Known gaps / TODO themes (from review)
 - Stacking/reapply policy is unfinished (`Poison.stacks` exists; stacking logic
-  commented out; no general "already applied" policy).
+  commented out; no general "already applied" policy). `Hazard` works around
+  it locally by refreshing a same-script effect instead of re-applying.
 - `ActionContext` accumulating flags.
 - `EffectScope` enum under-used.
 - ~10 effect `.tres` files have no `id` (warned at startup by EffectRegistry

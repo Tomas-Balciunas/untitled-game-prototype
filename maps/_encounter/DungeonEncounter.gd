@@ -35,6 +35,7 @@ enum State { IDLE, PATROL, CHASE, SEARCH, GUARD, RETURN, STUNNED }
 
 const ACTIVATION_DISTANCE := 20.0
 const CONTACT_DISTANCE := 1.0
+const CONTACT_HEIGHT := 1.0
 const WALL_MASK := 1
 const SIGHT_INTERVAL := 0.15
 const REPATH_INTERVAL := 0.3
@@ -271,8 +272,7 @@ func _update_perception(delta: float) -> void:
 
 func _can_see_player() -> bool:
 	var eye := global_position + Vector3.UP * eye_height
-	var target := player.global_position
-	target.y = eye.y
+	var target := player.global_position + Vector3.UP * eye_height
 
 	if eye.distance_squared_to(target) > sight_range * sight_range:
 		return false
@@ -287,6 +287,9 @@ func _try_contact() -> bool:
 		return false
 
 	if _flat_dist_sq(player.global_position) > CONTACT_DISTANCE * CONTACT_DISTANCE:
+		return false
+
+	if absf(player.global_position.y - global_position.y) > CONTACT_HEIGHT:
 		return false
 
 	_set_velocity(Vector3.ZERO)
@@ -339,6 +342,15 @@ func _apply_velocity(value: Vector3) -> void:
 
 	if value != Vector3.ZERO:
 		move_and_slide()
+		_follow_ground()
+
+
+func _follow_ground() -> void:
+	if not _nav_ready():
+		return
+
+	var map := navigation_agent_3d.get_navigation_map()
+	global_position.y = NavigationServer3D.map_get_closest_point(map, global_position).y
 
 
 func _check_stuck(delta: float) -> bool:

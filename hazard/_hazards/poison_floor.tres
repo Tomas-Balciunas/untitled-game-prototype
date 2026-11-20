@@ -1,0 +1,25 @@
+[gd_resource type="Resource" script_class="Hazard" format=3 uid="uid://ctq438npty4m5"]
+
+[ext_resource type="Script" uid="uid://brw5xsbf18hmf" path="res://hazard/Hazard.gd" id="1_hazard"]
+[ext_resource type="Script" uid="uid://cuf03a6q4u1c6" path="res://effect/poison/Poison.gd" id="2_poison"]
+
+[sub_resource type="Resource" id="Resource_poison"]
+script = ExtResource("2_poison")
+damage_per_turn = 3
+id = "hazard_poison"
+name = "Poison"
+description = "Poisoned by toxic floor"
+battle_only = false
+single_instance = true
+duration_turns = 4
+
+[resource]
+script = ExtResource("1_hazard")
+id = "poison_floor"
+name = "Poison Floor"
+damage_type = 4
+effect = SubResource("Resource_poison")
+color = Color(0.35, 0.85, 0.25, 1)
+opacity = 0.55
+flow_speed = 0.35
+light_energy = 0.5

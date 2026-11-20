@@ -2,6 +2,7 @@ extends Node
 
 var _last_position: Vector2i
 var _last_facing: Vector3
+var _last_height: float
 
 func _ready() -> void:
 	RestBus.enter_rest_area_requested.connect(enter_rest_area)
@@ -13,6 +14,7 @@ func enter_rest_area() -> void:
 	var player := get_tree().get_root().get_node("Main/Player")
 	_last_position = RunState.current.map.player_previous_position
 	_last_facing = RunState.current.map.player_facing
+	_last_height = RunState.current.map.player_previous_height
 	dungeon.visible = false
 	dungeon.process_mode = Node.PROCESS_MODE_DISABLED
 	
@@ -59,7 +61,7 @@ func exit_rest_area() -> void:
 	
 	rest_area.queue_free()
 	dungeon.visible = true
-	player.set_grid_pos(_last_position, _last_facing, 2.0)
+	player.set_grid_pos(_last_position, _last_facing, 2.0, _last_height)
 	dungeon.process_mode = Node.PROCESS_MODE_INHERIT
 	
 	for member in RunState.current.party.members:

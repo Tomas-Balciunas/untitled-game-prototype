@@ -8,6 +8,8 @@ var theme: String = ""
 var player_position: Vector2i = Vector2i()
 var player_previous_position: Vector2i = Vector2i()
 var player_facing: Vector3 = Vector3.FORWARD
+var player_height: float = 0.0
+var player_previous_height: float = 0.0
 var encounters := {}
 var cleared_encounters: Dictionary = {}
 var transitions := {}
@@ -30,6 +32,8 @@ func hydrate_from_resource(map_data: Dictionary) -> void:
 	var start_str: String = map_data.get("starting_position", "(0, 0)")
 	player_position = str_to_var("Vector2i" + start_str)
 	player_previous_position = player_position
+	player_height = float(map_data.get("starting_height", 0.0))
+	player_previous_height = player_height
 	if not cleared_encounters.has(map_id):
 		cleared_encounters[map_id] = []
 	hydrate_enemy_pool(map_data)
@@ -43,20 +47,24 @@ func get_or_create_seed(id: String) -> int:
 		seeds[id] = randi() + 1
 	return seeds[id]
 
-func set_player_spawn(pos: Vector2i, facing: Vector3 = Vector3.FORWARD) -> void:
+func set_player_spawn(pos: Vector2i, facing: Vector3 = Vector3.FORWARD, height: float = 0.0) -> void:
 	player_position = pos
 	player_previous_position = pos
 	player_facing = facing
+	player_height = height
+	player_previous_height = height
 
 func consume_restore_flag() -> bool:
 	var was := _restored_from_save
 	_restored_from_save = false
 	return was
 
-func update_player_position(pos: Vector2i, facing: Vector3) -> void:
+func update_player_position(pos: Vector2i, facing: Vector3, height: float = 0.0) -> void:
 	player_previous_position = player_position
 	player_position = pos
 	player_facing = facing
+	player_previous_height = player_height
+	player_height = height
 
 	for c: Character in RunState.current.party.members:
 		var ctx := ActionContext.new()
@@ -184,6 +192,8 @@ func game_save() -> Dictionary:
 		"player_position": player_position,
 		"player_previous_position": player_previous_position,
 		"player_facing": player_facing,
+		"player_height": player_height,
+		"player_previous_height": player_previous_height,
 		"cleared_encounters": cleared_encounters,
 		"encounters": encounters,
 		"chest_state": chest_state,
@@ -202,6 +212,8 @@ func game_load(data: Dictionary) -> void:
 	player_position = dungeon.get("player_position", Vector2i())
 	player_previous_position = dungeon.get("player_previous_position", player_position)
 	player_facing = dungeon.get("player_facing", Vector3.FORWARD)
+	player_height = float(dungeon.get("player_height", 0.0))
+	player_previous_height = float(dungeon.get("player_previous_height", player_height))
 	cleared_encounters = dungeon.get("cleared_encounters", {})
 	encounters = dungeon.get("encounters", {})
 	chest_state = dungeon.get("chest_state", {})

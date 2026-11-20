@@ -130,6 +130,10 @@ quickload={
 ]
 }
 
+[layer_names]
+
+3d_physics/layer_5="ground"
+
 [physics]
 
 3d/physics_engine="Jolt Physics"

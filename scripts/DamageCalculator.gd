@@ -115,7 +115,7 @@ func set_damage_type() -> void:
 	if source.skill and source.skill.get_damage_type():
 		type = source.skill.get_damage_type()
 		return
-	type = DamageTypes.Type.PHYSICAL
+	type = source.get_damage_type()
 
 func set_damage_variance() -> void:
 	var weapon: Weapon = actor.equipment.get("weapon") if actor else null
