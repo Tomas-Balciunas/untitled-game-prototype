@@ -1,0 +1,5 @@
+[gd_scene format=3 uid="uid://baudlhla7dtyn"]
+
+[ext_resource type="PackedScene" uid="uid://bo7swci2n12ve" path="res://maps/_dungeon_grid_tiles/blender/dungeon_01.glb" id="1_vbmla"]
+
+[node name="dungeon_01" unique_id=1139118364 instance=ExtResource("1_vbmla")]

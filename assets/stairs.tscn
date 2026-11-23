@@ -1,5 +1,7 @@
 [gd_scene format=4 uid="uid://clu5lkylyv65q"]
 
+[ext_resource type="Texture2D" uid="uid://c4bvte713n42i" path="res://assets/tiles/crypt/floor.png" id="1_6igwe"]
+
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_47s1s"]
 resource_name = "Material"
 cull_mode = 2
@@ -38,6 +40,10 @@ _surfaces = [{
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_m54ql")
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_b5fqj"]
+albedo_texture = ExtResource("1_6igwe")
+uv1_triplanar = true
+
 [sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_6igwe"]
 points = PackedVector3Array(-1.6487863, 2, 1, -1.6487863, 2, -1, -2, 2, 1, 0, 1.1756068, 1, -2, 2, -1, 0, 1.1756068, -1, -2, 0, 1, 2, 0.1732576, 1, -2, 0, -1, 2, 0.1732576, -1, 2, 0, 1, 2, 0, -1)
 
@@ -50,6 +56,7 @@ disable_mode = 1
 transform = Transform3D(1, 0, 0, 0, 0.5, 0, 0, 0, 1, 1, 0.5, 0)
 mesh = SubResource("ArrayMesh_ruyf4")
 skeleton = NodePath("")
+surface_material_override/0 = SubResource("StandardMaterial3D_b5fqj")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Cube" unique_id=1575157307]
 shape = SubResource("ConvexPolygonShape3D_6igwe")
